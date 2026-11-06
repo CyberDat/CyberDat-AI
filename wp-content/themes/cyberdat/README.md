@@ -1,6 +1,6 @@
 # CyberDat theme — editorial homepage prototype
 
-Version 0.2.0: classic PHP templates, Gutenberg and theme.json, with a Playground-only editorial homepage prototype. No framework, package manager or build step.
+Version 0.3.0: classic PHP templates, Gutenberg and theme.json, with a Playground-only editorial homepage prototype. No framework, package manager or build step.
 
 ## Scope
 
@@ -27,4 +27,8 @@ Future stages: visual approval, article metadata/TOC/related content, topic and 
 
 ## Homepage prototype
 
-Featured Story uses an original lightweight SVG illustration and a briefing rail. The offline threat observatory has four metrics, a static accessible SVG activity chart, a severity chart and an explicitly scrollable demo-CVE table. Analysis, AI Security and Guides & Learning read the sandbox fixture posts using existing taxonomies. The featured article is excluded from those queries. Search is a standard WordPress form. No new homepage JavaScript is required.
+Featured Story uses an original responsive WebP illustration and a four-story briefing rail. The offline threat observatory has four metrics, a static accessible SVG activity chart, a severity chart and an explicitly scrollable demo-CVE table. Analysis, AI Security and Guides & Learning read the sandbox fixture posts using existing taxonomies. The nine curated section cards have distinct artwork and do not repeat articles. Cards include publication dates and categories. Search is a standard WordPress form. No new homepage JavaScript is required.
+
+## Premium editorial refinement (0.3.0)
+
+Compact masthead, dominant image-led featured story, four thumbnail briefings and tighter section spacing. Original generated artwork and its full prompt set are documented in `preview/art-direction.md` at the repository root. Images have explicit dimensions, responsive sources and lazy loading outside the hero. The original offline dashboard is unchanged. No new frontend JavaScript or external services were added.
