@@ -6,8 +6,8 @@ from pathlib import Path
 root = Path(__file__).resolve().parent
 blueprint = {
     '$schema': 'https://playground.wordpress.net/blueprint-schema.json',
-    'meta': {'title': 'CyberDat 0.2.0 — isolated theme inspection', 'author': 'CyberDat',
-             'description': 'Editorial homepage prototype and fictional offline threat dashboard, with browser-only demo content and 320/768/1440px checks. No production connection.'},
+    'meta': {'title': 'CyberDat 0.3.0 — isolated theme inspection', 'author': 'CyberDat',
+             'description': 'Premium editorial homepage with original local illustrations and a fictional offline threat dashboard, with browser-only demo content and 320/768/1440px checks. No production connection.'},
     'preferredVersions': {'php': '8.4', 'wp': '7.1.4'},
     'features': {'networking': False},
     'constants': {'CYBERDAT_PLAYGROUND': True, 'WP_ENVIRONMENT_TYPE': 'local',
@@ -19,7 +19,7 @@ blueprint = {
     'steps': [
         {'step': 'installTheme', 'themeData': {
             'resource': 'git:directory', 'url': 'https://github.com/CyberDat/CyberDat-AI',
-            'ref': '69455c220ddcd32fff9e3310b38875189451a8c5', 'refType': 'commit',
+            'ref': '6400e9731b9e54a0c8275f12b0f95538078102d8', 'refType': 'commit',
             'path': 'wp-content/themes/cyberdat'},
          'options': {'activate': True, 'importStarterContent': False,
                      'targetFolderName': 'cyberdat', 'onError': 'throw'}},

@@ -64,9 +64,14 @@ $articles=[
  ['preview-ai-briefing','The security questions every AI deployment should answer','ai-security','news'],
  ['security-boundary-analysis','Beyond the perimeter: where trust breaks down','network-security','analysis'],
  ['detection-context-analysis','From isolated alerts to meaningful threat context','threat-intelligence','analysis'],
- ['prompt-boundary-ai','Building better boundaries for AI-powered workflows','ai-security','guides']
+ ['prompt-boundary-ai','Building better boundaries for AI-powered workflows','ai-security','guides'],
+ ['ai-supply-chain-preview','The hidden dependencies inside the AI supply chain','ai-security','analysis'],
+ ['ai-redteam-preview','Testing the defenses of agentic systems','ai-security','analysis'],
+ ['preview-identity-briefing','Where identity ends and infrastructure begins','cybersecurity-fundamentals','news']
 ];
 $excerpts=[
+ 'ai-supply-chain-preview'=>'Sample analysis: trace the trust relationships between models, tools, access tokens and their software dependencies.',
+ 'ai-redteam-preview'=>'Sample research: a structured look at the controls and boundaries of autonomous systems.',
  'identity-boundaries-for-ai-agents'=>'Sample analysis: identity and access boundaries for a new generation of autonomous software.',
  'ai-security-review'=>'Sample research: map the assumptions and hidden dependencies inside AI-assisted work.',
  'security-boundary-analysis'=>'Sample analysis: why network location alone is no longer a useful measure of trust.',
@@ -77,7 +82,7 @@ $excerpts=[
  'cybersecurity-foundations'=>'Sample learning path: build a working understanding of risk, identity and defense.'
 ];
 foreach($articles as $i=>$a){
- $id=cyberdat_preview_post($a[0],$a[1],'post',$body,['post_excerpt'=>$excerpts[$a[0]] ?? 'Sample briefing: a fictional story for reviewing the CyberDat editorial experience.','post_date'=>sprintf('2026-10-%02d 10:00:00',$i+20),'post_date_gmt'=>sprintf('2026-10-%02d 10:00:00',$i+20)]);
+ $id=cyberdat_preview_post($a[0],$a[1],'post',$body,['post_excerpt'=>$excerpts[$a[0]] ?? 'Sample briefing: a fictional story for reviewing the CyberDat editorial experience.','post_date'=>sprintf('2026-10-%02d 10:00:00',$i+1),'post_date_gmt'=>sprintf('2026-10-%02d 10:00:00',$i+1)]);
  cyberdat_preview_result(wp_set_post_terms($id,[$topic_ids[$a[2]]],'category'));
  cyberdat_preview_result(wp_set_post_terms($id,[$format_ids[$a[3]]],'editorial_format'));
 }
@@ -116,6 +121,6 @@ set_theme_mod('nav_menu_locations',['footer'=>$footer_id]);
 flush_rewrite_rules(false);
 if(get_option('stylesheet')!=='cyberdat'){throw new RuntimeException('CyberDat theme was not activated in Playground.');}
 if((int)get_option('blog_public')!==0){throw new RuntimeException('Preview indexing is not disabled.');}
-if(count(get_posts(['post_type'=>'post','numberposts'=>-1]))!==12){throw new RuntimeException('Unexpected preview article count.');}
+if(count(get_posts(['post_type'=>'post','numberposts'=>-1]))!==15){throw new RuntimeException('Unexpected preview article count.');}
 foreach($format_ids as $slug=>$id){if(is_wp_error(get_term_link($id,'editorial_format'))){throw new RuntimeException('Format link failed.');}}
-echo "CyberDat fixtures ready: 12 articles, 3 pages, 5 topics, 4 editorial formats.\n";
+echo "CyberDat fixtures ready: 15 articles, 3 pages, 5 topics, 4 editorial formats.\n";

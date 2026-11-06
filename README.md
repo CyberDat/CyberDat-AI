@@ -2,7 +2,7 @@
 
 Source repository for CyberDat.eu and future CyberDat SEO Intelligence integrations.
 
-## WordPress theme foundation
+## WordPress theme prototype
 
 The lightweight PHP/Gutenberg theme lives in `wp-content/themes/cyberdat/`.
 See its README for scope, progressive navigation, integration ownership and preview requirements.
@@ -27,3 +27,5 @@ Validate `theme.json` against its declared official WordPress schema. Navigation
 Work is developed on feature branches. No automatic deployment is configured.
 Production deployment, theme activation and removal of Coming Soon require separate approval.
 The theme foundation has not been activated on production.
+
+Current design iteration: **0.3.0 Premium Editorial Design**, delivered only through the official WordPress Playground. See `preview/README.md`. Production activation and merge remain unapproved.
