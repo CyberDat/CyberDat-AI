@@ -53,17 +53,31 @@ $body=<<<'HTML'
 <!-- wp:list --><ul class="wp-block-list"><!-- wp:list-item --><li>Check the mobile navigation with the keyboard.</li><!-- /wp:list-item --><!-- wp:list-item --><li>Read the article at 320, 768 and 1440 pixels.</li><!-- /wp:list-item --><!-- wp:list-item --><li>Inspect the topic and editorial-format archives.</li><!-- /wp:list-item --></ul><!-- /wp:list -->
 HTML;
 $articles=[
- ['identity-boundaries-for-ai-agents','Identity boundaries for AI agents','ai-security','analysis'],
+ ['identity-boundaries-for-ai-agents','The next attack surface isn’t a device. It’s an AI agent.','ai-security','analysis'],
  ['network-segmentation-checklist','A practical network segmentation checklist','network-security','guides'],
  ['understanding-threat-intelligence','Understanding threat intelligence: from signals to context','threat-intelligence','learning'],
- ['preview-security-briefing','Security briefing: a fictional preview edition','threat-intelligence','news'],
+ ['preview-security-briefing','A new perspective on the signals hiding in everyday network traffic','threat-intelligence','news'],
  ['cybersecurity-foundations','Cybersecurity foundations: understanding risk and trust','cybersecurity-fundamentals','learning'],
  ['ethical-hacking-scope','Defining scope for an authorized security assessment','ethical-hacking','guides'],
  ['ai-security-review','A security review of AI-assisted workflows and their trust boundaries','ai-security','analysis'],
- ['network-defense-preview','Network defense notes: demonstration update','network-security','news']
+ ['network-defense-preview','Why defenders are rethinking the edge of the enterprise','network-security','news'],
+ ['preview-ai-briefing','The security questions every AI deployment should answer','ai-security','news'],
+ ['security-boundary-analysis','Beyond the perimeter: where trust breaks down','network-security','analysis'],
+ ['detection-context-analysis','From isolated alerts to meaningful threat context','threat-intelligence','analysis'],
+ ['prompt-boundary-ai','Building better boundaries for AI-powered workflows','ai-security','guides']
+];
+$excerpts=[
+ 'identity-boundaries-for-ai-agents'=>'Sample analysis: identity and access boundaries for a new generation of autonomous software.',
+ 'ai-security-review'=>'Sample research: map the assumptions and hidden dependencies inside AI-assisted work.',
+ 'security-boundary-analysis'=>'Sample analysis: why network location alone is no longer a useful measure of trust.',
+ 'detection-context-analysis'=>'Sample research: connect events, entities and investigative context without losing the signal.',
+ 'prompt-boundary-ai'=>'Sample guide: a practical framework for separating untrusted inputs from privileged actions.',
+ 'network-segmentation-checklist'=>'Sample guide: turn segmentation principles into a practical review of your environment.',
+ 'understanding-threat-intelligence'=>'Sample learning path: move from raw indicators to useful, contextual intelligence.',
+ 'cybersecurity-foundations'=>'Sample learning path: build a working understanding of risk, identity and defense.'
 ];
 foreach($articles as $i=>$a){
- $id=cyberdat_preview_post($a[0],$a[1],'post',$body,['post_excerpt'=>'Demonstration content for layout review. Inspect the hierarchy, card spacing and reading experience across screen sizes.','post_date'=>sprintf('2026-10-%02d 10:00:00',$i+20),'post_date_gmt'=>sprintf('2026-10-%02d 10:00:00',$i+20)]);
+ $id=cyberdat_preview_post($a[0],$a[1],'post',$body,['post_excerpt'=>$excerpts[$a[0]] ?? 'Sample briefing: a fictional story for reviewing the CyberDat editorial experience.','post_date'=>sprintf('2026-10-%02d 10:00:00',$i+20),'post_date_gmt'=>sprintf('2026-10-%02d 10:00:00',$i+20)]);
  cyberdat_preview_result(wp_set_post_terms($id,[$topic_ids[$a[2]]],'category'));
  cyberdat_preview_result(wp_set_post_terms($id,[$format_ids[$a[3]]],'editorial_format'));
 }
@@ -93,7 +107,7 @@ foreach(get_posts(['post_type'=>['post','page'],'numberposts'=>-1]) as $post){
 $footer=wp_get_nav_menu_object('Preview Footer');
 $footer_id=$footer ? $footer->term_id : cyberdat_preview_result(wp_create_nav_menu('Preview Footer'));
 if(!wp_get_nav_menu_items($footer_id)){
- foreach(['block-showcase'=>'Block Showcase','about-preview'=>'About this preview'] as $slug=>$label){
+ foreach(['topics'=>'Topics','block-showcase'=>'Block Showcase','about-preview'=>'About this preview'] as $slug=>$label){
   $page=get_page_by_path($slug);
   cyberdat_preview_result(wp_update_nav_menu_item($footer_id,0,['menu-item-title'=>$label,'menu-item-object-id'=>$page->ID,'menu-item-object'=>'page','menu-item-type'=>'post_type','menu-item-status'=>'publish']));
  }
@@ -102,6 +116,6 @@ set_theme_mod('nav_menu_locations',['footer'=>$footer_id]);
 flush_rewrite_rules(false);
 if(get_option('stylesheet')!=='cyberdat'){throw new RuntimeException('CyberDat theme was not activated in Playground.');}
 if((int)get_option('blog_public')!==0){throw new RuntimeException('Preview indexing is not disabled.');}
-if(count(get_posts(['post_type'=>'post','numberposts'=>-1]))!==8){throw new RuntimeException('Unexpected preview article count.');}
+if(count(get_posts(['post_type'=>'post','numberposts'=>-1]))!==12){throw new RuntimeException('Unexpected preview article count.');}
 foreach($format_ids as $slug=>$id){if(is_wp_error(get_term_link($id,'editorial_format'))){throw new RuntimeException('Format link failed.');}}
-echo "CyberDat fixtures ready: 8 articles, 3 pages, 5 topics, 4 editorial formats.\n";
+echo "CyberDat fixtures ready: 12 articles, 3 pages, 5 topics, 4 editorial formats.\n";

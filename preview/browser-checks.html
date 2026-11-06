@@ -11,8 +11,8 @@
 </head>
 <body>
 <header>
-<h1>CyberDat 0.1.0 · Isolated Playground Preview</h1>
-<p class="note">Theme foundation only. This is not the final homepage. Editorial portal and threat-dashboard layouts remain future work. Fixtures and accounts exist only in this browser sandbox.</p>
+<h1>CyberDat 0.2.0 · Isolated Playground Preview</h1>
+<p class="note">Editorial homepage visual prototype. All stories and threat metrics are SAMPLE DATA. The design is pending review; no live intelligence is connected. Fixtures and accounts exist only in this browser sandbox.</p>
 <div class="controls">
 <label for="width">Viewport</label><select id="width"><option>320</option><option selected>768</option><option>1440</option></select>
 <label for="route">Page</label><select id="route"><option value="">Article listing</option><option value="identity-boundaries-for-ai-agents/">Article</option><option value="block-showcase/">Gutenberg blocks</option><option value="topics/">Topics directory</option><option value="topics/ai-security/">Topic archive</option><option value="news/">News archive</option><option value="missing-preview-page/">404</option></select>
@@ -89,7 +89,13 @@ runButton.addEventListener('click', async () => {
           doc.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
           record(label + ' Escape closes and restores focus', nav.hidden && doc.activeElement === button);
         }
-        const grid = doc.querySelector('.content-grid');
+        if (path === '') {
+          record(label + ' homepage sections', ['.editorial-lead', '.intel-section', '.section-analysis', '.section-ai', '.section-learning'].every(s => doc.querySelector(s)));
+          record(label + ' explicit sample notice', doc.querySelector('.prototype-notice')?.textContent.includes('SAMPLE DATA'));
+          record(label + ' fictional CVE identifiers', doc.querySelector('.vulnerability-table')?.textContent.includes('CVE-DEMO-0001'));
+          record(label + ' hero image loaded', [...doc.querySelectorAll('.featured-art img')].every(img => img.complete && img.naturalWidth > 0));
+        }
+        const grid = doc.querySelector('.editorial-grid, .content-grid');
         if (grid) {
           const expected = pixels < 672 ? 1 : pixels < 1024 ? 2 : 3;
           const columns = win.getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
