@@ -1,0 +1,27 @@
+:root,
+.editor-styles-wrapper {
+	color-scheme: dark;
+	--cd-bg: var(--wp--preset--color--background, #080d13);
+	--cd-surface: var(--wp--preset--color--surface, #101923);
+	--cd-raised: var(--wp--preset--color--raised, #172331);
+	--cd-text: var(--wp--preset--color--text, #edf6fa);
+	--cd-muted: var(--wp--preset--color--muted, #a6b5c4);
+	--cd-border: var(--wp--preset--color--border, #293746);
+	--cd-accent: var(--wp--preset--color--accent, #70f3cb);
+	--cd-secondary: var(--wp--preset--color--secondary, #68cfff);
+	--cd-warning: var(--wp--preset--color--warning, #f5c76a);
+	--cd-font: var(--wp--preset--font-family--system, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	--cd-mono: var(--wp--preset--font-family--mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+	--cd-content: var(--wp--style--global--content-size, 46rem);
+	--cd-wide: var(--wp--style--global--wide-size, 80rem);
+	--cd-space-1: .25rem;
+	--cd-space-2: .5rem;
+	--cd-space-3: .75rem;
+	--cd-space-4: 1rem;
+	--cd-space-6: 1.5rem;
+	--cd-space-8: 2rem;
+	--cd-space-12: 3rem;
+	--cd-space-16: 4rem;
+	--cd-gutter: clamp(1rem, 4vw, 2.5rem);
+	--cd-radius: .75rem;
+}

@@ -1,0 +1,225 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "46rem",
+      "wideSize": "80rem"
+    },
+    "color": {
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "palette": [
+        {
+          "slug": "background",
+          "name": "Background",
+          "color": "#080D13"
+        },
+        {
+          "slug": "surface",
+          "name": "Surface",
+          "color": "#101923"
+        },
+        {
+          "slug": "raised",
+          "name": "Raised surface",
+          "color": "#172331"
+        },
+        {
+          "slug": "text",
+          "name": "Text",
+          "color": "#EDF6FA"
+        },
+        {
+          "slug": "muted",
+          "name": "Secondary text",
+          "color": "#A6B5C4"
+        },
+        {
+          "slug": "border",
+          "name": "Border",
+          "color": "#293746"
+        },
+        {
+          "slug": "accent",
+          "name": "Mint accent",
+          "color": "#70F3CB"
+        },
+        {
+          "slug": "secondary",
+          "name": "Blue accent",
+          "color": "#68CFFF"
+        },
+        {
+          "slug": "warning",
+          "name": "Warning",
+          "color": "#F5C76A"
+        }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "slug": "system",
+          "name": "System Sans",
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        },
+        {
+          "slug": "mono",
+          "name": "System Mono",
+          "fontFamily": "ui-monospace, SFMono-Regular, Consolas, monospace"
+        }
+      ],
+      "fontSizes": [
+        {
+          "slug": "small",
+          "name": "Small",
+          "size": "0.875rem",
+          "fluid": false
+        },
+        {
+          "slug": "body",
+          "name": "Body",
+          "size": "1.125rem",
+          "fluid": {
+            "min": "1.125rem",
+            "max": "1.25rem"
+          }
+        },
+        {
+          "slug": "heading-3",
+          "name": "Heading 3",
+          "size": "1.5rem",
+          "fluid": {
+            "min": "1.25rem",
+            "max": "1.5rem"
+          }
+        },
+        {
+          "slug": "heading-2",
+          "name": "Heading 2",
+          "size": "2.25rem",
+          "fluid": {
+            "min": "1.5rem",
+            "max": "2.25rem"
+          }
+        },
+        {
+          "slug": "heading-1",
+          "name": "Heading 1",
+          "size": "4rem",
+          "fluid": {
+            "min": "2.25rem",
+            "max": "4rem"
+          }
+        }
+      ]
+    },
+    "spacing": {
+      "units": [
+        "px",
+        "rem",
+        "em",
+        "%",
+        "vw",
+        "vh"
+      ],
+      "defaultSpacingSizes": false,
+      "spacingSizes": [
+        {
+          "slug": "1",
+          "name": "1",
+          "size": "0.25rem"
+        },
+        {
+          "slug": "2",
+          "name": "2",
+          "size": "0.5rem"
+        },
+        {
+          "slug": "3",
+          "name": "3",
+          "size": "0.75rem"
+        },
+        {
+          "slug": "4",
+          "name": "4",
+          "size": "1rem"
+        },
+        {
+          "slug": "6",
+          "name": "6",
+          "size": "1.5rem"
+        },
+        {
+          "slug": "8",
+          "name": "8",
+          "size": "2rem"
+        },
+        {
+          "slug": "12",
+          "name": "12",
+          "size": "3rem"
+        },
+        {
+          "slug": "16",
+          "name": "16",
+          "size": "4rem"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var:preset|color|background",
+      "text": "var:preset|color|text"
+    },
+    "typography": {
+      "fontFamily": "var:preset|font-family|system",
+      "fontSize": "var:preset|font-size|body",
+      "lineHeight": "1.7"
+    },
+    "elements": {
+      "link": {
+        "color": {
+          "text": "var:preset|color|accent"
+        }
+      },
+      "heading": {
+        "typography": {
+          "lineHeight": "1.2",
+          "fontWeight": "700"
+        }
+      },
+      "h1": {
+        "typography": {
+          "fontSize": "var:preset|font-size|heading-1"
+        }
+      },
+      "h2": {
+        "typography": {
+          "fontSize": "var:preset|font-size|heading-2"
+        }
+      },
+      "h3": {
+        "typography": {
+          "fontSize": "var:preset|font-size|heading-3"
+        }
+      },
+      "button": {
+        "color": {
+          "background": "var:preset|color|accent",
+          "text": "var:preset|color|background"
+        },
+        "border": {
+          "radius": "0.4rem"
+        },
+        "typography": {
+          "fontWeight": "650"
+        }
+      }
+    }
+  }
+}
