@@ -55,6 +55,11 @@
           "slug": "warning",
           "name": "Warning",
           "color": "#F5C76A"
+        },
+        {
+          "slug": "violet",
+          "name": "Violet accent",
+          "color": "#B4A1F7"
         }
       ]
     },

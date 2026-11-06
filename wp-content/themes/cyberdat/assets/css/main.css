@@ -116,3 +116,18 @@ code, pre, kbd { font-family: var(--cd-mono); font-size: .9em; }
 @media (prefers-reduced-motion: no-preference) {
 	a, button { transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease; }
 }
+
+/* Compact search remains available inside the mobile navigation disclosure. */
+.site-navigation { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.header-search { width: 100%; }
+.header-search .search-form { margin: 0; gap: .4rem; }
+.header-search .search-form input { font-size: .8rem; width: 9rem; flex-basis: 7rem; }
+.header-search .search-form button { font-size: .75rem; padding-inline: .6rem; }
+@media (min-width: 64rem) {
+ .site-navigation { flex-wrap: nowrap; gap: 1.25rem; }
+ .primary-menu { gap: .25rem 1rem; }
+ .primary-menu a { font-size: .875rem; }
+ .header-search { width: 12rem; }
+}
+
+.footer-brand {font-size:1.7rem;letter-spacing:-.05em}.footer-tagline{font-size:.75rem;color:var(--cd-muted);margin-top:.35rem!important}.site-footer .copyright{font-size:.7rem}

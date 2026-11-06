@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 </main>
 <footer class="site-footer">
 	<div class="container footer-layout">
-		<p class="footer-brand"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
+		<div><p class="footer-brand"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></p><p class="footer-tagline"><?php esc_html_e( 'Cybersecurity News, Analysis & Learning', 'cyberdat' ); ?></p></div>
 		<?php if ( has_nav_menu( 'footer' ) ) : ?>
 			<nav aria-label="<?php esc_attr_e( 'Footer navigation', 'cyberdat' ); ?>">
 				<?php wp_nav_menu( array( 'theme_location' => 'footer', 'container' => false, 'menu_class' => 'footer-menu', 'depth' => 1, 'fallback_cb' => false ) ); ?>

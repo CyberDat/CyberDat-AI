@@ -31,6 +31,7 @@ defined( 'ABSPATH' ) || exit;
 				)
 			);
 			?>
+			<div class="header-search"><?php get_search_form(); ?></div>
 		</nav>
 	</div>
 </header>

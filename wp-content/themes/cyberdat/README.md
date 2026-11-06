@@ -1,14 +1,14 @@
-# CyberDat theme foundation
+# CyberDat theme — editorial homepage prototype
 
-Stage 2: classic PHP templates, Gutenberg and theme.json. No framework, package manager or build step.
+Version 0.2.0: classic PHP templates, Gutenberg and theme.json, with a Playground-only editorial homepage prototype. No framework, package manager or build step.
 
 ## Scope
 
-- `index.php` provides a minimal listing/singular fallback; dedicated homepage, article and archive layouts are future stages.
+- `front-page.php` presents the editorial homepage only when `CYBERDAT_PLAYGROUND` is true. Outside that sandbox it uses the ordinary `index.php` fallback, so sample stories and metrics are never rendered by this template in production. Dedicated article/archive layouts remain future stages.
 - Shared header/footer, one-level navigation, responsive cards and editor styles.
 - The fallback navigation uses existing editorial-format terms and only links Topics when that page is published. Assign menus to Primary and Footer for editorial control.
 - Navigation works without JavaScript. On mobile, the disclosure supports keyboard navigation, Escape, focus return and viewport changes. There is no modal focus trap because the menu is not a dialog.
-- No taxonomy registration, REST endpoints, database writes, SEO tags, JSON-LD, analytics, remote fonts or remote assets.
+- No taxonomy registration, REST endpoints, database writes, SEO tags, JSON-LD, analytics, remote fonts or remote assets. The threat dashboard uses explicitly fictional CVE-DEMO identifiers and an offline sample dataset; it makes no live-data or threat-assessment claims.
 - Rank Math retains SEO ownership. Existing MU plugins retain taxonomy, sitemap and Coming Soon behavior.
 
 ## Files
@@ -23,4 +23,8 @@ The theme has not been activated on production. Do not copy it into the live the
 
 Activation, menu assignment and publishing the drafted Home/Topics pages require a later approved release. Coming Soon must remain independently controlled.
 
-Future stages: homepage sections, article metadata/TOC/related content, topic and format templates, then performance and accessibility review. Comments presentation is not implemented in this foundation.
+Future stages: visual approval, article metadata/TOC/related content, topic and format templates, then performance and accessibility review. Only after approval should real editorial selection and a real data source replace the sample-only homepage. Comments presentation is not implemented in this foundation.
+
+## Homepage prototype
+
+Featured Story uses an original lightweight SVG illustration and a briefing rail. The offline threat observatory has four metrics, a static accessible SVG activity chart, a severity chart and an explicitly scrollable demo-CVE table. Analysis, AI Security and Guides & Learning read the sandbox fixture posts using existing taxonomies. The featured article is excluded from those queries. Search is a standard WordPress form. No new homepage JavaScript is required.
