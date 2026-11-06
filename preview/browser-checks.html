@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>CyberDat — Playground Inspection</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#080d13;color:#edf6fa;font:16px/1.6 system-ui,sans-serif}header,main{padding:20px}h1{font-size:24px;margin:0 0 12px}a{color:#70f3cb}button,select{font:inherit;padding:8px 12px;background:#172331;color:#edf6fa;border:1px solid #a6b5c4;border-radius:5px;min-height:44px}button{cursor:pointer}button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #70f3cb;outline-offset:3px}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.viewport{overflow:auto;border:1px solid #293746;background:#172331;margin-block:20px}iframe{display:block;height:850px;border:0;background:#080d13;max-width:none}.result{padding:8px 12px;border-left:3px solid #70f3cb;background:#101923;margin:8px 0}.fail{border-color:#f5c76a}#results{white-space:pre-wrap}p{max-width:85ch}.note{color:#a6b5c4}code{font-family:monospace}
+</style>
+</head>
+<body>
+<header>
+<h1>CyberDat 0.1.0 · Isolated Playground Preview</h1>
+<p class="note">Theme foundation only. This is not the final homepage. Editorial portal and threat-dashboard layouts remain future work. Fixtures and accounts exist only in this browser sandbox.</p>
+<div class="controls">
+<label for="width">Viewport</label><select id="width"><option>320</option><option selected>768</option><option>1440</option></select>
+<label for="route">Page</label><select id="route"><option value="">Article listing</option><option value="identity-boundaries-for-ai-agents/">Article</option><option value="block-showcase/">Gutenberg blocks</option><option value="topics/">Topics directory</option><option value="topics/ai-security/">Topic archive</option><option value="news/">News archive</option><option value="missing-preview-page/">404</option></select>
+<button id="run" type="button">Run layout checks at all three widths</button>
+<a id="editor" target="_blank" rel="noopener">Open Gutenberg editor</a>
+<a id="site" target="_blank" rel="noopener">Open site</a>
+</div>
+<p id="status" role="status" aria-live="polite">Loading preview…</p>
+</header>
+<main>
+<div class="viewport"><iframe id="preview" title="CyberDat theme preview" width="768"></iframe></div>
+<div id="results" aria-live="polite"></div>
+<p class="note">Checks run inside real browser frames at CSS viewport widths 320, 768 and 1440 pixels. They check overflow, navigation state/focus, grid columns, block rendering and one H1. They do not certify visual quality, contrast, screen-reader behavior or Core Web Vitals. Inspect screenshots and the actual Gutenberg editor manually.</p>
+</main>
+<script>
+'use strict';
+const base = new URL('../../', location.href);
+const frame = document.getElementById('preview');
+const width = document.getElementById('width');
+const route = document.getElementById('route');
+const status = document.getElementById('status');
+const results = document.getElementById('results');
+const runButton = document.getElementById('run');
+document.getElementById('editor').href = new URL('wp-admin/edit.php?post_type=page', base);
+document.getElementById('site').href = base;
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+async function load(path, pixels) {
+  frame.width = String(pixels);
+  const loaded = new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Preview load timed out')), 45000);
+    frame.onload = () => { clearTimeout(timer); resolve(); };
+    frame.onerror = () => { clearTimeout(timer); reject(new Error('Preview failed to load')); };
+  });
+  frame.src = new URL(path, base).href;
+  await loaded;
+  await frame.contentDocument.fonts.ready;
+  await wait(250);
+  return frame.contentDocument;
+}
+function record(label, passed, detail = '') {
+  const row = document.createElement('div');
+  row.className = 'result' + (passed ? '' : ' fail');
+  row.textContent = `${passed ? 'PASS' : 'REVIEW'} · ${label}${detail ? ': ' + detail : ''}`;
+  results.append(row);
+}
+async function display() {
+  try { await load(route.value, Number(width.value)); status.textContent = `${width.value}px · ${route.options[route.selectedIndex].text}`; }
+  catch (error) { status.textContent = error.message; }
+}
+width.addEventListener('change', display);
+route.addEventListener('change', display);
+runButton.addEventListener('click', async () => {
+  results.textContent = '';
+  runButton.disabled = true; width.disabled = true; route.disabled = true;
+  try {
+    for (const pixels of [320, 768, 1440]) {
+      for (const path of ['', 'identity-boundaries-for-ai-agents/', 'block-showcase/', 'topics/ai-security/', 'news/', 'missing-preview-page/']) {
+        status.textContent = `Checking ${pixels}px · /${path}`;
+        const doc = await load(path, pixels);
+        const win = frame.contentWindow;
+        const label = `${pixels}px /${path}`;
+        record(label + ' no page overflow', doc.documentElement.scrollWidth <= doc.documentElement.clientWidth + 1,
+          `${doc.documentElement.scrollWidth}/${doc.documentElement.clientWidth}px`);
+        record(label + ' one H1', doc.querySelectorAll('h1').length === 1);
+        record(label + ' dark surface', win.getComputedStyle(doc.body).backgroundColor === 'rgb(8, 13, 19)');
+        const nav = doc.getElementById('site-navigation');
+        const button = doc.querySelector('[data-menu-toggle]');
+        const desktop = pixels >= 1024;
+        record(label + ' responsive navigation', !!nav && !!button && button.hidden === desktop && nav.hidden === !desktop);
+        if (!desktop && nav && button) {
+          button.click(); await wait(25);
+          record(label + ' menu opens', !nav.hidden && button.getAttribute('aria-expanded') === 'true');
+          nav.querySelector('a')?.focus();
+          doc.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+          record(label + ' Escape closes and restores focus', nav.hidden && doc.activeElement === button);
+        }
+        const grid = doc.querySelector('.content-grid');
+        if (grid) {
+          const expected = pixels < 672 ? 1 : pixels < 1024 ? 2 : 3;
+          const columns = win.getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
+          record(label + ' card grid', columns === expected, `${columns} columns; expected ${expected}`);
+        }
+        if (path === 'block-showcase/') {
+          for (const selector of ['.wp-block-code', '.wp-block-quote', '.wp-block-table', '.wp-block-columns', '.wp-block-buttons', '.wp-block-group']) {
+            record(label + ' ' + selector, !!doc.querySelector(selector));
+          }
+        }
+        if (path === 'missing-preview-page/') {
+          record(label + ' missing-page template', doc.body.classList.contains('error404'));
+        }
+      }
+    }
+    status.textContent = 'Checks finished. Review any amber rows and inspect the editor manually.';
+  } catch (error) {
+    record('Browser inspection', false, error.message);
+    status.textContent = 'Inspection interrupted. See results.';
+  } finally {
+    runButton.disabled = false; width.disabled = false; route.disabled = false;
+  }
+});
+display();
+</script>
+</body>
+</html>
