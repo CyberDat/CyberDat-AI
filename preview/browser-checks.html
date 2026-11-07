@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-<h1>CyberDat 0.3.0 + 3B · Isolated Playground Preview</h1>
+<h1>CyberDat 0.4.0 + 3B · Isolated Playground Preview</h1>
 <p class="note">Editorial homepage visual prototype. All stories and threat metrics are SAMPLE DATA. The design is pending review; no live intelligence is connected. Fixtures and accounts exist only in this browser sandbox.</p>
 <div class="controls">
 <label for="width">Viewport</label><select id="width"><option>320</option><option selected>768</option><option>1440</option></select>
@@ -58,6 +58,14 @@ function record(label, passed, detail = '') {
   row.textContent = `${passed ? 'PASS' : 'REVIEW'} · ${label}${detail ? ': ' + detail : ''}`;
   results.append(row);
 }
+async function showEditorialReport() {
+  try {
+    const response = await fetch(new URL('editorial-test-results.json', location.href));
+    if (!response.ok) throw new Error('Integration report missing');
+    const report = await response.json();
+    for (const item of report.results) record('WordPress · ' + item.test, item.status === 'PASS', item.detail || '');
+  } catch (error) { record('WordPress integration tests', false, error.message); }
+}
 async function display() {
   try { await load(route.value, Number(width.value)); status.textContent = `${width.value}px · ${route.options[route.selectedIndex].text}`; }
   catch (error) { status.textContent = error.message; }
@@ -66,6 +74,7 @@ width.addEventListener('change', display);
 route.addEventListener('change', display);
 runButton.addEventListener('click', async () => {
   results.textContent = '';
+  await showEditorialReport();
   runButton.disabled = true; width.disabled = true; route.disabled = true;
   try {
     for (const pixels of [320, 768, 1440]) {
@@ -113,6 +122,11 @@ runButton.addEventListener('click', async () => {
           record(label + ' nine original card illustrations', pictures.length === 9 && new Set(pictures.map(img => img.src)).size === 9);
           record(label + ' all editorial images decode', pictures.every(img => img.complete && img.naturalWidth > 0));
           record(label + ' four briefing stories', doc.querySelectorAll('.brief-item').length === 4);
+          const lead = doc.querySelector('.featured-story')?.dataset.postId;
+          const news = [...doc.querySelectorAll('.brief-item')].map(el => el.dataset.postId);
+          record(label + ' no duplicate lead posts', !!lead && !news.includes(lead) && new Set(news).size === news.length);
+          record(label + ' WordPress responsive lead image', !!doc.querySelector('.featured-art img[srcset][sizes]'));
+
           record(label + ' card publication dates', doc.querySelectorAll('.editorial-card time[datetime]').length === 9);
           record(label + ' compact editorial masthead', doc.querySelector('.home-masthead').getBoundingClientRect().height < 130);
 
@@ -141,6 +155,7 @@ runButton.addEventListener('click', async () => {
     runButton.disabled = false; width.disabled = false; route.disabled = false;
   }
 });
+showEditorialReport();
 display();
 </script>
 </body>

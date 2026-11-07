@@ -73,3 +73,7 @@ Version 0.3.0 replaces the repeated abstract card artwork with nine distinct ori
 ## Approved 3B branding integration
 
 The header uses the original supplied horizontal dark-background SVG. Local favicon SVG, ICO and 16/32/48 PNGs are included unchanged. The inspector checks the wordmark load, original proportions and PNG decoding at every viewport. Site Icon is cleared only in the disposable Playground fixture so theme fallback icons can be inspected; production options are never read or changed. See `wp-content/themes/cyberdat/assets/branding/3b/README.md` for asset audit details. No unrelated design changes are part of this iteration.
+
+## 0.4.0 step 1: dynamic editorial lead
+
+Theme source is pinned to `87a4783a84787aaab25a25d2ced1bbd41b155d5b`. Featured Story and The Briefing use WordPress posts, metadata, media attachments and the existing editorial_format taxonomy. See `dynamic-editorial.md` for editor instructions and deterministic selection rules. The Blueprint runs real WordPress integration scenarios after importing fixtures and shows their report in the inspection panel. All mutations are isolated to the browser sandbox and the original demo posts are restored before the preview opens. The approved styles, header and 3B files are unchanged.

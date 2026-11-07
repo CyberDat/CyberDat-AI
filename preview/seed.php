@@ -110,6 +110,36 @@ foreach(get_posts(['post_type'=>['post','page'],'numberposts'=>-1]) as $post){
  $content=preg_replace_callback('~href="/(block-showcase|topics|guides)/"~',function($m){return 'href="'.esc_url(home_url('/'.$m[1].'/')).'"';},$post->post_content);
  if($content!==$post->post_content){wp_update_post(['ID'=>$post->ID,'post_content'=>$content]);}
 }
+// Image fixtures are actual WordPress media attachments, with responsive metadata.
+$image_keys=[
+ 'identity-boundaries-for-ai-agents'=>'hero','preview-security-briefing'=>'detection',
+ 'network-defense-preview'=>'network','preview-ai-briefing'=>'model','preview-identity-briefing'=>'identity',
+ 'ai-security-review'=>'model','security-boundary-analysis'=>'network','detection-context-analysis'=>'detection',
+ 'prompt-boundary-ai'=>'boundary','ai-supply-chain-preview'=>'identity','ai-redteam-preview'=>'redteam',
+ 'network-segmentation-checklist'=>'learning','understanding-threat-intelligence'=>'intelligence',
+ 'cybersecurity-foundations'=>'foundations','ethical-hacking-scope'=>'learning'
+];
+foreach($image_keys as $slug=>$key){
+ $article=get_page_by_path($slug,OBJECT,'post');
+ if(!$article || has_post_thumbnail($article->ID)){continue;}
+ $max=$key==='hero' ? 1280 : 640;
+ $source=get_theme_file_path('/assets/images/premium/'.$key.'-'.$max.'.webp');
+ $upload=wp_upload_bits('preview-'.$slug.'.webp',null,file_get_contents($source));
+ if($upload['error']){throw new RuntimeException($upload['error']);}
+ $attachment=cyberdat_preview_result(wp_insert_attachment(['post_title'=>$article->post_title,'post_mime_type'=>'image/webp','guid'=>$upload['url'],'post_status'=>'inherit'],$upload['file'],$article->ID,true));
+ update_post_meta($attachment,'_wp_attachment_image_alt','Original demonstration illustration: '.$article->post_title);
+ $metadata=['file'=>_wp_relative_upload_path($upload['file']),'width'=>$max,'height'=>(int)($max/1.6),'sizes'=>[]];
+ foreach([192=>'cyberdat-briefing',320=>'medium',640=>'large'] as $w=>$size){
+  if($w>=$max){continue;}
+  $small=wp_upload_bits('preview-'.$slug.'-'.$w.'.webp',null,file_get_contents(get_theme_file_path('/assets/images/premium/'.$key.'-'.$w.'.webp')));
+  if($small['error']){throw new RuntimeException($small['error']);}
+  $metadata['sizes'][$size]=['file'=>basename($small['file']),'width'=>$w,'height'=>(int)($w/1.6),'mime-type'=>'image/webp'];
+ }
+ wp_update_attachment_metadata($attachment,$metadata);
+ set_post_thumbnail($article->ID,$attachment);
+}
+$lead=get_page_by_path('identity-boundaries-for-ai-agents',OBJECT,'post');
+if($lead){update_post_meta($lead->ID,cyberdat_featured_meta_key(),true);}
 $footer=wp_get_nav_menu_object('Preview Footer');
 $footer_id=$footer ? $footer->term_id : cyberdat_preview_result(wp_create_nav_menu('Preview Footer'));
 if(!wp_get_nav_menu_items($footer_id)){
