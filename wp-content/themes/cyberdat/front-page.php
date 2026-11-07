@@ -7,26 +7,10 @@ if ( ! defined( 'CYBERDAT_PLAYGROUND' ) || ! CYBERDAT_PLAYGROUND ) {
 }
 require_once __DIR__ . '/inc/home-prototype.php';
 get_header();
-$featured = get_page_by_path( 'identity-boundaries-for-ai-agents', OBJECT, 'post' );
 ?>
 <div class="prototype-notice"><span class="sample-label">SAMPLE DATA</span><span><?php esc_html_e( 'Design preview · Stories, vulnerability IDs and metrics are fictional. No live feeds.', 'cyberdat' ); ?></span></div>
 <div class="home-masthead"><h1><?php esc_html_e( 'Understand the threat.', 'cyberdat' ); ?> <span><?php esc_html_e( 'Stay ahead of it.', 'cyberdat' ); ?></span></h1><p>RESEARCH / CONTEXT / DEFENSE</p></div>
-<section class="editorial-lead" aria-labelledby="featured-heading">
- <article class="featured-story">
-  <a class="featured-art" href="<?php echo esc_url( cyberdat_prototype_url( $featured ) ); ?>" tabindex="-1" aria-hidden="true"><?php cyberdat_prototype_image( 'hero', false ); ?></a>
-  <div class="featured-body"><div class="story-meta"><span class="section-kicker"><?php esc_html_e( 'Featured investigation', 'cyberdat' ); ?></span><span class="sample-label">SAMPLE DATA</span></div><h2 id="featured-heading"><a href="<?php echo esc_url( cyberdat_prototype_url( $featured ) ); ?>"><?php esc_html_e( 'The next attack surface isn’t a device. It’s an AI agent.', 'cyberdat' ); ?></a></h2><p><?php esc_html_e( 'When software starts making decisions, identity becomes the perimeter. Inside the trust boundaries of agentic systems.', 'cyberdat' ); ?></p><div class="article-meta"><span>AI SECURITY</span><span aria-hidden="true">/</span><?php if ( $featured ) : ?><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C, $featured ) ); ?>"><?php echo esc_html( get_the_date( 'M j, Y', $featured ) ); ?></time><?php endif; ?><span aria-hidden="true">/</span><span><?php esc_html_e( '8 min read · demo', 'cyberdat' ); ?></span></div></div>
- </article>
- <aside class="news-rail" aria-labelledby="news-heading"><div class="section-topline"><h2 id="news-heading"><?php esc_html_e( 'The Briefing', 'cyberdat' ); ?></h2><span class="rail-label">LATEST / SAMPLE</span></div>
- <?php foreach ( [
- ['preview-security-briefing', 'THREAT INTELLIGENCE', 'The signals hiding in everyday network traffic', 'detection'],
- ['network-defense-preview', 'NETWORK SECURITY', 'Rethinking the edge of the enterprise', 'network'],
- ['preview-ai-briefing', 'AI SECURITY', 'The security questions every AI deployment should answer', 'hero'],
- ['preview-identity-briefing', 'IDENTITY & ACCESS', 'Where identity ends and infrastructure begins', 'identity'],
- ] as $item ) : $post_item = get_page_by_path( $item[0], OBJECT, 'post' ); ?>
- <article class="brief-item"><div><div class="story-meta"><span><?php echo esc_html( $item[1] ); ?></span></div><h3><a href="<?php echo esc_url( cyberdat_prototype_url( $post_item ) ); ?>"><?php echo esc_html( $item[2] ); ?></a></h3><div class="brief-date"><span class="sample-label">SAMPLE</span><?php if ( $post_item ) : ?><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C, $post_item ) ); ?>"><?php echo esc_html( get_the_date( 'M j', $post_item ) ); ?></time><?php endif; ?></div></div><a class="brief-thumbnail" href="<?php echo esc_url( cyberdat_prototype_url( $post_item ) ); ?>" tabindex="-1" aria-hidden="true"><?php cyberdat_prototype_image( $item[3], true, true ); ?></a></article>
- <?php endforeach; ?>
- <a class="text-link rail-bottom" href="<?php echo esc_url( home_url( '/news/' ) ); ?>"><?php esc_html_e( 'All news', 'cyberdat' ); ?> <span aria-hidden="true">↗</span></a></aside>
-</section>
+<?php get_template_part( 'template-parts/home/lead' ); ?>
 <section class="intel-section" aria-labelledby="intel-heading">
  <div class="section-heading-row"><div><p class="eyebrow">SIGNAL / CONTEXT / ACTION</p><h2 id="intel-heading"><?php esc_html_e( 'Threat Intelligence Dashboard', 'cyberdat' ); ?></h2></div><span class="sample-label">SAMPLE DATA · OFFLINE SNAPSHOT</span></div>
  <div class="intel-shell"><div class="intel-toolbar"><span class="terminal-mark" aria-hidden="true">&gt;_</span><span>CYBERDAT / THREAT OBSERVATORY</span><span class="offline-badge"><?php esc_html_e( 'DEMO MODE', 'cyberdat' ); ?></span></div>
