@@ -22,3 +22,17 @@ function cyberdat_theme_enqueue_assets() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'cyberdat_theme_enqueue_assets' );
+
+/** Use approved theme icons unless a site owner explicitly sets a WP Site Icon. */
+function cyberdat_theme_favicons() {
+	if ( has_site_icon() ) {
+		return;
+	}
+	$base = '/assets/branding/3b/';
+	printf( '<link rel="icon" href="%s" sizes="16x16 32x32 48x48" type="image/x-icon">' . "\n", esc_url( get_theme_file_uri( $base . 'favicon.ico' ) ) );
+	foreach ( array( 16, 32, 48 ) as $size ) {
+		printf( '<link rel="icon" href="%1$s" sizes="%2$dx%2$d" type="image/png">' . "\n", esc_url( get_theme_file_uri( $base . 'favicon-' . $size . '.png' ) ), $size );
+	}
+	printf( '<link rel="icon" href="%s" sizes="any" type="image/svg+xml">' . "\n", esc_url( get_theme_file_uri( $base . 'favicon.svg' ) ) );
+}
+add_action( 'wp_head', 'cyberdat_theme_favicons', 99 );

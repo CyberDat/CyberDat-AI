@@ -15,8 +15,7 @@ defined( 'ABSPATH' ) || exit;
 <header class="site-header">
 	<div class="container header-layout">
 		<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-			<span class="site-brand__mark" aria-hidden="true">&gt;_</span>
-			<span><?php echo esc_html( get_bloginfo( 'name' ) ); ?></span>
+			<img class="site-brand__logo" src="<?php echo esc_url( get_theme_file_uri( '/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg' ) ); ?>" width="960" height="304" alt="<?php esc_attr_e( 'CyberDat', 'cyberdat' ); ?>" decoding="async">
 		</a>
 		<button class="menu-toggle" type="button" aria-controls="site-navigation" aria-expanded="false" data-menu-toggle hidden>
 			<?php esc_html_e( 'Menu', 'cyberdat' ); ?>

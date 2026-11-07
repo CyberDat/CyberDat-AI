@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="94 120 272 272" width="272" height="272" role="img" aria-labelledby="logo-title logo-description">
+  <title id="logo-title">CyberDat favicon</title>
+  <desc id="logo-description">CD monogram in a simplified gradient hexagon.</desc>
+  <defs>
+  <linearGradient id="rim-top" gradientUnits="userSpaceOnUse" x1="162" y1="124" x2="293" y2="251">
+    <stop stop-color="#8C82FF"/><stop offset=".24" stop-color="#C6F8FF"/>
+    <stop offset=".38" stop-color="#16FFF1"/><stop offset=".66" stop-color="#00B2FF"/><stop offset="1" stop-color="#6643D9"/>
+  </linearGradient>
+  <linearGradient id="rim-right" gradientUnits="userSpaceOnUse" x1="302" y1="173" x2="350" y2="237">
+    <stop stop-color="#00CDEB"/><stop offset=".48" stop-color="#527BFF"/><stop offset="1" stop-color="#6133B7"/>
+  </linearGradient>
+  <linearGradient id="rim-bottom" gradientUnits="userSpaceOnUse" x1="170" y1="322" x2="347" y2="291">
+    <stop stop-color="#00E6D3"/><stop offset=".35" stop-color="#00B2FF"/>
+    <stop offset=".67" stop-color="#6A56FF"/><stop offset="1" stop-color="#D176FF"/>
+  </linearGradient>
+  <linearGradient id="rim-left" gradientUnits="userSpaceOnUse" x1="109" y1="270" x2="166" y2="351">
+    <stop stop-color="#00E6B8"/><stop offset=".47" stop-color="#00DCEC"/><stop offset="1" stop-color="#009FDA"/>
+  </linearGradient>
+  <linearGradient id="letter-c" gradientUnits="userSpaceOnUse" x1="161" y1="205" x2="229" y2="331">
+    <stop stop-color="#C0FFFE"/><stop offset=".34" stop-color="#21FAEE"/>
+    <stop offset=".59" stop-color="#00E6C6"/><stop offset="1" stop-color="#00B2FF"/>
+  </linearGradient>
+  <linearGradient id="letter-d" gradientUnits="userSpaceOnUse" x1="250" y1="196" x2="310" y2="326">
+    <stop stop-color="#F5F7FA"/><stop offset=".30" stop-color="#E7D8FF"/>
+    <stop offset=".68" stop-color="#9B5CFF"/><stop offset="1" stop-color="#6754E6"/>
+  </linearGradient>
+  </defs>
+  
+<g id="cyberdat-symbol-compact">
+  <path fill="#0B121A" d="M228 124 353 196V317L232 388 106 317V196Z"/>
+  <g id="compact-hexagon-frame">
+    <path fill="url(#rim-top)" d="M106 196 228 124 353 196V239L331 224V209L228 150 128 209V228L106 244Z"/>
+    <path fill="url(#rim-left)" d="M106 251 128 235V303L172 328V353L106 317Z"/>
+    <path fill="url(#rim-bottom)" d="M179 334 232 362 331 303V236L353 252V317L232 388 179 357Z"/>
+  </g>
+  
+  <g id="monogram-CD">
+    <path id="letter-C" fill="url(#letter-c)" d="M222 182 157 220Q145 227 145 241V276Q145 288 157 295L222 334V308L173 279Q167 276 167 271V248Q167 241 173 237L222 209Z"/>
+    <path id="letter-D" fill="url(#letter-d)" fill-rule="evenodd" d="M236 181 304 221Q315 227 315 240V278Q315 291 303 299L236 337ZM258 218V298L289 279Q294 276 294 270V248Q294 241 289 238Z"/>
+  </g>
+</g>
+</svg>

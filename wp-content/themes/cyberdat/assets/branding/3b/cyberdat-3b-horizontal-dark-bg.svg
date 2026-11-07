@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="76 104 960 304" width="960" height="304" role="img" aria-labelledby="logo-title logo-description">
+  <title id="logo-title">CyberDat</title>
+  <desc id="logo-description">CyberDat 3B horizontal logo.</desc>
+  <defs>
+  <linearGradient id="rim-top" gradientUnits="userSpaceOnUse" x1="162" y1="124" x2="293" y2="251">
+    <stop stop-color="#8C82FF"/><stop offset=".24" stop-color="#C6F8FF"/>
+    <stop offset=".38" stop-color="#16FFF1"/><stop offset=".66" stop-color="#00B2FF"/><stop offset="1" stop-color="#6643D9"/>
+  </linearGradient>
+  <linearGradient id="rim-right" gradientUnits="userSpaceOnUse" x1="302" y1="173" x2="350" y2="237">
+    <stop stop-color="#00CDEB"/><stop offset=".48" stop-color="#527BFF"/><stop offset="1" stop-color="#6133B7"/>
+  </linearGradient>
+  <linearGradient id="rim-bottom" gradientUnits="userSpaceOnUse" x1="170" y1="322" x2="347" y2="291">
+    <stop stop-color="#00E6D3"/><stop offset=".35" stop-color="#00B2FF"/>
+    <stop offset=".67" stop-color="#6A56FF"/><stop offset="1" stop-color="#D176FF"/>
+  </linearGradient>
+  <linearGradient id="rim-left" gradientUnits="userSpaceOnUse" x1="109" y1="270" x2="166" y2="351">
+    <stop stop-color="#00E6B8"/><stop offset=".47" stop-color="#00DCEC"/><stop offset="1" stop-color="#009FDA"/>
+  </linearGradient>
+  <linearGradient id="letter-c" gradientUnits="userSpaceOnUse" x1="161" y1="205" x2="229" y2="331">
+    <stop stop-color="#C0FFFE"/><stop offset=".34" stop-color="#21FAEE"/>
+    <stop offset=".59" stop-color="#00E6C6"/><stop offset="1" stop-color="#00B2FF"/>
+  </linearGradient>
+  <linearGradient id="letter-d" gradientUnits="userSpaceOnUse" x1="250" y1="196" x2="310" y2="326">
+    <stop stop-color="#F5F7FA"/><stop offset=".30" stop-color="#E7D8FF"/>
+    <stop offset=".68" stop-color="#9B5CFF"/><stop offset="1" stop-color="#6754E6"/>
+  </linearGradient>
+  </defs>
+  
+<g id="cyberdat-symbol">
+  <g id="circuit-traces">
+    <g id="trace-top-left" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M177 165V136" stroke="#0B121A" stroke-width="6.2"/>
+      <path d="M177 165V136" stroke="#12DEEC" stroke-width="2.6"/>
+    </g>
+    <g id="trace-top-right" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M302 181V153L281 136" stroke="#0B121A" stroke-width="6.2"/>
+      <path d="M302 181V153L281 136" stroke="#00E6DF" stroke-width="2.6"/>
+    </g>
+    <g id="trace-left-rail" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M111 242 108 246H89V301L111 313" stroke="#0B121A" stroke-width="6.2"/>
+      <path d="M111 242 108 246H89V301L111 313" stroke="#00E6D3" stroke-width="2.6"/>
+    </g>
+    <g id="trace-left-branch" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M89 301 98 309V324L122 338 143 331" stroke="#0B121A" stroke-width="6.2"/>
+      <path d="M89 301 98 309V324L122 338 143 331" stroke="#00CDD9" stroke-width="2.6"/>
+    </g>
+    <g id="trace-bottom" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M168 372V354L179 346V326" stroke="#0B121A" stroke-width="6.2"/>
+      <path d="M168 372V354L179 346V326" stroke="#00E6DE" stroke-width="2.6"/>
+    </g>
+    <g id="trace-right" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M341 238 349 247H366" stroke="#0B121A" stroke-width="6.2"/>
+      <path d="M341 238 349 247H366" stroke="#9B5CFF" stroke-width="2.6"/>
+    </g>
+  </g>
+  <path id="dark-hexagon" fill="#0B121A" d="M112 200 228 129 347 199V314L232 383 112 314Z"/>
+  
+  <g id="hexagon-frame">
+    <path fill="url(#rim-top)" d="M110 197 177 158V168L187 162V150L228 127 291 163V186L228 149 127 208V229L110 246Z"/>
+    <path fill="url(#rim-right)" d="M298 168 349 198V245L333 230V208L298 188Z"/>
+    <path fill="url(#rim-left)" d="M110 260 127 243V303L170 328V350L110 315Z"/>
+    <path fill="url(#rim-bottom)" d="M179 335 232 366 333 307V244L349 260V315L232 385 179 354Z"/>
+    <path id="edge-highlights" d="M111 198 176 160M187 151 228 128 252 142M112 315 143 333M223 379 232 384 273 360M314 335 348 315V300" fill="none" stroke="#E4FCFF" stroke-width="1.6" opacity=".48"/>
+  </g>
+  
+  <g id="monogram-CD">
+    <path id="letter-C" fill="url(#letter-c)" d="M222 182 157 220Q145 227 145 241V276Q145 288 157 295L222 334V308L173 279Q167 276 167 271V248Q167 241 173 237L222 209Z"/>
+    <path id="letter-D" fill="url(#letter-d)" fill-rule="evenodd" d="M236 181 304 221Q315 227 315 240V278Q315 291 303 299L236 337ZM258 218V298L289 279Q294 276 294 270V248Q294 241 289 238Z"/>
+  </g>
+  <g id="circuit-terminals">
+    <g id="terminal-top-left">
+      <circle cx="177" cy="135" r="8.7" fill="#0B121A"/>
+      <circle cx="177" cy="135" r="5.7" fill="#0B121A" stroke="#12DEEC" stroke-width="3.5"/>
+    </g>
+    <g id="terminal-top-right">
+      <circle cx="282" cy="135" r="8.7" fill="#0B121A"/>
+      <circle cx="282" cy="135" r="5.7" fill="#0B121A" stroke="#00E6DF" stroke-width="3.5"/>
+    </g>
+    <g id="terminal-left-rail">
+      <circle cx="89" cy="246" r="8.7" fill="#0B121A"/>
+      <circle cx="89" cy="246" r="5.7" fill="#0B121A" stroke="#00E6D3" stroke-width="3.5"/>
+    </g>
+    <g id="terminal-left-branch">
+      <circle cx="89" cy="301" r="8.7" fill="#0B121A"/>
+      <circle cx="89" cy="301" r="5.7" fill="#0B121A" stroke="#00CDD9" stroke-width="3.5"/>
+    </g>
+    <g id="terminal-bottom">
+      <circle cx="168" cy="372" r="8.7" fill="#0B121A"/>
+      <circle cx="168" cy="372" r="5.7" fill="#0B121A" stroke="#00E6DE" stroke-width="3.5"/>
+    </g>
+    <g id="terminal-right">
+      <circle cx="366" cy="247" r="8.7" fill="#0B121A"/>
+      <circle cx="366" cy="247" r="5.7" fill="#0B121A" stroke="#9B5CFF" stroke-width="3.5"/>
+    </g>
+    <circle cx="122" cy="338" r="3.1" fill="#00DCE4"/>
+    <circle cx="302" cy="153" r="2.5" fill="#00E6DF"/>
+    <path d="M179 321V330M175 326H183" stroke="#00E6D9" stroke-width="2.7" stroke-linecap="round"/>
+  </g>
+</g>
+<g id="cyberdat-wordmark" transform="translate(0 10)" fill-rule="evenodd">
+  <g id="word-cyber" fill="#F5F7FA">
+    <path id="type-C" d="M493 212 478 226Q467 213 453 213C437 213 427 224 427 239S438 265 453 265Q467 265 478 252L492 266Q476 285 452 285C425 285 406 265 406 239S425 193 452 193Q477 193 493 212Z"/>
+    <path id="type-y" d="M494 215H515L534 258 552 215H573L543 285Q534 305 515 305 505 305 498 300L506 285Q511 288 515 288 521 288 524 282L525 279Z"/>
+    <path id="type-b" d="M581 188H601V222Q609 213 622 213C642 213 655 228 655 249S642 285 622 285Q609 285 600 275V283H581ZM617 231C606 231 600 239 600 249S606 267 617 267 635 259 635 249 628 231 617 231Z"/>
+    <path id="type-e" d="M732 255H682Q685 268 700 268 711 268 718 261L729 272Q718 285 699 285C676 285 662 270 662 249S677 213 698 213C719 213 732 228 732 248ZM682 242H713Q711 229 698 229 685 229 682 242Z"/>
+    <path id="type-r" d="M743 215H762V225Q769 213 786 213V232Q783 232 781 232 763 232 763 251V283H743Z"/>
+  </g>
+  <g id="word-dat" fill="#00E6CF">
+    <path id="type-D" d="M797 194H830C861 194 881 211 881 239S861 284 830 284H797ZM818 213V265H830C849 265 860 256 860 239S849 213 830 213Z"/>
+    <path id="type-a" d="M892 223Q904 213 923 213 953 213 953 241V283H934V276Q928 285 912 285C897 285 887 276 887 263S897 243 916 243H933V242Q933 230 920 230 908 230 900 236ZM933 256H918Q906 256 906 263 906 270 916 270 928 270 933 262Z"/>
+    <path id="type-t" d="M973 200 993 194V215H1010V231H993V260Q993 268 1000 268 1005 268 1010 265V281Q1003 285 994 285 973 285 973 263V231H961V215H973Z"/>
+  </g>
+</g>
+</svg>

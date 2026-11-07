@@ -131,3 +131,9 @@ code, pre, kbd { font-family: var(--cd-mono); font-size: .9em; }
 }
 
 .footer-brand {font-size:1.7rem;letter-spacing:-.05em}.footer-tagline{font-size:.75rem;color:var(--cd-muted);margin-top:.35rem!important}.site-footer .copyright{font-size:.7rem}
+
+/* Approved 3B wordmark; preserve its complete SVG viewBox and proportions. */
+.site-brand { flex: 0 0 auto; }
+.site-brand__logo { display: block; width: 184px; height: auto; max-width: 100%; aspect-ratio: 960 / 304; }
+@media (min-width: 64rem) { .site-brand__logo { width: 208px; } }
+@media (max-width: 359px) { .site-brand__logo { width: 168px; } }

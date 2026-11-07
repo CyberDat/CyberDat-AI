@@ -1,0 +1,49 @@
+[
+  {
+    "file": "avatar/cyberdat-3b-avatar.svg",
+    "svg": "PASS",
+    "viewBox": "0 0 512 512",
+    "sha256": "69042868828faf9205ad8d1b0f22b9c484ae0b4dc2a0eb74d4c37ace9d4a27eb"
+  },
+  {
+    "file": "favicon/favicon.svg",
+    "svg": "PASS",
+    "viewBox": "94 120 272 272",
+    "sha256": "e696c2e61d878730b0682fc4db28beacc5bb8980c7aba84fa37dda07970af474"
+  },
+  {
+    "file": "svg/cyberdat-3b-horizontal-dark-bg.svg",
+    "svg": "PASS",
+    "viewBox": "76 104 960 304",
+    "sha256": "1dbe117e9acf68ef28d435d02d99540684771c407a9c73f243d7fb0d3ecb4b0a"
+  },
+  {
+    "file": "svg/cyberdat-3b-horizontal-light-bg.svg",
+    "svg": "PASS",
+    "viewBox": "76 104 960 304",
+    "sha256": "b447933bbab3f3249031df601a2ab7af94d9f6604db7d81ca1584a8b697b1613"
+  },
+  {
+    "file": "svg/cyberdat-3b-icon.svg",
+    "svg": "PASS",
+    "viewBox": "76 104 304 304",
+    "sha256": "373ef10fa3f0d6674016a6bf092396f35bd10e7203eccfd9bcf0d094195a8802"
+  },
+  {
+    "ico_sizes": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        48,
+        48
+      ]
+    ],
+    "status": "PASS"
+  }
+]
