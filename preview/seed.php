@@ -10,6 +10,7 @@ wp_set_current_user(1);
 update_option('blogname','CyberDat');
 update_option('blogdescription','Cybersecurity News, Analysis & Learning');
 update_option('blog_public',0);
+update_option('site_icon',0); // Exercise theme-provided 3B icons only in Playground.
 update_option('posts_per_page',6);
 $GLOBALS['wp_rewrite']->set_category_base('topics');
 update_option('show_on_front','posts');

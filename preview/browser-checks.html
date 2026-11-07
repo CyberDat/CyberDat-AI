@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-<h1>CyberDat 0.3.0 · Isolated Playground Preview</h1>
+<h1>CyberDat 0.3.0 + 3B · Isolated Playground Preview</h1>
 <p class="note">Editorial homepage visual prototype. All stories and threat metrics are SAMPLE DATA. The design is pending review; no live intelligence is connected. Fixtures and accounts exist only in this browser sandbox.</p>
 <div class="controls">
 <label for="width">Viewport</label><select id="width"><option>320</option><option selected>768</option><option>1440</option></select>
@@ -78,6 +78,19 @@ runButton.addEventListener('click', async () => {
           `${doc.documentElement.scrollWidth}/${doc.documentElement.clientWidth}px`);
         record(label + ' one H1', doc.querySelectorAll('h1').length === 1);
         record(label + ' dark surface', win.getComputedStyle(doc.body).backgroundColor === 'rgb(8, 13, 19)');
+        const logo = doc.querySelector('.site-brand__logo');
+        record(label + ' approved 3B logo', !!logo && logo.complete && logo.naturalWidth > 0 && logo.getAttribute('src').includes('3b-horizontal-dark-bg.svg'));
+        if (logo) {
+          const rect = logo.getBoundingClientRect();
+          record(label + ' logo proportions', Math.abs(rect.width / rect.height - 960 / 304) < .03);
+        }
+        for (const size of [16, 32, 48]) {
+          const icon = doc.querySelector(`link[rel="icon"][type="image/png"][sizes="${size}x${size}"]`);
+          let decoded = false;
+          if (icon) { const img = new win.Image(); img.src = icon.href; try { await img.decode(); decoded = img.naturalWidth === size && img.naturalHeight === size; } catch (_) {} }
+          record(label + ` favicon ${size}px decodes`, decoded);
+        }
+
         const nav = doc.getElementById('site-navigation');
         const button = doc.querySelector('[data-menu-toggle]');
         const desktop = pixels >= 1024;

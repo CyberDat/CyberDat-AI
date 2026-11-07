@@ -10,7 +10,7 @@ Load `preview/blueprint.json` using the official Playground `blueprint-url` para
 https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/CyberDat/CyberDat-AI/refs/heads/feat/cyberdat-theme-scaffold/preview/blueprint.json
 ```
 
-For reproducibility, replace `refs/heads/feat/cyberdat-theme-scaffold` with the preview commit SHA. The Blueprint itself pins theme source to commit `6400e9731b9e54a0c8275f12b0f95538078102d8`, WordPress 7.1.4 and PHP 8.4.
+For reproducibility, replace `refs/heads/feat/cyberdat-theme-scaffold` with the preview commit SHA. The Blueprint itself pins theme source to commit `62147ffe3540e6cfa21897f2759d52a76529c8f3`, WordPress 7.1.4 and PHP 8.4.
 
 If the link is unavailable, open https://playground.wordpress.net/, choose New → Blueprint URL, and paste the raw JSON URL. The first load downloads WordPress and PHP WebAssembly into the browser.
 
@@ -69,3 +69,7 @@ The compact masthead, four-story briefing, nine unique editorial illustrations a
 ## Premium Editorial Design review
 
 Version 0.3.0 replaces the repeated abstract card artwork with nine distinct original local illustrations, adds a fourth thumbnail briefing and publication dates, and compresses the slogan into a compact editorial line. The dashboard data and markup are unchanged. See `art-direction.md` for full image prompts and provenance. The nine section cards are curated without repeating articles. Preview fixtures remain separate from production. The updated browser inspector checks image decoding, unique card artwork, dates, four briefings, compact masthead and responsive overflow. No rendered-width PASS claim is made until this new browser suite is run.
+
+## Approved 3B branding integration
+
+The header uses the original supplied horizontal dark-background SVG. Local favicon SVG, ICO and 16/32/48 PNGs are included unchanged. The inspector checks the wordmark load, original proportions and PNG decoding at every viewport. Site Icon is cleared only in the disposable Playground fixture so theme fallback icons can be inspected; production options are never read or changed. See `wp-content/themes/cyberdat/assets/branding/3b/README.md` for asset audit details. No unrelated design changes are part of this iteration.
