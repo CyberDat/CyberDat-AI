@@ -29,7 +29,7 @@ function cyberdat_research_nvd_view($id,$now=null){
 function cyberdat_research_coverage(){
  $data=cyberdat_research_data();$counts=['Critical'=>0,'High'=>0,'Medium'=>0,'Low'=>0,'Unrated / Unclassified'=>0];$stale=0;
  foreach(($data['nvd']??[]) as $id=>$row){$label=$row['record']['assessment']['severity']??'Unrated / Unclassified';++$counts[array_key_exists($label,$counts)?$label:'Unrated / Unclassified'];if((cyberdat_research_nvd_view($id)['status']??'Stale')!=='Fresh'){++$stale;}}
- return ['loaded'=>count($data['nvd']??[]),'total'=>$data['kev']['catalog']['count']??0,'counts'=>$counts,'snapshots'=>0,'stale'=>$stale];
+ return ['loaded'=>count($data['nvd']??[]),'total'=>$data['kev']['catalog']['count']??0,'counts'=>$counts,'snapshots'=>0,'stale'=>$stale,'indexed_cves'=>(int)($data['indexed_cves']??0),'scope'=>'kev_intersection'];
 }
 function cyberdat_research_status_html(){
  $data=cyberdat_research_data();if(!$data){echo '<p class="chart-caption">'.esc_html__('Research cache unavailable. No estimated values are shown.','cyberdat-research').'</p>';return;}
