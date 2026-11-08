@@ -12,3 +12,5 @@ require_once __DIR__ . '/inc/home-prototype.php';
 require_once __DIR__ . '/inc/kev-data.php';
 require_once __DIR__ . '/inc/nvd-data.php';
 require_once __DIR__ . '/inc/tools.php';
+
+require_once __DIR__ . '/inc/intelligence-charts.php';

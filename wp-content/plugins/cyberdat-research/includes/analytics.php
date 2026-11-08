@@ -4,15 +4,16 @@ defined('ABSPATH') || exit;
 function cdra_dashboard_model($rows,$catalog,$state,$now=null){
  $now=$now??time();$day=strtotime(gmdate('Y-m-d',$now).' UTC');$seven=$day-6*86400;$thirty=$day-29*86400;
  $counts=['kev'=>0,'nvd'=>0,'critical'=>0,'high'=>0,'ransomware'=>0,'advisories'=>0,'nvd_7'=>0,'nvd_30'=>0,'kev_7'=>0,'kev_30'=>0,'rated'=>0,'kev_nvd'=>0];
- $severity=array_fill_keys(['Critical','High','Medium','Low','None','Unrated'],0);$versions=[];$days=[];$feeds=[];$seen=[];$by_source=[];$nvd_min=null;$nvd_max=null;
- for($i=29;$i>=0;--$i){$days[gmdate('Y-m-d',$day-$i*86400)]=0;}
- $ransom=[];foreach(($catalog['vulnerabilities']??[]) as $entry){$id=$entry['cveID'];$counts['kev']++;if(($entry['knownRansomwareCampaignUse']??'')==='Known'){$ransom[$id]=true;$counts['ransomware']++;}$date=strtotime($entry['dateAdded'].' UTC');if($date>=$seven&&$date<=$now){$counts['kev_7']++;}if($date>=$thirty&&$date<=$now){$counts['kev_30']++;}}
+ $severity=array_fill_keys(['Critical','High','Medium','Low','None','Unrated'],0);$versions=[];$days=[];$nvd_days=[];$kev_days=[];$feeds=[];$seen=[];$by_source=[];$nvd_min=null;$nvd_max=null;
+ for($i=89;$i>=0;--$i){$date=gmdate('Y-m-d',$day-$i*86400);$nvd_days[$date]=0;$kev_days[$date]=0;if($i<30){$days[$date]=0;}}
+ $ransom=[];foreach(($catalog['vulnerabilities']??[]) as $entry){$id=$entry['cveID'];$counts['kev']++;if(($entry['knownRansomwareCampaignUse']??'')==='Known'){$ransom[$id]=true;$counts['ransomware']++;}$date=strtotime($entry['dateAdded'].' UTC');if(isset($kev_days[$entry['dateAdded']])&&$date<=$now){$kev_days[$entry['dateAdded']]++;}if($date>=$seven&&$date<=$now){$counts['kev_7']++;}if($date>=$thirty&&$date<=$now){$counts['kev_30']++;}}
  foreach($rows as $row){
   $source=$row['source'];$by_source[$source]=($by_source[$source]??0)+1;$assessment=$row['assessment']??null;
   $score=is_array($assessment)&&is_numeric($assessment['score']??null)?(float)$assessment['score']:null;
   $label=$score===null?'Unrated':($score>=9?'Critical':($score>=7?'High':($score>=4?'Medium':($score>0?'Low':'None'))));
   $published=strtotime($row['published'].' UTC');
   if($source==='nvd'){
+   $publication_day=gmdate('Y-m-d',$published);if(isset($nvd_days[$publication_day])&&$published<=$now){$nvd_days[$publication_day]++;}
    $counts['nvd']++;$severity[$label]++;if($label==='Critical'){$counts['critical']++;}if($label==='High'){$counts['high']++;}if($score!==null){$counts['rated']++;}
    $version=$assessment['version']??'Unrated';$versions[$version]??=array_fill_keys(array_keys($severity),0);$versions[$version][$label]++;
    if($published>=$seven&&$published<=$now){$counts['nvd_7']++;}if($published>=$thirty&&$published<=$now){$counts['nvd_30']++;$date=gmdate('Y-m-d',$published);if(isset($days[$date])){$days[$date]++;}}
@@ -25,7 +26,7 @@ function cdra_dashboard_model($rows,$catalog,$state,$now=null){
   $feeds[]=['id'=>$row['source_id'],'source'=>$source,'kind'=>$source==='nvd'?'cve':($source==='kev'?'kev':'advisory'),'title'=>$row['title'],'summary'=>$row['summary'],'url'=>$row['canonical_url'],'published'=>$row['published'],'source_updated'=>$row['source_updated'],'severity'=>$label,'assessment'=>$assessment,'cve_ids'=>$ids,'kev'=>!empty($row['kev_confirmed']),'ransomware'=>$ransomware];
  }
  usort($feeds,static fn($a,$b)=>strcmp($b['published'],$a['published'])?:strcmp($a['source'],$b['source'])?:strcmp($a['id'],$b['id']));ksort($versions);
- return ['schema'=>1,'generated_at'=>$now,'reference_day'=>gmdate('Y-m-d',$now),'counts'=>$counts,'severity'=>$severity,'versions'=>$versions,'days'=>$days,'feed'=>$feeds,'by_source'=>$by_source,'source_health'=>$state['source_health'],'catalog_version'=>$catalog['catalogVersion']??null,'catalog_released'=>$catalog['dateReleased']??null,'origin'=>$state['origin'],'checkpoint'=>$state['checkpoint'],'window'=>$state['window'],'completed'=>$state['completed'],'backfill'=>$state['backfill'],'queue_total'=>$state['queue_total'],'publication_min'=>$nvd_min?gmdate('Y-m-d',$nvd_min):null,'publication_max'=>$nvd_max?gmdate('Y-m-d',$nvd_max):null,'feed_limit_per_source'=>20,'historical_nvd_complete'=>false];
+ return ['schema'=>1,'generated_at'=>$now,'reference_day'=>gmdate('Y-m-d',$now),'counts'=>$counts,'severity'=>$severity,'versions'=>$versions,'days'=>$days,'chart_series'=>['kev'=>$kev_days,'nvd'=>$nvd_days],'feed'=>$feeds,'by_source'=>$by_source,'source_health'=>$state['source_health'],'catalog_version'=>$catalog['catalogVersion']??null,'catalog_released'=>$catalog['dateReleased']??null,'origin'=>$state['origin'],'checkpoint'=>$state['checkpoint'],'window'=>$state['window'],'completed'=>$state['completed'],'backfill'=>$state['backfill'],'queue_total'=>$state['queue_total'],'publication_min'=>$nvd_min?gmdate('Y-m-d',$nvd_min):null,'publication_max'=>$nvd_max?gmdate('Y-m-d',$nvd_max):null,'feed_limit_per_source'=>20,'historical_nvd_complete'=>false];
 }
 function cdra_build_dashboard_analytics($store){
  // At most 12,000 indexed records / 5,000 NVD, matching existing hard storage limits.
