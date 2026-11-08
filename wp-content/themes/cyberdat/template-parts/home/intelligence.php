@@ -1,7 +1,7 @@
 <?php
 /** Cached CISA KEV presentation. Never performs a network request. */
 defined('ABSPATH') || exit;
-if(function_exists('cyberdat_research_dashboard') && cyberdat_research_active()){get_template_part('template-parts/home/threat-dashboard');return;}
+if(function_exists('cyberdat_research_dashboard') && cyberdat_research_active()){get_template_part('template-parts/home/threat-pulse');return;}
 $view=cyberdat_kev_view();$cache=$view['cache'];$metrics=$view['metrics'];
 $snapshot=$cache && $cache['snapshot'];
 $mode=$snapshot?__('OFFICIAL SNAPSHOT · NOT LIVE','cyberdat'):__('CISA KEV · CACHED DATA','cyberdat');

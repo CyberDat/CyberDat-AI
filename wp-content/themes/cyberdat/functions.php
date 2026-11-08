@@ -14,3 +14,5 @@ require_once __DIR__ . '/inc/nvd-data.php';
 require_once __DIR__ . '/inc/tools.php';
 
 require_once __DIR__ . '/inc/intelligence-charts.php';
+
+require_once __DIR__ . '/inc/threat-intelligence.php';

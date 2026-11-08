@@ -8,13 +8,20 @@ function cyberdat_theme_asset_version( $relative_path ) {
 }
 
 function cyberdat_theme_enqueue_assets() {
+ $intelligence = function_exists('cyberdat_is_intelligence_page') && cyberdat_is_intelligence_page();
 	wp_enqueue_style( 'cyberdat-tokens', get_theme_file_uri( '/assets/css/tokens.css' ), array(), cyberdat_theme_asset_version( '/assets/css/tokens.css' ) );
 	wp_enqueue_style( 'cyberdat-main', get_theme_file_uri( '/assets/css/main.css' ), array( 'cyberdat-tokens' ), cyberdat_theme_asset_version( '/assets/css/main.css' ) );
-	if ( is_front_page() && cyberdat_home_preview_allowed() ) {
-		wp_enqueue_script('cyberdat-intelligence-charts',get_theme_file_uri('/assets/js/intelligence-charts.js'),array(),cyberdat_theme_asset_version('/assets/js/intelligence-charts.js'),array('strategy'=>'defer','in_footer'=>true));
-		wp_enqueue_style('cyberdat-threat-dashboard', get_theme_file_uri('/assets/css/threat-dashboard.css'), array('cyberdat-main'), cyberdat_theme_asset_version('/assets/css/threat-dashboard.css'));
-		wp_enqueue_style( 'cyberdat-home-prototype', get_theme_file_uri( '/assets/css/home-prototype.css' ), array( 'cyberdat-main' ), cyberdat_theme_asset_version( '/assets/css/home-prototype.css' ) );
-	}
+ if ((is_front_page() && cyberdat_home_preview_allowed()) || $intelligence) {
+  wp_enqueue_style('cyberdat-threat-dashboard',get_theme_file_uri('/assets/css/threat-dashboard.css'),array('cyberdat-main'),cyberdat_theme_asset_version('/assets/css/threat-dashboard.css'));
+  wp_enqueue_style('cyberdat-threat-geo',get_theme_file_uri('/assets/css/threat-geo.css'),array('cyberdat-threat-dashboard'),cyberdat_theme_asset_version('/assets/css/threat-geo.css'));
+ }
+ if (is_front_page() && cyberdat_home_preview_allowed()) {
+  wp_enqueue_style('cyberdat-home-prototype',get_theme_file_uri('/assets/css/home-prototype.css'),array('cyberdat-main'),cyberdat_theme_asset_version('/assets/css/home-prototype.css'));
+ }
+ if($intelligence) {
+  wp_enqueue_script('cyberdat-intelligence-charts',get_theme_file_uri('/assets/js/intelligence-charts.js'),array(),cyberdat_theme_asset_version('/assets/js/intelligence-charts.js'),array('strategy'=>'defer','in_footer'=>true));
+  wp_enqueue_script('cyberdat-threat-geo',get_theme_file_uri('/assets/js/threat-geo.js'),array(),cyberdat_theme_asset_version('/assets/js/threat-geo.js'),array('strategy'=>'defer','in_footer'=>true));
+ }
 	wp_enqueue_script(
 		'cyberdat-navigation',
 		get_theme_file_uri( '/assets/js/navigation.js' ),

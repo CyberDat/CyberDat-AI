@@ -145,3 +145,6 @@ code, pre, kbd { font-family: var(--cd-mono); font-size: .9em; }
  .primary-menu { flex-wrap: wrap; justify-content: flex-end; }
  .header-search { width: 12rem; }
 }
+
+/* Eight primary sections retain wrap and the existing accessible mobile toggle. */
+@media(min-width:64rem){.site-header .primary-menu{gap:.25rem .8rem}.site-header .primary-menu a{font-size:.875rem}.site-header .site-navigation{min-width:0;max-width:100%}}

@@ -26,6 +26,7 @@ function cyberdat_theme_primary_fallback() {
 	}
 	$hub = get_page_by_path( 'tools' );
 	if ( $hub && 'publish' === $hub->post_status ) { cyberdat_theme_navigation_link( get_permalink( $hub ), __( 'Tools', 'cyberdat' ) ); }
+	if(cyberdat_home_preview_allowed()){$intelligence=get_page_by_path('threat-intelligence');if($intelligence&&$intelligence->post_status==='publish'){cyberdat_theme_navigation_link(home_url('/threat-intelligence/'),__('Threat Intelligence','cyberdat'));}}
 	echo '</ul>';
 }
 
