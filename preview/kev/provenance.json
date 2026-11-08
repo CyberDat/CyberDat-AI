@@ -1,0 +1,35 @@
+{
+  "retrieved_at": "2026-11-08T05:49:03.541921+00:00",
+  "source_url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+  "git_commit": null,
+  "sha256": "47e0406b2be5a40420eff66f3d90e83eb8883dae6ff4d08e1b2a942c366f6cc2",
+  "catalog_version": "2026.11.06",
+  "date_released": "2026-11-06T19:44:45.1797Z",
+  "count": 1769,
+  "bytes": 1832349,
+  "checks": [
+    {
+      "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 1832349
+    }
+  ],
+  "utc_reference_date": "2026-11-08",
+  "expected_metrics": {
+    "total": 1769,
+    "seven": 3,
+    "thirty": 30,
+    "ransomware": 361
+  },
+  "official_mirror": {
+    "url": "https://raw.githubusercontent.com/cisagov/kev-data/e5b3a9b25050a8da26c96266c5bfe438ee0bdebc/known_exploited_vulnerabilities.json",
+    "commit": "e5b3a9b25050a8da26c96266c5bfe438ee0bdebc",
+    "status": 200,
+    "sha256": "47e0406b2be5a40420eff66f3d90e83eb8883dae6ff4d08e1b2a942c366f6cc2",
+    "matches_canonical_snapshot": true
+  },
+  "schema_source": "https://raw.githubusercontent.com/cisagov/kev-data/e5b3a9b25050a8da26c96266c5bfe438ee0bdebc/known_exploited_vulnerabilities_schema.json",
+  "license": "CC0-1.0 (cisagov/kev-data)",
+  "delivery_encoding": "base64(gzip(original UTF-8 JSON)); gzip mtime=0"
+}

@@ -1,7 +1,7 @@
-# CyberDat 0.4.0 — isolated WordPress Playground
+# CyberDat 0.5.0 — isolated WordPress Playground
 
 Official browser-only WordPress preview. No connection to production, real accounts,
-mail, databases, analytics or external threat APIs. Never deploy these fixtures.
+mail, databases, analytics or live threat APIs. Never deploy these fixtures.
 
 ## Open
 
@@ -9,14 +9,14 @@ https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.co
 
 For an immutable preview replace `refs/heads/feat/cyberdat-theme-scaffold` with this
 preview commit's full SHA. The Blueprint pins theme source separately to
-`8536481ac9516e55a3910ef3f9b77dad96a98ab7`, WordPress 7.1.4 and PHP 8.4.
+`1ca4dcd55e5fb94b5e2eaf09145c586f405a5e23`, WordPress 7.1.4 and PHP 8.4.
 Initial loading downloads official WordPress/PHP WebAssembly and the public theme.
 If needed, paste the raw Blueprint URL into the official Playground Blueprint UI.
 
 ## Inspect
 
 The opening panel displays real WordPress integration reports from both editorial
-steps. Click **Run layout checks at all three widths** for 320/768/1440px browser
+steps plus CISA KEV. Click **Run layout checks at all three widths** for 320/768/1440px browser
 checks: overflow, navigation/ARIA/Escape focus, dark surface, 3B logo and favicon
 sizes, card columns/images/dates, Featured exclusion, Gutenberg blocks, archives
 and the missing-page template. These results are calculated in your browser.
@@ -36,8 +36,8 @@ Automated DOM checks do not certify screenshots, screen readers or Core Web Vita
   excluded from all three. Real posts and WordPress media replace curated arrays.
 
 The approved dark 0.3.0 layout and 3B branding remain unchanged. Only the editorial
-selection is dynamic. The offline Threat Intelligence Dashboard remains explicitly
-fictional SAMPLE DATA, without external feeds. The production guard in
+selection is dynamic. The Threat Intelligence Dashboard uses a fixed official CISA KEV snapshot,
+explicitly NOT LIVE, without external feeds. See [KEV architecture and provenance](kev/README.md). The production guard in
 `front-page.php` still falls back to `index.php` outside Playground.
 
 ## Isolation and fixtures
@@ -66,7 +66,8 @@ its string-valued deprecated annotations). Lint all theme/preview/test PHP files
 and syntax-check the embedded inspection JS. Blueprint uses only the official
 installTheme, mkdir, writeFile and runPHP steps; no shell or production filesystem.
 
-Local PHP syntax, 16 section/query/guard checks, 12 Featured save-handler cases,
+Local PHP syntax, 41 KEV checks (40 shared WordPress scenarios plus one CLI production gate check),
+16 section/query/guard checks, 12 Featured save-handler cases,
 existing navigation tests, JS syntax and Blueprint schema were checked during
 preparation. There is no browser engine in the authoring environment: actual
 WordPress/WASM suites, rendered widths and Gutenberg must run via this preview.
@@ -75,3 +76,10 @@ also do not establish MariaDB/PHP-FPM production equivalence.
 
 Original artwork provenance: [art-direction.md](art-direction.md).
 Logo audit: [3B assets](../wp-content/themes/cyberdat/assets/branding/3b/README.md).
+
+## 0.5.0 CISA KEV
+
+The Blueprint embeds the full official compressed snapshot, its provenance and the
+shared KEV tests. PHP networking and live Cron remain disabled. Editorial fixtures
+remain SAMPLE DATA; vulnerability identifiers and metrics now come from the dated
+official snapshot. CVSS is explicitly pending NVD, without inferred scores.
