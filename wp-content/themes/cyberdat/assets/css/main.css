@@ -137,3 +137,11 @@ code, pre, kbd { font-family: var(--cd-mono); font-size: .9em; }
 .site-brand__logo { display: block; width: 184px; height: auto; max-width: 100%; aspect-ratio: 960 / 304; }
 @media (min-width: 64rem) { .site-brand__logo { width: 208px; } }
 @media (max-width: 359px) { .site-brand__logo { width: 168px; } }
+
+/* Seven-item navigation remains within the header at intermediate widths. */
+.environment-badge { display: inline-block; margin-top: .45rem; padding: .15rem .45rem; border: 1px solid var(--cd-border); border-radius: .3rem; color: var(--cd-muted); font: .625rem var(--cd-mono); letter-spacing: .08em; text-transform: uppercase; }
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+ .site-navigation { min-width: 0; flex-wrap: wrap; justify-content: flex-end; }
+ .primary-menu { flex-wrap: wrap; justify-content: flex-end; }
+ .header-search { width: 12rem; }
+}

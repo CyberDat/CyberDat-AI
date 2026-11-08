@@ -1,0 +1,122 @@
+[
+  {
+    "release": "1.1",
+    "phase": 1,
+    "title": "Privacy Shield Log Anonymizer",
+    "slug": "log-anonymizer",
+    "url": "/tools/log-anonymizer/",
+    "status": "planned",
+    "category": "Privacy",
+    "category_slug": "privacy",
+    "description": "Plan to redact sensitive identifiers from log excerpts before sharing. Client-side processing is the intended privacy model.",
+    "icon_path": "M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z M9 12l2 2 4-4"
+  },
+  {
+    "release": "1.1",
+    "phase": 1,
+    "title": "IoT & Industrial Exposure Query Helper",
+    "slug": "iot-exposure-query-builder",
+    "url": "/tools/iot-exposure-query-builder/",
+    "status": "planned",
+    "category": "Industrial Security",
+    "category_slug": "industrial",
+    "description": "Build structured exposure-search queries for IoT and industrial assets. Query guidance only; no scanning is available.",
+    "icon_path": "M4 20V9l6-4v5l6-4v14Z M16 11h4v9 M7 14v2 M11 14v2"
+  },
+  {
+    "release": "1.1",
+    "phase": 1,
+    "title": "LotL / LOLBAS Command Analyzer",
+    "slug": "lolbas-analyzer",
+    "url": "/tools/lolbas-analyzer/",
+    "status": "planned",
+    "category": "Threat Analysis",
+    "category_slug": "threat",
+    "description": "Plan to inspect command lines for living-off-the-land patterns using documented LOLBAS techniques and explainable signals.",
+    "icon_path": "M4 5h16v14H4Z M7 9l3 3-3 3 M12 15h5"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "LLM Prompt Injection Test Bench",
+    "slug": "prompt-injection-test-bench",
+    "url": "/tools/prompt-injection-test-bench/",
+    "status": "planned",
+    "category": "AI Security",
+    "category_slug": "ai",
+    "description": "A planned controlled workspace for exploring prompt-injection scenarios and documenting defensive test cases.",
+    "icon_path": "M5 5h14v11H9l-4 4Z M8 9h8 M8 12h5"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "Modbus/BACnet Frame Decoder",
+    "slug": "modbus-decoder",
+    "url": "/tools/modbus-decoder/",
+    "status": "planned",
+    "category": "Industrial Security",
+    "category_slug": "industrial",
+    "description": "Plan to decode Modbus frames into readable fields and explain protocol structure. BACnet support is reserved for a future extension.",
+    "icon_path": "M3 8h5v8H3Z M16 8h5v8h-5Z M8 12h8 M12 5v14"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "Docker & Kubernetes Hardening Audit Generator",
+    "slug": "container-hardening-audit",
+    "url": "/tools/container-hardening-audit/",
+    "status": "planned",
+    "category": "Cloud & Containers",
+    "category_slug": "cloud",
+    "description": "Generate review-oriented Docker and Kubernetes hardening checklists from explicitly supplied deployment context.",
+    "icon_path": "M12 3 3 8v9l9 5 9-5V8Z M3 8l9 5 9-5 M12 13v9"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "AI Model Bill of Materials",
+    "slug": "ai-model-bom",
+    "url": "/tools/ai-model-bom/",
+    "status": "planned",
+    "category": "AI Security",
+    "category_slug": "ai",
+    "description": "Plan to inventory model components, datasets and dependencies in an AI bill of materials for review and traceability.",
+    "icon_path": "M7 3h8l4 4v14H5V3Z M14 3v5h5 M8 12h8 M8 16h6"
+  },
+  {
+    "release": "1.3",
+    "phase": 3,
+    "title": "YARA/Sigma Rule Validator & Converter",
+    "slug": "yara-sigma-validator",
+    "url": "/tools/yara-sigma-validator/",
+    "status": "planned",
+    "category": "Detection Engineering",
+    "category_slug": "detection",
+    "description": "Plan to validate YARA and Sigma rule structure and explore explicitly supported conversions with clear compatibility limits.",
+    "icon_path": "M4 4h6v6H4Z M14 14h6v6h-6Z M14 4h6v6h-6Z M4 14h6v6H4Z M10 7h4 M7 10v4 M17 10v4"
+  },
+  {
+    "release": "1.3",
+    "phase": 3,
+    "title": "MITRE ATLAS Attack Vector Mapper",
+    "slug": "mitre-atlas-mapper",
+    "url": "/tools/mitre-atlas-mapper/",
+    "status": "planned",
+    "category": "AI Security",
+    "category_slug": "ai",
+    "description": "Map documented AI attack scenarios to MITRE ATLAS techniques and supporting defensive context. No automated assessment is available.",
+    "icon_path": "M5 5h4v4H5Z M15 15h4v4h-4Z M15 3h4v4h-4Z M9 7h3v10h3 M12 5h3"
+  },
+  {
+    "release": "1.3",
+    "phase": 3,
+    "title": "Security Webhook & OOB Listener",
+    "slug": "webhook-oob-listener",
+    "url": "/tools/webhook-oob-listener/",
+    "status": "planned",
+    "category": "Application Security",
+    "category_slug": "application",
+    "description": "A planned isolated backend for authorized webhook and out-of-band testing. Deployment requires separate abuse, access and retention controls.",
+    "icon_path": "M8 8a4 4 0 1 1 8 0 M8 16a4 4 0 1 0 8 0 M4 12h16 M12 8v8"
+  }
+]

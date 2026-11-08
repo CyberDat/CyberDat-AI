@@ -168,6 +168,9 @@ add_filter( 'rank_math/snippet/rich_snippet_article_entity', static function ( $
 function cyberdat_tools_assets() {
 	if ( is_page_template( array( 'page-templates/tool.php', 'page-templates/tools.php' ) ) ) {
 		wp_enqueue_style( 'cyberdat-tools', get_template_directory_uri() . '/assets/css/tools.css', array( 'cyberdat-main' ), cyberdat_theme_asset_version( '/assets/css/tools.css' ) );
+		if ( is_page_template( 'page-templates/tools.php' ) ) {
+			wp_enqueue_script( 'cyberdat-tools-filter', get_theme_file_uri( '/assets/js/tools-filter.js' ), array(), cyberdat_theme_asset_version( '/assets/js/tools-filter.js' ), array( 'strategy' => 'defer', 'in_footer' => true ) );
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'cyberdat_tools_assets' );
@@ -210,4 +213,14 @@ function cyberdat_tools_hub_link() {
 	if ( $hub && 'publish' === $hub->post_status ) {
 		echo '<p><a href="' . esc_url( get_permalink( $hub ) ) . '">' . esc_html__( 'Explore CyberDat Tools', 'cyberdat' ) . '</a></p>';
 	}
+}
+
+/** Planned catalog is roadmap data, not a claim of released functionality. */
+function cyberdat_planned_tools() {
+    static $catalog = null;
+    if ( null === $catalog ) {
+        $catalog = json_decode( file_get_contents( __DIR__ . '/tools-catalog.json' ), true );
+        $catalog = is_array( $catalog ) ? $catalog : array();
+    }
+    return $catalog;
 }
