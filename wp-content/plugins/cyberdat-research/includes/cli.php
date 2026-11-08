@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') || exit;
 class CDRA_CLI {
- public function status(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=$s->get('health:'.$id,[]);}$data=$s->get('dashboard',[]);WP_CLI::line(cdra_json(['sources'=>$sources,'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'coverage_origin'=>$s->get('nvd_origin'),'checkpoint'=>$s->get('nvd_checkpoint'),'window'=>$s->get('nvd_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'complete_nvd'=>false,'dashboard_generation'=>$data['generated_at']??null,'live_enabled'=>$s->get('live_enabled',false)]));}
+ public function status(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=(object)$s->get('health:'.$id,[]);}$data=$s->get('dashboard',[]);WP_CLI::line(cdra_json(['sources'=>$sources,'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'coverage_origin'=>$s->get('nvd_origin'),'checkpoint'=>$s->get('nvd_checkpoint'),'window'=>$s->get('nvd_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'complete_nvd'=>false,'dashboard_generation'=>$data['generated_at']??null,'live_enabled'=>$s->get('live_enabled',false)]));}
  /** Bounded Research Agent operation.
   * @synopsis [--source=<source>] [--manual] [--scheduled]
   */

@@ -75,6 +75,17 @@ def rollback(backup):
  except BaseException:os.rename(retained/'cyberdat',THEME);raise
  print('PASS: research schedules stopped, plugin deactivated, old theme restored; research tables/evidence and SQL snapshot retained; production untouched')
 
+
+def source_health(status,name):
+ value=status.get('sources',{}).get(name,{})
+ if value==[]:value={}
+ need(isinstance(value,dict),'Invalid source health structure')
+ return value
+
+def code_directory_permissions():
+ need(TOOLS.resolve()==TOOLS and TOOLS.is_dir() and not TOOLS.is_symlink(),'Unsafe worker code directory')
+ TOOLS.chmod(0o755)
+
 def main():
  global phase
  parser=argparse.ArgumentParser();parser.add_argument('--apply',action='store_true');parser.add_argument('--rollback',type=P);args=parser.parse_args();need(os.geteuid()==0,'Owner interactive sudo required');need(args.apply!=bool(args.rollback),'Choose --apply or --rollback');os.umask(0o077)
@@ -106,7 +117,7 @@ def main():
  need(CONTROL.resolve()==CONTROL and CONTROL.stat().st_uid==0 and CONTROL.stat().st_mode&0o022==0,'Unsafe research control directory');os.chown(CONTROL,0,account.pw_gid);CONTROL.chmod(0o750)
  (CONTROL/'research.json').write_text(json.dumps({'enabled':True,'host':'staging.cyberdat.eu'})+'\n');os.chown(CONTROL/'research.json',0,account.pw_gid);(CONTROL/'research.json').chmod(0o640)
  owned_copy(B/'plugin',PLUGIN,account)
- TOOLS.mkdir(mode=0o755);shutil.copyfile(B/'run.sh',TOOLS/'run.sh');(TOOLS/'run.sh').chmod(0o755)
+ TOOLS.mkdir(mode=0o755);code_directory_permissions();shutil.copyfile(B/'run.sh',TOOLS/'run.sh');(TOOLS/'run.sh').chmod(0o755)
  for unit in (B/'systemd').glob('*'):shutil.copyfile(unit,P('/etc/systemd/system')/unit.name);(P('/etc/systemd/system')/unit.name).chmod(0o644)
  run(['/usr/bin/systemd-analyze','verify','/etc/systemd/system/cyberdat-research@.service'])
  run(['/usr/bin/systemctl','daemon-reload'])
@@ -123,7 +134,7 @@ def main():
  successful=[]
  for name in ['kev','nvd','cisa-advisories','cert-eu','msrc']:
   result=run(['/usr/bin/systemctl','start','cyberdat-research@'+name+'.service'],check=False,timeout=200)
-  status=json.loads(wp('cyberdat-research','status').stdout);health=status['sources'][name]
+  status=json.loads(wp('cyberdat-research','status').stdout);health=source_health(status,name)
   ok=result.returncode==0 and bool(health.get('last_success')) and not health.get('last_error')
   print(('PASS: ' if ok else 'WARNING: ')+name+' controlled sync; '+('verified' if ok else 'error='+health.get('last_error','service_failure')))
   if ok:successful.append(name)
@@ -154,6 +165,7 @@ def main():
  print('PASS: production HTTPS 200 and protected fingerprints unchanged; source schedules active')
  print('COMMIT: '+source['commit']);print('COUNTS: '+json.dumps({k:status[k] for k in ['kev','nvd','queue','coverage_origin','checkpoint','window','backfill','complete_nvd']}))
  for name,h in status['sources'].items():
+  h=source_health(status,name)
   at=h.get('last_success',0);fresh=at and datetime.datetime.now(datetime.timezone.utc).timestamp()-at<=(14400 if name=='nvd' else 28800)
   print('SOURCE: '+name+' '+('Sync Error' if h.get('last_error') else 'Fresh' if fresh else 'Stale')+' last_success_utc='+(datetime.datetime.fromtimestamp(at,datetime.timezone.utc).isoformat() if at else 'never')+' error='+h.get('last_error',''))
  print('TIMERS: '+','.join(successful+['dispatch']));print('URL: '+HOST);print('QUEUE: '+HOST+'/wp-admin/admin.php?page=cyberdat-research')
