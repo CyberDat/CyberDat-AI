@@ -1,7 +1,7 @@
 <?php
-/** Visual prototype only: sample output must never appear outside Playground. */
+/** Preview-only homepage: explicit isolated contexts; production falls back to index. */
 defined( 'ABSPATH' ) || exit;
-if ( ! defined( 'CYBERDAT_PLAYGROUND' ) || ! CYBERDAT_PLAYGROUND ) {
+if ( ! cyberdat_home_preview_allowed() ) {
     require __DIR__ . '/index.php';
     return;
 }
