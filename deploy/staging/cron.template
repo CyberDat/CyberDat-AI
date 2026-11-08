@@ -1,0 +1,6 @@
+# REVIEW TEMPLATE ONLY. /etc/cron.d syntax; never install before approval.
+# The PHAR must be separately verified, root-owned and readable by staging user.
+SHELL=/bin/sh
+PATH=/usr/bin:/bin
+MAILTO=""
+* * * * * cyberdat-staging /usr/bin/flock -n /var/lib/cyberdat-staging/cron.lock /usr/bin/timeout --signal=TERM --kill-after=5s 55s /usr/bin/nice -n 10 /usr/bin/php8.4 -d memory_limit=128M -d disable_functions=mail -d sendmail_path=/bin/false -d opcache.enable_cli=0 -d sys_temp_dir=/var/lib/cyberdat-staging/tmp -d open_basedir=/var/www/cyberdat-staging:/var/lib/cyberdat-staging:/var/log/cyberdat-staging:/run/mysqld:/etc/ssl/certs:/opt/cyberdat-tools /opt/cyberdat-tools/wp-cli.phar --path=/var/www/cyberdat-staging/public --quiet --no-color cron event run --due-now >/dev/null 2>&1

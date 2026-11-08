@@ -1,0 +1,58 @@
+# REVIEW TEMPLATE ONLY. Never symlink/copy this without separate deployment approval.
+# Dedicated DNS-01 certificate is required; no unauthenticated ACME exception.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name staging.cyberdat.eu;
+    access_log off;
+    add_header X-Robots-Tag "noindex, nofollow" always;
+    return 308 https://staging.cyberdat.eu$request_uri;
+}
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name staging.cyberdat.eu;
+    root /var/www/cyberdat-staging/public;
+    index index.php;
+    server_tokens off;
+    autoindex off;
+    disable_symlinks on;
+    client_max_body_size 20M;
+
+    ssl_certificate /etc/letsencrypt/live/staging.cyberdat.eu/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/staging.cyberdat.eu/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_tickets off;
+
+    auth_basic "CyberDat private staging";
+    auth_basic_user_file /etc/nginx/auth/cyberdat-staging.htpasswd;
+    add_header X-Robots-Tag "noindex, nofollow" always;
+    add_header X-Content-Type-Options nosniff always;
+    # No Authorization header or query strings in an access log.
+    access_log off;
+    error_log /var/log/nginx/cyberdat-staging.error.log warn;
+
+    location ~ /\. { deny all; }
+    location ~* /(?:wp-config(?:\.[^/]*)?|readme\.html|license\.txt)$ { deny all; }
+    location ~* \.(?:sql|bak|backup|old|log|ini|conf|env|ya?ml)(?:\.[^/]*)?$ { deny all; }
+    # Order matters: block uploads and alternative PHP suffixes before PHP handler.
+    location ~* ^/wp-content/(?:uploads|cache)/.*\.(?:php[0-9]*|phtml|phar)(?:/|$) { deny all; }
+    location ~* \.(?:phtml|phar|php[0-9]+)(?:/|$) { deny all; }
+    location ~* \.php/ { deny all; }
+    location = /xmlrpc.php { deny all; }
+    # Cron is CLI-only; Basic Auth must not be bypassed for an HTTP Cron runner.
+    location = /wp-cron.php { deny all; }
+    location / { try_files $uri $uri/ /index.php?$args; }
+    location ~* \.php$ {
+        try_files $uri =404;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $document_root;
+        fastcgi_param HTTPS on;
+        fastcgi_param REMOTE_USER $remote_user;
+        # Do not expose Basic Auth credentials to WordPress or treat them as WP auth.
+        fastcgi_param HTTP_AUTHORIZATION "";
+        fastcgi_pass unix:/run/php/php8.4-fpm-cyberdat-staging.sock;
+        fastcgi_read_timeout 65s;
+    }
+}

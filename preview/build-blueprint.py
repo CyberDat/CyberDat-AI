@@ -19,7 +19,7 @@ blueprint = {
     'steps': [
         {'step': 'installTheme', 'themeData': {
             'resource': 'git:directory', 'url': 'https://github.com/CyberDat/CyberDat-AI',
-            'ref': '720c8a316c853945aece2b02374120113584ec83', 'refType': 'commit',
+            'ref': '6f09f8c12f01ca25eec90df2f42f7a780e78be94', 'refType': 'commit',
             'path': 'wp-content/themes/cyberdat'},
          'options': {'activate': True, 'importStarterContent': False,
                      'targetFolderName': 'cyberdat', 'onError': 'throw'}},

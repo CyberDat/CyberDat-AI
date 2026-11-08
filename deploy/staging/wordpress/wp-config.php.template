@@ -1,0 +1,45 @@
+<?php
+/** REVIEW TEMPLATE ONLY. Private placeholders must be replaced outside Git. */
+$staging_private = [
+    'DB_PASSWORD' => '__STAGING_DB_PASSWORD__',
+    'AUTH_KEY' => '__STAGING_AUTH_KEY__',
+    'SECURE_AUTH_KEY' => '__STAGING_SECURE_AUTH_KEY__',
+    'LOGGED_IN_KEY' => '__STAGING_LOGGED_IN_KEY__',
+    'NONCE_KEY' => '__STAGING_NONCE_KEY__',
+    'AUTH_SALT' => '__STAGING_AUTH_SALT__',
+    'SECURE_AUTH_SALT' => '__STAGING_SECURE_AUTH_SALT__',
+    'LOGGED_IN_SALT' => '__STAGING_LOGGED_IN_SALT__',
+    'NONCE_SALT' => '__STAGING_NONCE_SALT__',
+];
+foreach ($staging_private as $name => $value) {
+    if (str_starts_with($value, '__STAGING_')) { exit('Unconfigured staging template.'); }
+}
+define('DB_NAME', 'cyberdat_staging');
+define('DB_USER', 'cyberdat_staging');
+define('DB_HOST', 'localhost');
+define('DB_CHARSET', 'utf8mb4');
+define('DB_COLLATE', '');
+foreach ($staging_private as $name => $value) { define($name, $value); }
+unset($staging_private, $name, $value);
+$table_prefix = 'stg_';
+define('WP_ENVIRONMENT_TYPE', 'staging');
+define('WP_HOME', 'https://staging.cyberdat.eu');
+define('WP_SITEURL', 'https://staging.cyberdat.eu');
+define('CYBERDAT_STAGING_PREVIEW', true);
+// Do not define CYBERDAT_PLAYGROUND on any VPS installation.
+define('CYBERDAT_KEV_LIVE', false);
+define('CYBERDAT_NVD_LIVE', false);
+define('DISABLE_WP_CRON', true);
+define('DISALLOW_FILE_EDIT', true);
+define('DISALLOW_FILE_MODS', true);
+define('AUTOMATIC_UPDATER_DISABLED', true);
+define('WP_AUTO_UPDATE_CORE', false);
+define('WP_DEBUG', true);
+define('WP_DEBUG_DISPLAY', false);
+define('WP_DEBUG_LOG', '/var/log/cyberdat-staging/wp-debug.log');
+define('FORCE_SSL_ADMIN', true);
+define('WP_CACHE_KEY_SALT', 'cyberdat-staging:');
+define('WP_MEMORY_LIMIT', PHP_SAPI === 'cli' ? '128M' : '256M');
+define('WP_MAX_MEMORY_LIMIT', PHP_SAPI === 'cli' ? '128M' : '256M');
+if (!defined('ABSPATH')) { define('ABSPATH', __DIR__ . '/'); }
+require_once ABSPATH . 'wp-settings.php';

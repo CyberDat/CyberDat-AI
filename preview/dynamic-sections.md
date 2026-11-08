@@ -69,3 +69,10 @@ comparison of statuses, dates, content, terms and meta. It writes
 `section-test-results.json` beside the inspection page; that page displays both
 integration reports and provides the 320/768/1440px checks. These real WordPress
 and browser tests execute when Playground opens, not in the VPS CLI environment.
+
+## 0.6.0 guard update
+
+The homepage can now also render in the explicitly authorized staging context
+described in `deploy/staging/README.md`. Production still falls back to index.
+The earlier Playground-only restriction is superseded only by this fail-closed
+staging guard; preview mode does not enable live APIs.

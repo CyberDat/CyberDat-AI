@@ -96,8 +96,9 @@ ransomware values display Not provided. No CVSS is inferred; the neutral panel s
 
 ## Isolation and verification
 
-The original `front-page.php` guard is unchanged. Production falls back to index
-before the dashboard can render. Approved header, menu, 3B assets, CSS and 0.4.0
+The fail-closed `front-page.php` guard preserves production fallback to index
+before the dashboard can render. Version 0.6.0 additionally permits explicit isolated
+staging; see `deploy/staging/README.md`. Approved header, menu, 3B assets, CSS and 0.4.0
 editorial components are unchanged. Only dashboard text/data and the preview notice
 are updated, preserving metric/panel/table layout and responsive containers.
 

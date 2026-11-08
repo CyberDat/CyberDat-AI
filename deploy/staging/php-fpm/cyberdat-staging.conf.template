@@ -1,0 +1,36 @@
+; REVIEW TEMPLATE ONLY: a new pool, never a replacement for production www.conf.
+[cyberdat-staging]
+user = cyberdat-staging
+group = cyberdat-staging
+listen = /run/php/php8.4-fpm-cyberdat-staging.sock
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+pm = ondemand
+pm.max_children = 1
+pm.process_idle_timeout = 10s
+pm.max_requests = 500
+request_terminate_timeout = 60s
+request_terminate_timeout_track_finished = yes
+chdir = /var/www/cyberdat-staging/public
+clear_env = yes
+catch_workers_output = no
+security.limit_extensions = .php
+php_admin_value[memory_limit] = 256M
+php_admin_value[max_execution_time] = 45
+php_admin_value[max_input_time] = 30
+php_admin_value[upload_max_filesize] = 16M
+php_admin_value[post_max_size] = 20M
+php_admin_value[open_basedir] = /var/www/cyberdat-staging:/var/lib/cyberdat-staging:/var/log/cyberdat-staging:/run/mysqld:/etc/ssl/certs
+php_admin_value[upload_tmp_dir] = /var/lib/cyberdat-staging/tmp
+php_admin_value[sys_temp_dir] = /var/lib/cyberdat-staging/tmp
+php_admin_value[session.save_path] = /var/lib/cyberdat-staging/sessions
+php_admin_flag[display_errors] = off
+php_admin_flag[log_errors] = on
+php_admin_value[error_log] = /var/log/cyberdat-staging/php-errors.log
+php_admin_value[sendmail_path] = /bin/false
+php_admin_value[disable_functions] = mail,exec,passthru,shell_exec,system,proc_open,popen,pcntl_exec
+php_admin_value[ffi.enable] = false
+; Avoid shared production bytecode/cache access without changing global OPcache.
+php_admin_flag[opcache.enable] = off
+php_admin_value[opcache.file_cache] =

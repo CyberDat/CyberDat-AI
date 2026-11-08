@@ -1,0 +1,17 @@
+<?php
+/** Staging-only MU safety layer; no content, users or settings are created. */
+defined('ABSPATH') || exit;
+if (wp_get_environment_type() !== 'staging'
+    || rtrim(str_replace('\\', '/', ABSPATH), '/') . '/' !== '/var/www/cyberdat-staging/public/') {
+    return;
+}
+add_filter('pre_wp_mail', static function () { return false; }, PHP_INT_MAX);
+add_filter('wp_robots', static function ($robots) {
+    unset($robots['index'], $robots['follow']);
+    $robots['noindex'] = true;
+    $robots['nofollow'] = true;
+    return $robots;
+}, PHP_INT_MAX);
+add_action('send_headers', static function () {
+    header('X-Robots-Tag: noindex, nofollow', true);
+});

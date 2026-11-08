@@ -9,7 +9,7 @@ https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.co
 
 For an immutable preview replace `refs/heads/feat/cyberdat-theme-scaffold` with this
 preview commit's full SHA. The Blueprint pins theme source separately to
-`720c8a316c853945aece2b02374120113584ec83`, WordPress 7.1.4 and PHP 8.4.
+`6f09f8c12f01ca25eec90df2f42f7a780e78be94`, WordPress 7.1.4 and PHP 8.4.
 Initial loading downloads official WordPress/PHP WebAssembly and the public theme.
 If needed, paste the raw Blueprint URL into the official Playground Blueprint UI.
 
@@ -38,7 +38,7 @@ Automated DOM checks do not certify screenshots, screen readers or Core Web Vita
 The approved dark 0.3.0 layout and 3B branding remain unchanged. Only the editorial
 selection is dynamic. The Threat Intelligence Dashboard uses a fixed official CISA KEV snapshot,
 explicitly NOT LIVE, without external feeds. See [KEV architecture and provenance](kev/README.md). The production guard in
-`front-page.php` still falls back to `index.php` outside Playground.
+`front-page.php` still falls back to `index.php` outside explicitly authorized preview contexts.
 
 ## Isolation and fixtures
 
@@ -96,3 +96,10 @@ partial coverage and row scores at all viewport widths.
 Current local checks: 66 NVD assertions, 41 KEV assertions, 34 PHP files linted,
 existing 12 Featured save cases / 16 section checks / navigation tests. CVSS 4.0
 and 3.0 successful official-fixture tests are pending, not included as PASS claims.
+
+## 0.6.0 staging preparation
+
+The pinned theme adds an explicit isolated staging guard; Playground remains
+local with CYBERDAT_PLAYGROUND=true and all live flags absent. Production remains
+blocked. See [staging preparation](../deploy/staging/README.md). The preparation
+adds no deployed site, account, database, certificate, Cron or DNS record.
