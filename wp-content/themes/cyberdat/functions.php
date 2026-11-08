@@ -9,3 +9,4 @@ require_once __DIR__ . '/inc/navigation.php';
 require_once __DIR__ . '/inc/editorial-lead.php';
 require_once __DIR__ . '/inc/home-prototype.php';
 require_once __DIR__ . '/inc/kev-data.php';
+require_once __DIR__ . '/inc/nvd-data.php';
