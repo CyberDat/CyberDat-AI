@@ -1,5 +1,47 @@
 # Verification — preparation checks vs future deployment checks
 
+## Recorded application DR acceptance
+
+The [2026-11-08 report](dr-2026-11-08.md) records operator-run Windows Docker
+checks: encrypted offsite backup/decryption/integrity, MariaDB 11.8.6 (18 checked
+tables), WordPress 7.1.4, local administrator login, Twenty Twenty-Five, Rank Math,
+Coming Soon, noindex/CSP and an authenticated real 404. The working WordPress,
+proxy and MariaDB containers were stopped with their containers and volumes
+retained. The source test MariaDB remains separate; production was not changed.
+
+This is application recovery, not full production VPS or CyberDat theme recovery.
+Editor/content creation, media restoration (empty uploads), production Nginx/FPM
+restoration and complete Windows-host/network isolation remain unverified. SQL and
+file backups were not one atomic snapshot; RTO/RPO were not measured. Repeat
+future recovery using the actual six-file set described in [backup.md](backup.md).
+
+## Staging deployment gates
+
+The local DR PASS does not close these gates or authorize deployment:
+
+- Approve and verify staging DNS, dedicated HTTPS certificate, Basic Auth and
+  automated renewal without changing mail/production DNS or introducing an auth
+  bypass. None is established by the local HTTP test.
+- Run full Nginx and PHP-FPM configuration checks in the real server context
+  before separately approved activation/reloads; workspace syntax tests are not
+  substitutes. Do not replace the production pool or vhost.
+- Verify outbound HTTP, SMTP and host/production connectivity controls as both the
+  staging FPM UID and CLI UID. Mail hooks and false KEV/NVD flags do not guarantee
+  general egress isolation. Keep live flags false until separately authorized.
+- Verify `theme-source.json` against the approved immutable Git commit/tree and
+  the actual staged artifact: file inventory, hashes, modes and unexpected extras.
+  The reviewed source pin is `6f09f8c12f01ca25eec90df2f42f7a780e78be94`; theme files
+  are unchanged in approved preparation commit
+  `7e0476ea465101f677741ae66e56e783b4d2a875`. Recheck at deployment time. The local
+  working folder contained nine extra 1280px WebP files outside the 71-entry
+  manifest; do not deploy the whole folder or silently extend the manifest.
+- Verify fresh staging DB grants, independent credentials/salts, runtime/file
+  permissions, reviewed taxonomy registration and offline snapshot import. Do not
+  execute Playground bootstrap scripts on the VPS or copy production users/options.
+- Complete CyberDat theme/editor/responsive and cron/resource acceptance below.
+  Record the untested production-service/media recovery scope and RTO/RPO rather
+  than relabeling the local application test as a complete recovery certificate.
+
 ## Run safely in the development workspace (no real server config loaded)
 
 ```sh
@@ -92,7 +134,9 @@ Acceptance checklist:
   fixture checks from 0.5.0 remain pending until real source examples are available.
 - Observe available RAM/RSS, load and free disk; no heavy batch/API work, second DB
   instance or additional pool children enabled implicitly.
-- Complete backup restore acceptance from backup.md before considering rollout safe.
+- Review the dated application DR acceptance above, backup freshness and remaining
+  recovery scope in [backup.md](backup.md); close the staging deployment gates
+  before considering activation. No full-VPS recovery claim follows from local DR.
 
 Rollback plan: disable only the staging job/site/pool in a separately approved
 operation and restore their previous staging revisions. Do not restore a whole

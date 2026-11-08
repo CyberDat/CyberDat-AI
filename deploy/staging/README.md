@@ -5,6 +5,24 @@ separate approval before copying into system paths. Never run these instructions
 against production automatically. This branch does not install users, software,
 WordPress, DNS, databases, jobs, certificates or configuration.
 
+## Recorded DR result and remaining staging gates
+
+The [2026-11-08 DR report](dr-2026-11-08.md) records a successful recovery of the
+WordPress application on Windows Docker, followed by an owner-confirmed stop of
+the three working containers with all volumes retained. The source test MariaDB
+remains separate. This does not certify recovery of the entire production VPS or
+the CyberDat theme: the restored active theme was Twenty Twenty-Five.
+
+Use the actual three-archive format in [backup.md](backup.md). Editor/content
+creation, media recovery (empty uploads), full network/Windows-host isolation and
+production Nginx/PHP-FPM recovery remain unverified. The backup was not atomic
+across SQL and files; RTO/RPO were not measured.
+
+Before deployment, close the [readiness gates](verification.md#staging-deployment-gates):
+DNS and dedicated HTTPS/renewal, full Nginx/FPM checks, outbound connection controls
+and verification of the pinned theme artifact. Do not copy the local Docker proxy
+configuration into the VPS staging vhost or treat a local PASS as staging approval.
+
 ## Approved layout
 
 | Component | Staging only |
@@ -89,7 +107,9 @@ or VPS; do not change production permissions to simulate it here.
 
 ## Future deployment sequence — requires approval
 
-1. Complete and restore-test the encrypted offsite backup in [backup.md](backup.md).
+1. Review the [recorded application DR test](dr-2026-11-08.md) and remaining scope
+   limitations; confirm backup freshness and offsite recoverability using
+   [backup.md](backup.md). The dated PASS is not a full-VPS recovery certificate.
    Confirm UFW, existing root schedules and TLS renewal plan. Do not alter MX/SPF/
    DKIM/DMARC or existing production A/AAAA records.
 2. Approve this exact theme guard revision and source manifest. `theme-source.json`
