@@ -19,6 +19,7 @@ get_header();
 		</h1>
 		<?php if ( is_archive() ) : ?>
 			<div class="archive-description prose"><?php echo wp_kses_post( get_the_archive_description() ); ?></div>
+			<?php if ( is_tax( 'editorial_format', array( 'guides', 'learning', 'analysis' ) ) ) { cyberdat_tools_hub_link(); } ?>
 		<?php endif; ?>
 	</header>
 <?php endif; ?>

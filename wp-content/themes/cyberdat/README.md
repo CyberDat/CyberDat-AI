@@ -32,3 +32,7 @@ Featured Story uses an original responsive WebP illustration and a four-story br
 ## Premium editorial refinement (0.3.0)
 
 Compact masthead, dominant image-led featured story, four thumbnail briefings and tighter section spacing. Original generated artwork and its full prompt set are documented in `preview/art-direction.md` at the repository root. Images have explicit dimensions, responsive sources and lazy loading outside the hero. The original offline dashboard is unchanged. No new frontend JavaScript or external services were added.
+
+## 0.7 Tools architecture
+
+Reusable native Page templates for a Tools directory and Tool + SEO Content, typed REST metadata, secure editorial controls and implementation/content release gates. Rank Math owns SEO tags/schema; the theme does not emit a second graph. See `deploy/staging/seo-0.7.md` and `deploy/staging/tools-roadmap.md` in the repository. No utility implementation is included.

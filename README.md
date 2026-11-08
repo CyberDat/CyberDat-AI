@@ -53,3 +53,7 @@ connection controls and verification of the pinned theme deployment artifact are
 deployment gates. See [staging preparation](deploy/staging/README.md) and
 [Playground scope](preview/README.md). Production activation, merge and deployment
 remain unapproved.
+
+## 0.7 Technical SEO Architecture
+
+Native Tools pages, fail-closed draft release gates, Rank Math-owned SEO and typed REST metadata. See [implementation and staging verification](deploy/staging/seo-0.7.md) and the [approved ten-tool roadmap](deploy/staging/tools-roadmap.md). This branch does not deploy production or release working tools.

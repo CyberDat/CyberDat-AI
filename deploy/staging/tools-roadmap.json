@@ -1,0 +1,82 @@
+[
+  {
+    "release": "1.1",
+    "phase": 1,
+    "title": "Privacy Shield Log Anonymizer",
+    "slug": "log-anonymizer",
+    "url": "/tools/log-anonymizer/",
+    "status": "planned"
+  },
+  {
+    "release": "1.1",
+    "phase": 1,
+    "title": "IoT & Industrial Exposure Query Helper",
+    "slug": "iot-exposure-query-builder",
+    "url": "/tools/iot-exposure-query-builder/",
+    "status": "planned"
+  },
+  {
+    "release": "1.1",
+    "phase": 1,
+    "title": "LotL / LOLBAS Command Analyzer",
+    "slug": "lolbas-analyzer",
+    "url": "/tools/lolbas-analyzer/",
+    "status": "planned"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "LLM Prompt Injection Test Bench",
+    "slug": "prompt-injection-test-bench",
+    "url": "/tools/prompt-injection-test-bench/",
+    "status": "planned"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "Modbus/BACnet Frame Decoder",
+    "slug": "modbus-decoder",
+    "url": "/tools/modbus-decoder/",
+    "status": "planned"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "Docker & Kubernetes Hardening Audit Generator",
+    "slug": "container-hardening-audit",
+    "url": "/tools/container-hardening-audit/",
+    "status": "planned"
+  },
+  {
+    "release": "1.2",
+    "phase": 2,
+    "title": "AI Model Bill of Materials (A-BOM)",
+    "slug": "ai-model-bom",
+    "url": "/tools/ai-model-bom/",
+    "status": "planned"
+  },
+  {
+    "release": "1.3",
+    "phase": 3,
+    "title": "YARA/Sigma Rule Validator & Converter",
+    "slug": "yara-sigma-validator",
+    "url": "/tools/yara-sigma-validator/",
+    "status": "planned"
+  },
+  {
+    "release": "1.3",
+    "phase": 3,
+    "title": "MITRE ATLAS Attack Vector Mapper",
+    "slug": "mitre-atlas-mapper",
+    "url": "/tools/mitre-atlas-mapper/",
+    "status": "planned"
+  },
+  {
+    "release": "1.3",
+    "phase": 3,
+    "title": "Security Webhook & OOB Listener",
+    "slug": "webhook-oob-listener",
+    "url": "/tools/webhook-oob-listener/",
+    "status": "planned"
+  }
+]

@@ -1,0 +1,13 @@
+/* Scoped additions only: the approved editorial homepage is unchanged. */
+.cyberdat-tool { min-width: 0; overflow-wrap: anywhere; }
+.cyberdat-tool h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.12; }
+.cyberdat-tool h2 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+.cyberdat-tool-summary { color: var(--color-text-muted, #a6b5c4); max-width: 65ch; }
+.cyberdat-tool-breadcrumbs { display: flex; flex-wrap: wrap; gap: .6rem; padding: 0; list-style: none; font-size: .875rem; }
+.cyberdat-tool-breadcrumbs li + li::before { content: '/'; margin-right: .6rem; color: #a6b5c4; }
+.cyberdat-tool-workspace, .cyberdat-tool-card { background: #101923; border: 1px solid #293746; border-radius: .75rem; padding: clamp(1rem, 3vw, 2rem); margin-block: 1.5rem; }
+.cyberdat-tool section { margin-block: 2rem; }
+.cyberdat-tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1.5rem; }
+.cyberdat-tool-related ul { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding-left: 1.2rem; }
+.cyberdat-tool :focus-visible { outline: 2px solid #70f3cb; outline-offset: 4px; }
+.cyberdat-tool pre { max-width: 100%; overflow-x: auto; }

@@ -11,4 +11,5 @@ defined( 'ABSPATH' ) || exit;
 		wp_link_pages( array( 'before' => '<nav class="page-links" aria-label="' . esc_attr__( 'Article pages', 'cyberdat' ) . '">', 'after' => '</nav>' ) );
 		?>
 	</div>
+	<?php if ( is_singular( 'post' ) ) { cyberdat_tools_hub_link(); } ?>
 </article>
