@@ -85,6 +85,24 @@ def timer_fingerprints():
 def research_code():return {str(p.relative_to(PLUGIN)):sha(p) for p in PLUGIN.rglob('*') if p.is_file()}
 def page_info():
  return json.loads(wp('eval',"$p=get_page_by_path('threat-intelligence',OBJECT,['page','post']);echo wp_json_encode($p?['id'=>$p->ID,'type'=>$p->post_type,'status'=>$p->post_status]:null);").stdout)
+
+class SEOHeadParser(__import__('html.parser',fromlist=['HTMLParser']).HTMLParser):
+ def __init__(self):super().__init__(convert_charrefs=True);self.descriptions=[];self.head=True
+ def handle_endtag(self,tag):
+  if tag.lower()=='head':self.head=False
+ def handle_starttag(self,tag,attrs):
+  if self.head and tag.lower()=='meta':
+   values={k.lower():v for k,v in attrs}
+   if str(values.get('name','')).lower()=='description':self.descriptions.append(values.get('content',''))
+def verify_description(text):
+ import html
+ parser=SEOHeadParser();parser.feed(text)
+ saved=json.loads(wp('eval',"require_once ABSPATH.'wp-admin/includes/plugin.php';$p=get_page_by_path('threat-intelligence');echo wp_json_encode(['id'=>$p?$p->ID:null,'description'=>$p?get_post_meta($p->ID,'rank_math_description',true):null,'template'=>$p?get_page_template_slug($p):null,'rank_math_active'=>is_plugin_active('seo-by-rank-math/rank-math.php')]);").stdout)
+ normal=lambda value:' '.join(html.unescape(value or '').split())
+ expected=normal(saved['description']);actual=[normal(value) for value in parser.descriptions]
+ print('SEO DESCRIPTION DIAGNOSTIC: '+json.dumps({'page_id':saved['id'],'template':saved['template'],'rank_math_active':saved['rank_math_active'],'description_tag_count':len(actual),'saved_description':expected,'rendered_descriptions':actual,'rank_math_marker':bool(re.search(r'Rank.?Math',text,re.I))},ensure_ascii=False))
+ need(bool(expected) and len(actual)==1 and actual[0]==expected,'Description absent, duplicated or differs from saved page metadata; safe diagnostic above, no page settings changed')
+
 def main():
  global phase
  parser=argparse.ArgumentParser();parser.add_argument('--apply',action='store_true');parser.add_argument('--verify',type=P);parser.add_argument('--rollback',type=P);args=parser.parse_args();need(sum([args.apply,bool(args.verify),bool(args.rollback)])==1 and os.geteuid()==0,'Choose one action using owner sudo');os.umask(0o077)
@@ -150,7 +168,7 @@ def main():
  need('No verified geolocated threat events available.' in text and 'NO LIVE TELEMETRY' in text,'Honest empty map missing')
  need(text.index('data-threat-map')<text.index('data-kpi=')<text.index('data-charts-version=')<text.index('td-feed'),'Section order mismatch')
  canonical=re.findall(r'<link\b[^>]*rel=[\"\x27]canonical[\"\x27][^>]*>',text,re.I);need(len(canonical)<=1 and (not canonical or '/threat-intelligence/' in canonical[0]),'Canonical duplicate/wrong route');print('SEO: '+('Rank Math canonical present' if canonical else 'Rank Math suppresses canonical on noindex staging; native permalink verified'))
- need('Explore CyberDat threat intelligence:' in text and len(re.findall(r'<meta\b[^>]*name=[\"\x27]description',text,re.I))==1,'Description missing/duplicate')
+ verify_description(text)
  home_code,h,home=fetch('/',basic);home=home.decode('utf-8','replace');need(home_code==200 and 'data-threat-pulse' in home and 'data-threat-dashboard' not in home and 'td-feed' not in home and 'data-threat-map' not in home,'Homepage not compact')
  nav=home.split('<nav id="site-navigation"',1)[1].split('</nav>',1)[0];need('/threat-intelligence/' in nav and len(re.findall(r'<li\b',nav))>=8,'Primary sections missing')
  for key in ['critical','nvd_7','kev']:
