@@ -60,10 +60,12 @@ function record(label, passed, detail = '') {
 }
 async function showEditorialReport() {
   try {
-    const response = await fetch(new URL('editorial-test-results.json', location.href));
+    for (const file of ['editorial-test-results.json', 'section-test-results.json']) {
+    const response = await fetch(new URL(file, location.href));
     if (!response.ok) throw new Error('Integration report missing');
     const report = await response.json();
     for (const item of report.results) record('WordPress · ' + item.test, item.status === 'PASS', item.detail || '');
+    }
   } catch (error) { record('WordPress integration tests', false, error.message); }
 }
 async function display() {
@@ -119,12 +121,15 @@ runButton.addEventListener('click', async () => {
           const pictures = [...doc.querySelectorAll('.editorial-image img')];
           for (const img of pictures) { img.loading = 'eager'; }
           await Promise.all(pictures.map(img => img.decode().catch(() => undefined)));
-          record(label + ' nine original card illustrations', pictures.length === 9 && new Set(pictures.map(img => img.src)).size === 9);
+          record(label + ' nine WordPress card images', pictures.length === 9 && pictures.every(img => img.hasAttribute('srcset') && img.hasAttribute('sizes')));
           record(label + ' all editorial images decode', pictures.every(img => img.complete && img.naturalWidth > 0));
           record(label + ' four briefing stories', doc.querySelectorAll('.brief-item').length === 4);
           const lead = doc.querySelector('.featured-story')?.dataset.postId;
           const news = [...doc.querySelectorAll('.brief-item')].map(el => el.dataset.postId);
           record(label + ' no duplicate lead posts', !!lead && !news.includes(lead) && new Set(news).size === news.length);
+          const cards = [...doc.querySelectorAll('.editorial-card')];
+          record(label + ' Featured excluded from all sections', !!lead && cards.every(card => card.dataset.postId !== lead));
+          record(label + ' three cards per section', ['analysis', 'ai', 'learning'].every(name => doc.querySelectorAll('.section-' + name + ' .editorial-card').length === 3));
           record(label + ' WordPress responsive lead image', !!doc.querySelector('.featured-art img[srcset][sizes]'));
 
           record(label + ' card publication dates', doc.querySelectorAll('.editorial-card time[datetime]').length === 9);

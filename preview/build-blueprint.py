@@ -19,7 +19,7 @@ blueprint = {
     'steps': [
         {'step': 'installTheme', 'themeData': {
             'resource': 'git:directory', 'url': 'https://github.com/CyberDat/CyberDat-AI',
-            'ref': '87a4783a84787aaab25a25d2ced1bbd41b155d5b', 'refType': 'commit',
+            'ref': '8536481ac9516e55a3910ef3f9b77dad96a98ab7', 'refType': 'commit',
             'path': 'wp-content/themes/cyberdat'},
          'options': {'activate': True, 'importStarterContent': False,
                      'targetFolderName': 'cyberdat', 'onError': 'throw'}},
@@ -31,6 +31,7 @@ blueprint = {
          'data': (root / 'browser-checks.html').read_text()},
         {'step': 'runPHP', 'code': (root / 'seed.php').read_text()},
         {'step': 'runPHP', 'code': (root / 'editorial-tests.php').read_text()},
+        {'step': 'runPHP', 'code': (root / 'section-tests.php').read_text()},
     ],
 }
 (root / 'blueprint.json').write_text(json.dumps(blueprint, indent=2, ensure_ascii=False) + '\n')

@@ -1,79 +1,77 @@
-# CyberDat 0.3.0 — browser-only preview
+# CyberDat 0.4.0 — isolated WordPress Playground
 
-This fixture is for the official WordPress Playground only. It does not connect to CyberDat.eu, production databases, passwords or private APIs. Do not deploy these fixture files or the generated demo MU code to production.
+Official browser-only WordPress preview. No connection to production, real accounts,
+mail, databases, analytics or external threat APIs. Never deploy these fixtures.
 
 ## Open
 
-Load `preview/blueprint.json` using the official Playground `blueprint-url` parameter:
-
-```text
 https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/CyberDat/CyberDat-AI/refs/heads/feat/cyberdat-theme-scaffold/preview/blueprint.json
-```
 
-For reproducibility, replace `refs/heads/feat/cyberdat-theme-scaffold` with the preview commit SHA. The Blueprint itself pins theme source to commit `62147ffe3540e6cfa21897f2759d52a76529c8f3`, WordPress 7.1.4 and PHP 8.4.
+For an immutable preview replace `refs/heads/feat/cyberdat-theme-scaffold` with this
+preview commit's full SHA. The Blueprint pins theme source separately to
+`8536481ac9516e55a3910ef3f9b77dad96a98ab7`, WordPress 7.1.4 and PHP 8.4.
+Initial loading downloads official WordPress/PHP WebAssembly and the public theme.
+If needed, paste the raw Blueprint URL into the official Playground Blueprint UI.
 
-If the link is unavailable, open https://playground.wordpress.net/, choose New → Blueprint URL, and paste the raw JSON URL. The first load downloads WordPress and PHP WebAssembly into the browser.
+## Inspect
 
-## What opens
+The opening panel displays real WordPress integration reports from both editorial
+steps. Click **Run layout checks at all three widths** for 320/768/1440px browser
+checks: overflow, navigation/ARIA/Escape focus, dark surface, 3B logo and favicon
+sizes, card columns/images/dates, Featured exclusion, Gutenberg blocks, archives
+and the missing-page template. These results are calculated in your browser.
 
-The landing page is a preview-only inspection panel with a route selector and 320, 768 and 1440 CSS-pixel iframe widths. Click **Run layout checks at all three widths**. Results are generated in your browser; they are not pre-recorded pass claims.
+Use **Open site** for the homepage and admin toolbar. The default disposable
+Playground account is logged in; it has no relationship to production credentials.
+Use **Open Gutenberg editor** for the Block Showcase page. Manually inspect visual
+composition, keyboard navigation, image crops and the actual editing canvas.
+Automated DOM checks do not certify screenshots, screen readers or Core Web Vitals.
 
-The panel checks listing, article, Gutenberg showcase, topic archive, format archive and missing-page template. Assertions cover page overflow, dark background, one H1, mobile disclosure/ARIA, Escape focus return, grid columns and core block presence. It is not a screenshot comparison or accessibility certification.
+## Editorial workflows
 
-Use **Open site** for a normal full-window view. Use **Open Gutenberg editor**, open **Gutenberg Block Showcase**, and inspect headings, lists, code, tables, quotes, columns, buttons and theme colors. Verify keyboard focus and mobile layout manually. The preview automatically logs into the default disposable Playground account (`admin` / `password`); these are demonstration credentials, never production credentials.
+- [Featured Story and The Briefing](dynamic-editorial.md): existing step-1 rules.
+- [Dynamic Editorial Sections](dynamic-sections.md): Analysis, AI Security and
+  Guides & Learning, three posts each, including instructions to publish a SAMPLE
+  story in this sandbox. Overlap between sections is intentional. Featured is
+  excluded from all three. Real posts and WordPress media replace curated arrays.
 
-## Isolation
+The approved dark 0.3.0 layout and 3B branding remain unchanged. Only the editorial
+selection is dynamic. The offline Threat Intelligence Dashboard remains explicitly
+fictional SAMPLE DATA, without external feeds. The production guard in
+`front-page.php` still falls back to `index.php` outside Playground.
 
-- WordPress and its separate SQLite database run inside browser WebAssembly.
-- `blog_public=0`, noindex headers and robots directives apply only to this preview.
-- PHP outbound networking is disabled. Browser downloads from official Playground/WordPress and the public GitHub source are still required to initialize it.
-- Outgoing WordPress email is short-circuited; cron is disabled.
-- A guarded fixture-only MU file registers demonstration `editorial_format` and its routes. Production MU files and Coming Soon are not imported.
-- Fifteen fictional articles, Topics, Block Showcase and About this preview are created only in the sandbox. The stock Hello world/Sample Page fixtures are removed only there.
-- The homepage is a visual prototype with an offline SAMPLE DATA threat dashboard. No Rank Math account, analytics integration or production deployment is included.
+## Isolation and fixtures
 
-## Rebuild and checks
+WordPress and SQLite run in browser WebAssembly. `blog_public=0`, noindex headers,
+networking disabled in PHP, email short-circuited, cron and file editor disabled.
+A guarded preview-only MU file supplies the existing taxonomy architecture solely
+inside this sandbox. Production MU files, Coming Soon, Rank Math and secrets are
+not imported. Fifteen demo posts, three pages, categories/formats and media are
+created only here. Test suites dispose of their own posts/users and restore seed
+fixtures before inspection, recording explicit restoration results.
+
+## Rebuild and local verification
 
 ```sh
 python3 preview/build-blueprint.py
-php -l preview/demo-support.php
-php -l preview/seed.php
+php -l preview/section-tests.php
+php tests/editorial-save.test.php
+php tests/editorial-sections.test.php
 node --test tests/navigation.test.cjs
 ```
 
-Validate the generated JSON against https://playground.wordpress.net/blueprint-schema.json. The official schema has string-valued deprecated annotations; Python Draft7Validator can validate the constraints without treating those annotations as newer-draft schema errors.
+Validate `blueprint.json` against the official
+https://playground.wordpress.net/blueprint-schema.json (Draft7Validator tolerates
+its string-valued deprecated annotations). Lint all theme/preview/test PHP files
+and syntax-check the embedded inspection JS. Blueprint uses only the official
+installTheme, mkdir, writeFile and runPHP steps; no shell or production filesystem.
 
-### Verified during preparation
+Local PHP syntax, 16 section/query/guard checks, 12 Featured save-handler cases,
+existing navigation tests, JS syntax and Blueprint schema were checked during
+preparation. There is no browser engine in the authoring environment: actual
+WordPress/WASM suites, rendered widths and Gutenberg must run via this preview.
+Their PASS status is not claimed before execution. Browser SQLite/PHP-WASM tests
+also do not establish MariaDB/PHP-FPM production equivalence.
 
-- Official Blueprint schema constraints and PHP/JS syntax.
-- Theme file hashes match the pinned source commit.
-- Existing navigation unit tests pass.
-- Blueprint is guarded and has no production paths, configuration or secrets.
-
-### Not yet verified by the authoring agent
-
-No browser engine is available in the authoring VPS. The complete Playground bootstrap, rendered screenshots, responsive results and Gutenberg editing session require running this link in a browser. The panel explicitly computes results at runtime. SQLite/WASM is also not a MariaDB/PHP-FPM production-equivalence test.
-
-## Visual direction
-
-The final design remains an editorial portal informed by Unit 42 with an analytical threat-dashboard character informed by vuln.eye. This release adds an editorial homepage with a Featured Story/Briefing lead, offline threat dashboard, Latest Analysis, AI Security and Guides & Learning. It is pending visual approval. Dedicated article/archive layouts and related-material components remain later stages.
-
-## Prototype-specific checks (0.3.0)
-
-The browser inspector now checks the homepage section structure, the SAMPLE DATA notice, fictional CVE-DEMO identifiers, the hero illustration and the responsive editorial card grid. The homepage is gated by CYBERDAT_PLAYGROUND, so it falls back to the normal listing outside the sandbox. The theme makes no external requests and does not render sample threat data outside Playground. The 0.2.0 browser suite must be rerun; 0.1.0 PASS results do not certify this new layout.
-
-## 0.3.0 review
-
-The compact masthead, four-story briefing, nine unique editorial illustrations and publication dates are now included in the browser checks. Open **Open site** for a full-window editorial review, then run **Run layout checks at all three widths**. The authoring environment has no browser engine, so runtime visual results are not claimed in advance. Artwork provenance and prompts are in `art-direction.md`. The source is a design prototype awaiting approval, not a production release.
-
-## Premium Editorial Design review
-
-Version 0.3.0 replaces the repeated abstract card artwork with nine distinct original local illustrations, adds a fourth thumbnail briefing and publication dates, and compresses the slogan into a compact editorial line. The dashboard data and markup are unchanged. See `art-direction.md` for full image prompts and provenance. The nine section cards are curated without repeating articles. Preview fixtures remain separate from production. The updated browser inspector checks image decoding, unique card artwork, dates, four briefings, compact masthead and responsive overflow. No rendered-width PASS claim is made until this new browser suite is run.
-
-## Approved 3B branding integration
-
-The header uses the original supplied horizontal dark-background SVG. Local favicon SVG, ICO and 16/32/48 PNGs are included unchanged. The inspector checks the wordmark load, original proportions and PNG decoding at every viewport. Site Icon is cleared only in the disposable Playground fixture so theme fallback icons can be inspected; production options are never read or changed. See `wp-content/themes/cyberdat/assets/branding/3b/README.md` for asset audit details. No unrelated design changes are part of this iteration.
-
-## 0.4.0 step 1: dynamic editorial lead
-
-Theme source is pinned to `87a4783a84787aaab25a25d2ced1bbd41b155d5b`. Featured Story and The Briefing use WordPress posts, metadata, media attachments and the existing editorial_format taxonomy. See `dynamic-editorial.md` for editor instructions and deterministic selection rules. The Blueprint runs real WordPress integration scenarios after importing fixtures and shows their report in the inspection panel. All mutations are isolated to the browser sandbox and the original demo posts are restored before the preview opens. The approved styles, header and 3B files are unchanged.
+Original artwork provenance: [art-direction.md](art-direction.md).
+Logo audit: [3B assets](../wp-content/themes/cyberdat/assets/branding/3b/README.md).
