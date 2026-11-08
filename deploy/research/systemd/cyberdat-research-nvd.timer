@@ -1,0 +1,8 @@
+[Unit]
+Description=CyberDat staging Research schedule nvd
+[Timer]
+OnCalendar=*-*-* 00/2:29:00 UTC
+Persistent=true
+Unit=cyberdat-research@nvd.service
+[Install]
+WantedBy=timers.target

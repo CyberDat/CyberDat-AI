@@ -12,6 +12,8 @@ function cyberdat_kev_development() {
  return (defined('CYBERDAT_PLAYGROUND') && CYBERDAT_PLAYGROUND) || in_array(wp_get_environment_type(), ['local','development','staging'], true);
 }
 function cyberdat_kev_live_enabled() {
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return false;}
+
  return cyberdat_kev_development() && !(defined('CYBERDAT_PLAYGROUND') && CYBERDAT_PLAYGROUND) && defined('CYBERDAT_KEV_LIVE') && CYBERDAT_KEV_LIVE === true;
 }
 function cyberdat_kev_day($value) {
@@ -66,6 +68,7 @@ function cyberdat_kev_store($catalog, $source, $at, $snapshot = false) {
  return update_option('cyberdat_kev_last_good',$value,false) || get_option('cyberdat_kev_last_good') === $value;
 }
 function cyberdat_kev_view($now = null) {
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return cyberdat_research_kev_view($now);}
  $now=$now ?? time();$cache=cyberdat_kev_development()?get_option('cyberdat_kev_last_good'):false;
  if (!is_array($cache) || ($cache['schema'] ?? 0)!==1 || !isset($cache['catalog']['vulnerabilities'],$cache['fetched_at'],$cache['source'],$cache['snapshot']) || !in_array($cache['source'],cyberdat_kev_sources(),true)) { return ['status'=>'Unavailable','cache'=>null,'metrics'=>null]; }
  $attempt=get_option('cyberdat_kev_attempt',[]);
@@ -89,6 +92,7 @@ function cyberdat_kev_lock($now) {
 }
 /** Internal service. Tests intercept WP HTTP; no route or public refresh action. */
 function cyberdat_kev_refresh() {
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return new WP_Error('kev_unified','Unified Research pipeline owns ingestion.');}
  if(!cyberdat_kev_development()){return new WP_Error('kev_disabled','Development only.');}
  $now=time();$lock=cyberdat_kev_lock($now);
  if(!$lock){return new WP_Error('kev_locked','Refresh already running.');}

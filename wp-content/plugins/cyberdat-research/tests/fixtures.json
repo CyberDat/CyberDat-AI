@@ -1,0 +1,73 @@
+{
+  "kev": {
+    "catalogVersion": "2020.01.01",
+    "dateReleased": "2020-01-01T12:00:00Z",
+    "count": 1,
+    "vulnerabilities": [
+      {
+        "cveID": "CVE-2020-0001",
+        "vendorProject": "TEST FIXTURE vendor",
+        "product": "TEST FIXTURE server",
+        "vulnerabilityName": "TEST FIXTURE \u2014 not live intelligence",
+        "dateAdded": "2020-01-01",
+        "shortDescription": "A fixed synthetic fixture for offline tests only. Never import into the live Research Queue.",
+        "requiredAction": "TEST ONLY",
+        "dueDate": "2020-01-30",
+        "knownRansomwareCampaignUse": "Unknown",
+        "notes": "TEST ONLY"
+      }
+    ]
+  },
+  "nvd": {
+    "version": "2.0",
+    "format": "NVD_CVE",
+    "startIndex": 0,
+    "totalResults": 1,
+    "resultsPerPage": 1,
+    "vulnerabilities": [
+      {
+        "cve": {
+          "id": "CVE-2020-0001",
+          "published": "2020-01-01T01:00:00.000",
+          "lastModified": "2020-01-01T06:00:00.000",
+          "vulnStatus": "Analyzed",
+          "descriptions": [
+            {
+              "lang": "en",
+              "value": "Fixed synthetic test fixture; no real vulnerability claim."
+            }
+          ],
+          "metrics": {
+            "cvssMetricV31": [
+              {
+                "source": "nvd@nist.gov",
+                "type": "Primary",
+                "cvssData": {
+                  "version": "3.1",
+                  "baseScore": 9.8,
+                  "baseSeverity": "CRITICAL",
+                  "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+                }
+              }
+            ]
+          },
+          "weaknesses": [
+            {
+              "description": [
+                {
+                  "lang": "en",
+                  "value": "CWE-119"
+                }
+              ]
+            }
+          ],
+          "references": [
+            {
+              "url": "https://example.com/test-fixture"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

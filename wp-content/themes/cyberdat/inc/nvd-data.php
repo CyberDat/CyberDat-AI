@@ -3,7 +3,9 @@
 defined('ABSPATH') || exit;
 function cyberdat_nvd_id($id){return is_string($id) && (bool)preg_match('/^CVE-\d{4}-\d{4,19}$/D',$id);}
 function cyberdat_nvd_url($id){return cyberdat_nvd_id($id)?'https://services.nvd.nist.gov/rest/json/cves/2.0?cveIds='.rawurlencode($id):false;}
-function cyberdat_nvd_live_enabled(){return cyberdat_kev_development() && !(defined('CYBERDAT_PLAYGROUND') && CYBERDAT_PLAYGROUND) && defined('CYBERDAT_NVD_LIVE') && CYBERDAT_NVD_LIVE===true;}
+function cyberdat_nvd_live_enabled(){
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return false;}
+return cyberdat_kev_development() && !(defined('CYBERDAT_PLAYGROUND') && CYBERDAT_PLAYGROUND) && defined('CYBERDAT_NVD_LIVE') && CYBERDAT_NVD_LIVE===true;}
 function cyberdat_nvd_key(){
  $key=getenv('CYBERDAT_NVD_API_KEY');
  return is_string($key) && preg_match('/^[A-Za-z0-9-]{1,256}$/D',$key)?$key:'';
@@ -64,6 +66,7 @@ function cyberdat_nvd_store($record,$at,$snapshot=false){
  return update_option('cyberdat_nvd_index',$index,false) || cyberdat_nvd_index()===$index;
 }
 function cyberdat_nvd_view($id,$now=null){
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return cyberdat_research_nvd_view($id,$now);}
  $now=$now??time();if(!cyberdat_kev_development() || !cyberdat_nvd_id($id)){return null;}
  $cache=get_option(cyberdat_nvd_option($id));if(!is_array($cache) || ($cache['schema']??0)!==1 || ($cache['record']['id']??'')!==$id){return null;}
  $meta=cyberdat_nvd_index()[$id]??[];
@@ -71,6 +74,7 @@ function cyberdat_nvd_view($id,$now=null){
 }
 /** Summary avoids reading every individual record on a homepage request. */
 function cyberdat_nvd_coverage(){
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return cyberdat_research_coverage();}
  $all=array_fill_keys(array_column(cyberdat_nvd_catalog(),'cveID'),true);$index=cyberdat_nvd_index();$counts=['Critical'=>0,'High'=>0,'Medium'=>0,'Low'=>0,'Unrated / Unclassified'=>0];$loaded=0;$snapshots=0;$stale=0;
  foreach($index as $id=>$m){if(!isset($all[$id]) || empty($m['checked_at'])){continue;}++$loaded;if(!empty($m['snapshot'])){++$snapshots;}if(!empty($m['snapshot']) || time()-$m['checked_at']>604800 || !empty($m['error'])){++$stale;}$label=isset($counts[$m['severity']??''])?$m['severity']:'Unrated / Unclassified';++$counts[$label];}
  return ['loaded'=>$loaded,'total'=>count($all),'counts'=>$counts,'snapshots'=>$snapshots,'stale'=>$stale];
@@ -87,6 +91,7 @@ function cyberdat_nvd_lock($now){$lock=['token'=>wp_generate_uuid4(),'expires'=>
 function cyberdat_nvd_retry_after($header,$now){$header=trim((string)$header);if(preg_match('/^\d{1,10}$/D',$header)){return (int)$header;}if(strlen($header)<100){$stamp=strtotime($header);if($stamp!==false){return max(0,$stamp-$now);}}return 0;}
 /** One request maximum. Explicit tests intercept HTTP; Cron requires live opt-in. */
 function cyberdat_nvd_worker(){
+ if(function_exists('cyberdat_research_active') && cyberdat_research_active()){return new WP_Error('nvd_unified','Unified Research pipeline owns ingestion.');}
  if(!cyberdat_kev_development()){return new WP_Error('nvd_disabled','Development only.');}
  $now=time();$lock=cyberdat_nvd_lock($now);if(!$lock){return new WP_Error('nvd_locked','Worker already running.');}
  try{

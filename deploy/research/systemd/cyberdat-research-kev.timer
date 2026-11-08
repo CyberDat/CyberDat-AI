@@ -1,0 +1,8 @@
+[Unit]
+Description=CyberDat staging Research schedule kev
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:13:00 UTC
+Persistent=true
+Unit=cyberdat-research@kev.service
+[Install]
+WantedBy=timers.target

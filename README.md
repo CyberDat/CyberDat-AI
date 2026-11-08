@@ -57,3 +57,7 @@ remain unapproved.
 ## 0.7 Technical SEO Architecture
 
 Native Tools pages, fail-closed draft release gates, Rank Math-owned SEO and typed REST metadata. See [implementation and staging verification](deploy/staging/seo-0.7.md) and the [approved ten-tool roadmap](deploy/staging/tools-roadmap.md). This branch does not deploy production or release working tools.
+
+## 0.8.1 Research Agent
+
+Dedicated staging-only official-source ingestion, persistent human editorial queue and unified Dashboard provider. See [architecture, safety, deployment and validation](deploy/research/README.md). Live deployment and scheduling require the owner-run updater; source preparation is not evidence of completed runtime deployment.

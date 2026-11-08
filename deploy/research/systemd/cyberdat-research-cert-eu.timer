@@ -1,0 +1,8 @@
+[Unit]
+Description=CyberDat staging Research schedule cert-eu
+[Timer]
+OnCalendar=*-*-* 01,07,13,19:11:00 UTC
+Persistent=true
+Unit=cyberdat-research@cert-eu.service
+[Install]
+WantedBy=timers.target

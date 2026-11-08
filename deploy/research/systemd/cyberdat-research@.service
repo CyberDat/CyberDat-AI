@@ -1,0 +1,30 @@
+[Unit]
+Description=CyberDat staging bounded Research Agent (%i)
+After=network-online.target mariadb.service
+Wants=network-online.target
+ConditionPathExists=/etc/cyberdat-staging/research.json
+[Service]
+Type=oneshot
+User=cyberdat-staging
+Group=cyberdat-staging
+ExecStart=/opt/cyberdat-research/run.sh %i
+WorkingDirectory=/var/lib/cyberdat-staging/research
+TimeoutStartSec=180
+MemoryMax=256M
+CPUQuota=25%
+Nice=15
+IOSchedulingClass=idle
+TasksMax=12
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cyberdat-staging/research /var/log/cyberdat-staging /var/lib/cyberdat-staging/tmp
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+RestrictSUIDSGID=true
+LockPersonality=true
+StandardOutput=journal
+StandardError=journal

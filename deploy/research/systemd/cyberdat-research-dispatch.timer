@@ -1,0 +1,8 @@
+[Unit]
+Description=CyberDat staging Research schedule dispatch
+[Timer]
+OnCalendar=*-*-* *:00/5:00 UTC
+Persistent=true
+Unit=cyberdat-research@dispatch.service
+[Install]
+WantedBy=timers.target
