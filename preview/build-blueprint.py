@@ -7,7 +7,7 @@ root = Path(__file__).resolve().parent
 blueprint = {
     '$schema': 'https://playground.wordpress.net/blueprint-schema.json',
     'meta': {'title': 'CyberDat 0.5.0 + 3B — isolated theme inspection', 'author': 'CyberDat',
-             'description': 'Premium editorial homepage with original local illustrations and an offline official CISA KEV snapshot dashboard, with browser-only demo content and 320/768/1440px checks. No production connection.'},
+             'description': 'Premium editorial homepage with original local illustrations and an offline official CISA KEV and NIST NVD snapshot dashboard, with browser-only demo content and 320/768/1440px checks. No production connection.'},
     'preferredVersions': {'php': '8.4', 'wp': '7.1.4'},
     'features': {'networking': False},
     'constants': {'CYBERDAT_PLAYGROUND': True, 'WP_ENVIRONMENT_TYPE': 'local',
@@ -19,7 +19,7 @@ blueprint = {
     'steps': [
         {'step': 'installTheme', 'themeData': {
             'resource': 'git:directory', 'url': 'https://github.com/CyberDat/CyberDat-AI',
-            'ref': '1ca4dcd55e5fb94b5e2eaf09145c586f405a5e23', 'refType': 'commit',
+            'ref': '720c8a316c853945aece2b02374120113584ec83', 'refType': 'commit',
             'path': 'wp-content/themes/cyberdat'},
          'options': {'activate': True, 'importStarterContent': False,
                      'targetFolderName': 'cyberdat', 'onError': 'throw'}},
@@ -35,10 +35,17 @@ blueprint = {
          'data': (root / 'kev/provenance.json').read_text()},
         {'step': 'writeFile', 'path': '/wordpress/wp-content/cyberdat-preview/kev-cases.php',
          'data': (root.parent / 'tests/kev-cases.php').read_text()},
+        {'step': 'writeFile', 'path': '/wordpress/wp-content/cyberdat-preview/nvd-responses.json.gz.b64',
+         'data': (root / 'nvd/responses.json.gz.b64').read_text()},
+        {'step': 'writeFile', 'path': '/wordpress/wp-content/cyberdat-preview/nvd-provenance.json',
+         'data': (root / 'nvd/provenance.json').read_text()},
+        {'step': 'writeFile', 'path': '/wordpress/wp-content/cyberdat-preview/nvd-cases.php',
+         'data': (root.parent / 'tests/nvd-cases.php').read_text()},
         {'step': 'runPHP', 'code': (root / 'seed.php').read_text()},
         {'step': 'runPHP', 'code': (root / 'editorial-tests.php').read_text()},
         {'step': 'runPHP', 'code': (root / 'section-tests.php').read_text()},
         {'step': 'runPHP', 'code': (root / 'kev-bootstrap.php').read_text()},
+        {'step': 'runPHP', 'code': (root / 'nvd-bootstrap.php').read_text()},
     ],
 }
 (root / 'blueprint.json').write_text(json.dumps(blueprint, indent=2, ensure_ascii=False) + '\n')

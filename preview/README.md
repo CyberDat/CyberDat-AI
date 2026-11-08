@@ -9,7 +9,7 @@ https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.co
 
 For an immutable preview replace `refs/heads/feat/cyberdat-theme-scaffold` with this
 preview commit's full SHA. The Blueprint pins theme source separately to
-`1ca4dcd55e5fb94b5e2eaf09145c586f405a5e23`, WordPress 7.1.4 and PHP 8.4.
+`720c8a316c853945aece2b02374120113584ec83`, WordPress 7.1.4 and PHP 8.4.
 Initial loading downloads official WordPress/PHP WebAssembly and the public theme.
 If needed, paste the raw Blueprint URL into the official Playground Blueprint UI.
 
@@ -83,3 +83,16 @@ The Blueprint embeds the full official compressed snapshot, its provenance and t
 shared KEV tests. PHP networking and live Cron remain disabled. Editorial fixtures
 remain SAMPLE DATA; vulnerability identifiers and metrics now come from the dated
 official snapshot. CVSS is explicitly pending NVD, without inferred scores.
+
+## 0.5.0 step 2 — NVD / CVSS
+
+Seven original NIST API responses enrich existing KEV IDs only. See
+[NVD architecture, real scores, source priority and verification limits](nvd/README.md).
+Coverage is 7 of 1769; NOT LIVE snapshots never claim full catalog coverage. Both
+KEV and NVD live modes remain disabled. NVD tests restore their original cache and
+queue. The inspection panel displays the fourth integration report and checks
+partial coverage and row scores at all viewport widths.
+
+Current local checks: 66 NVD assertions, 41 KEV assertions, 34 PHP files linted,
+existing 12 Featured save cases / 16 section checks / navigation tests. CVSS 4.0
+and 3.0 successful official-fixture tests are pending, not included as PASS claims.

@@ -12,7 +12,7 @@
 <body>
 <header>
 <h1>CyberDat 0.5.0 + 3B · Isolated Playground Preview</h1>
-<p class="note">Editorial homepage visual prototype. Stories are SAMPLE DATA. Dashboard uses a fixed official CISA KEV snapshot, NOT LIVE; no external API is connected. Fixtures and accounts exist only in this browser sandbox.</p>
+<p class="note">Editorial homepage visual prototype. Stories are SAMPLE DATA. Dashboard uses fixed official CISA KEV and NIST NVD snapshots, NOT LIVE; no external API is connected. Fixtures and accounts exist only in this browser sandbox.</p>
 <div class="controls">
 <label for="width">Viewport</label><select id="width"><option>320</option><option selected>768</option><option>1440</option></select>
 <label for="route">Page</label><select id="route"><option value="">Article listing</option><option value="identity-boundaries-for-ai-agents/">Article</option><option value="block-showcase/">Gutenberg blocks</option><option value="topics/">Topics directory</option><option value="topics/ai-security/">Topic archive</option><option value="news/">News archive</option><option value="missing-preview-page/">404</option></select>
@@ -60,7 +60,7 @@ function record(label, passed, detail = '') {
 }
 async function showEditorialReport() {
   try {
-    for (const file of ['editorial-test-results.json', 'section-test-results.json', 'kev-test-results.json']) {
+    for (const file of ['editorial-test-results.json', 'section-test-results.json', 'kev-test-results.json', 'nvd-test-results.json']) {
     const response = await fetch(new URL(file, location.href));
     if (!response.ok) throw new Error('Integration report missing');
     const report = await response.json();
@@ -118,7 +118,8 @@ runButton.addEventListener('click', async () => {
           record(label + ' explicit sample notice', doc.querySelector('.prototype-notice')?.textContent.includes('SAMPLE DATA'));
           record(label + ' real KEV identifiers, no demo CVEs', /CVE-\d{4}-\d{4,}/.test(doc.querySelector('.vulnerability-table')?.textContent || '') && !doc.querySelector('.intel-section')?.textContent.includes('CVE-DEMO'));
           record(label + ' snapshot explicitly not live', doc.querySelector('.intel-section')?.textContent.includes('NOT LIVE') && doc.querySelector('.intel-section')?.dataset.kevStatus === 'Stale');
-          record(label + ' no inferred severity', doc.querySelector('.severity-panel')?.textContent.includes('CVSS data pending') && !doc.querySelector('.severity-critical'));
+          record(label + ' NVD partial coverage explicit', doc.querySelector('.severity-panel')?.textContent.includes('CVSS coverage: 7 of 1769 KEV entries.') && doc.querySelector('.severity-panel')?.textContent.includes('NVD SNAPSHOT') && doc.querySelector('.severity-panel')?.dataset.nvdLoaded === '7');
+          record(label + ' NVD table scores', doc.querySelector('.vulnerability-table')?.textContent.includes('CVSS 3.1') && !!doc.querySelector('.vulnerability-table a[href*="nvd.nist.gov/vuln/detail/"]'));
           record(label + ' real dateAdded chart', doc.querySelector('.activity-svg desc')?.textContent.includes('2026-') && doc.querySelector('.signal-chart')?.textContent.includes('not attacks or incidents'));
           record(label + ' hero image loaded', [...doc.querySelectorAll('.featured-art img')].every(img => img.complete && img.naturalWidth > 0));
           const pictures = [...doc.querySelectorAll('.editorial-image img')];

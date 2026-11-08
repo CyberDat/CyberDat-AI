@@ -1,0 +1,145 @@
+{
+  "source": "Official NIST NVD CVE API 2.0",
+  "snapshot_not_live": true,
+  "requests": [
+    {
+      "cve_id": "CVE-2026-19868",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-19868",
+      "retrieved_at": "2026-11-08T06:09:55.512562+00:00",
+      "status": 200,
+      "sha256": "d95de996a1611a2fe784151fe4eb8f96f54c7cfe4b784fc0a075417d5b95c5a5",
+      "bytes": 2772,
+      "totalResults": 1
+    },
+    {
+      "cve_id": "CVE-2024-27834",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2024-27834",
+      "retrieved_at": "2026-11-08T06:10:02.843363+00:00",
+      "status": 200,
+      "sha256": "e439cec586354b098d621ab29b39aca1e5fd05d00e5a7b889c7bed7a2f87a173",
+      "bytes": 9779,
+      "totalResults": 1
+    },
+    {
+      "cve_id": "CVE-2026-119977",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-119977",
+      "retrieved_at": "2026-11-08T06:10:10.163757+00:00",
+      "status": 200,
+      "sha256": "b11ae3cf13597048f52677b3cb5d1abd5ade6ca7c11cf8146a089e87b0156f5c",
+      "bytes": 11333,
+      "totalResults": 1
+    },
+    {
+      "cve_id": "CVE-2021-44228",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2021-44228",
+      "retrieved_at": "2026-11-08T06:10:17.563520+00:00",
+      "status": 200,
+      "sha256": "53645c3381ab119cfd517c0cf73bb2c181833259d97d05c3ad23ee5675c4b320",
+      "bytes": 87139,
+      "totalResults": 1
+    },
+    {
+      "cve_id": "CVE-2024-3400",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2024-3400",
+      "retrieved_at": "2026-11-08T06:10:24.893428+00:00",
+      "status": 200,
+      "sha256": "f57f41185f99850fce7773d65c1db091472c286c0b02feb26ff6a81c786f7add",
+      "bytes": 14101,
+      "totalResults": 1
+    },
+    {
+      "cve_id": "CVE-2025-10035",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveIds=CVE-2025-10035",
+      "retrieved_at": "2026-11-08T06:11:10.667784+00:00",
+      "status": 200,
+      "sha256": "2cc8c8525b56bb0ff1ad2521529db2d4968f6ad2b50a7450cc6ba5bab61984f8",
+      "bytes": 3871,
+      "totalResults": 1
+    },
+    {
+      "cve_id": "CVE-2018-13379",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveIds=CVE-2018-13379",
+      "retrieved_at": "2026-11-08T06:11:18.007891+00:00",
+      "status": 200,
+      "sha256": "88d1ca41261cb8fdf3c89bbd6969a78178a8af4d1680a454871ea9949a6af3a2",
+      "bytes": 5235,
+      "totalResults": 1
+    }
+  ],
+  "bundle_sha256": "e43bf26a3b4ef9b45454e149043a9592b1383ca63055d60b1243f1d910f1ea1b",
+  "selected": [
+    {
+      "cve_id": "CVE-2026-19868",
+      "score": 7.5,
+      "version": "3.1",
+      "severity": "HIGH",
+      "source": "134c704f-9b21-4f2e-91b3-4a467353bcc0"
+    },
+    {
+      "cve_id": "CVE-2024-27834",
+      "score": 5.5,
+      "version": "3.1",
+      "severity": "MEDIUM",
+      "source": "nvd@nist.gov"
+    },
+    {
+      "cve_id": "CVE-2026-119977",
+      "score": 8.1,
+      "version": "3.1",
+      "severity": "HIGH",
+      "source": "security@wordfence.com"
+    },
+    {
+      "cve_id": "CVE-2021-44228",
+      "score": 10.0,
+      "version": "3.1",
+      "severity": "CRITICAL",
+      "source": "nvd@nist.gov"
+    },
+    {
+      "cve_id": "CVE-2024-3400",
+      "score": 10.0,
+      "version": "3.1",
+      "severity": "CRITICAL",
+      "source": "nvd@nist.gov"
+    },
+    {
+      "cve_id": "CVE-2025-10035",
+      "score": 9.8,
+      "version": "3.1",
+      "severity": "CRITICAL",
+      "source": "nvd@nist.gov"
+    },
+    {
+      "cve_id": "CVE-2018-13379",
+      "score": 9.8,
+      "version": "3.1",
+      "severity": "CRITICAL",
+      "source": "nvd@nist.gov"
+    }
+  ],
+  "documentation": {
+    "checked_at": "2026-11-08T06:19:07.561784+00:00",
+    "urls": [
+      "https://nvd.nist.gov/developers/vulnerabilities",
+      "https://nvd.nist.gov/developers/start-here",
+      "https://nvd.nist.gov/vuln-metrics/cvss"
+    ],
+    "official_spa_bundle_url": "https://nvd.nist.gov/main-QN4PLKKZ.js",
+    "bundle_sha256": "dbd9f659695821edbf7f971560639e0dc06945f5052204a36139c6ce41f73daa",
+    "parameter": "cveIds (maximum 100; worker uses one)",
+    "legacy_parameter": "cveId is deprecated but accepted in original snapshot retrieval",
+    "limits_without_key": "5 requests per rolling 30 seconds",
+    "limits_with_key": "50 requests per rolling 30 seconds",
+    "nvd_recommended_pause_seconds": 6,
+    "our_worker_minimum_gap_seconds": 60
+  },
+  "positive_fixture_versions": [
+    "3.1",
+    "2.0 (actual lower-priority assessment)"
+  ],
+  "unverified_positive_fixture_versions": [
+    "4.0",
+    "3.0"
+  ]
+}

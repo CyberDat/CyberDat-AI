@@ -75,7 +75,7 @@ function cyberdat_kev_test_suite($raw,$provenance){
   cyberdat_kev_store($bad,cyberdat_kev_sources()[0],$at,true);$n=count($requests);ob_start();get_template_part('template-parts/home/intelligence');$html=ob_get_clean();
   $assert('External text escaped in HTML',!str_contains($html,'<script>') && str_contains($html,'&lt;script&gt;'));
   $assert('Rendering uses cache only without HTTP',count($requests)===$n);
-  $assert('No fictional CVE or inferred severity values in dashboard',!str_contains($html,'CVE-DEMO') && str_contains($html,'No inferred scores') && !str_contains($html,'severity-critical'));
+  $assert('No fictional CVE or inferred severity values in dashboard',!str_contains($html,'CVE-DEMO') && str_contains($html,'Partial coverage; distribution includes loaded NVD records only.') && !str_contains($html,'severity-critical'));
   $n=count($requests);cyberdat_kev_schedule();cyberdat_kev_cron();$assert('Default-disabled Cron performs no HTTP',!cyberdat_kev_live_enabled() && count($requests)===$n);
  }catch(Throwable $e){$results[]=['test'=>'KEV suite completion','status'=>'FAIL','detail'=>$e->getMessage()];}
  finally{
