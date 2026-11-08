@@ -110,22 +110,30 @@ def main():
  need(fetch('/')[0]==401,'Staging authentication missing')
  basic=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ');need(basic and fetch('/',basic)[0]==200,'Basic Auth verification failed')
  admin=getpass.getpass('EXISTING staging WordPress password (hidden): ');need(bool(admin),'WordPress verification password required')
- phase='minimal worker-directory and health-shape repair'
+ phase='minimal worker and advisory-parser repair'
  code_directory_permissions()
  account=pwd.getpwnam('cyberdat-staging')
- target=PLUGIN/'includes/cli.php';saved=backup/'cli-before-health-fix.php'
- if not saved.exists():shutil.copyfile(target,saved);saved.chmod(0o600)
- temporary=target.with_name('cli.php.resume-partial');need(not temporary.exists(),'Unexpected temporary CLI patch')
- shutil.copyfile(B/'plugin/includes/cli.php',temporary);os.chown(temporary,account.pw_uid,account.pw_gid);temporary.chmod(0o644);os.replace(temporary,target)
+ for name,info in source['plugin'].items():
+  target=PLUGIN/name
+  if sha(target)==info['sha256']:continue
+  saved=backup/('resume-before-'+name.replace('/','__'))
+  if not saved.exists():shutil.copyfile(target,saved);saved.chmod(0o600)
+  temporary=target.with_name(target.name+'.resume-partial');need(not temporary.exists(),'Unexpected temporary plugin patch')
+  shutil.copyfile(B/'plugin'/name,temporary);os.chown(temporary,account.pw_uid,account.pw_gid);temporary.chmod(0o644);os.replace(temporary,target)
  tree(PLUGIN,source['plugin'])
  result=run(['/usr/sbin/runuser','-u','cyberdat-staging','--','/bin/sh','-n',str(TOOLS/'run.sh')]);need(TOOLS.stat().st_mode&0o777==0o755,'Worker directory mode repair failed')
- print('PASS: existing backup verified; public-code directory mode 0755; health JSON fix; no reinstall or credential reset')
+ print('PASS: existing backup verified; pinned minimal plugin patches; no reinstall, database reset or credential change')
  phase='resume controlled official-source batch'
  successful=[]
  for name in ['kev','nvd','cisa-advisories','cert-eu','msrc']:
   status=json.loads(wp('cyberdat-research','status').stdout);health=source_health(status,name)
   if health.get('last_success') and not health.get('last_error') and datetime.datetime.now(datetime.timezone.utc).timestamp()-health['last_success']<=(14400 if name=='nvd' else 28800):
    successful.append(name);print('PASS: '+name+' already synchronized; no repeat download');continue
+  remaining=max(0,health.get('next_due',0)-datetime.datetime.now(datetime.timezone.utc).timestamp())
+  if name in ['cert-eu','cisa-advisories','msrc'] and health.get('last_error') in ['invalid_url','response_size'] and 0<remaining<=300:
+   import time
+   while remaining>0:
+    print('WAIT: preserving '+name+' advisory-error backoff; seconds='+str(int(remaining)),flush=True);time.sleep(min(30,remaining));remaining=max(0,health.get('next_due',0)-datetime.datetime.now(datetime.timezone.utc).timestamp())
   if health.get('last_error') and health.get('next_due',0)>datetime.datetime.now(datetime.timezone.utc).timestamp():
    print('WARNING: '+name+' backoff retained; error='+health['last_error']);need(name not in ['kev','nvd'],'Required source backoff active; no retry performed');continue
   result=run(['/usr/bin/systemctl','start','cyberdat-research@'+name+'.service'],check=False,timeout=200)

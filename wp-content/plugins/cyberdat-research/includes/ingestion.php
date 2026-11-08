@@ -10,7 +10,7 @@ class CDRA_Service {
  }
  public function success($source,$response,$received=true){
   $health=$this->store->get('health:'.$source,[]);$health['last_success']=time();$health['last_checked']=time();if($received){$health['last_received']=time();}
-  $health['last_error']='';$health['failures']=0;$health['job']='Idle';$health['last_http_status']=$response['status'];$health['next_due']=time()+cdra_sources()[$source]['interval'];
+  $health['last_error']='';$health['failures']=0;$health['job']='Idle';$health['last_http_status']=$response['status'];if(cdra_sources()[$source]['format']==='rss'){$health['coverage']=!empty($response['bounded_feed_prefix'])?'first_'.(int)($response['bounded_feed_records']??25).'_complete_XML_records':'bounded_feed_document';}$health['next_due']=time()+cdra_sources()[$source]['interval'];
   if($source!=='nvd'){foreach(['etag'=>'etag','last-modified'=>'last_modified'] as $key=>$field){if(isset($response['headers'][$key])&&strlen($response['headers'][$key])<=512&&!preg_match('/[\r\n\x00]/',$response['headers'][$key])){$health[$field]=$response['headers'][$key];}}}
   $this->store->put('health:'.$source,$health);
  }

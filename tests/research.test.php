@@ -36,7 +36,18 @@ rejected(static fn()=>cdra_query('evil',[]),'unregistered endpoint denied');
 foreach(['127.0.0.1','10.0.0.1','169.254.169.254','100.100.100.200','192.168.1.1','::1','fe80::1','::ffff:127.0.0.1','2001:db8::1'] as $ip){check(!cdra_public_ip($ip),'SSRF IP denied '.$ip);}check(cdra_public_ip('1.1.1.1'),'public address validation');
 $xml='<?xml version="1.0"?><rss><channel><item><guid>test-1</guid><title>TEST advisory CVE-2020-0001</title><link>https://cert.europa.eu/publications/security-advisories/test</link><description>TEST synthetic RSS fixture only</description><pubDate>Wed, 01 Jan 2020 12:00:00 GMT</pubDate></item></channel></rss>';
 check(count(cdra_feed($xml,'cert-eu'))===1,'official-host RSS normalized');
+$wrapped=str_replace('<link>https://','<link>\n                https://',$xml);$wrapped=str_replace('</link>','\n            </link>',$wrapped);$wrapped=str_replace('\\n',"\n",$wrapped);check(cdra_feed($wrapped,'cert-eu')[0]['canonical_url']==='https://cert.europa.eu/publications/security-advisories/test','RSS whitespace around official link is trimmed safely');
 rejected(static fn()=>cdra_feed('<!DOCTYPE x [<!ENTITY e SYSTEM "file:///etc/passwd">]>'.$xml,'cert-eu'),'XXE and DTD denied');
+
+$items='';for($i=0;$i<25;++$i){$items.='<item><guid>TEST-'.$i.'</guid><title>TEST bounded RSS</title><link>https://cert.europa.eu/test-'.$i.'</link><description>TEST ONLY</description><pubDate>Wed, 01 Jan 2020 12:00:00 GMT</pubDate></item>';}
+$incomplete='<rss><channel>'.$items.'<item><description>unfinished large tail';$prefix=cdra_feed_prefix($incomplete);check(is_string($prefix)&&count(cdra_feed($prefix,'cert-eu'))===25,'bounded feed accepts exactly 25 complete records without reading the large tail');
+check(cdra_feed_prefix(substr($incomplete,0,strpos($incomplete,'<guid>TEST-24')) )===null,'incomplete 25th XML record is not accepted');
+$short_prefix=cdra_feed_prefix($incomplete,10);check(is_string($short_prefix)&&count(cdra_feed($short_prefix,'cert-eu'))===10,'byte-budget fallback can retain a smaller complete-record prefix');
+$one=preg_replace('~^.*?<channel>|</channel>.*$~s','',$xml);$newer=str_replace('Wed, 01 Jan 2020 12:00:00 GMT','Thu, 02 Jan 2020 12:00:00 GMT',$one);$revision_feed='<rss><channel>'.$one.$newer.'</channel></rss>';$revisions=cdra_feed($revision_feed,'cert-eu');check(count($revisions)===1&&$revisions[0]['published']==='2020-01-02T12:00:00Z','repeated publisher GUID revisions collapse to newest source record');
+
+check(cdra_feed_prefix('<!DOCTYPE rss [<!ENTITY x SYSTEM "file:///etc/passwd">]>'.$incomplete)===null,'bounded reader rejects DTD before extracting records');
+$atom='<feed xmlns="http://www.w3.org/2005/Atom">';for($i=0;$i<25;++$i){$atom.='<entry><id>TEST-'.$i.'</id><title>TEST Atom</title><link href="https://cert.europa.eu/atom-'.$i.'"/><summary>TEST ONLY</summary><updated>2020-01-01T12:00:00Z</updated></entry>';}$atom.='<entry><title>unfinished';$atom_prefix=cdra_feed_prefix($atom);check(is_string($atom_prefix)&&count(cdra_feed($atom_prefix,'cert-eu'))===25,'Atom namespace and bounded complete entries remain valid');
+
 rejected(static fn()=>cdra_feed('<rss><channel/></rss>','cert-eu'),'empty feed denied');
 check(cdra_url('https://cert.europa.eu/advisory?a=1&utm_source=x#fragment')==='https://cert.europa.eu/advisory?a=1','canonical tracking/fragment normalization');
 $priority=cdra_priority($page['rows'][0],true,false,strtotime('2020-01-01 12:00 UTC'));check($priority['score']>cdra_priority($page['rows'][0],false,false,strtotime('2020-01-01 12:00 UTC'))['score']&&count($priority['reasons'])>=3,'KEV priority with explicit reasons');

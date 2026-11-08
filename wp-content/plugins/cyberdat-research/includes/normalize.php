@@ -61,14 +61,38 @@ function cdra_feed($body,$source){
  cdra_need($xml!==false,'xml_parse');$entries=$xml->channel->item??($xml->entry??[]);$out=[];$seen=[];
  foreach($entries as $entry){
   if(count($out)>=25){break;}
-  $url=(string)$entry->link;if($url===''){$url=(string)$entry->link['href'];}
-  $url=cdra_url($url,cdra_sources()[$source]['hosts']);$id=(string)($entry->guid??$entry->id);if($id===''){$id=$url;}
-  cdra_need(!isset($seen[$id]),'feed_duplicate');$seen[$id]=true;
+  $url=trim((string)$entry->link);if($url===''){$url=trim((string)$entry->link['href']);}
+  $url=cdra_url($url,cdra_sources()[$source]['hosts']);$id=trim((string)($entry->guid??$entry->id));if($id===''){$id=$url;}
+
   $title=html_entity_decode(wp_strip_all_tags((string)$entry->title),ENT_QUOTES,'UTF-8');$summary=html_entity_decode(wp_strip_all_tags((string)($entry->description??$entry->summary??$entry->content)),ENT_QUOTES,'UTF-8');
   $date=(string)($entry->pubDate??$entry->published??$entry->updated);$at=$date!==''?strtotime($date):false;cdra_need($at!==false&&$at<=time()+300,'feed_date');
   $updated=(string)$entry->updated;$updated_at=$updated!==''?strtotime($updated):$at;cdra_need($updated_at!==false&&$updated_at<=time()+300,'feed_date');
-  preg_match_all('/\bCVE-\d{4}-\d{4,19}\b/',$title.' '.$summary,$matches);
-  $item=cdra_base($source,$id,$url,$title,mb_substr($summary,0,8000),gmdate('Y-m-d\TH:i:s\Z',$at),gmdate('Y-m-d\TH:i:s\Z',$updated_at),$matches[0]);$item['references']=[$url];$out[]=$item;
+  preg_match_all('/\bCVE-\d{4}-\d{4,19}\b/',$title.' '.$summary.' '.$id.' '.$url,$matches);
+  $item=cdra_base($source,$id,$url,$title,mb_substr($summary,0,8000),gmdate('Y-m-d\TH:i:s\Z',$at),gmdate('Y-m-d\TH:i:s\Z',$updated_at),$matches[0]);$item['references']=[$url];
+  if(isset($seen[$id])){$index=$seen[$id];$old=$out[$index];$new_time=cdra_time($item['source_updated']);$old_time=cdra_time($old['source_updated']);if($new_time>$old_time||($new_time===$old_time&&strcmp(cdra_hash($item),cdra_hash($old))>0)){$out[$index]=$item;}}
+  else{$seen[$id]=count($out);$out[]=$item;}
  }
  cdra_need(count($out)>0,'feed_empty');return $out;
+}
+
+/** Intentional bounded RSS/Atom prefix, not acceptance of an accidentally truncated document. */
+function cdra_feed_prefix($body,$limit=25){
+ if(strlen($body)>2097152||preg_match('/<!\s*(?:DOCTYPE|ENTITY)/i',$body)){return null;}
+ preg_match_all('~</(?:[A-Za-z_][\w.-]*:)?(?:item|entry)\s*>~i',$body,$ends,PREG_OFFSET_CAPTURE);
+ if(count($ends[0])<$limit){return null;}$last=end($ends[0]);$cut=$last[1]+strlen($last[0]);
+ $root_hint=preg_match('~<rss(?:\s|>)~i',$body)?'rss':(preg_match('~<(?:[A-Za-z_][\w.-]*:)?feed(?:\s|>)~i',$body)?'atom':null);
+ if(!$root_hint){return null;}$body=substr($body,0,$cut).($root_hint==='rss'?'</channel></rss>':'</feed>');
+ $previous=libxml_use_internal_errors(true);$reader=new XMLReader();$records=[];$format=null;
+ try{
+  if(!$reader->XML($body,null,LIBXML_NONET)){return null;}
+  while($reader->read()){
+   if($reader->nodeType!==XMLReader::ELEMENT){continue;}
+   if($reader->depth===0){if($reader->localName==='rss'){$format='rss';}elseif($reader->localName==='feed'&&$reader->namespaceURI==='http://www.w3.org/2005/Atom'){$format='atom';}else{return null;}}
+   if(($format==='rss'&&$reader->localName==='item'&&$reader->depth===2)||($format==='atom'&&$reader->localName==='entry'&&$reader->depth===1)){
+    $outer=$reader->readOuterXml();if($outer===''){return null;}$records[]=$outer;
+    if(count($records)===$limit){return $format==='rss'?'<rss><channel>'.implode('',$records).'</channel></rss>':'<feed xmlns="http://www.w3.org/2005/Atom">'.implode('',$records).'</feed>';}
+   }
+  }
+  return null;
+ }finally{$reader->close();libxml_clear_errors();libxml_use_internal_errors($previous);}
 }
