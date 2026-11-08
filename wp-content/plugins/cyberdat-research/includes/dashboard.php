@@ -39,6 +39,9 @@ function cyberdat_research_status_html(){
  }
  $catalog=$data['kev']['catalog']??null;if($catalog){echo '<p>'.esc_html('CISA source catalog: '.$catalog['catalogVersion'].' · '.$catalog['dateReleased']).'</p>';}
  echo '<p>'.esc_html(sprintf(__('Indexed CVEs: %1$d · NVD/KEV matches displayed: %2$d. Partial data: this is not the entire NVD.','cyberdat-research'),$data['indexed_cves'],count($data['nvd']))).'</p>';
+ $window=$data['nvd_window']??null;$completed=$data['nvd_last_completed_window']??null;
+ $progress=$window?('In Progress · processed '.(int)$window['index'].' / '.($window['total']===null?'unknown':(int)$window['total']).' results · '.$window['start'].' → '.$window['end']):($completed?('Complete · verified '.(int)$completed['verified_results'].' results · '.$completed['start'].' → '.$completed['end']):'Not yet completed');
+ echo '<p data-nvd-completeness>'.esc_html('NVD Window: '.$progress.'. Fresh describes request age, not completeness. Historical NVD remains partial.').'</p>';
  echo '<p>'.esc_html(__('Coverage Window (modified-date tracking):','cyberdat-research').' '.($data['nvd_origin']??'—').' → '.(!empty($data['nvd_checkpoint'])?gmdate('Y-m-d\TH:i:s\Z',$data['nvd_checkpoint']):__('first window in progress','cyberdat-research')).' · '.__('Backfill Status','cyberdat-research').': '.($data['backfill']['status']??'not_requested')).'</p>';
  echo '<p>'.esc_html(__('Selected CVSS assessments; versions are not interchangeable:','cyberdat-research').' '.implode('; ',array_map(static fn($key,$count)=>$key.': '.$count,array_keys($data['metric_versions']),array_values($data['metric_versions'])))).'</p></div>';
 }

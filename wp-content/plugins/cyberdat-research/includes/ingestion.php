@@ -3,6 +3,7 @@ defined('ABSPATH') || exit;
 class CDRA_Service {
  public $store;public $client;public $started;public $requests=0;public $pause;
  public function __construct($store=null,$client=null,$pause=null){$this->pause=$pause??'sleep';$this->store=$store??new CDRA_Store();$this->client=$client??new CDRA_Client();$this->started=microtime(true);}
+ public static function nvd_pending_due($store,$now=null){$h=$store->get('health:nvd',[]);return (bool)$store->get('nvd_window')&&($h['next_due']??0)<=($now??time())&&($h['failures']??0)<6;}
  public function request($source,$query=[],$conditional=[]){
   cdra_need(microtime(true)-$this->started<110&&$this->requests<6,'run_budget');
   if($source==='nvd'){$wait=max(0,$this->store->get('nvd_request_after',0)-time());cdra_need($wait<=35&&microtime(true)-$this->started+$wait<110,'rate_budget');if($wait){call_user_func($this->pause,$wait);}$this->store->put('nvd_request_after',time()+31);}
@@ -34,7 +35,7 @@ class CDRA_Service {
  public function page($query){$response=$this->request('nvd',$query);cdra_need($response['status']===200,'nvd_unexpected_304');return [cdra_nvd_page($response['body'],$query),$response];}
  public function nvd($backfill=false){
   $s=$this->store;
-  if(!$backfill){
+  if(!$backfill&&!$s->get('nvd_window')){
    $catalog=$s->get('kev_catalog');cdra_need($catalog!==null,'kev_required');$known=[];
    foreach($s->db->get_results("SELECT source_id,last_seen FROM {$s->prefix}items WHERE source='nvd'",ARRAY_A) as $known_row){$known[$known_row['source_id']]=strtotime($known_row['last_seen'].' UTC');}
    $lookups=$s->get('nvd_kev_lookup',[]);$ids=[];
@@ -51,16 +52,39 @@ class CDRA_Service {
    if(!$window){
     if($backfill){$request=$s->get('backfill');cdra_need($request&&$request['status']==='active','no_backfill_requested');$start=$s->get($checkpoint_key,$request['start']);if($start>=$request['end']){$request['status']='complete';$s->put('backfill',$request);return;}$end=min($request['end'],$start+86400);}
     else{$end=time()-600;$checkpoint=$s->get($checkpoint_key);$start=$checkpoint?$checkpoint-7200:$end-86400;$end=min($end,$start+86400);}
-    $window=['start'=>gmdate('Y-m-d\TH:i:s\Z',$start),'end'=>gmdate('Y-m-d\TH:i:s\Z',$end),'index'=>0,'total'=>null];
+    $window=['start'=>gmdate('Y-m-d\TH:i:s\Z',$start),'end'=>gmdate('Y-m-d\TH:i:s\Z',$end),'index'=>0,'total'=>null,'pages'=>[]];$s->put($key,$window);
    }
-   [$page,$response]=$this->page(['lastModStartDate'=>$window['start'],'lastModEndDate'=>$window['end'],'resultsPerPage'=>50,'startIndex'=>$window['index']]);
-   if($window['total']!==null&&$window['total']!==$page['total']){$window['index']=0;$window['total']=null;$s->put($key,$window);throw new CDRA_Error('nvd_pagination_changed');}
+   // Older windows may lack a page ledger. Audit only their committed prefix;
+   // keep the cursor and resume after it instead of blindly reimporting the window.
+   $pages=$window['pages']??[];$verified=0;
+   foreach($pages as $entry){cdra_need($entry['index']===$verified,'nvd_ledger_gap');$verified+=count($entry['ids']);}
+   cdra_need($verified<=$window['index'],'nvd_ledger_ahead');
+   $offset=$verified<$window['index']?$verified:$window['index'];
+   [$page,$response]=$this->page(['lastModStartDate'=>$window['start'],'lastModEndDate'=>$window['end'],'resultsPerPage'=>50,'startIndex'=>$offset]);
+   cdra_need($page['total']<=5000,'nvd_window_capacity');
+   if($window['total']!==null&&$window['total']!==$page['total']){
+    // NVD has no snapshot token. A changing result set cannot safely keep offsets.
+    $window['index']=0;$window['total']=null;$window['pages']=[];$s->put($key,$window);throw new CDRA_Error('nvd_pagination_changed');
+   }
+   $ids=array_column($page['rows'],'source_id');$seen=[];
+   foreach($pages as $entry){foreach($entry['ids'] as $id){$seen[$id]=true;}}
+   if(array_intersect(array_keys($seen),$ids)){$window['index']=0;$window['total']=null;$window['pages']=[];$s->put($key,$window);throw new CDRA_Error('nvd_pagination_overlap');}
    $done=false;
-   $s->transaction(function()use($s,$page,$response,&$window,&$done,$key,$checkpoint_key,$backfill){
-    foreach($page['rows'] as $record){$s->upsert($record);}$window['total']=$page['total'];$window['index']+=$page['count'];
-    $done=$window['index']>=$window['total'];
-    if($done){$s->put($checkpoint_key,cdra_time($window['end']));$s->put($key,null);}else{$s->put($key,$window);}
-    if(!$backfill){$s->put('nvd_origin',$s->get('nvd_origin',$window['start']));$this->success('nvd',$response);$s->put('nvd_last_incremental_success',time());}
+   $s->transaction(function()use($s,$page,$response,$ids,$offset,$pages,&$window,&$done,$key,$checkpoint_key,$backfill){
+    foreach($page['rows'] as $record){$s->upsert($record);}
+    $pages[]=['index'=>$offset,'ids'=>$ids,'hash'=>hash('sha256',implode("\n",$ids))];
+    $window['pages']=$pages;$window['total']=$page['total'];$window['index']=max($window['index'],$offset+$page['count']);
+    $verified=0;foreach($pages as $entry){cdra_need($entry['index']===$verified,'nvd_ledger_gap');$verified+=count($entry['ids']);}
+    $done=$verified===$window['total'];
+    if($done){
+     $window['completed_at']=time();$window['verified_results']=$verified;$window['status']='Complete';
+     $s->put($checkpoint_key,cdra_time($window['end']));$s->put($key,null);
+     $s->put($backfill?'nvd_last_completed_backfill':'nvd_last_completed_window',$window);
+    }else{$s->put($key,$window);}
+    if(!$backfill){
+     $s->put('nvd_origin',$s->get('nvd_origin',$window['start']));$this->success('nvd',$response);$s->put('nvd_last_incremental_success',time());
+     if(!$done){$h=$s->get('health:nvd');$h['next_due']=time()+300;$s->put('health:nvd',$h);}
+    }
     else{$request=$s->get('backfill');$request['last_success']=time();$request['next_due']=time()+7200;if($done&&cdra_time($window['end'])>=$request['end']){$request['status']='complete';}$s->put('backfill',$request);}
    });
    if($done){break;}
@@ -73,7 +97,7 @@ class CDRA_Service {
    foreach($s->db->get_results($sql,ARRAY_A) as $row){$r=json_decode($row['payload'],true,64,JSON_THROW_ON_ERROR);$id=$r['cve_ids'][0];$nvd[$id]=['schema'=>1,'record'=>['id'=>$id,'description'=>$r['summary'],'assessment'=>$r['assessment']],'checked_at'=>strtotime($row['last_seen'].' UTC'),'snapshot'=>false];$v=$r['assessment']['version']??'Not rated';$versions[$v]=($versions[$v]??0)+1;}
   }
   $sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=$s->get('health:'.$id,[]);}
-  $projection=['schema'=>2,'generated_at'=>time(),'sources'=>$sources,'kev'=>$catalog?['schema'=>1,'catalog'=>$catalog,'source'=>cdra_sources()['kev']['url'],'fetched_at'=>$sources['kev']['last_received']??0,'snapshot'=>false]:null,'nvd'=>$nvd,'metric_versions'=>$versions,'indexed_cves'=>$s->count('nvd'),'queue_total'=>$s->count(),'nvd_origin'=>$s->get('nvd_origin'),'nvd_checkpoint'=>$s->get('nvd_checkpoint'),'nvd_window'=>$s->get('nvd_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'nvd_last_incremental_success'=>$s->get('nvd_last_incremental_success',0),'complete_nvd'=>false];
+  $projection=['schema'=>2,'generated_at'=>time(),'sources'=>$sources,'kev'=>$catalog?['schema'=>1,'catalog'=>$catalog,'source'=>cdra_sources()['kev']['url'],'fetched_at'=>$sources['kev']['last_received']??0,'snapshot'=>false]:null,'nvd'=>$nvd,'metric_versions'=>$versions,'indexed_cves'=>$s->count('nvd'),'queue_total'=>$s->count(),'nvd_origin'=>$s->get('nvd_origin'),'nvd_checkpoint'=>$s->get('nvd_checkpoint'),'nvd_window'=>$s->get('nvd_window'),'nvd_last_completed_window'=>$s->get('nvd_last_completed_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'nvd_last_incremental_success'=>$s->get('nvd_last_incremental_success',0),'complete_nvd'=>false];
   $json=cdra_json($projection);cdra_need(strlen($json)<=12582912,'dashboard_cache_size');$s->put('dashboard',$projection);
   if($s->prefix===$s->db->prefix.'cdra_'&&defined('WP_CLI')&&WP_CLI&&is_dir('/var/lib/cyberdat-staging/research')){$file='/var/lib/cyberdat-staging/research/dashboard.json';$temporary=$file.'.partial';cdra_need(!is_link($file)&&!is_link($temporary),'cache_symlink');$written=@file_put_contents($temporary,$json,LOCK_EX);cdra_need($written===strlen($json),'cache_file_write');chmod($temporary,0600);cdra_need(rename($temporary,$file),'cache_file_rename');}
  }
@@ -85,14 +109,14 @@ class CDRA_Service {
    foreach($names as $name){
     cdra_need(isset(cdra_sources()[$name]),'source_not_allowed');$health=$s->get('health:'.$name,[]);
     if(($health['next_due']??0)>time()&&(!$manual||!empty($health['last_error']))){continue;}
-    if($manual&&time()-($health['last_attempt']??0)<300){continue;}
+    if($manual&&time()-($health['last_attempt']??0)<($name==='nvd'?31:300)){continue;}
     $health['job']='Running';$health['last_attempt']=time();$s->put('health:'.$name,$health);
     try{if($name==='kev'){$this->kev();}elseif($name==='nvd'){$this->nvd();}else{$this->feeds($name);}$s->log($name,'sync_complete');}
     catch(Throwable $error){$error=$error instanceof CDRA_Error?$error:new CDRA_Error('processing_error');$this->fail($name,$error);$errors[$name]=$error->getMessage();}
    }
    $this->projection();
   }finally{$db->get_var($db->prepare('SELECT RELEASE_LOCK(%s)',$lock));}
-  return ['errors'=>$errors,'requests'=>$this->requests,'health'=>$s->get('dashboard')['sources'],'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'checkpoint'=>$s->get('nvd_checkpoint'),'coverage_origin'=>$s->get('nvd_origin'),'backfill'=>$s->get('backfill',['status'=>'not_requested'])];
+  return ['errors'=>$errors,'requests'=>$this->requests,'health'=>$s->get('dashboard')['sources'],'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'checkpoint'=>$s->get('nvd_checkpoint'),'coverage_origin'=>$s->get('nvd_origin'),'window'=>$s->get('nvd_window'),'last_completed_window'=>$s->get('nvd_last_completed_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested'])];
  }
  public function backfill($start,$end){cdra_need($end>$start&&$end-$start<=7*86400&&$start>=strtotime('1999-01-01 UTC')&&$end<=time(),'backfill_range');$old=$this->store->get('backfill');cdra_need(!$old||$old['status']!=='active','backfill_already_active');$this->store->transaction(function()use($start,$end){$this->store->put('backfill',['start'=>$start,'end'=>$end,'status'=>'active','next_due'=>time(),'last_success'=>0]);$this->store->put('nvd_backfill_window',null);$this->store->put('nvd_backfill_checkpoint',$start);});}
 }

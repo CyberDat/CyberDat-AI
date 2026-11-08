@@ -1,11 +1,11 @@
 <?php
 defined('ABSPATH') || exit;
 class CDRA_CLI {
- public function status(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=(object)$s->get('health:'.$id,[]);}$data=$s->get('dashboard',[]);WP_CLI::line(cdra_json(['sources'=>$sources,'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'coverage_origin'=>$s->get('nvd_origin'),'checkpoint'=>$s->get('nvd_checkpoint'),'window'=>$s->get('nvd_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'complete_nvd'=>false,'dashboard_generation'=>$data['generated_at']??null,'live_enabled'=>$s->get('live_enabled',false)]));}
+ public function status(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=(object)$s->get('health:'.$id,[]);}$data=$s->get('dashboard',[]);WP_CLI::line(cdra_json(['sources'=>$sources,'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'coverage_origin'=>$s->get('nvd_origin'),'checkpoint'=>$s->get('nvd_checkpoint'),'window'=>$s->get('nvd_window'),'last_completed_window'=>$s->get('nvd_last_completed_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'complete_nvd'=>false,'dashboard_generation'=>$data['generated_at']??null,'live_enabled'=>$s->get('live_enabled',false)]));}
  /** Bounded Research Agent operation.
   * @synopsis [--source=<source>] [--manual] [--scheduled]
   */
- public function sync($args,$assoc){$source=$assoc['source']??'all';cdra_need($source==='all'||isset(cdra_sources()[$source]),'source_not_allowed');$result=(new CDRA_Service())->sync($source,(!empty($assoc['manual'])||!empty($assoc['scheduled'])));WP_CLI::line(cdra_json($result));if($result['errors']){WP_CLI::halt(1);}}
+ public function sync($args,$assoc){$source=$assoc['source']??'all';cdra_need($source==='all'||isset(cdra_sources()[$source]),'source_not_allowed');$result=(new CDRA_Service())->sync($source,!empty($assoc['manual']));WP_CLI::line(cdra_json($result));if($result['errors']){WP_CLI::halt(1);}}
  public function enable(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$data=$s->get('dashboard');cdra_need($data&&$data['kev']['catalog']['count']>0&&$data['indexed_cves']>0&&empty($data['sources']['kev']['last_error'])&&empty($data['sources']['nvd']['last_error'])&&!empty($data['nvd_last_incremental_success']),'initial_live_verification_required');$s->put('live_enabled',true);WP_CLI::success('Unified dashboard provider enabled; legacy snapshots/workers are not used.');}
  /** Bounded Research Agent operation.
   * @synopsis --start=<date> --end=<date>
@@ -17,6 +17,11 @@ class CDRA_CLI {
    $s->mutate('manual_queue',static function($queue)use($source){unset($queue[$source]);return $queue;});try{$result=(new CDRA_Service($s))->sync($source,true);}catch(CDRA_Error $error){if($error->getMessage()==='ingestion_locked'){$s->mutate('manual_queue',static function($queue)use($source,$request){$queue[$source]=$queue[$source]??$request;return $queue;});}throw $error;}WP_CLI::line(cdra_json($result));return;
   }
   foreach(cdra_sources() as $source=>$spec){$h=$s->get('health:'.$source,[]);if(!empty($h['last_success'])&&!empty($h['last_error'])&&($h['failures']??0)<6&&($h['next_due']??PHP_INT_MAX)<=time()){$result=(new CDRA_Service($s))->sync($source);WP_CLI::line(cdra_json($result));return;}}
+  // Continue partial incremental windows via the existing five-minute dispatcher.
+  // Fresh describes request age only; it must not prevent finishing pagination.
+  if(CDRA_Service::nvd_pending_due($s)){
+   $result=(new CDRA_Service($s))->sync('nvd');WP_CLI::line(cdra_json($result));return;
+  }
   $request=$s->get('backfill');if($request&&$request['status']==='active'&&($request['next_due']??0)<=time()){
    $lock='cdra_'.substr(hash('sha256',DB_NAME.$s->prefix),0,32);cdra_need((int)$s->db->get_var($s->db->prepare('SELECT GET_LOCK(%s,0)',$lock))===1,'ingestion_locked');
    try{$service=new CDRA_Service($s);$service->nvd(true);$service->projection();WP_CLI::success('One bounded backfill batch completed.');}catch(Throwable $error){$request=$s->get('backfill');$request['last_error']=$error instanceof CDRA_Error?$error->getMessage():'processing_error';$request['next_due']=time()+max(7200,$error instanceof CDRA_Error?$error->retry:0);$s->put('backfill',$request);WP_CLI::error('Backfill batch failed; last-good records and checkpoint retained.');}finally{$s->db->get_var($s->db->prepare('SELECT RELEASE_LOCK(%s)',$lock));}return;
