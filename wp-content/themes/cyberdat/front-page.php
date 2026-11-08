@@ -5,7 +5,6 @@ if ( ! defined( 'CYBERDAT_PLAYGROUND' ) || ! CYBERDAT_PLAYGROUND ) {
     require __DIR__ . '/index.php';
     return;
 }
-require_once __DIR__ . '/inc/home-prototype.php';
 get_header();
 ?>
 <div class="prototype-notice"><span class="sample-label">SAMPLE DATA</span><span><?php esc_html_e( 'Design preview · Stories, vulnerability IDs and metrics are fictional. No live feeds.', 'cyberdat' ); ?></span></div>
@@ -26,8 +25,8 @@ get_header();
  <?php endforeach; ?></tbody></table></div></div>
  <div class="intel-footer"><span><?php esc_html_e( 'SAMPLE DATA · For visual evaluation only. No threat assessment.', 'cyberdat' ); ?></span><a href="<?php echo esc_url( home_url( '/topics/threat-intelligence/' ) ); ?>"><?php esc_html_e( 'Explore threat intelligence', 'cyberdat' ); ?> ↗</a></div></div>
 </section>
-<?php cyberdat_prototype_section( 'Latest Analysis', 'BEYOND THE HEADLINE', 'editorial_format', ['analysis'], '/analysis/', 'analysis' ); ?>
-<?php cyberdat_prototype_section( 'AI Security', 'THE NEXT SECURITY FRONTIER', 'category', ['ai-security'], '/topics/ai-security/', 'ai' ); ?>
-<?php cyberdat_prototype_section( 'Guides & Learning', 'TURN INSIGHT INTO PRACTICE', 'editorial_format', ['guides', 'learning'], '/guides/', 'learning' ); ?>
+<?php cyberdat_editorial_section( __( 'Latest Analysis', 'cyberdat' ), 'BEYOND THE HEADLINE', 'editorial_format', ['analysis'], '/analysis/', 'analysis' ); ?>
+<?php cyberdat_editorial_section( __( 'AI Security', 'cyberdat' ), 'THE NEXT SECURITY FRONTIER', 'category', ['ai-security'], '/topics/ai-security/', 'ai' ); ?>
+<?php cyberdat_editorial_section( __( 'Guides & Learning', 'cyberdat' ), 'TURN INSIGHT INTO PRACTICE', 'editorial_format', ['guides', 'learning'], '/guides/', 'learning' ); ?>
 <div class="home-closing"><span class="terminal-mark" aria-hidden="true">&gt;_</span><p><?php esc_html_e( 'Clarity in a complex threat landscape.', 'cyberdat' ); ?></p><span>CYBERDAT / SAMPLE EDITION</span></div>
 <?php get_footer(); ?>

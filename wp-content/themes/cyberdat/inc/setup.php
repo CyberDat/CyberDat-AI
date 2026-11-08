@@ -9,6 +9,7 @@ function cyberdat_theme_setup() {
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'cyberdat-featured', 1280, 800, true );
 	add_image_size( 'cyberdat-briefing', 192, 120, true );
+	add_image_size( 'cyberdat-card', 640, 400, true );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'wp-block-styles' );
