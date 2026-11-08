@@ -99,6 +99,7 @@ class CDRA_Service {
   $sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=$s->get('health:'.$id,[]);}
   $projection=['schema'=>2,'generated_at'=>time(),'sources'=>$sources,'kev'=>$catalog?['schema'=>1,'catalog'=>$catalog,'source'=>cdra_sources()['kev']['url'],'fetched_at'=>$sources['kev']['last_received']??0,'snapshot'=>false]:null,'nvd'=>$nvd,'metric_versions'=>$versions,'indexed_cves'=>$s->count('nvd'),'queue_total'=>$s->count(),'nvd_origin'=>$s->get('nvd_origin'),'nvd_checkpoint'=>$s->get('nvd_checkpoint'),'nvd_window'=>$s->get('nvd_window'),'nvd_last_completed_window'=>$s->get('nvd_last_completed_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'nvd_last_incremental_success'=>$s->get('nvd_last_incremental_success',0),'complete_nvd'=>false];
   $json=cdra_json($projection);cdra_need(strlen($json)<=12582912,'dashboard_cache_size');$s->put('dashboard',$projection);
+  cdra_build_dashboard_analytics($s);
   if($s->prefix===$s->db->prefix.'cdra_'&&defined('WP_CLI')&&WP_CLI&&is_dir('/var/lib/cyberdat-staging/research')){$file='/var/lib/cyberdat-staging/research/dashboard.json';$temporary=$file.'.partial';cdra_need(!is_link($file)&&!is_link($temporary),'cache_symlink');$written=@file_put_contents($temporary,$json,LOCK_EX);cdra_need($written===strlen($json),'cache_file_write');chmod($temporary,0600);cdra_need(rename($temporary,$file),'cache_file_rename');}
  }
  public function sync($source,$manual=false){
