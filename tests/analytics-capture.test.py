@@ -40,3 +40,10 @@ assert client.record_response=={'status':409,'group':'severity','value':'High','
 assert 'q' not in client.record_response and 'headers' not in client.record_response
 assert 'tap(\'[data-ta-refresh]\')' in source and 'RECORD DIAGNOSTIC' in source
 print('PASS: actual drill HTTP status and filter recorded without search text or credentials; revision refresh is explicit and bounded')
+client.console_errors=0
+client.event({'method':'Log.entryAdded','params':{'entry':{'source':'network','level':'error','url':'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records','text':'Failed to load resource: the server responded with a status of 409 (Conflict)'}}})
+assert client.console_errors==0 and client.projection_conflict_http==1
+client.event({'method':'Log.entryAdded','params':{'entry':{'source':'javascript','level':'error','url':'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records','text':'Unexpected code 409'}}})
+client.event({'method':'Log.entryAdded','params':{'entry':{'source':'network','level':'error','url':'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records','text':'Failed to load resource: status of 500'}}})
+assert client.console_errors==2
+print('PASS: controlled own-endpoint HTTP conflicts reported separately; JS errors and unexpected HTTP failures still fail acceptance')

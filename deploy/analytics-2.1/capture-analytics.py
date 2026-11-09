@@ -2,7 +2,7 @@
 """Windows 11 / existing Edge only. Hidden staging Basic Auth, isolated temporary profile.
 No packages installed. Saves screenshots and a sanitized layout/console report locally.
 """
-import base64,getpass,hashlib,http.client,html.parser,json,os,pathlib,secrets,shutil,socket,struct,subprocess,sys,tempfile,time,urllib.error,urllib.parse,urllib.request
+import base64,getpass,hashlib,http.client,html.parser,json,os,pathlib,re,secrets,shutil,socket,struct,subprocess,sys,tempfile,time,urllib.error,urllib.parse,urllib.request
 P=pathlib.Path;HOST='https://staging.cyberdat.eu'
 def need(ok,message):
  if not ok:raise RuntimeError(message)
@@ -108,7 +108,12 @@ class DevTools:
    self.runtime_errors+=1;detail=p.get('exceptionDetails',{});u=urllib.parse.urlsplit(detail.get('url',''))
    if not hasattr(self,'runtime_locations'):self.runtime_locations=[]
    if len(self.runtime_locations)<8:self.runtime_locations.append({'same_origin':u.netloc=='staging.cyberdat.eu','script':u.path if u.netloc=='staging.cyberdat.eu' and '/assets/js/' in u.path else None,'line':detail.get('lineNumber'),'column':detail.get('columnNumber')})
-  elif name=='Log.entryAdded' and p.get('entry',{}).get('level')=='error':self.console_errors+=1
+  elif name=='Log.entryAdded' and p.get('entry',{}).get('level')=='error':
+   entry=p['entry'];u=urllib.parse.urlsplit(entry.get('url',''));status=re.search(r'status(?: of)? (409|503)\b',entry.get('text',''),re.I)
+   if entry.get('source')=='network' and u.netloc=='staging.cyberdat.eu' and u.path.endswith('/cyberdat-analytics/v1/records') and status:
+    # Report expected HTTP revalidation separately; never suppress JS exceptions or other errors.
+    key='projection_conflict_http' if status.group(1)=='409' else 'source_busy_http';setattr(self,key,getattr(self,key,0)+1)
+   else:self.console_errors+=1
  def evaluate(self,code):return self.command('Runtime.evaluate',{'expression':code,'returnByValue':True})['result'].get('value')
  def close(self):self.s.close()
 def debugging_port(text):
@@ -179,8 +184,31 @@ def main():
     cdp.command('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[point]});cdp.command('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]})
    else:
     cdp.command('Input.dispatchMouseEvent',{'type':'mousePressed','button':'left','clickCount':1,**point});cdp.command('Input.dispatchMouseEvent',{'type':'mouseReleased','button':'left','clickCount':1,**point})
+  def await_records(label):
+   print('CHECK: '+str(width)+' px · '+label,flush=True)
+   terminal="document.querySelector('[data-analytics-dialog]').open&&(document.querySelector('[data-ta-status]').textContent.includes('matching records')||!document.querySelector('[data-ta-refresh]').hidden)"
+   ready=False;conflicts=0;busy=0;deadline=time.monotonic()+100
+   while time.monotonic()<deadline:
+    wait(terminal,min(30,max(1,deadline-time.monotonic())))
+    ready=cdp.evaluate("document.querySelector('[data-analytics-dialog]').open&&document.querySelector('[data-ta-status]').textContent.includes('matching records')")
+    if ready:break
+    refreshable=cdp.evaluate("document.querySelector('[data-analytics-dialog]').open&&!document.querySelector('[data-ta-refresh]').hidden")
+    http=getattr(cdp,'record_response',{}).get('status')
+    if refreshable and http==409 and conflicts<1:
+     conflicts+=1;info.setdefault('refresh_actions',[]).append({'case':label,'status':409})
+     print('DATA REFRESH: projection changed; activate visible refresh control once',flush=True);tap('[data-ta-refresh]');continue
+    if refreshable and http==503 and busy<4 and time.monotonic()+15<deadline:
+     busy+=1;info.setdefault('refresh_actions',[]).append({'case':label,'status':503})
+     print('SOURCE BUSY: wait 15 seconds, then activate existing retry control; scheduler unchanged',flush=True);time.sleep(15);tap('[data-ta-refresh]');continue
+    break
+   if not ready:
+    dom=cdp.evaluate("""(()=>{const d=document.querySelector('[data-analytics-dialog]'),t=document.querySelector('[data-ta-status]').textContent;let state=t.includes('Loading verified')?'loading':t.includes('Data changed')?'revision_changed':t.includes('Research data is updating')?'source_busy':t.includes('Request timed out')?'timeout':t.includes('could not be loaded')?'http_error':t.includes('temporarily unavailable')?'unavailable':'other';const n=window.__cdtaCaptureTrigger;return {dialogOpen:d.open,statusClass:state,refreshVisible:!document.querySelector('[data-ta-refresh]').hidden,trigger:n?{tag:n.tagName,group:n.dataset.drillGroup||null,value:n.dataset.drillValue||null}:null}})()""")
+    diagnostic={'width':width,'case':label,'response':getattr(cdp,'record_response',{}),'requested_filter':getattr(cdp,'analytics_filter',{}),'hit':getattr(cdp,'last_hit',None),'dom':dom,'runtime_errors':cdp.runtime_errors,'error_locations':getattr(cdp,'runtime_locations',[])}
+    print('RECORD DIAGNOSTIC: '+json.dumps(diagnostic),flush=True);(output/'record-failure.json').write_text(json.dumps(diagnostic,indent=2))
+    shot=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('record-failure-'+str(width)+'.png')).write_bytes(base64.b64decode(shot['data']))
+   need(ready,'Record request did not succeed: '+label+'; see RECORD DIAGNOSTIC')
   for width in [1920,1440,768,320]:
-   cdp.console_errors=0;cdp.runtime_errors=0;cdp.command('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width==320})
+   cdp.console_errors=0;cdp.runtime_errors=0;cdp.projection_conflict_http=0;cdp.source_busy_http=0;cdp.command('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width==320})
    cdp.command('Page.navigate',{'url':HOST+'/'})
    ready=wait("document.readyState==='complete'&&!!document.querySelector('[data-threat-pulse=\"2.1\"] .tp-periods:not([hidden])')")
    if not ready:
@@ -206,19 +234,7 @@ def main():
      cdp.evaluate("(()=>{const n=document.querySelector("+json.dumps(selector)+");const d=n.closest('details');if(d)d.open=true;n.scrollIntoView({block:'center'});n.focus();return true})()")
      cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Enter','code':'Enter','windowsVirtualKeyCode':13});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Enter','code':'Enter','windowsVirtualKeyCode':13})
     else:tap(selector)
-    terminal="document.querySelector('[data-analytics-dialog]').open&&(document.querySelector('[data-ta-status]').textContent.includes('matching records')||!document.querySelector('[data-ta-refresh]').hidden)"
-    wait(terminal)
-    if getattr(cdp,'record_response',{}).get('status')==409 and cdp.evaluate("document.querySelector('[data-analytics-dialog]').open&&!document.querySelector('[data-ta-refresh]').hidden"):
-     # Explicitly exercise the existing refresh control once; never bypass revision checks.
-     print('DATA REFRESH: source projection changed during '+label+'; using the visible refresh control once',flush=True)
-     tap('[data-ta-refresh]');wait(terminal)
-    ready=cdp.evaluate("document.querySelector('[data-analytics-dialog]').open&&document.querySelector('[data-ta-status]').textContent.includes('matching records')")
-    if not ready:
-     dom=cdp.evaluate("""(()=>{const d=document.querySelector('[data-analytics-dialog]'),t=document.querySelector('[data-ta-status]').textContent;let state=t.includes('Loading verified')?'loading':t.includes('Data changed')?'revision_changed':t.includes('Research data is updating')?'source_busy':t.includes('Request timed out')?'timeout':t.includes('could not be loaded')?'http_error':t.includes('temporarily unavailable')?'unavailable':'other';const n=window.__cdtaCaptureTrigger;return {dialogOpen:d.open,statusClass:state,refreshVisible:!document.querySelector('[data-ta-refresh]').hidden,trigger:n?{tag:n.tagName,group:n.dataset.drillGroup||null,value:n.dataset.drillValue||null}:null}})()""")
-     diagnostic={'width':width,'case':label,'response':getattr(cdp,'record_response',{}),'requested_filter':getattr(cdp,'analytics_filter',{}),'hit':getattr(cdp,'last_hit',None),'dom':dom,'runtime_errors':cdp.runtime_errors,'error_locations':getattr(cdp,'runtime_locations',[])}
-     print('RECORD DIAGNOSTIC: '+json.dumps(diagnostic),flush=True);(output/'record-failure.json').write_text(json.dumps(diagnostic,indent=2))
-     shot=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('record-failure-'+str(width)+'.png')).write_bytes(base64.b64decode(shot['data']))
-    need(ready,'Record request did not succeed: '+label+'; see RECORD DIAGNOSTIC')
+    await_records(label)
     expected_group,expected_value=label.split(':',1)
     if expected_group=='day':expected_value='kev' if expected_value=='kev-additions' else 'nvd'
     observed=getattr(cdp,'analytics_filter',{})
@@ -226,12 +242,15 @@ def main():
     result=cdp.evaluate("(()=>{const d=document.querySelector('[data-analytics-dialog]');return {rows:d.querySelectorAll('.ta-record').length,links:[...d.querySelectorAll('.ta-record a')].every(a=>a.href.startsWith('https://')),overflow:d.scrollWidth>d.clientWidth+1,focusInside:d.contains(document.activeElement)}})()")
     need(result['rows']<=20 and result['links'] and not result['overflow'] and result['focusInside'],'Panel bounds/links/focus failure');info['groups'].append(label)
     if label=='severity:High':
-     cdp.evaluate("document.querySelector('[data-ta-form] select').value='cvss_desc';true");tap('[data-ta-form] button');need(wait("document.querySelector('[data-ta-status]').textContent.includes('matching records')"),'Sort request failed')
+     cdp.evaluate("document.querySelector('[data-ta-form] select').value='cvss_desc';true");tap('[data-ta-form] button');await_records('sort:cvss_desc')
      if cdp.evaluate("!document.querySelector('[data-ta-page=next]').disabled"):
-      tap('[data-ta-page=next]');need(wait("document.querySelector('[data-ta-page-label]').textContent.startsWith('Page 2')"),'Pagination failed')
+      tap('[data-ta-page=next]');await_records('pagination:next')
+      if cdp.evaluate("document.querySelector('[data-ta-page-label]').textContent.startsWith('Page 1')&&!document.querySelector('[data-ta-page=next]').disabled"):
+       tap('[data-ta-page=next]');await_records('pagination:next-after-refresh')
+      need(cdp.evaluate("document.querySelector('[data-ta-page-label]').textContent.startsWith('Page 2')"),'Pagination did not reach page 2')
      cve=cdp.evaluate("document.querySelector('.ta-cve')?.textContent||''")
      if cve:
-      cdp.evaluate("document.querySelector('[data-ta-form] input').value="+json.dumps(cve)+";true");tap('[data-ta-form] button');need(wait("document.querySelector('[data-ta-status]').textContent.startsWith('1 matching records')"),'CVE search failed')
+      cdp.evaluate("document.querySelector('[data-ta-form] input').value="+json.dumps(cve)+";true");tap('[data-ta-form] button');await_records('search:CVE-ID');need(cdp.evaluate("document.querySelector('[data-ta-status]').textContent.startsWith('1 matching records')"),'CVE search failed')
      image=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('records-'+str(width)+'.png')).write_bytes(base64.b64decode(image['data']))
     title=cdp.evaluate("document.querySelector('[data-ta-title]').textContent");need(title not in ['kev_only','nvd_only','shared','known','not_known'],'Technical filter title leaked into panel')
     if label=='severity:Critical':tap('[data-ta-close]')
@@ -248,8 +267,10 @@ def main():
    info['dayPeriods']=[]
    for chart in ['kev-additions','nvd-trends']:
     for days in [7,30,90]:
+     cdp.record_response={};cdp.analytics_filter={};cdp.last_hit=None
      base='[data-chart-id='+chart+']';tap(base+' [data-period="'+str(days)+'"]');tap(base+' .td-chart-point')
-     need(wait("document.querySelector('[data-ta-status]').textContent.includes('matching records')"),'Day/period drill request failed')
+     await_records('day:'+chart+':'+str(days))
+     observed=getattr(cdp,'analytics_filter',{});need(observed.get('group')=='day' and observed.get('days')==str(days),'Wrong day/period request')
      need(str(days)+'D' in cdp.evaluate("document.querySelector('[data-ta-title]').textContent"),'Drill lost the selected day period')
      tap('[data-ta-close]');need(cdp.evaluate("document.querySelector("+json.dumps(base+' [data-chart-line]')+").dataset.activePeriod")==str(days),'Chart period reset after closing records');info['dayPeriods'].append(chart+':'+str(days))
    info['overflow']=cdp.evaluate('document.documentElement.scrollWidth>innerWidth+1')
@@ -257,7 +278,7 @@ def main():
     tap('[data-menu-toggle]');need(cdp.evaluate("document.querySelector('[data-menu-toggle]').getAttribute('aria-expanded')==='true'"),'Mobile menu failed');tap('[data-menu-toggle]')
    rectangle=cdp.evaluate("(()=>{const r=document.querySelector('main').getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height,scale:1}})()")
    image=cdp.command('Page.captureScreenshot',{'format':'png','captureBeyondViewport':True,'clip':rectangle});(output/('dashboard-'+str(width)+'.png')).write_bytes(base64.b64decode(image['data']))
-   info.update({'console_errors':cdp.console_errors,'runtime_errors':cdp.runtime_errors});report.append(info);print('BROWSER: '+json.dumps(info))
+   info.update({'console_errors':cdp.console_errors,'runtime_errors':cdp.runtime_errors,'handled_projection_http_409':cdp.projection_conflict_http,'source_busy_http_503':cdp.source_busy_http});report.append(info);print('BROWSER: '+json.dumps(info))
   (output/'report.json').write_text(json.dumps({'url':HOST,'screens':report,'source':'real staging in existing Edge; no fixtures','password_saved':False},indent=2))
   need(all(not r['overflow'] and not r['console_errors'] and not r['runtime_errors'] for r in report),'Browser/overflow/console acceptance failed; report retained')
   print('PASS: period KPIs, all chart groups, records/search/pagination/sort/Escape, four widths, touch at 320 and screenshots');print('DIRECTORY: '+str(output))

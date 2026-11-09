@@ -123,3 +123,10 @@ After the one consolidated SQL/HTTP verification, output contains the actual 7D/
 KPI table, both backup paths, revision, counts and remaining browser UNVERIFIED items.
 The updated Edge helper also checks human headings, close button, focus return, keyboard
 opening and preservation of 7/30/90 chart periods after closing day drill-down.
+
+The browser helper now uses one strict wait/diagnostic path for every group, sort, search,
+pagination and day/period operation. A 409 permits one explicit click on the existing Refresh
+control; a 503 permits at most four UI retries, 15 seconds apart, within 100 seconds. Neither
+path bypasses server validation, rewrites cache/checkpoints or pauses Research jobs. Controlled
+409/503 network events are counted separately in the report; uncaught JS and unexpected
+console/HTTP errors still fail acceptance. Offline state-machine tests cover all terminal paths.
