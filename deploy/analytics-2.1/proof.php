@@ -14,6 +14,12 @@ foreach(['known'=>$d['counts']['ransomware'],'not_known'=>$d['counts']['kev']-$d
 foreach(['cisa-advisories','cert-eu','msrc'] as $value){$count=$d['by_source'][$value]??0;cdra_need(cdta_records(cdta_filters(['group'=>'advisory','value'=>$value,'revision'=>$revision]))['total']===$count,'advisory_drill_mismatch');$checks['advisory:'.$value]=$count;}
 $point_checks=0;foreach(['kev','nvd'] as $source){foreach($d['chart_series'][$source] as $date=>$count){cdra_need(cdta_records(cdta_filters(['group'=>'day','value'=>$source,'date'=>$date,'days'=>90,'revision'=>$revision,'per_page'=>1]))['total']===$count,'daily_drill_mismatch');$point_checks++;}}
 $q=cdta_filters(['group'=>'severity','value'=>'High','revision'=>$revision,'per_page'=>5]);$first=cdta_records($q);$q['page']=2;$second=cdta_records($q);cdra_need(!array_intersect(array_column($first['items'],'id'),array_column($second['items'],'id')),'pagination_duplicates');
-foreach(['date_desc','date_asc','severity_desc','cvss_desc'] as $sort){$q['page']=1;$q['sort']=$sort;$r=cdta_records($q);cdra_need(count($r['items'])<=5,'page_limit');}
+foreach(['date_desc','date_asc','severity_desc','cvss_desc'] as $sort){$q['page']=1;$q['sort']=$sort;$r=cdta_records($q);cdra_need(count($r['items'])<=5,'page_limit');
+ for($i=1;$i<count($r['items']);$i++){$a=$r['items'][$i-1];$b=$r['items'][$i];
+  if($sort==='cvss_desc'){cdra_need($a['score']>=$b['score'],'cvss_sort_mismatch');}
+  elseif($sort==='date_asc'){cdra_need($a['published']<=$b['published'],'date_asc_mismatch');}
+  else{cdra_need($a['published']>=$b['published'],'date_desc_or_band_sort_mismatch');}
+ }
+}
 if($first['items']){$id=$first['items'][0]['id'];$r=cdta_records(cdta_filters(['group'=>'severity','value'=>'High','q'=>$id,'revision'=>$revision]));cdra_need($r['total']===1&&$r['items'][0]['id']===$id,'cve_search_mismatch');}
 cdra_need(!$db->last_error,'proof_database_error');echo wp_json_encode(['periods'=>$out,'revision'=>$revision,'chart_counts'=>$checks,'daily_points_checked'=>$point_checks,'pagination_search'=>true,'projection_generated'=>$d['generated_at'],'partial_nvd'=>true]);

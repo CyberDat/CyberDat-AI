@@ -102,3 +102,24 @@ on VPS. Screenshots require human review. Until executed, browser/mobile interac
 static tests are not a visual PASS. Busy source ingestion may require a later browser run.
 
 No Content/Social/SEO Agent or other project stage is included.
+
+## Finish already installed 2.1 (no reapply)
+
+The follow-up label fix makes all 14 filter headings human-readable, including direct gray
+KEV-only/NVD-only SVG clicks. `finish-analytics.py --finish` verifies the installed original
+8-file release and locates/checks its original private backup. It never reinstalls/activates
+plugins, reruns the installer, edits Research code or changes scheduler/checkpoints.
+Before replacing only `assets/js/threat-analytics.js`, it creates a new private SQL/theme/
+previous-JS backup under `analytics-2.1-finish-<UTC>`. Already-patched runs resume verification
+using that backup without rewriting JS or issuing another backup. Both original and finish
+backups remain intact. An explicit `--rollback FINISH_BACKUP` restores only that previous JS.
+
+```bash
+sudo -v && sudo -n /usr/bin/python3 -I \
+  /home/cyberdat/cyberdat-deploy/analytics-2.1-finish-prepared/finish-analytics.py --finish
+```
+
+After the one consolidated SQL/HTTP verification, output contains the actual 7D/30D/90D
+KPI table, both backup paths, revision, counts and remaining browser UNVERIFIED items.
+The updated Edge helper also checks human headings, close button, focus return, keyboard
+opening and preservation of 7/30/90 chart periods after closing day drill-down.

@@ -96,7 +96,10 @@ def main():
    info['groups']=[]
    cases=[('[data-chart-id=cvss-severity] [data-drill-value="'+v+'"]','severity:'+v) for v in ['Critical','High','Medium','Low','None','Unrated']]+[('[data-drill-group=overlap][data-drill-value='+v+']','overlap:'+v) for v in ['shared','kev_only','nvd_only']]+[('[data-chart-id=ransomware] [data-drill-value='+v+']','ransomware:'+v) for v in ['known','not_known']]+[('[data-chart-id=advisory-sources] [data-drill-value='+v+']','advisory:'+v) for v in ['cisa-advisories','cert-eu','msrc']]+[('[data-chart-id='+v+'] .td-chart-point','day:'+v) for v in ['kev-additions','nvd-trends']]
    for selector,label in cases:
-    tap(selector)
+    if label=='severity:Unrated':
+     cdp.evaluate("(()=>{const n=document.querySelector("+json.dumps(selector)+");const d=n.closest('details');if(d)d.open=true;n.scrollIntoView({block:'center'});n.focus();return true})()")
+     cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Enter','code':'Enter','windowsVirtualKeyCode':13});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Enter','code':'Enter','windowsVirtualKeyCode':13})
+    else:tap(selector)
     need(wait("document.querySelector('[data-analytics-dialog]').open&&document.querySelector('[data-ta-status]').textContent.includes('matching records')"),'Record request did not succeed: '+label)
     result=cdp.evaluate("(()=>{const d=document.querySelector('[data-analytics-dialog]');return {rows:d.querySelectorAll('.ta-record').length,links:[...d.querySelectorAll('.ta-record a')].every(a=>a.href.startsWith('https://')),overflow:d.scrollWidth>d.clientWidth+1,focusInside:d.contains(document.activeElement)}})()")
     need(result['rows']<=20 and result['links'] and not result['overflow'] and result['focusInside'],'Panel bounds/links/focus failure');info['groups'].append(label)
@@ -108,7 +111,19 @@ def main():
      if cve:
       cdp.evaluate("document.querySelector('[data-ta-form] input').value="+json.dumps(cve)+";true");tap('[data-ta-form] button');need(wait("document.querySelector('[data-ta-status]').textContent.startsWith('1 matching records')"),'CVE search failed')
      image=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('records-'+str(width)+'.png')).write_bytes(base64.b64decode(image['data']))
-    cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Escape','code':'Escape','windowsVirtualKeyCode':27});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Escape','code':'Escape','windowsVirtualKeyCode':27});need(wait("!document.querySelector('[data-analytics-dialog]').open",5),'Escape did not close panel')
+    title=cdp.evaluate("document.querySelector('[data-ta-title]').textContent");need(title not in ['kev_only','nvd_only','shared','known','not_known'],'Technical filter title leaked into panel')
+    if label=='severity:Critical':tap('[data-ta-close]')
+    else:
+     cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Escape','code':'Escape','windowsVirtualKeyCode':27});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Escape','code':'Escape','windowsVirtualKeyCode':27})
+    need(wait("!document.querySelector('[data-analytics-dialog]').open",5),'Panel did not close')
+    need(cdp.evaluate("document.activeElement===document.querySelector("+json.dumps(selector)+")"),'Focus did not return to the triggering chart element')
+   info['dayPeriods']=[]
+   for chart in ['kev-additions','nvd-trends']:
+    for days in [7,30,90]:
+     base='[data-chart-id='+chart+']';tap(base+' [data-period="'+str(days)+'"]');tap(base+' .td-chart-point')
+     need(wait("document.querySelector('[data-ta-status]').textContent.includes('matching records')"),'Day/period drill request failed')
+     need(str(days)+'D' in cdp.evaluate("document.querySelector('[data-ta-title]').textContent"),'Drill lost the selected day period')
+     tap('[data-ta-close]');need(cdp.evaluate("document.querySelector("+json.dumps(base+' [data-chart-line]')+").dataset.activePeriod")==str(days),'Chart period reset after closing records');info['dayPeriods'].append(chart+':'+str(days))
    info['overflow']=cdp.evaluate('document.documentElement.scrollWidth>innerWidth+1')
    if width<1024:
     tap('[data-menu-toggle]');need(cdp.evaluate("document.querySelector('[data-menu-toggle]').getAttribute('aria-expanded')==='true'"),'Mobile menu failed');tap('[data-menu-toggle]')

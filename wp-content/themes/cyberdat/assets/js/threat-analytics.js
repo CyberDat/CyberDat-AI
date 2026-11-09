@@ -1,6 +1,12 @@
 /* Read-only same-origin paginated records. No external API requests or untrusted HTML insertion. */
 (() => {
  'use strict';
+ const selectionLabel=(group,value)=>{
+  const names={severity:{Critical:'Critical CVEs',High:'High severity CVEs',Medium:'Medium severity CVEs',Low:'Low severity CVEs',None:'CVEs with an explicit CVSS score of zero',Unrated:'CVEs without a selected CVSS score'},overlap:{shared:'KEV ∩ local NVD — matching CVEs',kev_only:'KEV only — absent from the local NVD sample',nvd_only:'Local NVD only — not listed in CISA KEV'},ransomware:{known:'KEVs with confirmed ransomware use',not_known:'KEVs not marked Known / unreported'},advisory:{'cisa-advisories':'CISA Cybersecurity Advisories','cert-eu':'CERT-EU Security Advisories',msrc:'Microsoft Security Response Center advisories'}};
+  return names[group]?.[value]||'Verified source records';
+ };
+ if(typeof module!=='undefined'&&module.exports)module.exports={selectionLabel};
+ if(typeof document==='undefined')return;
  const root=document.querySelector('[data-analytics-endpoint]'), dialog=document.querySelector('[data-analytics-dialog]');
  if(!root||!dialog||!dialog.showModal)return;
  const endpoint=new URL(root.dataset.analyticsEndpoint,location.href);if(endpoint.origin!==location.origin)return;
@@ -40,7 +46,7 @@
  const open=(query,label,source)=>{
   trigger=source;selected=query;page=1;pages=0;revision=root.dataset.analyticsRevision||'';form.reset();dialog.querySelector('[data-ta-title]').textContent=label;dialog.showModal();dialog.querySelector('[data-ta-close]').focus();load();
  };
- const actionable=(node,group,value)=>{node.dataset.drillGroup=group;node.dataset.drillValue=value;node.setAttribute('role','button');node.setAttribute('aria-haspopup','dialog');node.setAttribute('tabindex','0');};
+ const actionable=(node,group,value)=>{node.dataset.drillGroup=group;node.dataset.drillValue=value;node.setAttribute('role','button');node.setAttribute('aria-haspopup','dialog');node.setAttribute('tabindex','0');node.setAttribute('aria-label',selectionLabel(group,value));};
  root.querySelectorAll('[data-chart-id=cvss-severity] .td-ring-segment').forEach(n=>actionable(n,'severity',n.dataset.tooltip.split(' · ')[0]));
  root.querySelectorAll('[data-chart-id=ransomware] .td-ring-segment').forEach(n=>actionable(n,'ransomware',n.dataset.tooltip.startsWith('Known ransomware use')?'known':'not_known'));
  const sources=['cisa-advisories','cert-eu','msrc'];root.querySelectorAll('[data-chart-id=advisory-sources] .td-advisory-column rect').forEach((n,i)=>actionable(n,'advisory',sources[i]));
@@ -57,7 +63,7 @@
  const activate=event=>{
   const point=event.target.closest('.td-chart-point'), mark=event.target.closest('[data-drill-group]');
   if(point){const chart=point.closest('[data-chart-line]'), date=(point.dataset.tooltip||'').match(/^\d{4}-\d{2}-\d{2}/)?.[0];if(!date)return;const days=chart.dataset.activePeriod||'30',value=chart.dataset.chartLine.includes('kev')?'kev':'nvd';open({group:'day',value,date,days},value.toUpperCase()+' · '+date+' UTC · '+days+'D',point);}
-  else if(mark){open({group:mark.dataset.drillGroup,value:mark.dataset.drillValue},mark.getAttribute('aria-label')||mark.textContent||mark.dataset.drillValue,mark);}
+  else if(mark){open({group:mark.dataset.drillGroup,value:mark.dataset.drillValue},selectionLabel(mark.dataset.drillGroup,mark.dataset.drillValue),mark);}
  };
  root.addEventListener('click',activate);
  root.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)&&event.target.matches('.td-chart-point,[data-drill-group]')){event.preventDefault();activate(event);}});
