@@ -6,6 +6,33 @@ import base64,getpass,hashlib,http.client,html.parser,json,os,pathlib,secrets,sh
 P=pathlib.Path;HOST='https://staging.cyberdat.eu'
 def need(ok,message):
  if not ok:raise RuntimeError(message)
+def basic_password_valid(value):
+ return isinstance(value,str) and bool(value) and len(value.encode('utf-8'))<=4096 and not any(ord(c)<32 or ord(c)==127 for c in value)
+def read_basic_password(window=False):
+ if not window:
+  value=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ')
+  need(basic_password_valid(value),'Empty password or control character from console paste; use --password-window for local input')
+  return value
+ try:
+  import tkinter as tk
+  from tkinter import ttk,messagebox
+ except ImportError:raise RuntimeError('Python Tkinter is unavailable; no package installed. Verify Basic Auth in a private browser window.') from None
+ app=tk.Tk();app.title('CyberDat — local Basic Auth input');app.resizable(False,False);result=[]
+ frame=ttk.Frame(app,padding=18);frame.grid(sticky='nsew')
+ ttk.Label(frame,text='https://staging.cyberdat.eu',font=('Segoe UI',11,'bold')).grid(row=0,column=0,columnspan=2,sticky='w',pady=(0,8))
+ ttk.Label(frame,text='Username: cyberdat_staging_admin').grid(row=1,column=0,columnspan=2,sticky='w')
+ ttk.Label(frame,text='Enter the FIRST site-access password, not WordPress or SSH.').grid(row=2,column=0,columnspan=2,sticky='w',pady=(6,12))
+ ttk.Label(frame,text='Basic Auth password:').grid(row=3,column=0,sticky='w')
+ entry=ttk.Entry(frame,show='*',width=48);entry.grid(row=4,column=0,columnspan=2,sticky='ew',pady=6)
+ reveal=tk.BooleanVar(value=False);ttk.Checkbutton(frame,text='Show password locally',variable=reveal,command=lambda:entry.configure(show='' if reveal.get() else '*')).grid(row=5,column=0,columnspan=2,sticky='w')
+ ttk.Label(frame,text='Password stays in memory; it is not printed or saved.').grid(row=6,column=0,columnspan=2,sticky='w',pady=(8,12))
+ def submit(event=None):
+  value=entry.get()
+  if not basic_password_valid(value):messagebox.showwarning('Input required','Enter the existing Basic Auth password without newline/control characters.',parent=app);return
+  result.append(value);entry.delete(0,'end');app.destroy()
+ ttk.Button(frame,text='Continue',command=submit).grid(row=7,column=0,sticky='e',padx=(0,8));ttk.Button(frame,text='Cancel',command=app.destroy).grid(row=7,column=1,sticky='w')
+ app.bind('<Return>',submit);app.protocol('WM_DELETE_WINDOW',app.destroy);app.after(100,lambda:entry.focus_force());app.mainloop()
+ need(bool(result),'Local password input cancelled');return result[0]
 class HomeState(html.parser.HTMLParser):
  def __init__(self):super().__init__(convert_charrefs=True);self.version=None;self.model=False;self.series=0;self.asset=False
  def handle_starttag(self,tag,attrs):
@@ -99,7 +126,7 @@ def edge_policies():
  return result
 def main():
  need(os.name=='nt','Run on Windows 11; this script does not install a browser on the VPS')
- need(sys.argv[1:] in ([],['--visible']),'Only optional --visible is supported');visible='--visible' in sys.argv
+ need(set(sys.argv[1:])<=set(['--visible','--password-window']) and len(set(sys.argv[1:]))==len(sys.argv[1:]),'Only --visible and --password-window are supported');visible='--visible' in sys.argv
  policies=edge_policies();print('EDGE POLICIES: '+json.dumps(policies),flush=True)
  need(not any(k.endswith('.RemoteDebuggingAllowed') and v==0 for k,v in policies.items()),'Edge remote debugging is disabled by policy; no policy was changed')
  candidates=[P(os.environ.get('PROGRAMFILES(X86)','C:/Program Files (x86)'))/'Microsoft/Edge/Application/msedge.exe',P(os.environ.get('PROGRAMFILES','C:/Program Files'))/'Microsoft/Edge/Application/msedge.exe'];browser=next((p for p in candidates if p.is_file()),None);need(browser is not None,'Existing Microsoft Edge not found')
@@ -125,7 +152,7 @@ def main():
   need(target is not None,'Isolated Edge DevTools not ready; see EDGE STARTUP diagnostics; no staging password requested')
   cdp=DevTools(target['webSocketDebuggerUrl'],'')
   print('PASS: isolated Edge DevTools connected; no staging request yet',flush=True)
-  password=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ');need(bool(password),'Basic Auth required');authorization='Basic '+base64.b64encode(('cyberdat_staging_admin:'+password).encode()).decode();cdp.authorization=authorization
+  password=read_basic_password('--password-window' in sys.argv);authorization='Basic '+base64.b64encode(('cyberdat_staging_admin:'+password).encode()).decode();cdp.authorization=authorization
   preflight=home_preflight(authorization);print('HOME HTTP DIAGNOSTIC: '+json.dumps(preflight),flush=True)
   (output/'home-http.json').write_text(json.dumps(preflight,indent=2))
   need(preflight['http_status']!=401,'Staging rejected Basic Auth credentials; enter the existing Basic Auth password, not the WordPress or SSH password')

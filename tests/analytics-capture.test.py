@@ -17,7 +17,7 @@ for text in ['0\n/devtools/browser/test','65536\n/devtools/browser/test','9222\n
  try:module.debugging_port(text)
  except RuntimeError:pass
  else:raise AssertionError('Invalid port file accepted')
-source=p.read_text();assert source.index('cdp=DevTools(')<source.index('password=getpass.getpass(')
+source=p.read_text();assert source.index('cdp=DevTools(')<source.index('password=read_basic_password(')
 assert '--remote-debugging-port=0' in source and 'winreg.KEY_READ' in source and 'SetValue' not in source
 print('PASS: ephemeral port validation, startup before credentials, read-only Edge policy inspection')
 import html
@@ -29,3 +29,9 @@ try:module.StagingRedirect().redirect_request(None,None,302,'',{},'https://examp
 except RuntimeError:pass
 else:raise AssertionError('External credential redirect accepted')
 print('PASS: distinguish valid server period model, unavailable model and refused external redirect without real HTTP')
+
+assert module.basic_password_valid('TEST only ASCII')
+assert module.basic_password_valid(' Тест only Unicode ')
+for value in ['', '\x16', 'TEST\r\n', 'TEST\x00', 'TEST\t', 'TEST\x7f']:
+ assert not module.basic_password_valid(value)
+print('PASS: console paste control characters rejected; Unicode and intentional spaces preserved; no secret fixture values')
