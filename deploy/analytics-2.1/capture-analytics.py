@@ -2,10 +2,32 @@
 """Windows 11 / existing Edge only. Hidden staging Basic Auth, isolated temporary profile.
 No packages installed. Saves screenshots and a sanitized layout/console report locally.
 """
-import base64,getpass,hashlib,http.client,json,os,pathlib,secrets,shutil,socket,struct,subprocess,sys,tempfile,time,urllib.parse,urllib.request
+import base64,getpass,hashlib,http.client,html.parser,json,os,pathlib,secrets,shutil,socket,struct,subprocess,sys,tempfile,time,urllib.error,urllib.parse,urllib.request
 P=pathlib.Path;HOST='https://staging.cyberdat.eu'
 def need(ok,message):
  if not ok:raise RuntimeError(message)
+class HomeState(html.parser.HTMLParser):
+ def __init__(self):super().__init__(convert_charrefs=True);self.version=None;self.model=False;self.series=0;self.asset=False
+ def handle_starttag(self,tag,attrs):
+  a=dict(attrs)
+  if 'data-threat-pulse' in a:self.version=a['data-threat-pulse']
+  if 'data-pulse-periods' in a:
+   try:value=json.loads(a['data-pulse-periods']);self.model=isinstance(value,dict) and all(str(n) in value.get('periods',{}) for n in [7,30,90])
+   except (ValueError,TypeError):self.model=False
+  if 'data-pulse-series' in a:self.series+=1
+  if tag=='script' and urllib.parse.urlsplit(a.get('src','')).path.endswith('/assets/js/threat-pulse.js'):self.asset=True
+class StagingRedirect(urllib.request.HTTPRedirectHandler):
+ def redirect_request(self,req,fp,code,msg,headers,newurl):
+  u=urllib.parse.urlsplit(newurl);need(u.scheme=='https' and u.netloc=='staging.cyberdat.eu','External staging redirect refused')
+  return super().redirect_request(req,fp,code,msg,headers,newurl)
+def home_preflight(authorization):
+ opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),StagingRedirect())
+ request=urllib.request.Request(HOST+'/',headers={'Authorization':authorization,'User-Agent':'CyberDat-Browser-Verification/2.1'})
+ try:
+  with opener.open(request,timeout=30) as response:status=response.status;body=response.read(4000000)
+ except urllib.error.HTTPError as error:status=error.code;body=error.read(4000000)
+ parser=HomeState();parser.feed(body.decode('utf-8','replace'))
+ return {'http_status':status,'pulse_version':parser.version,'period_model_present':parser.model,'daily_series':parser.series,'pulse_script_enqueued':parser.asset}
 class DevTools:
  def __init__(self,url,authorization):
   p=urllib.parse.urlsplit(url);need(p.scheme=='ws' and p.hostname=='127.0.0.1','Nonlocal DevTools rejected');self.s=socket.create_connection(('127.0.0.1',p.port),timeout=30);self.buffer=b'';self.id=0;self.authorization=authorization;self.console_errors=0;self.runtime_errors=0
@@ -48,7 +70,15 @@ class DevTools:
    else:self.send({'id':self.id,'method':'Fetch.failRequest','params':{'requestId':p['requestId'],'errorReason':'BlockedByClient'}})
   elif name=='Fetch.authRequired':
    self.id+=1;self.send({'id':self.id,'method':'Fetch.continueWithAuth','params':{'requestId':p['requestId'],'authChallengeResponse':{'response':'CancelAuth'}}})
-  elif name=='Runtime.exceptionThrown':self.runtime_errors+=1
+  elif name=='Network.responseReceived':
+   response=p.get('response',{});u=urllib.parse.urlsplit(response.get('url',''))
+   if u.netloc=='staging.cyberdat.eu' and (p.get('type')=='Document' or u.path.endswith('/assets/js/threat-pulse.js')):
+    if not hasattr(self,'network_status'):self.network_status={}
+    self.network_status['document' if p.get('type')=='Document' else 'pulse_script']=int(response.get('status',0))
+  elif name=='Runtime.exceptionThrown':
+   self.runtime_errors+=1;detail=p.get('exceptionDetails',{});u=urllib.parse.urlsplit(detail.get('url',''))
+   if not hasattr(self,'runtime_locations'):self.runtime_locations=[]
+   if len(self.runtime_locations)<8:self.runtime_locations.append({'same_origin':u.netloc=='staging.cyberdat.eu','script':u.path if u.netloc=='staging.cyberdat.eu' and '/assets/js/' in u.path else None,'line':detail.get('lineNumber'),'column':detail.get('columnNumber')})
   elif name=='Log.entryAdded' and p.get('entry',{}).get('level')=='error':self.console_errors+=1
  def evaluate(self,code):return self.command('Runtime.evaluate',{'expression':code,'returnByValue':True})['result'].get('value')
  def close(self):self.s.close()
@@ -96,7 +126,14 @@ def main():
   cdp=DevTools(target['webSocketDebuggerUrl'],'')
   print('PASS: isolated Edge DevTools connected; no staging request yet',flush=True)
   password=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ');need(bool(password),'Basic Auth required');authorization='Basic '+base64.b64encode(('cyberdat_staging_admin:'+password).encode()).decode();cdp.authorization=authorization
-  for name in ['Page.enable','Runtime.enable','Log.enable']:cdp.command(name)
+  preflight=home_preflight(authorization);print('HOME HTTP DIAGNOSTIC: '+json.dumps(preflight),flush=True)
+  (output/'home-http.json').write_text(json.dumps(preflight,indent=2))
+  need(preflight['http_status']!=401,'Staging rejected Basic Auth credentials; enter the existing Basic Auth password, not the WordPress or SSH password')
+  need(preflight['http_status']==200,'Staging homepage HTTP status is not 200; see HOME HTTP DIAGNOSTIC')
+  if not preflight['period_model_present']:
+   time.sleep(5);preflight=home_preflight(authorization);print('HOME HTTP RECHECK: '+json.dumps(preflight),flush=True)
+  need(preflight['pulse_version']=='2.1' and preflight['period_model_present'],'Server HTML has no valid 2.1 period model; browser/JS cannot fix this; see HOME HTTP DIAGNOSTIC')
+  for name in ['Page.enable','Runtime.enable','Log.enable','Network.enable']:cdp.command(name)
   cdp.command('Fetch.enable',{'patterns':[{'urlPattern':'*'}],'handleAuthRequests':True});report=[]
   def wait(expression,seconds=45):
    end=time.monotonic()+seconds
@@ -113,7 +150,14 @@ def main():
     cdp.command('Input.dispatchMouseEvent',{'type':'mousePressed','button':'left','clickCount':1,**point});cdp.command('Input.dispatchMouseEvent',{'type':'mouseReleased','button':'left','clickCount':1,**point})
   for width in [1920,1440,768,320]:
    cdp.console_errors=0;cdp.runtime_errors=0;cdp.command('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width==320})
-   cdp.command('Page.navigate',{'url':HOST+'/'});need(wait("document.readyState==='complete'&&!!document.querySelector('[data-threat-pulse=\"2.1\"] .tp-periods:not([hidden])')"),'Period-aware homepage unavailable')
+   cdp.command('Page.navigate',{'url':HOST+'/'})
+   ready=wait("document.readyState==='complete'&&!!document.querySelector('[data-threat-pulse=\"2.1\"] .tp-periods:not([hidden])')")
+   if not ready:
+    dom=cdp.evaluate("""(()=>{const r=document.querySelector('[data-threat-pulse]'),b=r?.querySelector('.tp-periods');return {readyState:document.readyState,path:location.pathname,pulseVersion:r?.dataset.threatPulse||null,periodModelPresent:!!r?.dataset.pulsePeriods&&r.dataset.pulsePeriods!=='null',controlsPresent:!!b,controlsHidden:b?.hidden??null,series:r?.querySelectorAll('[data-pulse-series]').length||0,pulseScriptPresent:[...document.scripts].some(s=>s.src.includes('/assets/js/threat-pulse.js'))}})()""")
+    diagnostic={'width':width,'dom':dom,'http':getattr(cdp,'network_status',{}),'runtime_errors':cdp.runtime_errors,'error_locations':getattr(cdp,'runtime_locations',[])}
+    print('HOME BROWSER DIAGNOSTIC: '+json.dumps(diagnostic),flush=True);(output/'home-browser-failure.json').write_text(json.dumps(diagnostic,indent=2))
+    shot=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('home-failure-'+str(width)+'.png')).write_bytes(base64.b64decode(shot['data']))
+   need(ready,'Period-aware homepage unavailable; see HOME HTTP/BROWSER diagnostics')
    info={'width':width,'periods':[]}
    for days in [7,30,90]:
     tap('[data-pulse-period="'+str(days)+'"]')

@@ -20,3 +20,12 @@ for text in ['0\n/devtools/browser/test','65536\n/devtools/browser/test','9222\n
 source=p.read_text();assert source.index('cdp=DevTools(')<source.index('password=getpass.getpass(')
 assert '--remote-debugging-port=0' in source and 'winreg.KEY_READ' in source and 'SetValue' not in source
 print('PASS: ephemeral port validation, startup before credentials, read-only Edge policy inspection')
+import html
+valid={'periods':{'7':{},'30':{},'90':{}}}
+parser=module.HomeState();parser.feed('<section data-threat-pulse="2.1" data-pulse-periods="'+html.escape(__import__('json').dumps(valid),quote=True)+'"><div data-pulse-series="{}"></div><div data-pulse-series="{}"></div></section><script src="/wp-content/themes/cyberdat/assets/js/threat-pulse.js?ver=123"></script>')
+assert parser.version=='2.1' and parser.model and parser.series==2 and parser.asset
+parser=module.HomeState();parser.feed('<section data-threat-pulse="2.1" data-pulse-periods="null"></section>');assert not parser.model
+try:module.StagingRedirect().redirect_request(None,None,302,'',{},'https://example.invalid/')
+except RuntimeError:pass
+else:raise AssertionError('External credential redirect accepted')
+print('PASS: distinguish valid server period model, unavailable model and refused external redirect without real HTTP')
