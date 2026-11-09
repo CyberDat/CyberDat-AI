@@ -169,7 +169,8 @@ def main():
     time.sleep(.15)
    return False
   def tap(selector):
-   code="""(()=>{const n=document.querySelector(SELECTOR);if(!n)return null;const details=n.closest('details');if(details)details.open=true;n.scrollIntoView({block:'center',inline:'nearest'});if(n.classList.contains('td-ring-segment')){const span=parseFloat(n.getAttribute('stroke-dasharray')),offset=Math.abs(parseFloat(n.getAttribute('stroke-dashoffset'))),angle=(-90+3.6*(offset+span/2))*Math.PI/180,p=new DOMPoint(110+80*Math.cos(angle),110+80*Math.sin(angle)).matrixTransform(n.getScreenCTM());return {x:p.x,y:p.y};}const r=n.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()""".replace('SELECTOR',json.dumps(selector))
+   # getScreenCTM already includes each circle's rotate(-90); do not apply that rotation twice.
+   code="""(()=>{const n=document.querySelector(SELECTOR);if(!n)return null;const details=n.closest('details');if(details)details.open=true;n.scrollIntoView({block:'center',inline:'nearest'});if(n.classList.contains('td-ring-segment')){const span=parseFloat(n.getAttribute('stroke-dasharray')),offset=Math.abs(parseFloat(n.getAttribute('stroke-dashoffset'))),angle=(3.6*(offset+span/2))*Math.PI/180,p=new DOMPoint(110+80*Math.cos(angle),110+80*Math.sin(angle)).matrixTransform(n.getScreenCTM());return {x:p.x,y:p.y};}const r=n.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()""".replace('SELECTOR',json.dumps(selector))
    point=cdp.evaluate(code);need(point is not None,'Interactive element missing: '+selector)
    if width==320:
     cdp.command('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[point]});cdp.command('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]})
