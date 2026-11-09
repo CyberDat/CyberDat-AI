@@ -16,6 +16,8 @@ function cyberdat_theme_enqueue_assets() {
   wp_enqueue_style('cyberdat-threat-geo',get_theme_file_uri('/assets/css/threat-geo.css'),array('cyberdat-threat-dashboard'),cyberdat_theme_asset_version('/assets/css/threat-geo.css'));
  }
  if (is_front_page() && cyberdat_home_preview_allowed()) {
+  wp_enqueue_style('cyberdat-threat-pulse',get_theme_file_uri('/assets/css/threat-pulse.css'),array('cyberdat-home-prototype'),cyberdat_theme_asset_version('/assets/css/threat-pulse.css'));
+  wp_enqueue_script('cyberdat-threat-pulse',get_theme_file_uri('/assets/js/threat-pulse.js'),array(),cyberdat_theme_asset_version('/assets/js/threat-pulse.js'),array('strategy'=>'defer','in_footer'=>true));
   wp_enqueue_style('cyberdat-home-prototype',get_theme_file_uri('/assets/css/home-prototype.css'),array('cyberdat-main'),cyberdat_theme_asset_version('/assets/css/home-prototype.css'));
  }
  if($intelligence) {

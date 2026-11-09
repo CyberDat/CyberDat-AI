@@ -16,3 +16,5 @@ require_once __DIR__ . '/inc/tools.php';
 require_once __DIR__ . '/inc/intelligence-charts.php';
 
 require_once __DIR__ . '/inc/threat-intelligence.php';
+
+require_once __DIR__ . '/inc/threat-pulse.php';
