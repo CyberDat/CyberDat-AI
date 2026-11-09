@@ -40,6 +40,8 @@ class DevTools:
   name=event.get('method');p=event.get('params',{})
   if name=='Fetch.requestPaused':
    request=p['request'];u=urllib.parse.urlsplit(request['url']);allowed=u.scheme=='https' and u.netloc=='staging.cyberdat.eu'
+   if allowed and u.path.endswith('/cyberdat-analytics/v1/records'):
+    query=urllib.parse.parse_qs(u.query);self.analytics_filter={k:query.get(k,[''])[0] for k in ['group','value','date','days']}
    self.id+=1
    if allowed:
     headers=[{'name':k,'value':v} for k,v in request.get('headers',{}).items() if k.lower()!='authorization'];headers.append({'name':'Authorization','value':self.authorization});self.send({'id':self.id,'method':'Fetch.continueRequest','params':{'requestId':p['requestId'],'headers':headers}})
@@ -54,7 +56,7 @@ def main():
  need(os.name=='nt','Run on Windows 11; this script does not install a browser on the VPS')
  candidates=[P(os.environ.get('PROGRAMFILES(X86)','C:/Program Files (x86)'))/'Microsoft/Edge/Application/msedge.exe',P(os.environ.get('PROGRAMFILES','C:/Program Files'))/'Microsoft/Edge/Application/msedge.exe'];browser=next((p for p in candidates if p.is_file()),None);need(browser is not None,'Existing Microsoft Edge not found')
  password=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ');need(bool(password),'Basic Auth required');authorization='Basic '+base64.b64encode(('cyberdat_staging_admin:'+password).encode()).decode()
- stamp=time.strftime('%Y%m%dT%H%M%SZ',time.gmtime());output=P.home()/('CyberDat-analytics-2.1-screenshots-'+stamp);output.mkdir(exist_ok=False)
+ stamp=time.strftime('%Y%m%dT%H%M%SZ',time.gmtime());output=P.home()/('CyberDat-analytics-2.1-screenshots-'+stamp);output.mkdir(exist_ok=False);print('DIRECTORY: '+str(output),flush=True)
  profile=tempfile.mkdtemp(prefix='cyberdat-dashboard-edge-');probe=socket.socket();probe.bind(('127.0.0.1',0));port=probe.getsockname()[1];probe.close();process=None;cdp=None
  try:
   process=subprocess.Popen([str(browser),'--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--disable-background-networking','--disable-component-update','--disable-sync','--disable-extensions','--remote-debugging-address=127.0.0.1','--remote-debugging-port='+str(port),'--user-data-dir='+profile,'about:blank'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
@@ -93,6 +95,7 @@ def main():
    tap('[data-pulse-period="7"]');rectangle=cdp.evaluate("(()=>{const r=document.querySelector('[data-threat-pulse]').getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height,scale:1}})()")
    image=cdp.command('Page.captureScreenshot',{'format':'png','captureBeyondViewport':True,'clip':rectangle});(output/('pulse-'+str(width)+'.png')).write_bytes(base64.b64decode(image['data']))
    cdp.command('Page.navigate',{'url':HOST+'/threat-intelligence/'});need(wait("document.readyState==='complete'&&!!document.querySelector('.ta-browse')"),'Drill-down enhancement unavailable')
+   cdp.evaluate("""(()=>{const root=document.querySelector('[data-analytics-endpoint]');window.__cdtaCaptureTrigger=null;const remember=event=>{if(event.type==='keydown'&&!['Enter',' '].includes(event.key))return;const node=event.target.closest('.td-chart-point,[data-drill-group]');if(node)window.__cdtaCaptureTrigger=node;};root.addEventListener('click',remember,true);root.addEventListener('keydown',remember,true);return true})()""")
    info['groups']=[]
    cases=[('[data-chart-id=cvss-severity] [data-drill-value="'+v+'"]','severity:'+v) for v in ['Critical','High','Medium','Low','None','Unrated']]+[('[data-drill-group=overlap][data-drill-value='+v+']','overlap:'+v) for v in ['shared','kev_only','nvd_only']]+[('[data-chart-id=ransomware] [data-drill-value='+v+']','ransomware:'+v) for v in ['known','not_known']]+[('[data-chart-id=advisory-sources] [data-drill-value='+v+']','advisory:'+v) for v in ['cisa-advisories','cert-eu','msrc']]+[('[data-chart-id='+v+'] .td-chart-point','day:'+v) for v in ['kev-additions','nvd-trends']]
    for selector,label in cases:
@@ -101,6 +104,10 @@ def main():
      cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Enter','code':'Enter','windowsVirtualKeyCode':13});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Enter','code':'Enter','windowsVirtualKeyCode':13})
     else:tap(selector)
     need(wait("document.querySelector('[data-analytics-dialog]').open&&document.querySelector('[data-ta-status]').textContent.includes('matching records')"),'Record request did not succeed: '+label)
+    expected_group,expected_value=label.split(':',1)
+    if expected_group=='day':expected_value='kev' if expected_value=='kev-additions' else 'nvd'
+    observed=getattr(cdp,'analytics_filter',{})
+    need(observed.get('group')==expected_group and observed.get('value')==expected_value,'Clicked chart sent a different filter: '+label+' observed='+json.dumps(observed))
     result=cdp.evaluate("(()=>{const d=document.querySelector('[data-analytics-dialog]');return {rows:d.querySelectorAll('.ta-record').length,links:[...d.querySelectorAll('.ta-record a')].every(a=>a.href.startsWith('https://')),overflow:d.scrollWidth>d.clientWidth+1,focusInside:d.contains(document.activeElement)}})()")
     need(result['rows']<=20 and result['links'] and not result['overflow'] and result['focusInside'],'Panel bounds/links/focus failure');info['groups'].append(label)
     if label=='severity:High':
@@ -116,7 +123,13 @@ def main():
     else:
      cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Escape','code':'Escape','windowsVirtualKeyCode':27});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Escape','code':'Escape','windowsVirtualKeyCode':27})
     need(wait("!document.querySelector('[data-analytics-dialog]').open",5),'Panel did not close')
-    need(cdp.evaluate("document.activeElement===document.querySelector("+json.dumps(selector)+")"),'Focus did not return to the triggering chart element')
+    # Native dialog close queues a close event; aria/focus restoration may follow open=false.
+    focus_ok=wait("!!window.__cdtaCaptureTrigger&&document.activeElement===window.__cdtaCaptureTrigger",5)
+    if not focus_ok:
+     detail=cdp.evaluate("""(()=>{const meta=n=>n?{tag:n.tagName,role:n.getAttribute('role'),group:n.dataset?.drillGroup||null,value:n.dataset?.drillValue||null,connected:n.isConnected}:null;return {active:meta(document.activeElement),trigger:meta(window.__cdtaCaptureTrigger),dialogOpen:document.querySelector('[data-analytics-dialog]').open}})()""")
+     diagnostic={'width':width,'case':label,'filter':observed,'focus':detail};print('FOCUS DIAGNOSTIC: '+json.dumps(diagnostic),flush=True);(output/'focus-failure.json').write_text(json.dumps(diagnostic,indent=2))
+     shot=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('focus-failure-'+str(width)+'.png')).write_bytes(base64.b64decode(shot['data']))
+    need(focus_ok,'Focus did not return to the actual chart trigger after close: '+label)
    info['dayPeriods']=[]
    for chart in ['kev-additions','nvd-trends']:
     for days in [7,30,90]:

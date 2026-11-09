@@ -1,0 +1,14 @@
+"""Exercise browser interception without opening a browser/socket or reading credentials."""
+import importlib.util,pathlib,sys
+sys.dont_write_bytecode=True
+p=pathlib.Path(__file__).resolve().parents[1]/'deploy/analytics-2.1/capture-analytics.py';spec=importlib.util.spec_from_file_location('capture_under_test',p);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+client=module.DevTools.__new__(module.DevTools);client.id=0;client.authorization='TEST-ONLY-NOT-A-CREDENTIAL';messages=[];client.send=messages.append
+client.event({'method':'Fetch.requestPaused','params':{'requestId':'fixture','request':{'url':'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records?group=overlap&value=kev_only&days=30&q=CVE-2026-12345','headers':{'Authorization':'REPLACED-TEST-VALUE'}}}})
+assert client.analytics_filter=={'group':'overlap','value':'kev_only','date':'','days':'30'}
+assert 'q' not in client.analytics_filter and 'Authorization' not in client.analytics_filter
+assert messages[-1]['method']=='Fetch.continueRequest'
+headers=messages[-1]['params']['headers'];assert len([h for h in headers if h['name'].lower()=='authorization'])==1
+client.event({'method':'Fetch.requestPaused','params':{'requestId':'external','request':{'url':'https://example.invalid/wp-json/cyberdat-analytics/v1/records?group=severity&value=High','headers':{}}}})
+assert messages[-1]['method']=='Fetch.failRequest' and 'headers' not in messages[-1]['params']
+assert client.analytics_filter['value']=='kev_only'
+print('PASS: actual request-filter evidence; credentials excluded from diagnostics; external requests remain blocked; no browser/network used')
