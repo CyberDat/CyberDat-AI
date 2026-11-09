@@ -8,3 +8,8 @@ body.home .site-main.container{max-width:1280px;width:min(calc(100% - 2 * var(--
 @media(min-width:1100px){.tp-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tp{padding:18px 20px}.tp-heading{margin-bottom:4px}.tp-card{padding:10px 12px}}
 @media(max-width:359px){.tp{padding:12px}.tp-heading{align-items:start}.tp-signal-meta{overflow-wrap:anywhere}}
 @media(prefers-reduced-motion:reduce){.tp *{transition:none!important;animation:none!important}}
+
+/* Keep desktop analytics compact without clipping expanded tables or user text zoom. */
+.tp-card{font-size:12px;line-height:1.3}.tp-spark{font-size:9px;line-height:1.3}.tp-spark svg{height:32px}.tp-spark>span{display:block;font-size:9px;line-height:1.3}.tp-data summary{min-height:18px}.tp-bottom{border-top:1px solid #2b4353;margin-top:8px}.tp-breakdown{border:0}.tp-versions summary{min-height:20px}
+@media(min-width:1100px){.tp-bottom{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px}.tp-signal{align-content:start;align-items:start;flex-direction:column;gap:5px;border-left:1px solid #2b4353;padding-left:20px;margin-top:10px}.tp-signal details{flex-basis:auto}.tp-signal>a{line-height:1.4}.tp-legend{gap:0 10px}.tp-legend button{min-height:28px}.tp-card{padding:10px}.tp-sync{font-size:9px;line-height:1.3}}
+@media(pointer:coarse){.tp-legend button{min-height:44px}}
