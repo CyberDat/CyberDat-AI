@@ -33,6 +33,17 @@ def read_basic_password(window=False):
  ttk.Button(frame,text='Continue',command=submit).grid(row=7,column=0,sticky='e',padx=(0,8));ttk.Button(frame,text='Cancel',command=app.destroy).grid(row=7,column=1,sticky='w')
  app.bind('<Return>',submit);app.protocol('WM_DELETE_WINDOW',app.destroy);app.after(100,lambda:entry.focus_force());app.mainloop()
  need(bool(result),'Local password input cancelled');return result[0]
+def safe_resource(value):
+ try:
+  u=urllib.parse.urlsplit(value);host=u.hostname
+  path=u.path if host=='staging.cyberdat.eu' and (u.path.startswith(('/wp-content/','/wp-includes/','/wp-json/')) or u.path in ['/','/favicon.ico']) and len(u.path)<=256 else None
+  return {'host':host,'path':path}
+ except ValueError:return {'host':None,'path':None}
+def console_metadata(entry):
+ text=entry.get('text','');status=re.search(r'status(?: of)? ([1-5][0-9]{2})\b',text,re.I);resource=safe_resource(entry.get('url',''))
+ category='content_security_policy' if 'content security policy' in text.lower() else 'permissions_policy' if 'permissions-policy' in text.lower() else 'resource_error' if entry.get('source')=='network' else 'other'
+ links=[safe_resource(url) for url in re.findall(r'https?://[^\s\x22\x27<>]+',text)[:3]]
+ return {'source':entry.get('source'),'category':category,'resource':resource,'referenced_resources':links,'http_status':int(status.group(1)) if status else None,'net_errors':re.findall(r'net::[A-Z0-9_]+',text)[:3],'directives':sorted(set(re.findall(r'\b(?:default|script|style|img|font|connect|frame|worker)-src\b',text)))}
 class HomeState(html.parser.HTMLParser):
  def __init__(self):super().__init__(convert_charrefs=True);self.version=None;self.model=False;self.series=0;self.asset=False
  def handle_starttag(self,tag,attrs):
@@ -99,6 +110,9 @@ class DevTools:
    self.id+=1;self.send({'id':self.id,'method':'Fetch.continueWithAuth','params':{'requestId':p['requestId'],'authChallengeResponse':{'response':'CancelAuth'}}})
   elif name=='Network.responseReceived':
    response=p.get('response',{});u=urllib.parse.urlsplit(response.get('url',''))
+   if int(response.get('status',0))>=400:
+    if not hasattr(self,'failed_resources'):self.failed_resources=[]
+    if len(self.failed_resources)<12:self.failed_resources.append({**safe_resource(response.get('url','')),'status':int(response.get('status',0)),'type':p.get('type')})
    if u.netloc=='staging.cyberdat.eu' and u.path.endswith('/cyberdat-analytics/v1/records'):
     q=urllib.parse.parse_qs(u.query);self.record_response={'status':int(response.get('status',0)),**{k:q.get(k,[''])[0] for k in ['group','value','date','days']}}
    if u.netloc=='staging.cyberdat.eu' and (p.get('type')=='Document' or u.path.endswith('/assets/js/threat-pulse.js')):
@@ -109,6 +123,8 @@ class DevTools:
    if not hasattr(self,'runtime_locations'):self.runtime_locations=[]
    if len(self.runtime_locations)<8:self.runtime_locations.append({'same_origin':u.netloc=='staging.cyberdat.eu','script':u.path if u.netloc=='staging.cyberdat.eu' and '/assets/js/' in u.path else None,'line':detail.get('lineNumber'),'column':detail.get('columnNumber')})
   elif name=='Log.entryAdded' and p.get('entry',{}).get('level')=='error':
+   if not hasattr(self,'console_entries'):self.console_entries=[]
+   if len(self.console_entries)<12:self.console_entries.append(console_metadata(p['entry']))
    entry=p['entry'];u=urllib.parse.urlsplit(entry.get('url',''));status=re.search(r'status(?: of)? (409|503)\b',entry.get('text',''),re.I)
    if entry.get('source')=='network' and u.netloc=='staging.cyberdat.eu' and u.path.endswith('/cyberdat-analytics/v1/records') and status:
     # Report expected HTTP revalidation separately; never suppress JS exceptions or other errors.
@@ -133,7 +149,7 @@ def edge_policies():
  return result
 def main():
  need(os.name=='nt','Run on Windows 11; this script does not install a browser on the VPS')
- need(set(sys.argv[1:])<=set(['--visible','--password-window']) and len(set(sys.argv[1:]))==len(sys.argv[1:]),'Only --visible and --password-window are supported');visible='--visible' in sys.argv
+ need(set(sys.argv[1:])<=set(['--visible','--password-window','--diagnose-console']) and len(set(sys.argv[1:]))==len(sys.argv[1:]),'Only --visible, --password-window and --diagnose-console are supported');visible='--visible' in sys.argv
  policies=edge_policies();print('EDGE POLICIES: '+json.dumps(policies),flush=True)
  need(not any(k.endswith('.RemoteDebuggingAllowed') and v==0 for k,v in policies.items()),'Edge remote debugging is disabled by policy; no policy was changed')
  candidates=[P(os.environ.get('PROGRAMFILES(X86)','C:/Program Files (x86)'))/'Microsoft/Edge/Application/msedge.exe',P(os.environ.get('PROGRAMFILES','C:/Program Files'))/'Microsoft/Edge/Application/msedge.exe'];browser=next((p for p in candidates if p.is_file()),None);need(browser is not None,'Existing Microsoft Edge not found')
@@ -169,6 +185,18 @@ def main():
   need(preflight['pulse_version']=='2.1' and preflight['period_model_present'],'Server HTML has no valid 2.1 period model; browser/JS cannot fix this; see HOME HTTP DIAGNOSTIC')
   for name in ['Page.enable','Runtime.enable','Log.enable','Network.enable']:cdp.command(name)
   cdp.command('Fetch.enable',{'patterns':[{'urlPattern':'*'}],'handleAuthRequests':True});report=[]
+  if '--diagnose-console' in sys.argv:
+   console_report=[]
+   for path in ['/','/threat-intelligence/']:
+    cdp.console_errors=0;cdp.runtime_errors=0;cdp.console_entries=[];cdp.failed_resources=[]
+    cdp.command('Page.navigate',{'url':HOST+path});end=time.monotonic()+40
+    while time.monotonic()<end:
+     if cdp.evaluate("document.readyState==='complete'"):break
+     time.sleep(.2)
+    time.sleep(2);cdp.evaluate('document.readyState')
+    state={'path':path,'console_errors':cdp.console_errors,'runtime_errors':cdp.runtime_errors,'console_entries':getattr(cdp,'console_entries',[]),'failed_resources':getattr(cdp,'failed_resources',[]),'runtime_locations':getattr(cdp,'runtime_locations',[])}
+    console_report.append(state);print('CONSOLE DIAGNOSTIC: '+json.dumps(state),flush=True)
+   (output/'console-only.json').write_text(json.dumps(console_report,indent=2));print('Console diagnosis complete; full acceptance not rerun; no unknown error ignored.');return
   def wait(expression,seconds=45):
    end=time.monotonic()+seconds
    while time.monotonic()<end:
@@ -208,7 +236,7 @@ def main():
     shot=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('record-failure-'+str(width)+'.png')).write_bytes(base64.b64decode(shot['data']))
    need(ready,'Record request did not succeed: '+label+'; see RECORD DIAGNOSTIC')
   for width in [1920,1440,768,320]:
-   cdp.console_errors=0;cdp.runtime_errors=0;cdp.projection_conflict_http=0;cdp.source_busy_http=0;cdp.command('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width==320})
+   cdp.console_errors=0;cdp.runtime_errors=0;cdp.console_entries=[];cdp.failed_resources=[];cdp.projection_conflict_http=0;cdp.source_busy_http=0;cdp.command('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width==320})
    cdp.command('Page.navigate',{'url':HOST+'/'})
    ready=wait("document.readyState==='complete'&&!!document.querySelector('[data-threat-pulse=\"2.1\"] .tp-periods:not([hidden])')")
    if not ready:
@@ -278,7 +306,7 @@ def main():
     tap('[data-menu-toggle]');need(cdp.evaluate("document.querySelector('[data-menu-toggle]').getAttribute('aria-expanded')==='true'"),'Mobile menu failed');tap('[data-menu-toggle]')
    rectangle=cdp.evaluate("(()=>{const r=document.querySelector('main').getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height,scale:1}})()")
    image=cdp.command('Page.captureScreenshot',{'format':'png','captureBeyondViewport':True,'clip':rectangle});(output/('dashboard-'+str(width)+'.png')).write_bytes(base64.b64decode(image['data']))
-   info.update({'console_errors':cdp.console_errors,'runtime_errors':cdp.runtime_errors,'handled_projection_http_409':cdp.projection_conflict_http,'source_busy_http_503':cdp.source_busy_http});report.append(info);print('BROWSER: '+json.dumps(info))
+   info.update({'console_errors':cdp.console_errors,'runtime_errors':cdp.runtime_errors,'handled_projection_http_409':cdp.projection_conflict_http,'source_busy_http_503':cdp.source_busy_http,'console_diagnostics':getattr(cdp,'console_entries',[]),'failed_resources':getattr(cdp,'failed_resources',[])});report.append(info);print('BROWSER: '+json.dumps(info))
   (output/'report.json').write_text(json.dumps({'url':HOST,'screens':report,'source':'real staging in existing Edge; no fixtures','password_saved':False},indent=2))
   need(all(not r['overflow'] and not r['console_errors'] and not r['runtime_errors'] for r in report),'Browser/overflow/console acceptance failed; report retained')
   print('PASS: period KPIs, all chart groups, records/search/pagination/sort/Escape, four widths, touch at 320 and screenshots');print('DIRECTORY: '+str(output))

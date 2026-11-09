@@ -47,3 +47,11 @@ client.event({'method':'Log.entryAdded','params':{'entry':{'source':'javascript'
 client.event({'method':'Log.entryAdded','params':{'entry':{'source':'network','level':'error','url':'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records','text':'Failed to load resource: status of 500'}}})
 assert client.console_errors==2
 print('PASS: controlled own-endpoint HTTP conflicts reported separately; JS errors and unexpected HTTP failures still fail acceptance')
+meta=module.console_metadata({'source':'network','url':'https://example.invalid/private?token=TEST_ONLY','text':'Failed to load resource: the server responded with a status of 404 (Not Found)'})
+assert meta['http_status']==404 and meta['resource']=={'host':'example.invalid','path':None}
+assert 'TEST_ONLY' not in str(meta)
+meta=module.console_metadata({'source':'security','text':'Refused https://staging.cyberdat.eu/wp-includes/test.js?secret=TEST_ONLY due to Content Security Policy script-src'})
+assert meta['category']=='content_security_policy' and meta['directives']==['script-src']
+assert meta['referenced_resources'][0]['path']=='/wp-includes/test.js' and 'TEST_ONLY' not in str(meta)
+assert client.console_errors==2
+print('PASS: unknown console failures remain failures; sanitized resource/status/CSP evidence excludes URL credentials and query tokens')
