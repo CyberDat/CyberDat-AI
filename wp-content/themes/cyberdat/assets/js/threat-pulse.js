@@ -7,14 +7,21 @@
   if (values.length !== days || values.some(([date, n], i) => !/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isSafeInteger(n) || n < 0 || !Number.isFinite(Date.parse(date + 'T00:00:00Z')) || (i > 0 && Date.parse(date) - Date.parse(values[i - 1][0]) !== 86400000))) return null;
   return { values, total: values.reduce((n, row) => n + row[1], 0), available: values.filter(row => row[1] > 0).length >= 2 };
  }
+ function selection(model,days) {
+  const value=model?.periods?.[days];
+  if(![7,30,90].includes(days)||!value||!['critical','nvd','kev','ransomware'].every(key=>Number.isSafeInteger(value.counts?.[key])&&value.counts[key]>=0))return null;
+  return value;
+ }
  function points(values) {
   const max = Math.max(1, ...values.map(row => row[1]));
   return values.map((row, i) => [4 + 272 * i / Math.max(1, values.length - 1), 46 - 40 * row[1] / max]);
  }
- if (typeof module !== 'undefined' && module.exports) module.exports = { period, points };
+ if (typeof module !== 'undefined' && module.exports) module.exports = { period, points, selection };
  if (typeof document === 'undefined') return;
  const ns = 'http://www.w3.org/2000/svg';
- document.querySelectorAll('[data-threat-pulse="2.0"]').forEach(root => {
+ document.querySelectorAll('[data-threat-pulse="2.1"]').forEach(root => {
+  let periodModel; try { periodModel = JSON.parse(root.dataset.pulsePeriods); } catch (_) { return; }
+  if (!periodModel || !periodModel.periods) return;
   const tooltip = root.querySelector('[data-pulse-tooltip]');
   const show = message => { if (tooltip) tooltip.textContent = message; };
   root.querySelectorAll('[data-pulse-tip]').forEach(el => {
@@ -61,8 +68,11 @@
    controls.hidden = false;
    controls.querySelectorAll('[data-pulse-period]').forEach(button => button.addEventListener('click', () => {
     const days = Number(button.dataset.pulsePeriod); if (![7, 30, 90].includes(days)) return;
+    const chosen = selection(periodModel,days); if (!chosen) return;
+    root.querySelectorAll('[data-pulse-kpi]').forEach(card => { const key = card.dataset.pulseKpi === 'nvd_7' ? 'nvd' : card.dataset.pulseKpi; const value = chosen.counts[key]; card.dataset.value = String(value); card.querySelector('[data-pulse-number]').textContent = Number(value).toLocaleString('en-US'); const scopes={critical:'current selected CVSS 9.0–10.0 · partial NVD',nvd:'NVD publication dates · partial index',kev:'CISA dateAdded',ransomware:'CISA dateAdded · ransomware use Known'};card.querySelector('[data-pulse-scope]').textContent=days+' UTC calendar days · '+scopes[key]; });
+    root.querySelector('[data-pulse-window]').textContent = chosen.start + ' → ' + chosen.end + ' UTC · ' + days + ' days';
     charts.forEach(render => render(days)); controls.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-    show('Daily trends: ' + days + ' days. KPI scopes and all-index CVSS distribution are unchanged. NVD remains partial.');
+    show('Daily trends: ' + days + ' days. All four headline KPIs use this period. CVSS breakdown remains all indexed dates; NVD coverage is partial.');
    }));
   }
  });

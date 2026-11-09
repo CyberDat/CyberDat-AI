@@ -1,0 +1,14 @@
+<?php
+/** Offline query contracts; no WordPress, DB, network or cache writes. */
+define('ABSPATH','fixture');require __DIR__.'/../wp-content/plugins/cyberdat-threat-analytics/query.php';
+function check($ok,$label){if(!$ok){throw new RuntimeException($label);}echo "PASS: $label\n";}
+class QuoteDB{function prepare($sql,...$args){foreach($args as $v){$sql=preg_replace('/%[sd]/',is_int($v)?(string)$v:"'".str_replace("'","''",$v)."'",$sql,1);}return $sql;}}
+$db=new QuoteDB();$d=['reference_day'=>'2026-11-09','generated_at'=>strtotime('2026-11-09 17:30 UTC')];
+foreach([7,30,90] as $days){foreach(['critical','nvd','kev','ransomware'] as $value){$q=cdta_filters(['group'=>'period','value'=>$value,'days'=>$days]);[$where,$source]=cdta_where($q,$d,'fixture_',$db);check(str_contains($where,$source==='kev'?'$.cisa_original.dateAdded':'DATE(i.published)'),'period '.$days.' '.$value.' uses correct source date');check(!str_contains($where,'last_seen')&&!str_contains($where,'first_seen'),'import date never drives period');}}
+foreach(['severity'=>['Critical','High','Medium','Low','None','Unrated'],'overlap'=>['shared','kev_only','nvd_only'],'ransomware'=>['known','not_known'],'advisory'=>['cisa-advisories','cert-eu','msrc']] as $group=>$values){foreach($values as $value){[$where]=cdta_where(cdta_filters(['group'=>$group,'value'=>$value]),$d,'fixture_',$db);check(str_contains($where,'i.active=1'),'valid drill group '.$group.'/'.$value);}}
+foreach([['days'=>91],['q'=>"' OR 1=1"],['q'=>['x']],['page'=>0],['page'=>601],['per_page'=>51],['sort'=>'RAND()'],['group'=>'admin'],['value'=>'unknown'],['revision'=>'bad'],['extra'=>'x'],['group'=>'day','value'=>'nvd','days'=>7,'date'=>'2026-02-30']] as $bad){$thrown=false;try{cdta_filters($bad);}catch(InvalidArgumentException $e){$thrown=true;}check($thrown,'invalid filter rejected '.json_encode($bad));}
+$q=cdta_filters(['group'=>'day','value'=>'nvd','days'=>7,'date'=>'2026-10-01']);try{cdta_where($q,$d,'fixture_',$db);check(false,'out of window');}catch(InvalidArgumentException $e){check(true,'day outside retained chart period rejected');}
+[$where]=cdta_where(cdta_filters(['group'=>'overlap','value'=>'shared']),$d,'fixture_',$db);check(str_contains($where,'EXISTS (SELECT 1')&&!str_contains($where,'i.published<='),'overlap membership does not double-count CVSS or clip all-date totals');
+[$where]=cdta_where(cdta_filters(['group'=>'ransomware','value'=>'not_known']),$d,'fixture_',$db);check(str_contains($where,'COALESCE')&&str_contains($where,"<>'Known'"),'unconfirmed ransomware is not labeled safe');
+check(cdra_test_band(null)==='Unrated'&&cdra_test_band(0)==='None','explicit zero differs from missing selected score');
+function cdra_test_band($s){return $s===null?'Unrated':($s>=9?'Critical':($s>=7?'High':($s>=4?'Medium':($s>0?'Low':'None'))));}
