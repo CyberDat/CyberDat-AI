@@ -180,9 +180,10 @@ def main():
   (output/'home-http.json').write_text(json.dumps(preflight,indent=2))
   need(preflight['http_status']!=401,'Staging rejected Basic Auth credentials; enter the existing Basic Auth password, not the WordPress or SSH password')
   need(preflight['http_status']==200,'Staging homepage HTTP status is not 200; see HOME HTTP DIAGNOSTIC')
-  if not preflight['period_model_present']:
-   time.sleep(5);preflight=home_preflight(authorization);print('HOME HTTP RECHECK: '+json.dumps(preflight),flush=True)
-  need(preflight['pulse_version']=='2.1' and preflight['period_model_present'],'Server HTML has no valid 2.1 period model; browser/JS cannot fix this; see HOME HTTP DIAGNOSTIC')
+  if '--diagnose-console' not in sys.argv:
+   if not preflight['period_model_present']:
+    time.sleep(5);preflight=home_preflight(authorization);print('HOME HTTP RECHECK: '+json.dumps(preflight),flush=True)
+   need(preflight['pulse_version']=='2.1' and preflight['period_model_present'],'Server HTML has no valid 2.1 period model; browser/JS cannot fix this; see HOME HTTP DIAGNOSTIC')
   for name in ['Page.enable','Runtime.enable','Log.enable','Network.enable']:cdp.command(name)
   cdp.command('Fetch.enable',{'patterns':[{'urlPattern':'*'}],'handleAuthRequests':True});report=[]
   if '--diagnose-console' in sys.argv:
