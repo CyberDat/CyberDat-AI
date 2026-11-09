@@ -73,5 +73,6 @@
  dialog.querySelectorAll('[data-ta-page]').forEach(button=>button.addEventListener('click',()=>{page+=button.dataset.taPage==='next'?1:-1;load();}));
  refresh.addEventListener('click',()=>{page=1;revision='';load();});
  dialog.querySelector('[data-ta-close]').addEventListener('click',()=>dialog.close());
- dialog.addEventListener('close',()=>{serial++;controller?.abort();trigger?.focus();});
+ // A queued close from the previous view must not cancel a newly reopened dialog.
+ dialog.addEventListener('close',()=>{if(dialog.open)return;serial++;controller?.abort();trigger?.focus();});
 })();

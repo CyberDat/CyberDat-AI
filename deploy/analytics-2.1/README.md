@@ -130,3 +130,18 @@ control; a 503 permits at most four UI retries, 15 seconds apart, within 100 sec
 path bypasses server validation, rewrites cache/checkpoints or pauses Research jobs. Controlled
 409/503 network events are counted separately in the report; uncaught JS and unexpected
 console/HTTP errors still fail acceptance. Offline state-machine tests cover all terminal paths.
+
+## Dialog lifecycle correction
+
+An offline test executing the actual theme JavaScript reproduces a real race:
+close Critical, open High, then receive Critical's queued native `close` event. The old handler
+increments the new request serial and aborts the current controller, leaving High in Loading
+because its abort callback is now stale. The minimal fix ignores a queued close while the dialog
+has already reopened. Genuine closes still abort the pending request and restore focus.
+`analytics-dialog-lifecycle.test.cjs` proves both the old failure and the fixed behavior.
+
+`fix-dialog.py --finish` is an owner-run one-file staging deployment: verifies exact before/after
+JS hashes, creates a fresh private SQL/theme/previous-JS backup under `analytics-2.1-dialog-<UTC>`,
+then atomically replaces that JS only. Repeated finish resumes checks using its matching backup.
+No new installation, plugin activation, API ingestion, checkpoint/cache reset or timer operation.
+Explicit rollback restores only the prior JS. Browser verification is still required after deploy.
