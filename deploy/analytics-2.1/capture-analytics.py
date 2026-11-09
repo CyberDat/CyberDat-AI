@@ -99,6 +99,8 @@ class DevTools:
    self.id+=1;self.send({'id':self.id,'method':'Fetch.continueWithAuth','params':{'requestId':p['requestId'],'authChallengeResponse':{'response':'CancelAuth'}}})
   elif name=='Network.responseReceived':
    response=p.get('response',{});u=urllib.parse.urlsplit(response.get('url',''))
+   if u.netloc=='staging.cyberdat.eu' and u.path.endswith('/cyberdat-analytics/v1/records'):
+    q=urllib.parse.parse_qs(u.query);self.record_response={'status':int(response.get('status',0)),**{k:q.get(k,[''])[0] for k in ['group','value','date','days']}}
    if u.netloc=='staging.cyberdat.eu' and (p.get('type')=='Document' or u.path.endswith('/assets/js/threat-pulse.js')):
     if not hasattr(self,'network_status'):self.network_status={}
     self.network_status['document' if p.get('type')=='Document' else 'pulse_script']=int(response.get('status',0))
@@ -172,6 +174,7 @@ def main():
    # getScreenCTM already includes each circle's rotate(-90); do not apply that rotation twice.
    code="""(()=>{const n=document.querySelector(SELECTOR);if(!n)return null;const details=n.closest('details');if(details)details.open=true;n.scrollIntoView({block:'center',inline:'nearest'});if(n.classList.contains('td-ring-segment')){const span=parseFloat(n.getAttribute('stroke-dasharray')),offset=Math.abs(parseFloat(n.getAttribute('stroke-dashoffset'))),angle=(3.6*(offset+span/2))*Math.PI/180,p=new DOMPoint(110+80*Math.cos(angle),110+80*Math.sin(angle)).matrixTransform(n.getScreenCTM());return {x:p.x,y:p.y};}const r=n.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()""".replace('SELECTOR',json.dumps(selector))
    point=cdp.evaluate(code);need(point is not None,'Interactive element missing: '+selector)
+   cdp.last_hit=cdp.evaluate("(()=>{const n=document.elementFromPoint("+json.dumps(point['x'])+","+json.dumps(point['y'])+");const a=n?.closest('.td-chart-point,[data-drill-group]');return {tag:n?.tagName||null,group:a?.dataset.drillGroup||null,value:a?.dataset.drillValue||null,chart:a?.closest('[data-chart-id]')?.dataset.chartId||null}})()")
    if width==320:
     cdp.command('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[point]});cdp.command('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]})
    else:
@@ -198,11 +201,24 @@ def main():
    info['groups']=[]
    cases=[('[data-chart-id=cvss-severity] [data-drill-value="'+v+'"]','severity:'+v) for v in ['Critical','High','Medium','Low','None','Unrated']]+[('[data-drill-group=overlap][data-drill-value='+v+']','overlap:'+v) for v in ['shared','kev_only','nvd_only']]+[('[data-chart-id=ransomware] [data-drill-value='+v+']','ransomware:'+v) for v in ['known','not_known']]+[('[data-chart-id=advisory-sources] [data-drill-value='+v+']','advisory:'+v) for v in ['cisa-advisories','cert-eu','msrc']]+[('[data-chart-id='+v+'] .td-chart-point','day:'+v) for v in ['kev-additions','nvd-trends']]
    for selector,label in cases:
+    cdp.record_response={};cdp.analytics_filter={};cdp.last_hit=None
     if label=='severity:Unrated':
      cdp.evaluate("(()=>{const n=document.querySelector("+json.dumps(selector)+");const d=n.closest('details');if(d)d.open=true;n.scrollIntoView({block:'center'});n.focus();return true})()")
      cdp.command('Input.dispatchKeyEvent',{'type':'keyDown','key':'Enter','code':'Enter','windowsVirtualKeyCode':13});cdp.command('Input.dispatchKeyEvent',{'type':'keyUp','key':'Enter','code':'Enter','windowsVirtualKeyCode':13})
     else:tap(selector)
-    need(wait("document.querySelector('[data-analytics-dialog]').open&&document.querySelector('[data-ta-status]').textContent.includes('matching records')"),'Record request did not succeed: '+label)
+    terminal="document.querySelector('[data-analytics-dialog]').open&&(document.querySelector('[data-ta-status]').textContent.includes('matching records')||!document.querySelector('[data-ta-refresh]').hidden)"
+    wait(terminal)
+    if getattr(cdp,'record_response',{}).get('status')==409 and cdp.evaluate("document.querySelector('[data-analytics-dialog]').open&&!document.querySelector('[data-ta-refresh]').hidden"):
+     # Explicitly exercise the existing refresh control once; never bypass revision checks.
+     print('DATA REFRESH: source projection changed during '+label+'; using the visible refresh control once',flush=True)
+     tap('[data-ta-refresh]');wait(terminal)
+    ready=cdp.evaluate("document.querySelector('[data-analytics-dialog]').open&&document.querySelector('[data-ta-status]').textContent.includes('matching records')")
+    if not ready:
+     dom=cdp.evaluate("""(()=>{const d=document.querySelector('[data-analytics-dialog]'),t=document.querySelector('[data-ta-status]').textContent;let state=t.includes('Loading verified')?'loading':t.includes('Data changed')?'revision_changed':t.includes('Research data is updating')?'source_busy':t.includes('Request timed out')?'timeout':t.includes('could not be loaded')?'http_error':t.includes('temporarily unavailable')?'unavailable':'other';const n=window.__cdtaCaptureTrigger;return {dialogOpen:d.open,statusClass:state,refreshVisible:!document.querySelector('[data-ta-refresh]').hidden,trigger:n?{tag:n.tagName,group:n.dataset.drillGroup||null,value:n.dataset.drillValue||null}:null}})()""")
+     diagnostic={'width':width,'case':label,'response':getattr(cdp,'record_response',{}),'requested_filter':getattr(cdp,'analytics_filter',{}),'hit':getattr(cdp,'last_hit',None),'dom':dom,'runtime_errors':cdp.runtime_errors,'error_locations':getattr(cdp,'runtime_locations',[])}
+     print('RECORD DIAGNOSTIC: '+json.dumps(diagnostic),flush=True);(output/'record-failure.json').write_text(json.dumps(diagnostic,indent=2))
+     shot=cdp.command('Page.captureScreenshot',{'format':'png'});(output/('record-failure-'+str(width)+'.png')).write_bytes(base64.b64decode(shot['data']))
+    need(ready,'Record request did not succeed: '+label+'; see RECORD DIAGNOSTIC')
     expected_group,expected_value=label.split(':',1)
     if expected_group=='day':expected_value='kev' if expected_value=='kev-additions' else 'nvd'
     observed=getattr(cdp,'analytics_filter',{})

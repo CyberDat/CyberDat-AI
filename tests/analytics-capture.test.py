@@ -35,3 +35,8 @@ assert module.basic_password_valid(' Тест only Unicode ')
 for value in ['', '\x16', 'TEST\r\n', 'TEST\x00', 'TEST\t', 'TEST\x7f']:
  assert not module.basic_password_valid(value)
 print('PASS: console paste control characters rejected; Unicode and intentional spaces preserved; no secret fixture values')
+client.event({'method':'Network.responseReceived','params':{'response':{'url':'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records?group=severity&value=High&q=CVE-2026-12345','status':409},'type':'Fetch'}})
+assert client.record_response=={'status':409,'group':'severity','value':'High','date':'','days':''}
+assert 'q' not in client.record_response and 'headers' not in client.record_response
+assert 'tap(\'[data-ta-refresh]\')' in source and 'RECORD DIAGNOSTIC' in source
+print('PASS: actual drill HTTP status and filter recorded without search text or credentials; revision refresh is explicit and bounded')
