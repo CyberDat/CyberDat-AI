@@ -52,23 +52,50 @@ class DevTools:
   elif name=='Log.entryAdded' and p.get('entry',{}).get('level')=='error':self.console_errors+=1
  def evaluate(self,code):return self.command('Runtime.evaluate',{'expression':code,'returnByValue':True})['result'].get('value')
  def close(self):self.s.close()
+def debugging_port(text):
+ lines=text.splitlines();need(len(lines)>=2 and lines[0].isdigit() and 1<=int(lines[0])<=65535,'Invalid isolated DevTools port file')
+ need(lines[1].startswith('/devtools/browser/') and all(c.isalnum() or c in '/-' for c in lines[1]),'Invalid isolated DevTools browser path');return int(lines[0])
+def edge_policies():
+ if os.name!='nt':return {}
+ import winreg
+ result={}
+ for label,hive in [('machine',winreg.HKEY_LOCAL_MACHINE),('user',winreg.HKEY_CURRENT_USER)]:
+  for name in ['RemoteDebuggingAllowed','DeveloperToolsAvailability']:
+   try:
+    with winreg.OpenKey(hive,r'SOFTWARE\Policies\Microsoft\Edge',0,winreg.KEY_READ) as key:value,kind=winreg.QueryValueEx(key,name)
+    result[label+'.'+name]=value if isinstance(value,int) else 'non-integer policy value'
+   except FileNotFoundError:pass
+   except OSError:result[label+'.'+name]='unreadable'
+ return result
 def main():
  need(os.name=='nt','Run on Windows 11; this script does not install a browser on the VPS')
+ need(sys.argv[1:] in ([],['--visible']),'Only optional --visible is supported');visible='--visible' in sys.argv
+ policies=edge_policies();print('EDGE POLICIES: '+json.dumps(policies),flush=True)
+ need(not any(k.endswith('.RemoteDebuggingAllowed') and v==0 for k,v in policies.items()),'Edge remote debugging is disabled by policy; no policy was changed')
  candidates=[P(os.environ.get('PROGRAMFILES(X86)','C:/Program Files (x86)'))/'Microsoft/Edge/Application/msedge.exe',P(os.environ.get('PROGRAMFILES','C:/Program Files'))/'Microsoft/Edge/Application/msedge.exe'];browser=next((p for p in candidates if p.is_file()),None);need(browser is not None,'Existing Microsoft Edge not found')
- password=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ');need(bool(password),'Basic Auth required');authorization='Basic '+base64.b64encode(('cyberdat_staging_admin:'+password).encode()).decode()
  stamp=time.strftime('%Y%m%dT%H%M%SZ',time.gmtime());output=P.home()/('CyberDat-analytics-2.1-screenshots-'+stamp);output.mkdir(exist_ok=False);print('DIRECTORY: '+str(output),flush=True)
- profile=tempfile.mkdtemp(prefix='cyberdat-dashboard-edge-');probe=socket.socket();probe.bind(('127.0.0.1',0));port=probe.getsockname()[1];probe.close();process=None;cdp=None
+ profile=tempfile.mkdtemp(prefix='cyberdat-dashboard-edge-');port=None;process=None;cdp=None
  try:
-  process=subprocess.Popen([str(browser),'--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--disable-background-networking','--disable-component-update','--disable-sync','--disable-extensions','--remote-debugging-address=127.0.0.1','--remote-debugging-port='+str(port),'--user-data-dir='+profile,'about:blank'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-  opener=urllib.request.build_opener(urllib.request.ProxyHandler({}));deadline=time.monotonic()+30;target=None
+  flags=['--disable-gpu','--no-first-run','--no-default-browser-check','--disable-background-networking','--disable-component-update','--disable-sync','--disable-extensions','--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank']
+  if not visible:flags.insert(0,'--headless=new')
+  process=subprocess.Popen([str(browser),*flags],cwd=profile,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+  opener=urllib.request.build_opener(urllib.request.ProxyHandler({}));deadline=time.monotonic()+60;target=None;last_error=None;active=P(profile)/'DevToolsActivePort'
   while time.monotonic()<deadline:
    try:
-    with opener.open('http://127.0.0.1:'+str(port)+'/json/list',timeout=2) as response:tabs=json.load(response)
-    target=next((t for t in tabs if t.get('type')=='page'),None)
-    if target:break
-   except (OSError,ValueError):pass
+    if active.is_file():port=debugging_port(active.read_text(encoding='utf-8'))
+    if port is not None:
+     with opener.open('http://127.0.0.1:'+str(port)+'/json/list',timeout=2) as response:tabs=json.load(response)
+     if isinstance(tabs,list):target=next((t for t in tabs if isinstance(t,dict) and t.get('type')=='page'),None)
+     else:last_error='invalid_json_list'
+     if target:break
+   except (OSError,ValueError,RuntimeError) as error:last_error=type(error).__name__
    time.sleep(.25)
-  need(target is not None,'Isolated Edge DevTools not ready');cdp=DevTools(target['webSocketDebuggerUrl'],authorization)
+  startup={'mode':'visible' if visible else 'headless','launcher_exit_code':process.poll(),'active_port_file':active.is_file(),'port_discovered':port is not None,'last_http_error_type':last_error,'policies':policies}
+  (output/'edge-startup.json').write_text(json.dumps(startup,indent=2));print('EDGE STARTUP: '+json.dumps(startup),flush=True)
+  need(target is not None,'Isolated Edge DevTools not ready; see EDGE STARTUP diagnostics; no staging password requested')
+  cdp=DevTools(target['webSocketDebuggerUrl'],'')
+  print('PASS: isolated Edge DevTools connected; no staging request yet',flush=True)
+  password=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ');need(bool(password),'Basic Auth required');authorization='Basic '+base64.b64encode(('cyberdat_staging_admin:'+password).encode()).decode();cdp.authorization=authorization
   for name in ['Page.enable','Runtime.enable','Log.enable']:cdp.command(name)
   cdp.command('Fetch.enable',{'patterns':[{'urlPattern':'*'}],'handleAuthRequests':True});report=[]
   def wait(expression,seconds=45):

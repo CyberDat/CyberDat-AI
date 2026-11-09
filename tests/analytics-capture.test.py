@@ -12,3 +12,11 @@ client.event({'method':'Fetch.requestPaused','params':{'requestId':'external','r
 assert messages[-1]['method']=='Fetch.failRequest' and 'headers' not in messages[-1]['params']
 assert client.analytics_filter['value']=='kev_only'
 print('PASS: actual request-filter evidence; credentials excluded from diagnostics; external requests remain blocked; no browser/network used')
+assert module.debugging_port('49152\n/devtools/browser/test-123\n')==49152
+for text in ['0\n/devtools/browser/test','65536\n/devtools/browser/test','9222\nhttps://example.invalid/','bad\n/devtools/browser/test','9222']:
+ try:module.debugging_port(text)
+ except RuntimeError:pass
+ else:raise AssertionError('Invalid port file accepted')
+source=p.read_text();assert source.index('cdp=DevTools(')<source.index('password=getpass.getpass(')
+assert '--remote-debugging-port=0' in source and 'winreg.KEY_READ' in source and 'SetValue' not in source
+print('PASS: ephemeral port validation, startup before credentials, read-only Edge policy inspection')
