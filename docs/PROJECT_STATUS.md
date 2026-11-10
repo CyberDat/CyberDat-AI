@@ -101,3 +101,11 @@ Next single action:
 The owner confirmed additive schema version 1 and successful legacy temporary-table integration tests. The new discovery suite passed idempotency, canonical aliases, event preservation, independent-CVE separation and manual classification retention, then correctly rejected a stale fixture hash (`source_changed_reload`). The fixture had cached its hash before restoring the original source ID after an alias test.
 
 Fix scope: refresh the fixture hash before positive approval and explicitly retain the negative stale-form rejection test. Runtime evidence/hash checks are unchanged. Resume snapshots the previous fixture under the existing private backup and updates that one test file with exact old/new checksum checks. No source was enabled; the diagnostic reported real queue count 5472 both before and after. Remaining tests/live persistence are still UNVERIFIED until resume succeeds.
+
+## Subsequent scheduler/browser evidence — 2026-11-10
+
+At 15:46:22 UTC, the read-only observer showed Crossref had automatically advanced 21→44 records and offset 25→50, with last success 15:45:10 UTC matching the dispatcher timer's 15:45:03–15:45:11 run. One new-source automatic continuation is therefore confirmed; recurrence of all sources remains unverified. Scientific records increased to 65, total discovery records to 235, with zero duplicate source-ID groups. NVD separately reported a transport error with backoff; no checkpoint reset was performed.
+
+The owner-run Edge check passed login, all three stream filters, source HTTPS links, scientific metadata presence, Crossref DOI search, pagination and a 45-row Source Registry. Zero runtime JS exceptions; ten network console entries were all `secure.gravatar.com / net::ERR_BLOCKED_BY_CLIENT`, produced by the test harness's deliberate external-resource blocking. No external avatar access is enabled by the correction.
+
+A genuine admin-layout overflow was detected at 768 px (not at 320 px). A scoped Research Queue/Source Registry stylesheet and asset hook are prepared and offline-tested, with backup-first staging patch and browser recheck still pending. The public theme/Analytics are not modified. Overall remains PARTIAL until admin layout verification completes and remaining limitations are recorded.

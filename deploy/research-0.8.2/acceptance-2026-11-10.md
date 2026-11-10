@@ -122,3 +122,11 @@ Controlled controller duration: **79 seconds**. Available memory changed from 22
 - Next: read-only source/cursor and dispatcher observation using `observe-discovery.py --read-only`; no manual sync or reinstallation is necessary. Then verify the admin UI in a real browser and record recurring behavior.
 
 Stop within Research Agent 0.8.2; no subsequent agent phase authorized.
+
+## Later evidence and admin UI follow-up
+
+- Automatic Crossref continuation observed by the owner at 2026-11-10T15:46:22Z: source count 44, pending offset 50, last success 15:45:10 UTC aligned with the scheduled dispatcher run. New totals: news 50, research 120, papers 65; zero duplicate source-ID groups. This proves one automatic continuation, not full-source or long-term recurrence.
+- Real Edge login and read-only queue/registry functionality passed: news/research/papers filters, scientific metadata, DOI search, server pagination and 45 configured registry rows.
+- The 10 recorded console entries were all external Gravatar requests intentionally blocked by the capture harness; runtime exceptions were zero. The updated helper separately counts only confirmed harness-origin Gravatar blocks and retains all diagnostics. Unknown errors still fail.
+- At 768 px the Source Registry produced horizontal overflow; at 320 px it did not. A scoped admin stylesheet is prepared. Do not report this layout fixed before the owner-run staging patch and browser recheck pass.
+- `fix-admin-layout.py` backs up staging SQL/plugin/admin PHP, changes only `includes/discovery-admin.php` plus `assets/discovery-admin.css`, and verifies other Research/theme/config/timer hashes. It does not import or change source state. Roll back this UI patch before using an older Research release rollback that expects the previous admin PHP hash.

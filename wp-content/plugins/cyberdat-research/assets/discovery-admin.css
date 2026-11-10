@@ -1,0 +1,26 @@
+/* Only the two CyberDat Research admin screens; no theme/global width changes. */
+.cdra-discovery-admin { min-width: 0; }
+.cdra-discovery-admin .widefat { width: 100%; table-layout: fixed; }
+.cdra-discovery-admin .widefat th,
+.cdra-discovery-admin .widefat td { min-width: 0; overflow-wrap: anywhere; word-break: normal; }
+.cdra-discovery-admin a,
+.cdra-discovery-admin details,
+.cdra-discovery-admin p { overflow-wrap: anywhere; }
+.cdra-discovery-admin form { max-width: 100%; }
+.cdra-discovery-admin input,
+.cdra-discovery-admin select,
+.cdra-discovery-admin button { box-sizing: border-box; max-width: 100%; }
+.cdra-discovery-admin label { display: inline-block; max-width: 100%; vertical-align: top; margin-bottom: 6px; }
+@media (max-width: 782px) {
+ .cdra-discovery-admin .widefat { table-layout: auto; }
+ .cdra-discovery-admin .widefat thead { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+ .cdra-discovery-admin .widefat,
+ .cdra-discovery-admin .widefat tbody,
+ .cdra-discovery-admin .widefat tr,
+ .cdra-discovery-admin .widefat td { display: block; width: 100%; box-sizing: border-box; }
+ .cdra-discovery-admin .widefat tr { border-bottom: 2px solid #c3c4c7; }
+ .cdra-discovery-admin .widefat td { padding: 10px; }
+ .cdra-discovery-admin .widefat td + td { border-top: 1px solid #dcdcde; }
+ .cdra-discovery-admin .widefat input:not([type=hidden]):not([type=checkbox]),
+ .cdra-discovery-admin .widefat select { width: 100%; }
+}
