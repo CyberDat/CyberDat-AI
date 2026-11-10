@@ -7,7 +7,17 @@ Current stage: **0.8.2 — Research Agent: news, technical research and scientif
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Current authorized specification — 2026-11-10
+## Latest verified staging state — 2026-11-10
+
+**Research Agent 0.8.2: PARTIAL.** Controlled live ingestion and all database integration tests completed successfully on staging. Persisted: 50 news, 120 technical research records and 42 papers (21 arXiv + 21 Crossref), across 12 new sources. Five existing collectors remain healthy; public Dashboard matches SQL and protected theme/Analytics/config/timer hashes are unchanged. No automatic publication or production change.
+
+Actual all-source queue: 5684 records at 2026-11-10T15:34:31Z; no duplicate source-ID groups. 212 discovery topics, zero multi-publication live groups in this batch; grouping is fixture-tested, not falsely claimed demonstrated on real related stories.
+
+Backup: `/var/backups/cyberdat-staging/research-0.8.2-20261110T151206Z`. Runtime release `ec8be39b8210580e201b4a4ac8956fc4be3f2bb8` with orchestration/fixture continuation commits documented in [acceptance evidence](../deploy/research-0.8.2/acceptance-2026-11-10.md).
+
+Still UNVERIFIED: real new-source scheduled recurrence, browser interaction with the expanded admin UI, long-term load. 28 other source channels remain blocked/disabled, including OpenAlex/Semantic Scholar and unverified conference endpoints. No Content Agent, Social Agent, n8n or LLM started.
+
+## Preparation history — current authorized specification, 2026-11-10
 
 The owner's Research Agent 0.8.2 specification supersedes the older stage numbering below. This phase extends Research Agent only; Content Agent, Social Agent, n8n and LLM workflows are not authorized.
 

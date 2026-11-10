@@ -1,6 +1,6 @@
 # Research Agent 0.8.2 — implementation and acceptance
 
-Status: **IN PROGRESS — not yet deployed**. Staging only. No Content Agent, n8n, LLM or publication.
+Status: **PARTIAL — deployed; controlled ingestion passed; recurrence/browser acceptance pending**. Staging only. No Content Agent, n8n, LLM or publication.
 
 ## Architecture
 
@@ -113,3 +113,7 @@ Use the separate `resume-discovery.py --resume BACKUP` launcher. It checks the o
 The schema migration and legacy tests succeeded. The discovery fixture then used a cached content hash after re-importing a different source-ID alias; the runtime correctly returned `source_changed_reload`. The corrected fixture now asserts that stale evidence is rejected, reloads current evidence and proceeds with the positive approval case.
 
 The enhanced resume launcher accepts only the exact old/corrected fixture checksums. After validating the existing release, backup and Basic Auth, it saves `discovery-test-before-hash-fix.php` privately in that backup, atomically replaces only `tests/discovery-database.php`, and continues the temporary-table tests. No runtime hash guard is weakened and no collector is changed. The original prepared bundle and its release manifest remain immutable. The launcher also supports explicit `--rollback-code BACKUP` with the corrected fixture present.
+
+## Owner-confirmed acceptance
+
+See [2026-11-10 acceptance evidence](acceptance-2026-11-10.md) for actual records, source states, tests, resource sample, backup and outstanding checks. Preparation notes above are historical and do not supersede the acceptance record.
