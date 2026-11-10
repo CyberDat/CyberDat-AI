@@ -85,3 +85,9 @@ Changes / commit / workflow:
 Issues / blockers:
 Next single action:
 
+
+## Continuation — 2026-11-10: discovery fixture evidence
+
+The owner confirmed additive schema version 1 and successful legacy temporary-table integration tests. The new discovery suite passed idempotency, canonical aliases, event preservation, independent-CVE separation and manual classification retention, then correctly rejected a stale fixture hash (`source_changed_reload`). The fixture had cached its hash before restoring the original source ID after an alias test.
+
+Fix scope: refresh the fixture hash before positive approval and explicitly retain the negative stale-form rejection test. Runtime evidence/hash checks are unchanged. Resume snapshots the previous fixture under the existing private backup and updates that one test file with exact old/new checksum checks. No source was enabled; the diagnostic reported real queue count 5472 both before and after. Remaining tests/live persistence are still UNVERIFIED until resume succeeds.

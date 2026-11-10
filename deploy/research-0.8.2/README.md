@@ -107,3 +107,9 @@ Owner-created backup: `/var/backups/cyberdat-staging/research-0.8.2-20261110T151
 The plugin directory was exchanged, but the first migration command was not registered: the methods are `discovery_install` and `discovery_test`, not hyphenated names. Reproduced using the actual installed WP-CLI factory without WordPress/DB bootstrap.
 
 Use the separate `resume-discovery.py --resume BACKUP` launcher. It checks the original script SHA-256 and changes exactly two command-name literals in memory; the original prepared bundle, release COMMIT, backup and installed plugin files remain untouched by this helper. The existing resume path verifies release/protected hashes and continues migrations/tests before enabling new sources. Do not run `--apply` again.
+
+### Discovery fixture correction
+
+The schema migration and legacy tests succeeded. The discovery fixture then used a cached content hash after re-importing a different source-ID alias; the runtime correctly returned `source_changed_reload`. The corrected fixture now asserts that stale evidence is rejected, reloads current evidence and proceeds with the positive approval case.
+
+The enhanced resume launcher accepts only the exact old/corrected fixture checksums. After validating the existing release, backup and Basic Auth, it saves `discovery-test-before-hash-fix.php` privately in that backup, atomically replaces only `tests/discovery-database.php`, and continues the temporary-table tests. No runtime hash guard is weakened and no collector is changed. The original prepared bundle and its release manifest remain immutable. The launcher also supports explicit `--rollback-code BACKUP` with the corrected fixture present.

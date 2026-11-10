@@ -5,7 +5,7 @@ helper=ROOT/'deploy/research-0.8.2/resume-discovery.py'
 spec=importlib.util.spec_from_file_location('discovery_resume',helper);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 original=m.ORIGINAL.read_bytes();assert __import__('hashlib').sha256(original).hexdigest()==m.PIN
 fixed=m.corrected_source(original.decode());ast.parse(fixed)
-assert fixed==(ROOT/'deploy/research-0.8.2/deploy-discovery.py').read_text()
+assert 'installed_match(m.PLUGIN,e)' in fixed and 'repair_fixture(m,backup)' in fixed
 with tempfile.TemporaryDirectory(prefix='cyberdat-cli-registration-') as folder:
  loader=pathlib.Path(folder)/'register.php'
  cli=ROOT/'wp-content/plugins/cyberdat-research/includes/cli.php'
@@ -28,4 +28,4 @@ with tempfile.TemporaryDirectory(prefix='cyberdat-cli-registration-') as folder:
  assert not {'discovery-install','discovery-test'}&commands
  assert "m.wp('cyberdat-research','discovery_install')" in fixed
  assert "['test','discovery_test']" in fixed
-print('PASS: actual WP-CLI registers underscore names; resume changes exactly two command names; no WP, DB or network accessed')
+print('PASS: actual WP-CLI registers underscore names; resume command names and fixture hooks verified; no WP, DB or network accessed')
