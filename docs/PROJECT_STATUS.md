@@ -7,6 +7,12 @@ Current stage: **0.8.2 — Research Agent: news, technical research and scientif
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
+## Latest observation — 2026-11-10 17:28:11 UTC
+
+**PARTIAL.** Post-deployment Crossref recurrence confirmed: success17:20:09 UTC, count129→134, cursor175→200. Discovery total now536 (News87, Research294, Papers155); duplicate source IDs0; SQL Dashboard matchtrue; six timers active.
+
+**NVD current error** `nvd_pagination_changed` at17:25:08; last success17:15:37, 3688 records. Unchanged collector detects different totalResults for the same window and restarts only the page ledger/cursor (now0), preserving completed checkpoint10:19:05 UTC and all stored records. Old/new totals were not logged. Retry due17:30:08. No 429 evidence or collector change. Sophos0/transport has not yet retried; oldest-due NVD consumed17:25 cycle. 29 CONNECTED means proven persistence, not all currently healthy. Await one later read-only retry observation; no manual sync/redeploy. See [observation evidence](../deploy/research-0.8.2/stabilization-observation-2026-11-10.json).
+
 ## Stabilization deployed — 2026-11-10 17:19:50 UTC
 
 **Overall PARTIAL; staging deployment/integration/protection checks PASS.** Runtime commit `411341bf67d3717ad4de8c054ec0d141109767b4`, branch `feat/cyberdat-research-agent-0.8.1`. Backup `/var/backups/cyberdat-staging/research-stabilization-20261110T171824Z`.
