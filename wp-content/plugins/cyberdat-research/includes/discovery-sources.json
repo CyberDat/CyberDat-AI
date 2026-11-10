@@ -10,11 +10,16 @@
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "Endpoint verification: unapproved_source_link; no redirect/access-control bypass",
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
     "documentation": "https://www.microsoft.com/en-us/security/blog/",
-    "endpoint_check_utc": "2026-11-10T08:06:01.391277+00:00",
-    "endpoint_check": "unapproved_source_link"
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending",
+    "hosts": [
+      "www.microsoft.com",
+      "techcommunity.microsoft.com"
+    ],
+    "availability": "PENDING_PERSISTENCE"
   },
   "ms-defender": {
     "id": "ms-defender",
@@ -28,8 +33,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.microsoft.com/en-us/security/blog/"
+    "reason": "Overlapping Microsoft publisher topic feed; intentionally consolidated into Microsoft Security Blog rather than duplicate polling/records",
+    "documentation": "https://www.microsoft.com/en-us/security/blog/",
+    "availability": "UNSUPPORTED"
   },
   "ms-research": {
     "id": "ms-research",
@@ -43,8 +49,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.microsoft.com/en-us/research/"
+    "reason": "Official general Research RSS includes non-security content and is not a scientific-paper metadata feed; security-specific relevance requires confirmation",
+    "documentation": "https://www.microsoft.com/en-us/research/",
+    "availability": "UNSUPPORTED"
   },
   "project-zero": {
     "id": "project-zero",
@@ -52,14 +59,20 @@
     "name": "Project Zero",
     "stream": "research",
     "website": "https://projectzero.google/",
-    "url": null,
-    "format": null,
+    "url": "https://projectzero.google/feed.xml",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://projectzero.google/"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://projectzero.google/",
+    "hosts": [
+      "projectzero.google"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "mandiant": {
     "id": "mandiant",
@@ -67,31 +80,42 @@
     "name": "Google Threat Intelligence / Mandiant",
     "stream": "research",
     "website": "https://cloud.google.com/blog/topics/threat-intelligence",
-    "url": null,
-    "format": null,
+    "url": "https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://cloud.google.com/blog/topics/threat-intelligence"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://cloud.google.com/blog/topics/threat-intelligence",
+    "hosts": [
+      "cloudblog.withgoogle.com",
+      "cloud.google.com"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "google-security": {
     "id": "google-security",
     "publisher": "Google",
     "name": "Google Security Blog",
     "stream": "research",
-    "website": "https://security.googleblog.com/",
-    "url": "https://security.googleblog.com/feeds/posts/default",
+    "website": "https://blog.google/security/",
+    "url": "https://blog.google/security/rss/",
     "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "Endpoint verification: http_302; no redirect/access-control bypass",
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
     "documentation": "https://security.googleblog.com/",
-    "endpoint_check_utc": "2026-11-10T08:06:01.391277+00:00",
-    "endpoint_check": "http_302"
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending",
+    "hosts": [
+      "blog.google"
+    ],
+    "availability": "PENDING_PERSISTENCE"
   },
   "talos": {
     "id": "talos",
@@ -116,14 +140,29 @@
     "name": "Cisco Security Advisories",
     "stream": "research",
     "website": "https://sec.cloudapps.cisco.com/security/center/publicationListing.x",
-    "url": null,
-    "format": null,
+    "url": "https://sec.cloudapps.cisco.com/security/center/psirtrss20/CiscoSecurityAdvisory.xml",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://sec.cloudapps.cisco.com/security/center/publicationListing.x"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://sec.cloudapps.cisco.com/security/center/publicationListing.x",
+    "hosts": [
+      "sec.cloudapps.cisco.com"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "tracking_query_keys": [
+      "vs_f",
+      "vs_cat",
+      "vs_type",
+      "vs_p",
+      "vs_k"
+    ],
+    "timezone_documentation": "https://sec.cloudapps.cisco.com/security/center/publicationListing.x",
+    "timestamp_basis": "Cisco Security Center renders publication dates explicitly in UTC/GMT; raw RSS pubDate has no offset",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "unit42": {
     "id": "unit42",
@@ -148,14 +187,20 @@
     "name": "CrowdStrike Research",
     "stream": "research",
     "website": "https://www.crowdstrike.com/en-us/blog/",
-    "url": null,
-    "format": null,
+    "url": "https://www.crowdstrike.com/en-us/blog/feed",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.crowdstrike.com/en-us/blog/"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://www.crowdstrike.com/en-us/blog/",
+    "hosts": [
+      "www.crowdstrike.com"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "sentinelone": {
     "id": "sentinelone",
@@ -196,17 +241,21 @@
     "publisher": "Sophos",
     "name": "Sophos X-Ops",
     "stream": "research",
-    "website": "https://news.sophos.com/",
-    "url": "https://news.sophos.com/en-us/category/threat-research/feed/",
+    "website": "https://www.sophos.com/en-us/blog/",
+    "url": "https://www.sophos.com/en-us/category/threat-research/feed",
     "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "Endpoint verification: http_301; no redirect/access-control bypass",
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
     "documentation": "https://news.sophos.com/",
-    "endpoint_check_utc": "2026-11-10T08:06:01.391277+00:00",
-    "endpoint_check": "http_301"
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending",
+    "hosts": [
+      "www.sophos.com"
+    ],
+    "availability": "PENDING_PERSISTENCE"
   },
   "fortinet": {
     "id": "fortinet",
@@ -220,8 +269,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.fortinet.com/blog/threat-research"
+    "reason": "Official tested RSS landing/threat feed URLs returned 404; no functioning documented machine-readable endpoint verified",
+    "documentation": "https://www.fortinet.com/blog/threat-research",
+    "availability": "BLOCKED"
   },
   "elastic": {
     "id": "elastic",
@@ -229,14 +279,20 @@
     "name": "Elastic Security Labs",
     "stream": "research",
     "website": "https://www.elastic.co/security-labs",
-    "url": null,
-    "format": null,
+    "url": "https://www.elastic.co/security-labs/rss/feed.xml",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.elastic.co/security-labs"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://www.elastic.co/security-labs",
+    "hosts": [
+      "www.elastic.co"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "trailofbits": {
     "id": "trailofbits",
@@ -244,16 +300,20 @@
     "name": "Trail of Bits",
     "stream": "research",
     "website": "https://blog.trailofbits.com/",
-    "url": "https://blog.trailofbits.com/feed/",
+    "url": "https://blog.trailofbits.com/index.xml",
     "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "Endpoint verification: http_301; no redirect/access-control bypass",
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
     "documentation": "https://blog.trailofbits.com/",
-    "endpoint_check_utc": "2026-11-10T08:06:01.391277+00:00",
-    "endpoint_check": "http_301"
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending",
+    "hosts": [
+      "blog.trailofbits.com"
+    ],
+    "availability": "PENDING_PERSISTENCE"
   },
   "enisa": {
     "id": "enisa",
@@ -267,8 +327,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.enisa.europa.eu/"
+    "reason": "Official site accessible; tested RSS endpoints returned HTTP 404",
+    "documentation": "https://www.enisa.europa.eu/",
+    "availability": "BLOCKED"
   },
   "ncsc": {
     "id": "ncsc",
@@ -290,17 +351,23 @@
   "bsi": {
     "id": "bsi",
     "publisher": "BSI",
-    "name": "BSI Germany",
+    "name": "BSI / CERT-Bund Security Advisories",
     "stream": "research",
-    "website": "https://www.bsi.bund.de/",
-    "url": null,
-    "format": null,
+    "website": "https://www.bsi.bund.de/DE/Service-Navi/Abonnements/RSS/rss_node.html",
+    "url": "https://wid.cert-bund.de/content/public/securityAdvisory/rss",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.bsi.bund.de/"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official BSI subscriptions page links CERT-Bund RSS; HTTP 200 and dated records verified; persistence pending",
+    "documentation": "https://www.bsi.bund.de/DE/Service-Navi/Abonnements/RSS/rss_node.html",
+    "availability": "PENDING_PERSISTENCE",
+    "hosts": [
+      "wid.cert-bund.de",
+      "www.bsi.bund.de"
+    ],
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "bleepingcomputer": {
     "id": "bleepingcomputer",
@@ -342,14 +409,20 @@
     "name": "Dark Reading",
     "stream": "news",
     "website": "https://www.darkreading.com/",
-    "url": null,
-    "format": null,
+    "url": "https://www.darkreading.com/rss.xml",
+    "format": "rss",
     "interval": 3600,
     "priority": 60,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.darkreading.com/"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://www.darkreading.com/",
+    "hosts": [
+      "www.darkreading.com"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "securityweek": {
     "id": "securityweek",
@@ -374,14 +447,20 @@
     "name": "The Record",
     "stream": "news",
     "website": "https://therecord.media/",
-    "url": null,
-    "format": null,
+    "url": "https://therecord.media/feed",
+    "format": "rss",
     "interval": 3600,
     "priority": 60,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://therecord.media/"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://therecord.media/",
+    "hosts": [
+      "therecord.media"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "owasp-genai": {
     "id": "owasp-genai",
@@ -389,14 +468,20 @@
     "name": "OWASP GenAI Security Project",
     "stream": "research",
     "website": "https://genai.owasp.org/",
-    "url": null,
-    "format": null,
+    "url": "https://genai.owasp.org/feed/",
+    "format": "rss",
     "interval": 14400,
     "priority": 70,
     "enabled_default": false,
-    "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://genai.owasp.org/"
+    "connection": "VERIFIED_ENDPOINT",
+    "reason": "Official HTTPS endpoint rechecked; runtime parser/persistence still required. Redirect following remains disabled.",
+    "documentation": "https://genai.owasp.org/",
+    "hosts": [
+      "genai.owasp.org"
+    ],
+    "availability": "PENDING_PERSISTENCE",
+    "endpoint_check_utc": "2026-11-10",
+    "endpoint_check": "HTTPS 200; existing bounded parser verified offline; persistence pending"
   },
   "mitre-atlas": {
     "id": "mitre-atlas",
@@ -410,8 +495,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://atlas.mitre.org/"
+    "reason": "Official ATLAS site is a technique/knowledge-base application, not a verified dated publication feed",
+    "documentation": "https://atlas.mitre.org/",
+    "availability": "UNSUPPORTED"
   },
   "deepmind": {
     "id": "deepmind",
@@ -425,8 +511,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://deepmind.google/"
+    "reason": "Official general blog RSS works but contains product announcements; security-specific filtering required before enabling this channel",
+    "documentation": "https://deepmind.google/",
+    "availability": "UNSUPPORTED"
   },
   "nvidia": {
     "id": "nvidia",
@@ -440,8 +527,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.nvidia.com/en-us/security/"
+    "reason": "Official advertised/tag feed returned HTTP 200 with zero records; tested category RSS URLs returned HTTP 404",
+    "documentation": "https://www.nvidia.com/en-us/security/",
+    "availability": "BLOCKED"
   },
   "sans-isc": {
     "id": "sans-isc",
@@ -489,8 +577,9 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://securitylab.github.com/"
+    "reason": "Official advertised Atom feed returned HTTP 200 with zero publication records; cannot prove ingestion",
+    "documentation": "https://securitylab.github.com/",
+    "availability": "BLOCKED"
   },
   "arxiv": {
     "id": "arxiv",
@@ -532,14 +621,15 @@
     "name": "OpenAlex",
     "stream": "papers",
     "website": "https://openalex.org/",
-    "url": null,
-    "format": null,
+    "url": "https://api.openalex.org/works",
+    "format": "json",
     "interval": 86400,
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "Verified API docs: cursor pagination requires API key; no key provisioned; disabled",
-    "documentation": "https://help.openalex.org/api/authentication/"
+    "reason": "Official keyless metadata GET succeeds (HTTP 200), but reliable cursor pagination requires an owner-provisioned API key; no key created",
+    "documentation": "https://help.openalex.org/api/authentication/",
+    "availability": "BLOCKED"
   },
   "semantic-scholar": {
     "id": "semantic-scholar",
@@ -547,44 +637,47 @@
     "name": "Semantic Scholar API",
     "stream": "papers",
     "website": "https://www.semanticscholar.org/",
-    "url": null,
-    "format": null,
+    "url": "https://api.semanticscholar.org/graph/v1/paper/search",
+    "format": "json",
     "interval": 86400,
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "Official API access/rate-limit requirements not yet verified from VPS; no key provisioned",
-    "documentation": "https://www.semanticscholar.org/"
+    "reason": "Official metadata API returned HTTP 429; shared anonymous quota unavailable, API key/rate-limit provisioning required; no bypass",
+    "documentation": "https://www.semanticscholar.org/",
+    "availability": "BLOCKED"
   },
   "usenix": {
     "id": "usenix",
     "publisher": "USENIX",
     "name": "USENIX Security Symposium",
     "stream": "papers",
-    "website": "https://www.usenix.org/conferences/byname/108",
+    "website": "https://www.usenix.org/conference/usenixsecurity26/technical-sessions",
     "url": null,
     "format": null,
     "interval": 86400,
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.usenix.org/conferences/byname/108"
+    "reason": "Official Security 2026 proceedings HTML accessible (HTTP 200); no verified supported incremental metadata feed/API for this channel",
+    "documentation": "https://www.usenix.org/conferences/byname/108",
+    "availability": "UNSUPPORTED"
   },
   "ieee-sp": {
     "id": "ieee-sp",
     "publisher": "IEEE",
     "name": "IEEE Symposium on Security and Privacy",
     "stream": "papers",
-    "website": "https://www.ieee-security.org/TC/SP-Index.html",
+    "website": "https://www.ieee-security.org/TC/SP2026/program-papers.html",
     "url": null,
     "format": null,
     "interval": 86400,
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.ieee-security.org/TC/SP-Index.html"
+    "reason": "Official 2026 accepted-papers HTML accessible (HTTP 200); no verified supported incremental metadata feed/API for this channel",
+    "documentation": "https://www.ieee-security.org/TC/SP-Index.html",
+    "availability": "UNSUPPORTED"
   },
   "acm-ccs": {
     "id": "acm-ccs",
@@ -598,37 +691,40 @@
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.sigsac.org/ccs.html"
+    "reason": "Official ACM proceedings endpoint returned HTTP 403; no access-control bypass",
+    "documentation": "https://www.sigsac.org/ccs.html",
+    "availability": "BLOCKED"
   },
   "ndss": {
     "id": "ndss",
     "publisher": "Internet Society",
     "name": "NDSS Symposium",
     "stream": "papers",
-    "website": "https://www.ndss-symposium.org/",
+    "website": "https://www.ndss-symposium.org/ndss2026/accepted-papers/",
     "url": null,
     "format": null,
     "interval": 86400,
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://www.ndss-symposium.org/"
+    "reason": "Official 2026 accepted-papers HTML accessible (HTTP 200); oEmbed is not a paper-discovery feed",
+    "documentation": "https://www.ndss-symposium.org/",
+    "availability": "UNSUPPORTED"
   },
   "raid": {
     "id": "raid",
     "publisher": "RAID",
     "name": "RAID Symposium",
     "stream": "papers",
-    "website": "https://raid-symposium.org/",
+    "website": "https://raid2026.org/",
     "url": null,
     "format": null,
     "interval": 86400,
     "priority": 70,
     "enabled_default": false,
     "connection": "BLOCKED",
-    "reason": "No verified permitted metadata endpoint; no HTML scraping or access bypass",
-    "documentation": "https://raid-symposium.org/"
+    "reason": "Original catalog hostname did not resolve; official 2026 site is accessible but has no verified supported incremental metadata feed/API",
+    "documentation": "https://raid-symposium.org/",
+    "availability": "UNSUPPORTED"
   }
 }

@@ -1,5 +1,17 @@
 <?php
 defined('ABSPATH') || exit;
+/** Fair due-time selection; interval/backoff ownership remains in CDRA_Service. */
+function cdra_dispatch_due_source($store,$now=null){
+ $now=$now??time();$due=[];
+ foreach(cdra_sources()+cdra_discovery_registry() as $id=>$spec){
+  $legacy=isset(cdra_sources()[$id]);if(!$legacy&&!cdra_discovery_enabled($id,$store)){continue;}
+  $h=$store->get('health:'.$id,[]);if($legacy&&empty($h['last_success'])){continue;}
+  if($legacy&&!empty($h['last_error'])&&($h['failures']??0)>=6){continue;}
+  $at=(int)($h['next_due']??($legacy?PHP_INT_MAX:0));if($at>$now){continue;}
+  $due[$id]=$at;
+ }
+ if(!$due){return null;}asort($due,SORT_NUMERIC);return array_key_first($due);
+}
 class CDRA_CLI {
  /** Install only additive discovery tables, never from page requests. */
  public function discovery_install(){cdra_need(cdra_staging(),'staging_only');(new CDRA_Discovery_Store())->install();WP_CLI::success('Additive discovery tables ready; no import or source enabled.');}
@@ -21,19 +33,14 @@ class CDRA_CLI {
   foreach($pending as $source=>$request){cdra_need(isset(cdra_sources()[$source]),'source_not_allowed');$health=$s->get('health:'.$source,[]);if(!empty($health['last_error'])&&($health['next_due']??0)>time()){continue;}if(time()-($health['last_attempt']??0)<300){continue;}
    $s->mutate('manual_queue',static function($queue)use($source){unset($queue[$source]);return $queue;});try{$result=(new CDRA_Service($s))->sync($source,true);}catch(CDRA_Error $error){if($error->getMessage()==='ingestion_locked'){$s->mutate('manual_queue',static function($queue)use($source,$request){$queue[$source]=$queue[$source]??$request;return $queue;});}throw $error;}WP_CLI::line(cdra_json($result));return;
   }
-  foreach(cdra_sources() as $source=>$spec){$h=$s->get('health:'.$source,[]);if(!empty($h['last_success'])&&!empty($h['last_error'])&&($h['failures']??0)<6&&($h['next_due']??PHP_INT_MAX)<=time()){$result=(new CDRA_Service($s))->sync($source);WP_CLI::line(cdra_json($result));return;}}
-  // Continue partial incremental windows via the existing five-minute dispatcher.
-  // Fresh describes request age only; it must not prevent finishing pagination.
-  if(CDRA_Service::nvd_pending_due($s)){
-   $result=(new CDRA_Service($s))->sync('nvd');WP_CLI::line(cdra_json($result));return;
-  }
+  // Healthy jobs can be overdue when a timer fires just before next_due.
+  // Select by oldest due time so NVD continuation cannot indefinitely crowd out feeds.
+  $source=cdra_dispatch_due_source($s);
+  if($source!==null){$result=(new CDRA_Service($s))->sync($source);$result['dispatch_source']=$source;WP_CLI::line(cdra_json($result));return;}
   $request=$s->get('backfill');if($request&&$request['status']==='active'&&($request['next_due']??0)<=time()){
    $lock='cdra_'.substr(hash('sha256',DB_NAME.$s->prefix),0,32);cdra_need((int)$s->db->get_var($s->db->prepare('SELECT GET_LOCK(%s,0)',$lock))===1,'ingestion_locked');
    try{$service=new CDRA_Service($s);$service->nvd(true);$service->projection();WP_CLI::success('One bounded backfill batch completed.');}catch(Throwable $error){$request=$s->get('backfill');$request['last_error']=$error instanceof CDRA_Error?$error->getMessage():'processing_error';$request['next_due']=time()+max(7200,$error instanceof CDRA_Error?$error->retry:0);$s->put('backfill',$request);WP_CLI::error('Backfill batch failed; last-good records and checkpoint retained.');}finally{$s->db->get_var($s->db->prepare('SELECT RELEASE_LOCK(%s)',$lock));}return;
   }
-  // Reuse the existing dispatcher, after all legacy work. One new source per run.
-  $due=[];foreach(cdra_discovery_registry() as $source=>$spec){if(!cdra_discovery_enabled($source,$s)){continue;}$h=$s->get('health:'.$source,[]);if(($h['next_due']??0)<=time()){$due[$source]=$h['last_attempt']??0;}}
-  asort($due);if($due){$result=(new CDRA_Service($s))->sync(array_key_first($due));WP_CLI::line(cdra_json($result));return;}
   WP_CLI::line('Idle: no due bounded manual/retry/backfill job.');
  }
  /** Bounded Research Agent operation.

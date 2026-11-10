@@ -7,6 +7,12 @@ Current stage: **0.8.2 — Research Agent: news, technical research and scientif
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
+## Stabilization work — 2026-11-10 16:32 UTC evidence
+
+Status **PARTIAL / deployment pending**. Latest owner snapshot: KEV 1773, NVD 3638, queue 5779, duplicate IDs 0. NVD recovered automatically (last success 16:29:39 UTC); no collector replacement/reset. Crossref recurrence and cursor progress are observed. Prior Edge Research Queue acceptance passed, including 768/320 layout, filters and pagination.
+
+A confirmed early-timer/healthy-overdue dispatcher gap and deterministic classification false positives are corrected locally. Thirteen official feeds passed public fetch + existing parser checks; none is newly claimed connected before staging persistence. Fifteen remaining channels have explicit BLOCKED/UNSUPPORTED reasons. Prepared staging-only backup/three-file deployment and bounded evidence checks are documented in [stabilization record](../deploy/research-0.8.2/stabilization-2026-11-10.md). Real correlation, new-source recurrence and deployment checks remain pending. No production changes.
+
 ## Latest verified staging state — 2026-11-10
 
 **Research Agent 0.8.2: PARTIAL.** Controlled live ingestion and all database integration tests completed successfully on staging. Persisted: 50 news, 120 technical research records and 42 papers (21 arXiv + 21 Crossref), across 12 new sources. Five existing collectors remain healthy; public Dashboard matches SQL and protected theme/Analytics/config/timer hashes are unchanged. No automatic publication or production change.
