@@ -2,18 +2,30 @@
 
 Last updated: 2026-11-10
 Repository: CyberDat/CyberDat-AI
-Current stage: **Content Agent 0.9.0 — Stage 1, no GPU / no LLM (INSTALLED; admin acceptance finish pending)**
+Current stage: **Content Agent 0.9.0 — Stage 1 staging/mock acceptance PASS; home/Ollama integration UNVERIFIED**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Content Stage 1 installation continuation — 2026-11-10
+## Content Agent Stage 1 accepted — 2026-11-10 18:53:33 UTC
+
+**PASS for the authorized no-GPU/no-LLM preparation and staging mock acceptance.** This does not accept a real home-PC/LLM publishing pipeline. Branch: `feat/cyberdat-content-agent-0.9.0`. Runtime base `727b56be04f590e65ca7b967838cd753ef38b8f9` plus menu fix `e045209582fb3eb1d48a82e7ed350502f753294f`. Backup: `/var/backups/cyberdat-staging/content-0.9-20261110T181827Z`.
+
+Implemented: separate Content plugin/tables, read-only selected-evidence adapter, all requested queue statuses, versioned JSON drafts, audit, deduplication, leases/retry, capability/nonce/revision checks, five English templates, traceability/structure/CVE checks and an outbound HTTPS Python mock worker. Mock-only is enforced on both sides; drafts never enter WordPress posts. Research collection remains independent of LLM. No source, collector or timer changes.
+
+Owner-confirmed: 25 Content TEMPORARY-table checks, existing Research tests, 11 discovery checks, read-only handoff with zero real selected items, one actual authenticated HTTPS mock worker cycle on VPS, and one saved TEST job 1 / version 1 in `draft_ready`. Offline 12-suite batch and three installed-core menu lifecycle cases pass. The menu-order continuation patched only Content admin registration priority and completed acceptance without reinstall, migration or another mock run.
+
+Content Queue and Research Queue return HTTP 200 after the existing admin login. Worker key denial 403, anonymous protection 401, noindex, existing public routes, SQL Dashboard comparison and checked logs pass. WordPress posts remain 61. Research/timer/config/theme fingerprints unchanged; production not modified. Observed versions: WordPress 7.1.4, PHP 8.4.27. [Final evidence and architecture](../deploy/content-0.9.0/README.md).
+
+**UNVERIFIED:** actual home-PC worker/Windows ACL, existing Ollama availability/models/GPU presence, real browser Content Queue interaction and real-model factual/injection quality. These were not run; no model was loaded/downloaded and no home connection or public Ollama port was configured. Next steps require separate authorization; work stops after Stage 1. Research 0.8.2's older PARTIAL limitations remain historical facts, not silently resolved by Content work.
+
+## Content Stage 1 installation continuation (history) — 2026-11-10
 
 Owner deployment created backup `/var/backups/cyberdat-staging/content-0.9-20261110T181827Z` and installed the standalone Content plugin/schema. PASS: 25 Content temporary-table checks, existing Research/discovery integration tests, read-only handoff (`selected_count=0`), actual HTTPS mock worker claim/submission and saved TEST job 1/version 1. No real Research selection or model run.
 
 The final smoke test stopped at the Content Queue admin page. Confirmed menu registration order bug: at priority 10, Content's submenu may be registered before Research's parent, causing WordPress to record/check different hook names. A focused installed-core lifecycle test reproduces the bug; priority 20 for the Content submenu passes both loading orders and preserves unauthorized denial. A one-file finish controller is prepared; live admin/protection/regression completion remains PENDING. Original runtime commit `727b56be04f590e65ca7b967838cd753ef38b8f9`; no reinstall, migration, fixture generation or collector/timer changes are required for continuation.
 
-## Content Agent 0.9.0 — Stage 1 authorized, 2026-11-10
+## Content Agent 0.9.0 — Initial preparation (history), 2026-11-10
 
 The owner's new specification authorizes Content Queue and mock worker preparation; older statements that Content work is not authorized are historical. Research remains partially accepted with documented source/coverage limits; no collector, source, timer, public design, Analytics or SEO change is part of this stage.
 

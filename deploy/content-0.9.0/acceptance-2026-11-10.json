@@ -1,0 +1,54 @@
+{
+  "utc": "2026-11-10T18:53:33.614847+00:00",
+  "provenance": "Owner-supplied completed finish-content.py output; no assistant privileged access",
+  "scope": "Content Agent 0.9.0 Stage 1 staging preparation and mock acceptance only",
+  "stage1_status": "PASS",
+  "original_runtime_commit": "727b56be04f590e65ca7b967838cd753ef38b8f9",
+  "finish_commit": "e045209582fb3eb1d48a82e7ed350502f753294f",
+  "backup": "/var/backups/cyberdat-staging/content-0.9-20261110T181827Z",
+  "proof": {
+    "job": 1,
+    "status": "draft_ready",
+    "is_test": true,
+    "versions": 1,
+    "mock_marked": true,
+    "truth_verified": false,
+    "selected_research_count": 0,
+    "dashboard_sql_match": true,
+    "queue": [
+      {
+        "status": "draft_ready",
+        "is_test": true,
+        "count": 1
+      }
+    ],
+    "wordpress_posts": 61,
+    "wp_version": "7.1.4",
+    "php_version": "8.4.27"
+  },
+  "acceptance": {
+    "offline_batch_suites": 12,
+    "installed_core_menu_lifecycle_cases": 3,
+    "content_temporary_table_checks": 25,
+    "existing_research_database_tests": "PASS",
+    "existing_discovery_temporary_table_checks": 11,
+    "https_mock_worker_round_trip": "PASS, executed on VPS",
+    "content_and_research_admin_http": 200,
+    "worker_without_key_with_basic_auth_http": 403,
+    "anonymous_staging_http": 401,
+    "noindex_preserved": true,
+    "posts_unchanged": true,
+    "research_and_timers_unchanged": true,
+    "protected_config_and_public_theme_unchanged": true,
+    "new_mock_run_during_finish": false,
+    "llm_or_gpu_run": false,
+    "production_modified": false,
+    "rollback_executed": false
+  },
+  "unverified": [
+    "Actual home-PC worker transport and Windows ACL behavior",
+    "Existing home Ollama availability, installed models and GPU presence",
+    "Real browser Content Queue layout/interaction",
+    "Real LLM factual quality and prompt-injection resilience; not enabled"
+  ]
+}
