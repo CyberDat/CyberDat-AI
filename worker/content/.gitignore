@@ -1,0 +1,5 @@
+__pycache__/
+config.json
+*.local.json
+bootstrap.json
+pending.json

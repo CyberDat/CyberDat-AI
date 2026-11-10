@@ -1,0 +1,55 @@
+{
+  "scope": "offline fixtures only; no live SQL/network/LLM",
+  "tests": [
+    {
+      "test": "content-contract.test.php",
+      "pass": true
+    },
+    {
+      "test": "research.test.php",
+      "pass": true
+    },
+    {
+      "test": "research-discovery.test.php",
+      "pass": true
+    },
+    {
+      "test": "research-classification-quality.test.php",
+      "pass": true
+    },
+    {
+      "test": "research-dispatch-fairness.test.php",
+      "pass": true
+    },
+    {
+      "test": "research-admin-assets.test.php",
+      "pass": true
+    },
+    {
+      "test": "threat-pulse.test.php",
+      "pass": true
+    },
+    {
+      "test": "threat-dashboard.test.php",
+      "pass": true
+    },
+    {
+      "test": "analytics-query.test.php",
+      "pass": true
+    },
+    {
+      "test": "content-worker.test.py",
+      "pass": true
+    },
+    {
+      "test": "analytics-permissions.test.py",
+      "pass": true
+    },
+    {
+      "test": "analytics-boundaries.test.py",
+      "pass": true
+    }
+  ],
+  "php_lint": true,
+  "python_ast": true
+}

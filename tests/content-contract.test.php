@@ -1,0 +1,7 @@
+<?php
+define('ABSPATH','/offline/');require __DIR__.'/../wp-content/plugins/cyberdat-content/includes/contracts.php';
+function ok($v,$name){if(!$v){throw new RuntimeException($name);}echo 'PASS: '.$name."\n";}
+$b=cdca_brief(cdca_fixture(),'paper',true);require __DIR__.'/../wp-content/plugins/cyberdat-content/tests/database.php';$d=cdca_test_document($b);$q=cdca_quality($d,$b);ok($q['truth_verified']===false,'structural_checks_do_not_claim_truth');
+foreach(['news','threat','vulnerability','paper','ai'] as $t){$x=cdca_brief(cdca_fixture(),$t,true);ok(count($x['required_sections'])===7&&$x['language']==='en','template_'.$t);}
+$cases=['unsupported_cve'=>function($d){$d['summary']='CVE-2026-123456';return $d;},'unknown_source'=>function($d){$d['sources'][0]['url']='https://evil.invalid/';return $d;},'quotations_not_supported'=>function($d){$d['quotations']=['Fake quote'];return $d;},'mock_only'=>function($d){$d['is_mock']=false;return $d;},'active_content'=>function($d){$d['technical_analysis']='<script>bad</script>';return $d;}];foreach($cases as $code=>$f){try{cdca_quality($f($d),$b);throw new RuntimeException('accepted '.$code);}catch(CDCA_Error $e){ok($e->getMessage()===$code,'reject_'.$code);}}
+ok(!cdca_transition('processing','approved')&&!cdca_transition('approved','published'),'worker_cannot_approve_or_publish');$real=$b;$real['is_test']=false;try{cdca_quality($d,$real);throw new RuntimeException('real_mock');}catch(CDCA_Error $e){ok($e->getMessage()==='mock_only','mock_cannot_impersonate_real_article');}

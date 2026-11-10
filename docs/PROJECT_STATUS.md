@@ -2,10 +2,20 @@
 
 Last updated: 2026-11-10
 Repository: CyberDat/CyberDat-AI
-Current stage: **0.8.2 — Research Agent: news, technical research and scientific discovery (IN PROGRESS)**
+Current stage: **Content Agent 0.9.0 — Stage 1, no GPU / no LLM (PREPARED; staging acceptance pending)**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
+
+## Content Agent 0.9.0 — Stage 1 authorized, 2026-11-10
+
+The owner's new specification authorizes Content Queue and mock worker preparation; older statements that Content work is not authorized are historical. Research remains partially accepted with documented source/coverage limits; no collector, source, timer, public design, Analytics or SEO change is part of this stage.
+
+Architecture analysis completed: Research's private CLI handoff is read-only, limited to editor-selected unchanged evidence. A separate staging-only Content plugin adds isolated queue/version/audit/worker tables, capability/nonce/revision-protected human transitions, a private authenticated HTTPS pull endpoint and a standard-library Python worker. Mock-only is enforced by both sides; real research jobs cannot be generated. Drafts live outside WordPress posts, with no publication operation. Five English editorial templates, evidence traceability, known-CVE and structure checks are prepared; semantic truth still requires human review.
+
+Offline implementation/tests are prepared. Staging backup, additive schema, temporary-table integration tests and the exact worker's mock HTTPS round trip remain **PENDING** until owner-run acceptance succeeds. Home-PC transport, existing Ollama/model inventory and GPU presence are **UNVERIFIED**; no accessible home address/private connection was configured. No model was downloaded or run.
+
+See [Stage 1 architecture and deployment](../deploy/content-0.9.0/README.md). Work is on a dedicated Content feature branch based on final Research status `b8807a0bc140a0792b6d6c4f08552331c885a0ca`. No production change.
 
 ## Final stabilization acceptance — 2026-11-10 17:44:28 UTC
 
