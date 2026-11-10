@@ -134,3 +134,16 @@ Stop within Research Agent 0.8.2; no subsequent agent phase authorized.
 ### Admin stylesheet delivery
 
 The first UI patch installed its files and backed up staging at `/var/backups/cyberdat-staging/research-admin-ui-20261110T160728Z`, then CSS HTTP/hash verification failed. The new assets directory was confirmed mode 0700 due to umask 077. A tested permission continuation validates that it contains only the exact public stylesheet before setting this directory to 0755. Existing private directory modes, configuration, source state and timers are not changed. Run `finish-admin-layout.py --verify BACKUP`; do not repeat `--apply`. CSS delivery and responsive acceptance are still pending actual verification.
+
+## Final observed admin-browser result
+
+Owner-run Edge helper completed PASS with output directory `C:\Users\CyberDat\CyberDat-research-0.8.2-browser-20261110T161210Z`.
+
+- Login, all three stream filters, scientific metadata presence, HTTPS primary-source links, DOI search and server pagination passed.
+- Source Registry displayed 45 channels.
+- Corrected layout produced no horizontal overflow in the checked 768/320 viewports; a 1440 desktop screenshot was also captured. Manual visual review remains separate and unverified here.
+- Zero unexpected console/runtime errors under the updated policy; intentionally self-blocked Gravatar avatar requests are counted separately, not made accessible or silently ignored.
+- No editorial/source settings were changed. Real-browser save/classification/merge/split/toggle mutations were not performed; the matching backend protections and operations passed isolated database tests.
+- Protected UI deployment verification passed with backup `/var/backups/cyberdat-staging/research-admin-ui-20261110T160728Z`; public theme, other Research code/config/timers unchanged and production HTTPS 200.
+
+This supersedes the earlier pending CSS delivery/layout observations. Overall Research Agent 0.8.2 remains PARTIAL because full-source scheduled recurrence, additional blocked connections and long-term load are not verified. The controlled three-stream MVP and read-only browser acceptance are PASS. No Content/Social/SEO Agent, n8n or LLM work is started.

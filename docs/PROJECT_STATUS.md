@@ -115,3 +115,13 @@ A genuine admin-layout overflow was detected at 768 px (not at 320 px). A scoped
 Owner-run admin UI update created `/var/backups/cyberdat-staging/research-admin-ui-20261110T160728Z`, then failed CSS HTTP verification. Read-only inspection confirmed the newly created plugin `assets` directory was mode 0700: explicit mkdir mode 0755 had been narrowed by the controller's umask 077. Existing Nginx rules do not deny this CSS path. The dedicated public stylesheet directory must be 0755 for Nginx traversal; private paths remain unchanged.
 
 A pinned continuation validates the existing backup/release, directory owner, sole CSS file and exact hashes, records previous mode privately, changes only this directory to 0755, then runs existing UI verification. It does not reapply code, migrate data, alter sources/timers or change production. Verification and browser layout acceptance remain pending.
+
+## Owner-confirmed browser acceptance — 2026-11-10
+
+The admin asset permission continuation passed: only the dedicated public CSS directory changed to 0755; existing administrator login/Research Queue HTTP 200, unchanged public theme/other Research code/protected configuration/timers and production HTTPS 200 were verified. UI backup: `/var/backups/cyberdat-staging/research-admin-ui-20261110T160728Z`.
+
+The updated Windows Edge run completed PASS. Confirmed: News/Research/Papers filters, bounded rows, HTTPS source links, scientific metadata presence, actual Crossref DOI search, server pagination, 45 Source Registry rows, and no recorded horizontal overflow at 768/320 px. No unexpected console errors or runtime exceptions; deliberately harness-blocked Gravatar avatars remain separately classified, without enabling external requests. Login succeeded and Threat Pulse 2.1 served its valid period model.
+
+Screenshots/report: `C:\Users\CyberDat\CyberDat-research-0.8.2-browser-20261110T161210Z`. Automated browser checks passed; screenshots have not been independently visually reviewed here. The helper did not change editorial statuses, classifications, event groups or source settings. Those write operations are database/capability/nonce fixture-tested, not real-browser mutation-tested.
+
+Controlled MVP ingestion and read-only browser acceptance: PASS. Overall phase remains PARTIAL: 17 working channels versus 45 configured; blocked academic/vendor channels remain explicit, only Crossref automatic continuation has been observed for the new sources, long-term load and complete historical coverage are not claimed. No subsequent agent phase started.
