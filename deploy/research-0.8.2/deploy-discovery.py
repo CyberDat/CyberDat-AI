@@ -63,8 +63,8 @@ def main():
   finally:
    holder.stdin.close();holder.wait(timeout=10)
  phase='additive schema and isolated fixed-fixture MariaDB tests'
- m.wp('cyberdat-research','discovery-install');print('PASS: additive discovery tables; no legacy schema or checkpoint reset',flush=True)
- for command in ['test','discovery-test']:
+ m.wp('cyberdat-research','discovery_install');print('PASS: additive discovery tables; no legacy schema or checkpoint reset',flush=True)
+ for command in ['test','discovery_test']:
   result=m.wp('cyberdat-research',command,check=False)
   need(result.returncode==0,'Temporary-table test failed: '+command+'; raw output suppressed; no source enabled by this step')
   print(result.stdout.decode('utf-8','replace'),flush=True)

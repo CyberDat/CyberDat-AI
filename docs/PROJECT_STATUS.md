@@ -18,7 +18,8 @@ Verified preparation:
 - Real public endpoint/parser verification includes news, technical research, arXiv and Crossref. This is NOT staging persistence or ACTIVE-source evidence.
 - Offline discovery and existing Research/Threat Pulse/Dashboard/Analytics regression tests pass.
 - Staging database fixture tests, live persistence, actual source counts, deployment, resource impact and scheduled recurrence remain UNVERIFIED until owner-run privileged verification completes.
-- No production operation, source enablement, database migration or timer change has been performed in this preparation session.
+- Owner-run staging application on 2026-11-10 created `/var/backups/cyberdat-staging/research-0.8.2-20261110T151206Z` and exchanged the plugin code, then stopped at the first migration command. The deploy script used hyphens while the actual WP-CLI registers underscore subcommand names. No discovery source was enabled by this run.
+- A tested resume-only launcher corrects those two command names in memory, preserving the original pinned bundle and backup. Staging database integration and live acceptance remain unverified. No production or timer changes.
 - Threat Analytics UX 2.1 currently works in supplied browser checks. Earlier intermittent absence of the period model remains unexplained; not claimed fixed by this phase.
 
 See [Research Agent 0.8.2](../deploy/research-0.8.2/README.md) for source catalog, limitations and staged acceptance procedure.

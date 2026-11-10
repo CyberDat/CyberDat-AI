@@ -100,3 +100,10 @@ Offline parser/classifier/security fixtures and existing Research/Pulse/Dashboar
 Still required: real staging persistence and counts, duplicate/event statistics, admin actions and browser verification, scheduled recurrence, bounded load observation, and final backup/commit/deployment report. The 0.8.2 definition of done is not yet satisfied.
 
 Official reference documentation: [arXiv API](https://info.arxiv.org/help/api/user-manual.html), [Crossref REST](https://www.crossref.org/documentation/retrieve-metadata/rest-api/), [OpenAlex authentication](https://help.openalex.org/api/authentication/).
+
+## Deployment continuation — 2026-11-10
+
+Owner-created backup: `/var/backups/cyberdat-staging/research-0.8.2-20261110T151206Z`.
+The plugin directory was exchanged, but the first migration command was not registered: the methods are `discovery_install` and `discovery_test`, not hyphenated names. Reproduced using the actual installed WP-CLI factory without WordPress/DB bootstrap.
+
+Use the separate `resume-discovery.py --resume BACKUP` launcher. It checks the original script SHA-256 and changes exactly two command-name literals in memory; the original prepared bundle, release COMMIT, backup and installed plugin files remain untouched by this helper. The existing resume path verifies release/protected hashes and continues migrations/tests before enabling new sources. Do not run `--apply` again.
