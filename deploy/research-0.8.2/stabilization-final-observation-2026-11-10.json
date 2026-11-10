@@ -1,0 +1,72 @@
+{
+  "observed_utc": "2026-11-10T17:44:28+00:00",
+  "provenance": "Owner-supplied final --observe output; no manual sync or runtime modification",
+  "runtime_commit": "411341bf67d3717ad4de8c054ec0d141109767b4",
+  "backup": "/var/backups/cyberdat-staging/research-stabilization-20261110T171824Z",
+  "channel_status_counts": {
+    "CONNECTED": 29,
+    "BLOCKED": 8,
+    "UNSUPPORTED": 8
+  },
+  "streams": {
+    "news": 87,
+    "research": 294,
+    "papers": 171
+  },
+  "discovery_publications": 552,
+  "duplicate_source_ids": 0,
+  "correlated_topics": 2,
+  "dashboard_sql_match": true,
+  "db_bytes": 33980416,
+  "timers": {
+    "kev": true,
+    "nvd": true,
+    "cisa-advisories": true,
+    "cert-eu": true,
+    "msrc": true,
+    "dispatch": true
+  },
+  "nvd": {
+    "count": 3688,
+    "last_success": 1794332440,
+    "last_success_utc": "2026-11-10T17:40:40+00:00",
+    "last_error": "",
+    "last_http_status": 200,
+    "checkpoint": 1794305945,
+    "checkpoint_utc": "2026-11-10T10:19:05+00:00",
+    "cursor": 100,
+    "next_due": 1794332740,
+    "next_due_utc": "2026-11-10T17:45:40+00:00",
+    "window_complete": false,
+    "historical_complete": false
+  },
+  "sophos": {
+    "count": 0,
+    "last_success": null,
+    "last_error": "transport",
+    "enabled": true,
+    "next_due": 1794332407,
+    "next_due_utc": "2026-11-10T17:40:07+00:00",
+    "previous_next_due": 1794331430,
+    "previous_next_due_utc": "2026-11-10T17:23:50+00:00",
+    "low_level_transport_cause": "not persisted by existing client; not inferred"
+  },
+  "crossref": {
+    "count": 150,
+    "last_success": 1794332109,
+    "last_success_utc": "2026-11-10T17:35:09+00:00",
+    "cursor": 225,
+    "checkpoint": null,
+    "last_error": ""
+  },
+  "acceptance": {
+    "status": "PARTIAL",
+    "nvd_automatic_recovery_observed": true,
+    "crossref_post_deploy_cursor_progress_observed": true,
+    "sophos_persisted": false,
+    "all_4h_24h_cycles_observed": false,
+    "long_term_load_verified": false,
+    "whole_corpus_classification_precision_verified": false,
+    "entire_live_correlation_precision_verified": false
+  }
+}

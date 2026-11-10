@@ -7,6 +7,22 @@ Current stage: **0.8.2 — Research Agent: news, technical research and scientif
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
+## Final stabilization acceptance — 2026-11-10 17:44:28 UTC
+
+**PARTIAL; runtime deployment and bounded integration/regression checks PASS.** 29/45 channels have real persisted records (12 new); 8 BLOCKED and 8 UNSUPPORTED have specific reasons in the [final stabilization report](../deploy/research-0.8.2/stabilization-2026-11-10.md).
+
+Runtime commit: `411341bf67d3717ad4de8c054ec0d141109767b4`.
+Branch: `feat/cyberdat-research-agent-0.8.1`.
+Backup: `/var/backups/cyberdat-staging/research-stabilization-20261110T171824Z`.
+
+Latest proof: **552 discovery publications** (News 87, Technical Research 294, Papers 171), zero duplicate source-ID groups, Dashboard SQL match, all six timers active. KEV: 1773. NVD: 3688, HTTP 200 success **17:40:40 UTC**, error cleared, cursor 100, completed checkpoint **10:19:05 UTC** preserved. The bounded window and historical coverage remain partial. Crossref automatic progress from 129 to 134 to 150 records, cursor 175 to 200 to 225, proves scheduled continuation after deployment; no manual sync was run.
+
+Sophos remains at zero records with `transport` and advanced retry/backoff state; it is not CONNECTED. Low-level errno was not persisted, so the exact cause is UNVERIFIED. First 4h/24h recurrence of every new source, long-term load/growth and whole-corpus classification/grouping precision remain UNVERIFIED. No further deployment was performed for observation. Real SAP merge/split/merge and preservation of both publications PASS. Derived metadata was updated for 327 records while preserving manual decisions and source dates; no LLM was used.
+
+Resources during deployment: load 0.26, available RAM 2.04 GiB, Research tables 32.41 MiB; this was not a stress or long-term test. Research Queue login, capability/nonce fixtures, SQL Dashboard, protected routes and unchanged public theme/Analytics/config/timers PASS. No automatic publication or production changes. Work stops with documented limitations; Content/Social/Ollama and subsequent stages were not started.
+
+### Previous observations (history)
+
 ## Latest observation — 2026-11-10 17:28:11 UTC
 
 **PARTIAL.** Post-deployment Crossref recurrence confirmed: success17:20:09 UTC, count129→134, cursor175→200. Discovery total now536 (News87, Research294, Papers155); duplicate source IDs0; SQL Dashboard matchtrue; six timers active.
