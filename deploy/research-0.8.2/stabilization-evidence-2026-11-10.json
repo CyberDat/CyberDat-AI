@@ -1,0 +1,626 @@
+{
+  "observed_utc": "2026-11-10T17:19:50+00:00",
+  "runtime_commit": "411341bf67d3717ad4de8c054ec0d141109767b4",
+  "backup": "/var/backups/cyberdat-staging/research-stabilization-20261110T171824Z",
+  "channels": {
+    "kev": {
+      "status": "CONNECTED",
+      "count": 1773,
+      "enabled": true,
+      "last_success": 1794331112,
+      "last_error": "",
+      "last_http_status": 304,
+      "next_due": 1794352712,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "nvd": {
+      "status": "CONNECTED",
+      "count": 3688,
+      "enabled": true,
+      "last_success": 1794330937,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794331237,
+      "cursor": 600,
+      "checkpoint": 1794305945,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "cisa-advisories": {
+      "status": "CONNECTED",
+      "count": 27,
+      "enabled": true,
+      "last_success": 1794331114,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794352714,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "cert-eu": {
+      "status": "CONNECTED",
+      "count": 10,
+      "enabled": true,
+      "last_success": 1794331116,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794352716,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "msrc": {
+      "status": "CONNECTED",
+      "count": 24,
+      "enabled": true,
+      "last_success": 1794320227,
+      "last_error": "",
+      "last_http_status": 304,
+      "next_due": 1794341827,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "ms-security": {
+      "status": "CONNECTED",
+      "count": 10,
+      "enabled": true,
+      "last_success": 1794331120,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345520,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "ms-defender": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Overlapping Microsoft publisher topic feed; intentionally consolidated into Microsoft Security Blog rather than duplicate polling/records"
+    },
+    "ms-research": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official general Research RSS includes non-security content and is not a scientific-paper metadata feed; security-specific relevance requires confirmation"
+    },
+    "project-zero": {
+      "status": "CONNECTED",
+      "count": 9,
+      "enabled": true,
+      "last_success": 1794331141,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345541,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "mandiant": {
+      "status": "CONNECTED",
+      "count": 20,
+      "enabled": true,
+      "last_success": 1794331147,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345547,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "google-security": {
+      "status": "CONNECTED",
+      "count": 20,
+      "enabled": true,
+      "last_success": 1794331126,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345526,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "talos": {
+      "status": "CONNECTED",
+      "count": 15,
+      "enabled": true,
+      "last_success": 1794324651,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339051,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "cisco-advisories": {
+      "status": "CONNECTED",
+      "count": 25,
+      "enabled": true,
+      "last_success": 1794331154,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345554,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "unit42": {
+      "status": "CONNECTED",
+      "count": 15,
+      "enabled": true,
+      "last_success": 1794324656,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339056,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "crowdstrike": {
+      "status": "CONNECTED",
+      "count": 10,
+      "enabled": true,
+      "last_success": 1794331159,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345559,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "sentinelone": {
+      "status": "CONNECTED",
+      "count": 10,
+      "enabled": true,
+      "last_success": 1794324661,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339061,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "eset": {
+      "status": "CONNECTED",
+      "count": 25,
+      "enabled": true,
+      "last_success": 1794324666,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339066,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "sophos": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": true,
+      "last_success": null,
+      "last_error": "transport",
+      "last_http_status": null,
+      "next_due": 1794331430,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Runtime: transport"
+    },
+    "fortinet": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official tested RSS landing/threat feed URLs returned 404; no functioning documented machine-readable endpoint verified"
+    },
+    "elastic": {
+      "status": "CONNECTED",
+      "count": 25,
+      "enabled": true,
+      "last_success": 1794331164,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345564,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "trailofbits": {
+      "status": "CONNECTED",
+      "count": 20,
+      "enabled": true,
+      "last_success": 1794331136,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345536,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "enisa": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official site accessible; tested RSS endpoints returned HTTP 404"
+    },
+    "ncsc": {
+      "status": "CONNECTED",
+      "count": 20,
+      "enabled": true,
+      "last_success": 1794324671,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339071,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "bsi": {
+      "status": "CONNECTED",
+      "count": 25,
+      "enabled": true,
+      "last_success": 1794331185,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345585,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "bleepingcomputer": {
+      "status": "CONNECTED",
+      "count": 17,
+      "enabled": true,
+      "last_success": 1794328805,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794332405,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "hackernews": {
+      "status": "CONNECTED",
+      "count": 28,
+      "enabled": true,
+      "last_success": 1794329407,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794333007,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "darkreading": {
+      "status": "CONNECTED",
+      "count": 25,
+      "enabled": true,
+      "last_success": 1794331170,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794334770,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "securityweek": {
+      "status": "CONNECTED",
+      "count": 12,
+      "enabled": true,
+      "last_success": 1794330008,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794333608,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "therecord": {
+      "status": "CONNECTED",
+      "count": 5,
+      "enabled": true,
+      "last_success": 1794331175,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794334775,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "owasp-genai": {
+      "status": "CONNECTED",
+      "count": 10,
+      "enabled": true,
+      "last_success": 1794331180,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794345580,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "mitre-atlas": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "OfficialATLAS site is a technique/knowledge-base application, not a verified dated publication feed"
+    },
+    "deepmind": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official general blog RSS works but contains product announcements; security-specific filtering required before enabling this channel"
+    },
+    "nvidia": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official advertised/tag feed returned HTTP 200 with zero records; tested category RSS URLs returned HTTP 404"
+    },
+    "sans-isc": {
+      "status": "CONNECTED",
+      "count": 10,
+      "enabled": true,
+      "last_success": 1794324691,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339091,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "portswigger": {
+      "status": "CONNECTED",
+      "count": 25,
+      "enabled": true,
+      "last_success": 1794324696,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794339096,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "github-security": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official advertised Atom feed returned HTTP 200 with zero publication records; cannot prove ingestion"
+    },
+    "arxiv": {
+      "status": "CONNECTED",
+      "count": 21,
+      "enabled": true,
+      "last_success": 1794324702,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794411102,
+      "cursor": null,
+      "checkpoint": 1794324100,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "crossref": {
+      "status": "CONNECTED",
+      "count": 129,
+      "enabled": true,
+      "last_success": 1794330610,
+      "last_error": "",
+      "last_http_status": 200,
+      "next_due": 1794330910,
+      "cursor": 175,
+      "checkpoint": null,
+      "reason": "Fetch, parse and persistence proven"
+    },
+    "openalex": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official keyless metadata GET succeeds (HTTP 200), but reliable cursor pagination requires an owner-provisioned API key; no key created"
+    },
+    "semantic-scholar": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official metadata API returned HTTP 429; shared anonymous quota unavailable, API key/rate-limit provisioning required; no bypass"
+    },
+    "usenix": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official Security 2026 proceedings HTML accessible (HTTP 200); no verified supported incremental metadata feed/API for this channel"
+    },
+    "ieee-sp": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official 2026 accepted-papers HTML accessible (HTTP 200); no verified supported incremental metadata feed/API for this channel"
+    },
+    "acm-ccs": {
+      "status": "BLOCKED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official ACM proceedings endpoint returned HTTP 403; no access-control bypass"
+    },
+    "ndss": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Official 2026 accepted-papers HTML accessible (HTTP 200); oEmbed is not a paper-discovery feed"
+    },
+    "raid": {
+      "status": "UNSUPPORTED",
+      "count": 0,
+      "enabled": false,
+      "last_success": null,
+      "last_error": "",
+      "last_http_status": null,
+      "next_due": null,
+      "cursor": null,
+      "checkpoint": null,
+      "reason": "Original catalog hostname did not resolve; official 2026 site is accessible but has no verified supported incremental metadata feed/API"
+    }
+  },
+  "streams": {
+    "news": 87,
+    "papers": 150,
+    "research": 294
+  },
+  "duplicate_source_ids": 0,
+  "correlated_topics": 2,
+  "nvd_recent_logs": [
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 17:15:37"
+    },
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 17:05:50"
+    },
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 16:55:39"
+    },
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 16:45:39"
+    },
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 16:35:36"
+    },
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 16:29:39"
+    },
+    {
+      "code": "nvd_pagination_changed",
+      "created": "2026-11-10 16:20:08"
+    },
+    {
+      "code": "sync_complete",
+      "created": "2026-11-10 16:10:40"
+    }
+  ],
+  "dashboard_sql_match": true,
+  "quality": {
+    "checked": 327,
+    "updated": 327,
+    "bounded_remaining_possible": false,
+    "source_timestamps_unchanged": true,
+    "manual_categories_and_priority_preserved": true
+  },
+  "correlation": {
+    "status": "PASS",
+    "record_ids": [
+      5559,
+      5600
+    ],
+    "merge_split_merge": true,
+    "publications_preserved": true,
+    "reason": "Same vendor, unique named vulnerabilities and same update event/date; source publications kept separately"
+  },
+  "resources": {
+    "before": {
+      "load": [
+        0.0888671875,
+        0.06005859375,
+        0.06689453125
+      ],
+      "available_kib": 2199884
+    },
+    "after": {
+      "load": [
+        0.2568359375,
+        0.13623046875,
+        0.09521484375
+      ],
+      "available_kib": 2136872
+    },
+    "seconds": 101.5,
+    "db_bytes": 33980416
+  }
+}

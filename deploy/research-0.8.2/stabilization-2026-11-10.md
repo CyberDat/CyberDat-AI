@@ -1,6 +1,6 @@
 # Research Agent 0.8.2 stabilization — 2026-11-10
 
-Status: PREPARED, staging deployment and new-source persistence pending. Branch: feat/cyberdat-research-agent-0.8.1.
+Status: PARTIAL — staging deployment and consolidated smoke test PASS; remaining source/recurrence limitations below. Branch: feat/cyberdat-research-agent-0.8.1. Runtime commit: `411341bf67d3717ad4de8c054ec0d141109767b4`.
 
 ## Verified baseline
 
@@ -19,23 +19,23 @@ Crossref automatic cursor continuation is evidenced by the 15:45 dispatcher cycl
 
 | Channel | Public probe result / limitation |
 |---|---|
-| Microsoft Security Blog | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://www.microsoft.com/en-us/security/blog/feed/ |
+| Microsoft Security Blog | CONNECTED: 10 real records persisted; https://www.microsoft.com/en-us/security/blog/feed/ |
 | Microsoft Defender Threat Intelligence | UNSUPPORTED: Overlapping Microsoft publisher topic feed; intentionally consolidated into Microsoft Security Blog rather than duplicate polling/records |
 | Microsoft Research Security | UNSUPPORTED: Official general Research RSS includes non-security content and is not a scientific-paper metadata feed; security-specific relevance requires confirmation |
-| Project Zero | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://projectzero.google/feed.xml |
-| Google Threat Intelligence / Mandiant | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/ |
-| Google Security Blog | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://blog.google/security/rss/ |
-| Cisco Security Advisories | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://sec.cloudapps.cisco.com/security/center/psirtrss20/CiscoSecurityAdvisory.xml |
-| CrowdStrike Research | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://www.crowdstrike.com/en-us/blog/feed |
-| Sophos X-Ops | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://www.sophos.com/en-us/category/threat-research/feed |
+| Project Zero | CONNECTED: 9 real records persisted; https://projectzero.google/feed.xml |
+| Google Threat Intelligence / Mandiant | CONNECTED: 20 real records persisted; https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/ |
+| Google Security Blog | CONNECTED: 20 real records persisted; https://blog.google/security/rss/ |
+| Cisco Security Advisories | CONNECTED: 25 real records persisted; https://sec.cloudapps.cisco.com/security/center/psirtrss20/CiscoSecurityAdvisory.xml |
+| CrowdStrike Research | CONNECTED: 10 real records persisted; https://www.crowdstrike.com/en-us/blog/feed |
+| Sophos X-Ops | BLOCKED: public feed/parser passed, but staging live fetch returned transport; 0 records, enabled for normal bounded retry at 17:23:50 UTC |
 | FortiGuard Labs | BLOCKED: Official tested RSS landing/threat feed URLs returned 404; no functioning documented machine-readable endpoint verified |
-| Elastic Security Labs | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://www.elastic.co/security-labs/rss/feed.xml |
-| Trail of Bits | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://blog.trailofbits.com/index.xml |
+| Elastic Security Labs | CONNECTED: 25 real records persisted; https://www.elastic.co/security-labs/rss/feed.xml |
+| Trail of Bits | CONNECTED: 20 real records persisted; https://blog.trailofbits.com/index.xml |
 | ENISA | BLOCKED: Official site accessible; tested RSS endpoints returned HTTP 404 |
-| BSI / CERT-Bund Security Advisories | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://wid.cert-bund.de/content/public/securityAdvisory/rss |
-| Dark Reading | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://www.darkreading.com/rss.xml |
-| The Record | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://therecord.media/feed |
-| OWASP GenAI Security Project | PENDING_PERSISTENCE: HTTPS fetch and existing parser passed; https://genai.owasp.org/feed/ |
+| BSI / CERT-Bund Security Advisories | CONNECTED: 25 real records persisted; https://wid.cert-bund.de/content/public/securityAdvisory/rss |
+| Dark Reading | CONNECTED: 25 real records persisted; https://www.darkreading.com/rss.xml |
+| The Record | CONNECTED: 5 real records persisted; https://therecord.media/feed |
+| OWASP GenAI Security Project | CONNECTED: 10 real records persisted; https://genai.owasp.org/feed/ |
 | MITRE ATLAS | UNSUPPORTED: Official ATLAS site is a technique/knowledge-base application, not a verified dated publication feed |
 | DeepMind Security Research | UNSUPPORTED: Official general blog RSS works but contains product announcements; security-specific filtering required before enabling this channel |
 | NVIDIA Security | BLOCKED: Official advertised/tag feed returned HTTP 200 with zero records; tested category RSS URLs returned HTTP 404 |
@@ -54,10 +54,24 @@ OpenAlex basic keyless queries succeeded; full cursor access requires an owner-p
 
 Existing 11-suite offline batch passed; latest 14 classification and 8 fairness regressions pass. Fixed-fixture database tests run after backup before new source enablement. Public endpoint probes do not count as CONNECTED: persistence and last_success are required.
 
-36 latest real records were reviewed across three streams; regression excerpts include TUTTI, BioBind, LoRA and OT papers. This is a diagnostic sample, not a measured global precision rate. Scheduled new-source recurrence, live correlation and actual classification correction remain pending deployment evidence.
+36 latest real records were reviewed across three streams; regression excerpts include TUTTI, BioBind, LoRA and OT papers. This is a diagnostic sample, not a measured global precision rate. Staging applied the v2 derivation to all 327 existing discovery records (not 327 proven incorrect labels). Source timestamps and manual categories/priority were preserved. Live SAP merge/split/merge PASS with both publications retained. There are now two multi-record topics; only the named SAP pair has a documented human evidence review. Automatic correlation recall/precision across the entire corpus remains UNVERIFIED.
 
 Read-only resources: load 0.09/0.06/0.07, available RAM ~2.05 GiB of ~3.83 GiB; Research tables 33,603,584 bytes. No load test. Existing capacity limits remain; long-duration growth/load is UNVERIFIED.
 
 Owner-run stabilize-research.py creates a private staging SQL/plugin backup before three-file patching, executes integration fixtures, bounded derived corrections, controlled new feeds and one protection/SQL smoke test. Controlled due recovery is never counted as automatic recurrence. --observe BACKUP is read-only. --resume BACKUP retains partial progress. Code rollback disables new jobs and restores classifier/dispatcher while retaining registry definitions and all actual records/audit; it is not a destructive SQL restore.
 
 Public theme, Analytics 2.1, SEO, mail, TLS, DNS, existing HTTP client and NVD ingestion code are not deployment targets. No automatic posts, new service, Content/Social/Ollama or production writes.
+
+## Owner-confirmed deployment — 17:19:50 UTC
+
+Backup: `/var/backups/cyberdat-staging/research-stabilization-20261110T171824Z` (private staging SQL + plugin archive + pinned prior files). Owner supplied completed script output, including integration tests, existing admin login and final PASS. [Structured evidence](stabilization-evidence-2026-11-10.json) contains only bounded verification metadata, no credentials/cookies/abstracts.
+
+* **29/45 CONNECTED** (12 newly persisted), **8 BLOCKED**, **8 UNSUPPORTED**. A channel is counted only after real validated fetch and persistence; channels are not necessarily independent publishers.
+* New persisted sources: Microsoft Security Blog, Google Security Blog, Trail of Bits, Project Zero, Mandiant/Google Threat Intelligence, Cisco Advisories, CrowdStrike, Elastic Security Labs, Dark Reading, The Record, OWASP GenAI, BSI/CERT-Bund. Sophos returned transport and remains BLOCKED with normal backoff/retry; no HTTP-client workaround added.
+* Discovery streams: News 87, Technical Research 294, Scientific Papers 150: **531 publications**. These exclude the separate CVE/legacy-advisory records; not a claim that the entire Research Queue has only 531 rows. Duplicate source IDs: **0**.
+* KEV **1773**, verified 17:18:32 UTC (HTTP 304 retains received/source timestamps). NVD **3688**, HTTP 200 success 17:15:37 UTC; checkpoint **2026-11-10T10:19:05Z**, pending cursor **600**. Fresh success is not a Complete window or complete historical coverage. NVD collector unchanged; prior transport/pagination errors recovered on subsequent scheduled runs.
+* Known overdue KEV/CISA/CERT jobs were recovered once in controlled scheduled-mode requests after the dispatcher fix. These three calls are explicitly NOT evidence of automatic recurrence. Existing dedicated and dispatcher unit frequencies and hashes are unchanged. Crossref and existing news automatic progress is already evidenced; first post-deployment cycle of each newly added feed remains UNVERIFIED until its unchanged interval is due.
+* SQL Dashboard comparisons, three-stream nonempty check, checkpoint monotonicity, temporary-table integration and existing Research Queue login **PASS**. Homepage/Threat Intelligence/Tools authenticated 200, anonymous 401, noindex preserved. Public theme, Analytics, protected configuration, unrelated plugin files and timer fingerprints unchanged; production read-only HTTPS 200. No post-count increase or automatic publication; no new checked PHP/Nginx error indicators.
+* Duration **101.5 seconds**; load before 0.09/0.06/0.07, after 0.26/0.14/0.10; available RAM after **2.04 GiB**. Research tables **33,980,416 bytes (32.41 MiB)** versus 33,603,584-byte baseline; this small increase accompanies new records/audit and is not a long-term growth forecast. No stress test.
+
+Current final limitation: normal recurrence/recovery of Sophos and first long-interval cycles of the 12 new successful feeds await observation; no need to rerun --apply. Use immutable release `--observe BACKUP` for read-only status. Long-term load, whole-corpus classification accuracy and all real grouping precision are UNVERIFIED. Existing safe bounds and partial scientific/NVD coverage remain explicit. Overall **PARTIAL**, not 45/45 or a claim that every acceptance point is proven.
