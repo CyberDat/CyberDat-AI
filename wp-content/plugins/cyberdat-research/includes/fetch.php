@@ -8,6 +8,7 @@ function cdra_public_ip($ip){
  return true;
 }
 function cdra_query($source,$query){
+ if(isset(cdra_discovery_registry()[$source])){return cdra_discovery_query($source,$query);}
  cdra_need(isset(cdra_sources()[$source]),'source_not_allowed');
  if($source!=='nvd'){cdra_need(!$query,'query_rejected');return '';}
  cdra_need(!array_diff(array_keys($query),['cveIds','lastModStartDate','lastModEndDate','resultsPerPage','startIndex']),'query_rejected');
@@ -20,14 +21,14 @@ class CDRA_Client {
  public function get($source,$query=[],$validators=[]){
   cdra_need(cdra_staging()&&defined('WP_CLI')&&WP_CLI&&PHP_SAPI==='cli','cli_staging_only');
   $permission='/etc/cyberdat-staging/research.json';cdra_need(is_readable($permission)&&!is_link($permission)&&fileowner($permission)===0,'owner_permission_required');$grant=json_decode(file_get_contents($permission),true);cdra_need($grant===['enabled'=>true,'host'=>'staging.cyberdat.eu'],'owner_permission_required');
-  $suffix=cdra_query($source,$query);$spec=cdra_sources()[$source];$p=wp_parse_url($spec['url']);$host=$p['host'];
+  $suffix=cdra_query($source,$query);$spec=cdra_spec($source);$p=wp_parse_url($spec['url']);$host=$p['host'];
   $records=dns_get_record($host,DNS_A|DNS_AAAA);cdra_need(is_array($records),'dns_failed');$ips=[];
   foreach($records as $row){$ip=$row['ip']??($row['ipv6']??null);if($ip!==null){cdra_need(cdra_public_ip($ip),'ssrf_address');$ips[]=$ip;}}
   cdra_need(count($ips)>0,'dns_failed');usort($ips,static fn($a,$b)=>(int)str_contains($a,':')<=>(int)str_contains($b,':'));$ip=$ips[0];
-  $headers=['Accept: '.($spec['format']==='rss'?'application/rss+xml, application/atom+xml, application/xml, text/xml':'application/json'),'Accept-Encoding: identity'];
+  $headers=['Accept: '.(in_array($spec['format'],['rss','arxiv'],true)?'application/rss+xml, application/atom+xml, application/xml, text/xml':'application/json'),'Accept-Encoding: identity'];
   foreach(['etag'=>'If-None-Match','last_modified'=>'If-Modified-Since'] as $key=>$name){if(isset($validators[$key])&&is_string($validators[$key])&&strlen($validators[$key])<=512&&!preg_match('/[\r\n\x00]/',$validators[$key])){$headers[]=$name.': '.$validators[$key];}}
   if($source==='nvd'&&is_readable('/etc/cyberdat-staging/nvd-api.key')){$key=trim(file_get_contents('/etc/cyberdat-staging/nvd-api.key'));cdra_need(preg_match('/^[A-Za-z0-9-]{1,256}$/D',$key),'invalid_api_key');$headers[]='apiKey: '.$key;}
-  $body='';$response_headers=[];$bytes=0;$overflow=false;$bounded_prefix=false;$bounded_records=0;$limit=$spec['format']==='rss'?2097152:4194304;
+  $body='';$response_headers=[];$bytes=0;$overflow=false;$bounded_prefix=false;$bounded_records=0;$limit=in_array($spec['format'],['rss','arxiv'],true)?2097152:4194304;
   $curl=curl_init($spec['url'].$suffix);cdra_need($curl!==false,'curl_init');
   $protocols=defined('CURLOPT_PROTOCOLS_STR')?[CURLOPT_PROTOCOLS_STR=>'HTTPS',CURLOPT_REDIR_PROTOCOLS_STR=>'HTTPS']:[CURLOPT_PROTOCOLS=>CURLPROTO_HTTPS,CURLOPT_REDIR_PROTOCOLS=>CURLPROTO_HTTPS];
   curl_setopt_array($curl,$protocols+[CURLOPT_HTTPGET=>true,CURLOPT_FOLLOWLOCATION=>false,CURLOPT_MAXREDIRS=>0,CURLOPT_SSL_VERIFYPEER=>true,CURLOPT_SSL_VERIFYHOST=>2,CURLOPT_PROXY=>'',CURLOPT_CONNECTTIMEOUT=>5,CURLOPT_TIMEOUT=>12,CURLOPT_HTTPHEADER=>$headers,CURLOPT_USERAGENT=>'CyberDat-Research/0.8.1 (staging official-source ingestion)',CURLOPT_RESOLVE=>[$host.':443:'.(str_contains($ip,':')?'['.$ip.']':$ip)],CURLOPT_WRITEFUNCTION=>static function($handle,$chunk)use(&$body,&$overflow,&$bounded_prefix,&$bounded_records,$limit,$spec){if(strlen($body)+strlen($chunk)>$limit){if($spec['format']==='rss'){$count=preg_match_all('~</(?:[A-Za-z_][\w.-]*:)?(?:item|entry)\s*>~i',$body);if($count>0){$prefix=cdra_feed_prefix($body,min(25,$count));if($prefix!==null){$body=$prefix;$bounded_prefix=true;$bounded_records=min(25,$count);return 0;}}}$overflow=true;return 0;}$body.=$chunk;if($spec['format']==='rss'&&preg_match_all('~</(?:[A-Za-z_][\w.-]*:)?(?:item|entry)\s*>~i',$body)>=25){$prefix=cdra_feed_prefix($body);if($prefix!==null){$body=$prefix;$bounded_prefix=true;$bounded_records=25;return 0;}}return strlen($chunk);},CURLOPT_HEADERFUNCTION=>static function($handle,$line)use(&$response_headers,&$bytes){$bytes+=strlen($line);if($bytes>65536){return 0;}$parts=explode(':',$line,2);if(count($parts)===2){$key=strtolower(trim($parts[0]));if(in_array($key,['etag','last-modified','retry-after','content-type','content-encoding'],true)){$response_headers[$key]=trim($parts[1]);}}return strlen($line);}]);
@@ -35,7 +36,7 @@ class CDRA_Client {
   finally{curl_close($curl);}
   if(!in_array($status,[200,304],true)){$header=$response_headers['retry-after']??'';$retry=ctype_digit($header)?(int)$header:max(0,(strtotime($header)?:time())-time());throw new CDRA_Error('http_'.$status,$retry);}
   cdra_need(!isset($response_headers['content-encoding'])||in_array(strtolower($response_headers['content-encoding']),['identity',''],true),'content_encoding');
-  if($status===200){$type=strtolower(trim(explode(';',$response_headers['content-type']??'')[0]));cdra_need(in_array($type,$spec['format']==='rss'?['application/rss+xml','application/atom+xml','application/xml','text/xml']:['application/json','text/plain'],true),'content_type');}
+  if($status===200){$type=strtolower(trim(explode(';',$response_headers['content-type']??'')[0]));cdra_need(in_array($type,in_array($spec['format'],['rss','arxiv'],true)?['application/rss+xml','application/atom+xml','application/xml','text/xml']:['application/json','text/plain'],true),'content_type');}
   return ['status'=>$status,'body'=>$body,'headers'=>$response_headers,'bounded_feed_prefix'=>$bounded_prefix,'bounded_feed_records'=>$bounded_records];
  }
 }

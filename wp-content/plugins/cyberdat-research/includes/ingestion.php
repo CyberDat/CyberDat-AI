@@ -11,7 +11,7 @@ class CDRA_Service {
  }
  public function success($source,$response,$received=true){
   $health=$this->store->get('health:'.$source,[]);$health['last_success']=time();$health['last_checked']=time();if($received){$health['last_received']=time();}
-  $health['last_error']='';$health['failures']=0;$health['job']='Idle';$health['last_http_status']=$response['status'];if(cdra_sources()[$source]['format']==='rss'){$health['coverage']=!empty($response['bounded_feed_prefix'])?'first_'.(int)($response['bounded_feed_records']??25).'_complete_XML_records':'bounded_feed_document';}$health['next_due']=time()+cdra_sources()[$source]['interval'];
+  $health['last_error']='';$health['failures']=0;$health['job']='Idle';$health['last_http_status']=$response['status'];if(cdra_spec($source)['format']==='rss'){$health['coverage']=!empty($response['bounded_feed_prefix'])?'first_'.(int)($response['bounded_feed_records']??25).'_complete_XML_records':'bounded_feed_document';}$health['next_due']=time()+cdra_spec($source)['interval'];
   if($source!=='nvd'){foreach(['etag'=>'etag','last-modified'=>'last_modified'] as $key=>$field){if(isset($response['headers'][$key])&&strlen($response['headers'][$key])<=512&&!preg_match('/[\r\n\x00]/',$response['headers'][$key])){$health[$field]=$response['headers'][$key];}}}
   $this->store->put('health:'.$source,$health);
  }
@@ -108,12 +108,12 @@ class CDRA_Service {
   try{
    $names=$source==='all'?array_keys(cdra_sources()):[$source];
    foreach($names as $name){
-    cdra_need(isset(cdra_sources()[$name]),'source_not_allowed');$health=$s->get('health:'.$name,[]);
+    cdra_need(isset(cdra_sources()[$name])||isset(cdra_discovery_registry()[$name]),'source_not_allowed');if(isset(cdra_discovery_registry()[$name])&&!cdra_discovery_enabled($name,$s)){continue;}$health=$s->get('health:'.$name,[]);
     if(($health['next_due']??0)>time()&&(!$manual||!empty($health['last_error']))){continue;}
     if($manual&&time()-($health['last_attempt']??0)<($name==='nvd'?31:300)){continue;}
     $health['job']='Running';$health['last_attempt']=time();$s->put('health:'.$name,$health);
-    try{if($name==='kev'){$this->kev();}elseif($name==='nvd'){$this->nvd();}else{$this->feeds($name);}$s->log($name,'sync_complete');}
-    catch(Throwable $error){$error=$error instanceof CDRA_Error?$error:new CDRA_Error('processing_error');$this->fail($name,$error);$errors[$name]=$error->getMessage();}
+    try{if($name==='kev'){$this->kev();}elseif($name==='nvd'){$this->nvd();}elseif(isset(cdra_discovery_registry()[$name])){cdra_discovery_ingest($this,$name);}else{$this->feeds($name);}$s->log($name,'sync_complete');}
+    catch(Throwable $error){$error=$error instanceof CDRA_Error?$error:new CDRA_Error('processing_error');if($error->getMessage()==='academic_pagination_shift'&&isset(cdra_discovery_registry()[$name])){$window=$s->get('discovery_window:'.$name);if($window){$window['offset']=0;$window['seen']=[];$s->put('discovery_window:'.$name,$window);}}$this->fail($name,$error);$errors[$name]=$error->getMessage();}
    }
    $this->projection();
   }finally{$db->get_var($db->prepare('SELECT RELEASE_LOCK(%s)',$lock));}

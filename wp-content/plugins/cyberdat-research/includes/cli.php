@@ -1,11 +1,16 @@
 <?php
 defined('ABSPATH') || exit;
 class CDRA_CLI {
+ /** Install only additive discovery tables, never from page requests. */
+ public function discovery_install(){cdra_need(cdra_staging(),'staging_only');(new CDRA_Discovery_Store())->install();WP_CLI::success('Additive discovery tables ready; no import or source enabled.');}
+ /** Read-only future Content Agent contract. */
+ public function discovery_test(){require CDRA_DIR.'/tests/discovery-database.php';cdra_discovery_database_tests();}
+ public function discovery_export(){WP_CLI::line(cdra_json(cdra_discovery_handoff()));}
  public function status(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$sources=[];foreach(cdra_sources() as $id=>$spec){$sources[$id]=(object)$s->get('health:'.$id,[]);}$data=$s->get('dashboard',[]);WP_CLI::line(cdra_json(['sources'=>$sources,'kev'=>$s->get('kev_catalog')['count']??0,'nvd'=>$s->count('nvd'),'queue'=>$s->count(),'coverage_origin'=>$s->get('nvd_origin'),'checkpoint'=>$s->get('nvd_checkpoint'),'window'=>$s->get('nvd_window'),'last_completed_window'=>$s->get('nvd_last_completed_window'),'backfill'=>$s->get('backfill',['status'=>'not_requested']),'complete_nvd'=>false,'dashboard_generation'=>$data['generated_at']??null,'live_enabled'=>$s->get('live_enabled',false)]));}
  /** Bounded Research Agent operation.
   * @synopsis [--source=<source>] [--manual] [--scheduled]
   */
- public function sync($args,$assoc){$source=$assoc['source']??'all';cdra_need($source==='all'||isset(cdra_sources()[$source]),'source_not_allowed');$result=(new CDRA_Service())->sync($source,!empty($assoc['manual']));WP_CLI::line(cdra_json($result));if($result['errors']){WP_CLI::halt(1);}}
+ public function sync($args,$assoc){$source=$assoc['source']??'all';cdra_need($source==='all'||isset(cdra_sources()[$source])||isset(cdra_discovery_registry()[$source]),'source_not_allowed');$result=(new CDRA_Service())->sync($source,!empty($assoc['manual']));WP_CLI::line(cdra_json($result));if($result['errors']){WP_CLI::halt(1);}}
  public function enable(){cdra_need(cdra_staging(),'staging_only');$s=new CDRA_Store();$data=$s->get('dashboard');cdra_need($data&&$data['kev']['catalog']['count']>0&&$data['indexed_cves']>0&&empty($data['sources']['kev']['last_error'])&&empty($data['sources']['nvd']['last_error'])&&!empty($data['nvd_last_incremental_success']),'initial_live_verification_required');$s->put('live_enabled',true);WP_CLI::success('Unified dashboard provider enabled; legacy snapshots/workers are not used.');}
  /** Bounded Research Agent operation.
   * @synopsis --start=<date> --end=<date>
@@ -26,6 +31,9 @@ class CDRA_CLI {
    $lock='cdra_'.substr(hash('sha256',DB_NAME.$s->prefix),0,32);cdra_need((int)$s->db->get_var($s->db->prepare('SELECT GET_LOCK(%s,0)',$lock))===1,'ingestion_locked');
    try{$service=new CDRA_Service($s);$service->nvd(true);$service->projection();WP_CLI::success('One bounded backfill batch completed.');}catch(Throwable $error){$request=$s->get('backfill');$request['last_error']=$error instanceof CDRA_Error?$error->getMessage():'processing_error';$request['next_due']=time()+max(7200,$error instanceof CDRA_Error?$error->retry:0);$s->put('backfill',$request);WP_CLI::error('Backfill batch failed; last-good records and checkpoint retained.');}finally{$s->db->get_var($s->db->prepare('SELECT RELEASE_LOCK(%s)',$lock));}return;
   }
+  // Reuse the existing dispatcher, after all legacy work. One new source per run.
+  $due=[];foreach(cdra_discovery_registry() as $source=>$spec){if(!cdra_discovery_enabled($source,$s)){continue;}$h=$s->get('health:'.$source,[]);if(($h['next_due']??0)<=time()){$due[$source]=$h['last_attempt']??0;}}
+  asort($due);if($due){$result=(new CDRA_Service($s))->sync(array_key_first($due));WP_CLI::line(cdra_json($result));return;}
   WP_CLI::line('Idle: no due bounded manual/retry/backfill job.');
  }
  /** Bounded Research Agent operation.

@@ -99,16 +99,16 @@ class CDRA_Store {
 
   if($old&&strtotime($old['source_updated'].' UTC')>cdra_time($record['source_updated'])){return (int)$old['id'];}
   $changed=$old&&$old['content_hash']!==$hash;
-  $priority=cdra_priority($record,$record['source']==='kev'?true:$this->kev($record['cve_ids']),$changed||!empty($old['changed']));
+  $priority=(!empty($record['stream'])?'cdra_discovery_priority':'cdra_priority')($record,$record['source']==='kev'?true:$this->kev($record['cve_ids']),$changed||!empty($old['changed']));
   $a=$record['assessment']??null;
   $values=['source'=>$source,'source_key'=>$identity,'source_id'=>$record['source_id'],'url_key'=>$url,'canonical_url'=>$record['canonical_url'],'content_hash'=>$hash,'payload'=>$text,'source_updated'=>cdra_stamp(cdra_time($record['source_updated'])),'published'=>cdra_stamp(cdra_time($record['published'])),'last_seen'=>cdra_stamp(),'priority'=>$priority['score'],'reasons'=>cdra_json($priority),'severity'=>$a?$a['severity']:'Not rated','cvss_version'=>$a['version']??null,'active'=>1,'kev_confirmed'=>$record['source']==='kev'||$this->kev($record['cve_ids'])?1:0,'changed'=>($changed||!empty($old['changed']))?1:0];
-  if($changed&&$old['editorial_status']==='approved_for_draft'){$values['editorial_status']='under_review';$values['approved_hash']=null;}
+  if($changed&&in_array($old['editorial_status'],['approved_for_draft','ready_for_content_agent'],true)){$values['editorial_status']='under_review';$values['approved_hash']=null;}
   $previous=$this->db->suppress_errors(true);
   try{
    if($old){$result=$this->db->update($this->prefix.'items',$values,['id'=>$old['id']]);$id=(int)$old['id'];}
    else{$values['first_seen']=cdra_stamp();$result=$this->db->insert($this->prefix.'items',$values);$id=(int)$this->db->insert_id;}
    cdra_need($result!==false&&$id>0,'item_write');
-   if($changed&&$old['editorial_status']==='approved_for_draft'){cdra_need($this->db->insert($this->prefix.'events',['item_id'=>$id,'actor'=>0,'old_status'=>'approved_for_draft','new_status'=>'under_review','old_priority'=>$old['manual_priority'],'new_priority'=>$old['manual_priority'],'created'=>cdra_stamp()])!==false,'approval_invalidation_audit');}
+   if($changed&&in_array($old['editorial_status'],['approved_for_draft','ready_for_content_agent'],true)){cdra_need($this->db->insert($this->prefix.'events',['item_id'=>$id,'actor'=>0,'old_status'=>$old['editorial_status'],'new_status'=>'under_review','old_priority'=>$old['manual_priority'],'new_priority'=>$old['manual_priority'],'created'=>cdra_stamp()])!==false,'approval_invalidation_audit');}
   }finally{$this->db->suppress_errors($previous);}
   $this->query($this->db->prepare("INSERT INTO {$this->prefix}aliases (source,source_key,item_id) VALUES (%s,%s,%d) ON DUPLICATE KEY UPDATE item_id=VALUES(item_id)",$source,$identity,$id));
   $this->query($this->db->prepare("DELETE FROM {$this->prefix}cves WHERE item_id=%d",$id));
@@ -117,14 +117,16 @@ class CDRA_Store {
  }
  public function reprioritize(){
   for($offset=0;$offset<12000;$offset+=100){$rows=$this->db->get_results($this->db->prepare("SELECT id,payload,changed FROM {$this->prefix}items ORDER BY id LIMIT 100 OFFSET %d",$offset),ARRAY_A);if(!$rows){break;}
-   foreach($rows as $row){$r=json_decode($row['payload'],true,64,JSON_THROW_ON_ERROR);$p=cdra_priority($r,$this->kev($r['cve_ids']),(bool)$row['changed']);$this->query($this->db->prepare("UPDATE {$this->prefix}items SET priority=%d,reasons=%s,kev_confirmed=%d WHERE id=%d",$p['score'],cdra_json($p),$this->kev($r['cve_ids'])?1:0,$row['id']));}
+   foreach($rows as $row){$r=json_decode($row['payload'],true,64,JSON_THROW_ON_ERROR);$p=(!empty($r['stream'])?'cdra_discovery_priority':'cdra_priority')($r,$this->kev($r['cve_ids']),(bool)$row['changed']);$this->query($this->db->prepare("UPDATE {$this->prefix}items SET priority=%d,reasons=%s,kev_confirmed=%d WHERE id=%d",$p['score'],cdra_json($p),$this->kev($r['cve_ids'])?1:0,$row['id']));}
   }
  }
- public function log($source,$code){cdra_need(isset(cdra_sources()[$source])&&preg_match('/^[a-z0-9_]{1,64}$/D',$code),'unsafe_log');$this->query($this->db->prepare("INSERT INTO {$this->prefix}logs (source,code,created) VALUES (%s,%s,%s)",$source,$code,cdra_stamp()));$this->query("DELETE FROM {$this->prefix}logs WHERE created < UTC_TIMESTAMP()-INTERVAL 30 DAY LIMIT 500");$cut=(int)$this->db->get_var("SELECT id FROM {$this->prefix}logs ORDER BY id DESC LIMIT 1 OFFSET 4999");if($cut){$this->query($this->db->prepare("DELETE FROM {$this->prefix}logs WHERE id<%d LIMIT 1000",$cut));}}
+ public function log($source,$code){cdra_need((isset(cdra_sources()[$source])||isset(cdra_discovery_registry()[$source]))&&preg_match('/^[a-z0-9_]{1,64}$/D',$code),'unsafe_log');$this->query($this->db->prepare("INSERT INTO {$this->prefix}logs (source,code,created) VALUES (%s,%s,%s)",$source,$code,cdra_stamp()));$this->query("DELETE FROM {$this->prefix}logs WHERE created < UTC_TIMESTAMP()-INTERVAL 30 DAY LIMIT 500");$cut=(int)$this->db->get_var("SELECT id FROM {$this->prefix}logs ORDER BY id DESC LIMIT 1 OFFSET 4999");if($cut){$this->query($this->db->prepare("DELETE FROM {$this->prefix}logs WHERE id<%d LIMIT 1000",$cut));}}
  public function editorial($id,$status,$priority,$actor,$expected){
   cdra_need(isset(cdra_statuses()[$status])&&($priority===null||(is_int($priority)&&$priority>=0&&$priority<=100)),'invalid_editorial_input');
   $this->transaction(function()use($id,$status,$priority,$actor,$expected){$old=$this->db->get_row($this->db->prepare("SELECT editorial_status,manual_priority,content_hash FROM {$this->prefix}items WHERE id=%d FOR UPDATE",$id),ARRAY_A);cdra_need($old!==null,'item_not_found');cdra_need(hash_equals($old['content_hash'],$expected),'source_changed_reload');
-   $previous=$this->db->suppress_errors(true);try{cdra_need($this->db->update($this->prefix.'items',['editorial_status'=>$status,'manual_priority'=>$priority,'approved_hash'=>$status==='approved_for_draft'?$expected:null],['id'=>$id])!==false,'editorial_write');cdra_need($this->db->insert($this->prefix.'events',['item_id'=>$id,'actor'=>$actor,'old_status'=>$old['editorial_status'],'new_status'=>$status,'old_priority'=>$old['manual_priority'],'new_priority'=>$priority,'created'=>cdra_stamp()])!==false,'editorial_audit');}finally{$this->db->suppress_errors($previous);}
+   if(in_array($status,['approved_for_draft','ready_for_content_agent'],true)&&$this->get('discovery_schema')===1){$topic=$this->db->get_var($this->db->prepare("SELECT topic_id FROM {$this->prefix}discovery WHERE item_id=%d",$id));if($topic){$assigned=$this->db->get_results($this->db->prepare("SELECT i.id,i.editorial_status FROM {$this->prefix}items i JOIN {$this->prefix}discovery d ON d.item_id=i.id WHERE d.topic_id=%s ORDER BY i.id FOR UPDATE",$topic),ARRAY_A);foreach($assigned as $peer){cdra_need((int)$peer['id']===$id||!in_array($peer['editorial_status'],['approved_for_draft','ready_for_content_agent'],true),'topic_already_assigned');}}}
+
+   $previous=$this->db->suppress_errors(true);try{cdra_need($this->db->update($this->prefix.'items',['editorial_status'=>$status,'manual_priority'=>$priority,'approved_hash'=>in_array($status,['approved_for_draft','ready_for_content_agent'],true)?$expected:null],['id'=>$id])!==false,'editorial_write');cdra_need($this->db->insert($this->prefix.'events',['item_id'=>$id,'actor'=>$actor,'old_status'=>$old['editorial_status'],'new_status'=>$status,'old_priority'=>$old['manual_priority'],'new_priority'=>$priority,'created'=>cdra_stamp()])!==false,'editorial_audit');}finally{$this->db->suppress_errors($previous);}
   });
  }
 }

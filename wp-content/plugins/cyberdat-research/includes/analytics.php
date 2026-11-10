@@ -31,7 +31,7 @@ function cdra_dashboard_model($rows,$catalog,$state,$now=null){
 function cdra_build_dashboard_analytics($store){
  // At most 12,000 indexed records / 5,000 NVD, matching existing hard storage limits.
  // No original payload bodies, credentials or references enter the read-model.
- $sql="SELECT source,source_id,canonical_url,published,source_updated,kev_confirmed,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.original_title')),2048) AS title,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.summary')),600) AS summary,JSON_EXTRACT(payload,'$.assessment') AS assessment,JSON_EXTRACT(payload,'$.cve_ids') AS cve_ids FROM {$store->prefix}items WHERE active=1 ORDER BY published DESC,id DESC LIMIT 12000";
+ $sql="SELECT source,source_id,canonical_url,published,source_updated,kev_confirmed,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.original_title')),2048) AS title,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.summary')),600) AS summary,JSON_EXTRACT(payload,'$.assessment') AS assessment,JSON_EXTRACT(payload,'$.cve_ids') AS cve_ids FROM {$store->prefix}items WHERE active=1 AND source IN ('kev','nvd','cisa-advisories','cert-eu','msrc') ORDER BY published DESC,id DESC LIMIT 12000";
  $previous=$store->db->suppress_errors(true);
  try{$rows=$store->db->get_results($sql,ARRAY_A);cdra_need(!$store->db->last_error&&is_array($rows),'analytics_database_read');}finally{$store->db->suppress_errors($previous);}
  foreach($rows as &$row){$row['assessment']=json_decode($row['assessment']??'null',true,64,JSON_THROW_ON_ERROR);$row['cve_ids']=json_decode($row['cve_ids']??'[]',true,64,JSON_THROW_ON_ERROR);}unset($row);

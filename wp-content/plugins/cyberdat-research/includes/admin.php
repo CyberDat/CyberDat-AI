@@ -31,6 +31,7 @@ function cdra_admin_query($filters){
  return $s->db->get_results($s->db->prepare($sql,...$params),ARRAY_A);
 }
 function cdra_admin_page(){
+ if(cdra_staging()&&current_user_can('manage_options')&&function_exists('cdra_discovery_queue_page')&&(new CDRA_Store())->get('discovery_schema')===1){try{cdra_discovery_queue_page();}catch(Throwable $e){wp_die('Research queue unavailable or filter invalid.','Research',['response'=>400]);}return;}
  if(!cdra_staging()||!current_user_can('manage_options')){wp_die('Access denied.');}
  echo '<div class="wrap"><h1>'.esc_html__('Research Queue','cyberdat-research').'</h1><p>'.esc_html__('Official-source evidence and explainable editorial heuristics, not EPSS. Approved for Draft never publishes a post.','cyberdat-research').'</p>';
  try{

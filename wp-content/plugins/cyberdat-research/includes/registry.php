@@ -9,7 +9,7 @@ function cdra_sources(){return [
  'cert-eu'=>['name'=>'CERT-EU Security Advisories','url'=>'https://cert.europa.eu/publications/security-advisories-rss','format'=>'rss','interval'=>21600,'fresh'=>28800,'hosts'=>['cert.europa.eu']],
  'msrc'=>['name'=>'Microsoft Security Response Center','url'=>'https://api.msrc.microsoft.com/update-guide/rss','format'=>'rss','interval'=>21600,'fresh'=>28800,'hosts'=>['msrc.microsoft.com','api.msrc.microsoft.com','www.microsoft.com','msrc-blog.microsoft.com']],
 ];}
-function cdra_statuses(){return ['new'=>'New','under_review'=>'Under Review','approved_for_draft'=>'Approved for Draft','rejected'=>'Rejected'];}
+function cdra_statuses(){return ['new'=>'New','under_review'=>'Reviewed','approved_for_draft'=>'Selected','ready_for_content_agent'=>'Ready for Content Agent','rejected'=>'Rejected','archived'=>'Archived'];}
 function cdra_json($value){$json=wp_json_encode($value,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);cdra_need(is_string($json),'json_encode');return $json;}
 function cdra_stamp($at=null){return gmdate('Y-m-d H:i:s',$at??time());}
 function cdra_time($value){

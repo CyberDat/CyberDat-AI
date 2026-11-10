@@ -55,7 +55,7 @@ check($priority['kind']==='editorial_heuristic_not_EPSS','priority is not EPSS')
 $input=['item_id'=>'1','status'=>'approved_for_draft','priority'=>'77','content_hash'=>str_repeat('a',64)];
 rejected(static fn()=>cdra_editorial_authorized($input,'nonce'),'unauthorized status action denied');$GLOBALS['cap']=true;rejected(static fn()=>cdra_editorial_authorized($input,'nonce'),'invalid nonce denied');$GLOBALS['nonce']=true;check(cdra_editorial_authorized($input,'nonce')[1]==='approved_for_draft','authorized nonced review input');
 $input['status']='publish';rejected(static fn()=>cdra_editorial_input($input),'Published is not an editorial status');
-check(count(cdra_statuses())===4,'four required editorial statuses');
+check(count(cdra_statuses())===6,'six human editorial statuses; legacy keys retained');
 $GLOBALS['environment']='production';check(!cdra_staging(),'production environment refused');
 foreach(glob(CDRA_DIR.'/includes/*.php') as $file){check(!preg_match('/\b(?:wp_insert_post|wp_publish_post)\s*\(/',file_get_contents($file)),'no automatic publication in '.basename($file));}
 echo "PASS: offline Research Agent tests; no live calls, DB changes or posts\n";
