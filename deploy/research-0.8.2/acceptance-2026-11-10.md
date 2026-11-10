@@ -130,3 +130,7 @@ Stop within Research Agent 0.8.2; no subsequent agent phase authorized.
 - The 10 recorded console entries were all external Gravatar requests intentionally blocked by the capture harness; runtime exceptions were zero. The updated helper separately counts only confirmed harness-origin Gravatar blocks and retains all diagnostics. Unknown errors still fail.
 - At 768 px the Source Registry produced horizontal overflow; at 320 px it did not. A scoped admin stylesheet is prepared. Do not report this layout fixed before the owner-run staging patch and browser recheck pass.
 - `fix-admin-layout.py` backs up staging SQL/plugin/admin PHP, changes only `includes/discovery-admin.php` plus `assets/discovery-admin.css`, and verifies other Research/theme/config/timer hashes. It does not import or change source state. Roll back this UI patch before using an older Research release rollback that expects the previous admin PHP hash.
+
+### Admin stylesheet delivery
+
+The first UI patch installed its files and backed up staging at `/var/backups/cyberdat-staging/research-admin-ui-20261110T160728Z`, then CSS HTTP/hash verification failed. The new assets directory was confirmed mode 0700 due to umask 077. A tested permission continuation validates that it contains only the exact public stylesheet before setting this directory to 0755. Existing private directory modes, configuration, source state and timers are not changed. Run `finish-admin-layout.py --verify BACKUP`; do not repeat `--apply`. CSS delivery and responsive acceptance are still pending actual verification.

@@ -109,3 +109,9 @@ At 15:46:22 UTC, the read-only observer showed Crossref had automatically advanc
 The owner-run Edge check passed login, all three stream filters, source HTTPS links, scientific metadata presence, Crossref DOI search, pagination and a 45-row Source Registry. Zero runtime JS exceptions; ten network console entries were all `secure.gravatar.com / net::ERR_BLOCKED_BY_CLIENT`, produced by the test harness's deliberate external-resource blocking. No external avatar access is enabled by the correction.
 
 A genuine admin-layout overflow was detected at 768 px (not at 320 px). A scoped Research Queue/Source Registry stylesheet and asset hook are prepared and offline-tested, with backup-first staging patch and browser recheck still pending. The public theme/Analytics are not modified. Overall remains PARTIAL until admin layout verification completes and remaining limitations are recorded.
+
+## Admin asset delivery continuation — 2026-11-10
+
+Owner-run admin UI update created `/var/backups/cyberdat-staging/research-admin-ui-20261110T160728Z`, then failed CSS HTTP verification. Read-only inspection confirmed the newly created plugin `assets` directory was mode 0700: explicit mkdir mode 0755 had been narrowed by the controller's umask 077. Existing Nginx rules do not deny this CSS path. The dedicated public stylesheet directory must be 0755 for Nginx traversal; private paths remain unchanged.
+
+A pinned continuation validates the existing backup/release, directory owner, sole CSS file and exact hashes, records previous mode privately, changes only this directory to 0755, then runs existing UI verification. It does not reapply code, migrate data, alter sources/timers or change production. Verification and browser layout acceptance remain pending.

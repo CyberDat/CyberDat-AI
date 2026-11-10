@@ -36,7 +36,7 @@ def main():
   with tarfile.open(backup/'research.tar.gz','w:gz') as archive:archive.add(m.PLUGIN,arcname='cyberdat-research')
   shutil.copyfile(php,backup/'previous-admin.php');state={'commit':(B/'COMMIT').read_text().strip(),'protected':protected,'timers':timers,'other_code':others,'theme':theme_hashes,'checksums':{n:sha(backup/n) for n in ['staging.sql.gz','research.tar.gz','previous-admin.php']}};(backup/'state.json').write_text(json.dumps(state));print('BACKUP: '+str(backup),flush=True)
   if not css.parent.exists():css.parent.mkdir(mode=0o755);account=pwd.getpwnam('cyberdat-staging');os.chown(css.parent,account.pw_uid,account.pw_gid)
-  need(css.parent.resolve()==css.parent,'Unsafe assets directory');m.atomic_copy(B/'discovery-admin.css',css);m.atomic_copy(B/'discovery-admin.php',php)
+  need(css.parent.resolve()==css.parent,'Unsafe assets directory');css.parent.chmod(0o755);m.atomic_copy(B/'discovery-admin.css',css);m.atomic_copy(B/'discovery-admin.php',php)
  phase='admin asset and regression verification'
  need(sha(php)==patch['after'] and sha(css)==patch['css'],'Installed file hash mismatch')
  code,headers,body=m.fetch('/wp-content/plugins/cyberdat-research/assets/discovery-admin.css',basic);need(code==200 and hashlib.sha256(body).hexdigest()==patch['css'],'CSS HTTP/hash verification failed')
