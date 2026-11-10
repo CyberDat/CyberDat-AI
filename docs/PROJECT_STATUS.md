@@ -2,10 +2,16 @@
 
 Last updated: 2026-11-10
 Repository: CyberDat/CyberDat-AI
-Current stage: **Content Agent 0.9.0 — Stage 1, no GPU / no LLM (PREPARED; staging acceptance pending)**
+Current stage: **Content Agent 0.9.0 — Stage 1, no GPU / no LLM (INSTALLED; admin acceptance finish pending)**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
+
+## Content Stage 1 installation continuation — 2026-11-10
+
+Owner deployment created backup `/var/backups/cyberdat-staging/content-0.9-20261110T181827Z` and installed the standalone Content plugin/schema. PASS: 25 Content temporary-table checks, existing Research/discovery integration tests, read-only handoff (`selected_count=0`), actual HTTPS mock worker claim/submission and saved TEST job 1/version 1. No real Research selection or model run.
+
+The final smoke test stopped at the Content Queue admin page. Confirmed menu registration order bug: at priority 10, Content's submenu may be registered before Research's parent, causing WordPress to record/check different hook names. A focused installed-core lifecycle test reproduces the bug; priority 20 for the Content submenu passes both loading orders and preserves unauthorized denial. A one-file finish controller is prepared; live admin/protection/regression completion remains PENDING. Original runtime commit `727b56be04f590e65ca7b967838cd753ef38b8f9`; no reinstall, migration, fixture generation or collector/timer changes are required for continuation.
 
 ## Content Agent 0.9.0 — Stage 1 authorized, 2026-11-10
 

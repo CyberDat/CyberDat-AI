@@ -2,7 +2,8 @@
 defined('ABSPATH') || exit;
 function cdca_admin_authorize($nonce){cdca_need(cdca_stage()&&current_user_can('manage_options'),'content_forbidden');cdca_need(is_string($nonce)&&wp_verify_nonce($nonce,'cdca_content'),'content_nonce');}
 function cdca_admin_hooks(){
- add_action('admin_menu',static function(){add_submenu_page('cyberdat-research','Content Queue — Mock Only','Content Queue','manage_options','cyberdat-content','cdca_admin_page');});
+ // Research registers the parent at priority 10; bind this submenu afterwards.
+ add_action('admin_menu',static function(){add_submenu_page('cyberdat-research','Content Queue — Mock Only','Content Queue','manage_options','cyberdat-content','cdca_admin_page');},20);
  add_action('admin_post_cdca_content',static function(){try{$v=wp_unslash($_POST);cdca_admin_authorize($v['_wpnonce']??'');$s=new CDCA_Store();$action=$v['operation']??'';
   if($action==='select'){cdca_need(preg_match('/^[1-9]\d{0,9}$/D',$v['research_id']??'')&&isset(cdca_templates()[$v['template']??'']),'selection_input');$s->create(cdca_selected_evidence((int)$v['research_id']),$v['template'],false,'user:'.get_current_user_id());}
   elseif($action==='transition'){cdca_need(preg_match('/^[1-9]\d{0,9}$/D',$v['id']??'')&&preg_match('/^[1-9]\d{0,9}$/D',$v['revision']??'')&&isset(cdca_statuses()[$v['status']??'']),'review_input');$s->transition((int)$v['id'],$v['status'],(int)$v['revision'],'user:'.get_current_user_id());}
