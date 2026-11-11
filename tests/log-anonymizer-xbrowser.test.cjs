@@ -13,7 +13,13 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const playwright = require('playwright');
+let playwright;
+try {
+	playwright = require('playwright');
+} catch (e) {
+	console.log('SKIP: Playwright is not installed (intentionally not a repository dependency). See the header of this file.');
+	process.exit(0);
+}
 
 const URL_UNDER_TEST = process.argv[2] || 'http://127.0.0.1:8090/tools/log-anonymizer/';
 const ORIGIN = new URL(URL_UNDER_TEST).origin;
