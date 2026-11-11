@@ -1,18 +1,24 @@
 {
-  "release": "Tools 1.1 — Privacy Shield Log Anonymizer (engine 1.0.0, ruleset 2026-11-11.1)",
+  "release": "Tools 1.1 — Privacy Shield Log Anonymizer (engine 1.0.1, ruleset 2026-11-11.2) + /tools/ catalogue",
   "repository": "CyberDat/CyberDat-AI",
   "branch": "feature/tools-log-anonymizer",
-  "theme_commit": "1f3b41c3f2f82db48a615eddc8a16b25f45b8a18",
+  "theme_commit": "7ea11fd11d891868f7c937eb6b566e85a2cbce85",
   "base_commit": "c3f9a5e7172f83006f3b078705a9d89e709619f8",
   "requires_owner_approval_before_deploy": true,
   "theme_directory": "wp-content/themes/cyberdat",
-  "base_functions_php_sha256": "3e38ec3a4a5b19ff71202a8f3d6d454cd76485ce932e52c6122bb41ddb886523",
   "files": {
     "assets/css/log-anonymizer.css": {
       "status": "added",
       "git_blob_sha1": "dd220be75e03e62ddfa391400c90749c5844f338",
       "sha256": "7edb09a3056e575a3f27ed6bd93f3b1bb6df606c9ad561e72f9afc47bba48ec9",
       "bytes": 8720
+    },
+    "assets/css/tools.css": {
+      "status": "modified",
+      "git_blob_sha1": "fb9e2819f6d3f55f164e659b0493c02b9d900d1d",
+      "sha256": "58c25bb0da7dd0e3ff74059173281da3d0cee6ce7928c43e3573196545cd4010",
+      "bytes": 4993,
+      "base_sha256": "65b112810acddf8f316484afe1f4d3fd1e58f1a8dd8462c516d53a3e9714ee57"
     },
     "assets/js/log-anonymizer/app.js": {
       "status": "added",
@@ -22,9 +28,9 @@
     },
     "assets/js/log-anonymizer/engine.js": {
       "status": "added",
-      "git_blob_sha1": "fffec85e1aa66de4009dce481d0185e60ab3f57b",
-      "sha256": "551662300d7322b9dde3eee0473fa706c3701a8e20d762a0618de135d3c0b536",
-      "bytes": 37023
+      "git_blob_sha1": "eb945549a7be4a77d402278fe28d58c5cac71c6c",
+      "sha256": "3e4cd2cab0b7cb9e7f26fdc33dff77ae918db1bcdb8a7cabc36f3a4b518963b9",
+      "bytes": 42487
     },
     "assets/js/log-anonymizer/worker.js": {
       "status": "added",
@@ -36,12 +42,13 @@
       "status": "modified",
       "git_blob_sha1": "d5dad8d549d8a42d141b9db3c10f43e35348fcf2",
       "sha256": "3b9225bcf12569cea03fde1eddb996dc80f07434a69677447fa3551ee51b95ac",
-      "bytes": 743
+      "bytes": 743,
+      "base_sha256": "3e38ec3a4a5b19ff71202a8f3d6d454cd76485ce932e52c6122bb41ddb886523"
     },
     "inc/tool-log-anonymizer.php": {
       "status": "added",
-      "git_blob_sha1": "a8ed77dfe1664e960e842efa44f13558f595a811",
-      "sha256": "b1e11b5a72979db3ce05eafe991264f6d74d37e7e79125a2f669420223f515b4",
+      "git_blob_sha1": "4f3cb71a20f53a72488a1de1ee665a3110fb064a",
+      "sha256": "9ffd8fa3c37f50c866da671a052162ef5b7efcf7112ccfb42a20f8227deecc24",
       "bytes": 4670
     },
     "inc/tool-security.php": {
@@ -50,11 +57,25 @@
       "sha256": "c32a57b3db014260f316067411bbd6493df874b367f65da70c87f3a6d31b10c5",
       "bytes": 3102
     },
+    "inc/tools-catalog.json": {
+      "status": "modified",
+      "git_blob_sha1": "9618b15e8736b330117de7d32f3ace93852b4917",
+      "sha256": "1e2bc44b98d86e6c37e0208ad711b6481462a39cc45c188f802aa8454dc5d21b",
+      "bytes": 4504,
+      "base_sha256": "d60b85e1528ba5f9fbdd7f40dff6bf82eefe3029346921d7fdb696c19390998d"
+    },
+    "page-templates/tools.php": {
+      "status": "modified",
+      "git_blob_sha1": "cc96b562059a27fff58212001566662ba1527b42",
+      "sha256": "a3e67dad2d9cd61d91ca708d121462302af48c6dd1125f6b1cc167bbb27462c0",
+      "bytes": 3617,
+      "base_sha256": "1317967689950fe7cfbade494401fff920852e2b7cc544c1d408560202c9b3d0"
+    },
     "template-parts/tools/log-anonymizer.php": {
       "status": "added",
-      "git_blob_sha1": "8779c9b217e5ca1b5eb5e30625121206451f0177",
-      "sha256": "48f7d7b6acb2d5b0bbcf9d23cd33a3e8a09f1b4239ea40655707a1ff21a75b2f",
-      "bytes": 14232
+      "git_blob_sha1": "4bd4ff59edcb3137ae3a606deb013f4879028a7a",
+      "sha256": "ee3ceefdc1dcfd2134e48daaa47af68d95d5f75dd8529ea8a72b4c878c46eb16",
+      "bytes": 14585
     }
   }
 }
