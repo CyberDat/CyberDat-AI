@@ -14,9 +14,10 @@ function cdca_evidence_text($value,$limit=12000) {
  cdca_need(is_string($value),'evidence_text');
  $value=html_entity_decode(strip_tags($value),ENT_QUOTES|ENT_HTML5,'UTF-8');
  $value=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u','',$value);
- $value=preg_replace('/\b(?:Bearer\s+[a-zA-Z0-9._-]{12,}|(?:password|api[_-]?key|secret|access[_-]?token)\s*[:=]\s*[^\s,;]{6,})/i','[credential-like text redacted]',$value);
+ $value=preg_replace('/\b(?:Bearer\s+[a-zA-Z0-9._-]{12,}|(?:password|api[_-]?key|secret|access[_-]?token|cookie|session|authorization)\s*[:=]\s*[^\s,;]{6,})/i','[credential-like text redacted]',$value);
  $value=preg_replace_callback('~https?://[^\s<>"\x27]+~i',static fn($m)=>cdca_public_url($m[0])??'[non-public or sensitive URL omitted]',$value);
  $value=preg_replace('/\b(?:10\.(?:\d{1,3}\.){2}\d{1,3}|127\.(?:\d{1,3}\.){2}\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}|169\.254\.\d{1,3}\.\d{1,3})\b/','[private address omitted]',$value);
+ $value=preg_replace('/(?<![0-9a-f:])(?:f[cd][0-9a-f]{2}|fe[89ab][0-9a-f]):[0-9a-f:]+|(?<![0-9a-f:])::1(?![0-9a-f:])/i','[private address omitted]',$value);
  return mb_substr($value,0,$limit);
 }
 function cdca_evidence_data($v,$depth=0) {
@@ -47,7 +48,7 @@ function cdca_source_record($row,$n) {
   'categories'=>$meta['manual_categories']??$v['categories']??null,'priority'=>isset($row['manual_priority'])?(int)$row['manual_priority']:(isset($row['priority'])?(int)$row['priority']:null),
   'priority_reasons'=>isset($row['reasons'])?json_decode($row['reasons'],true):null,'content_type'=>$v['content_type']??null,'stream'=>$row['stream']??$v['stream']??null,'cves'=>$v['cve_ids']??[],
   'cwe'=>$v['cwe']??null,'cvss'=>$v['assessment']??null,'cvss_assessments'=>$v['assessments']??null,'severity'=>$row['severity']??null,
-  'kev_confirmed'=>isset($row['kev_confirmed'])?(bool)$row['kev_confirmed']:($v['kev_confirmed']??null),
+  'active'=>isset($row['active'])?(bool)$row['active']:null,'kev_confirmed'=>isset($row['kev_confirmed'])?((bool)$row['kev_confirmed']&&(($row['source']??'')!=='kev'||(bool)($row['active']??false))):($v['kev_confirmed']??null),
   'references'=>array_values(array_filter(array_map('cdca_public_url',$v['references']??[]))),
   'content'=>['level'=>$level,'content_available'=>$text!=='','content_truncated'=>$clipped,'content_source_url'=>$url,'content_fetched_at'=>$row['last_seen']??null,'content_hash'=>hash('sha256',$text),'extraction_method'=>'research_feed_projection','extraction_status'=>$text===''?'no_content':'available','license_or_usage_notes'=>null,'limitations'=>['Collector summary/abstract; full article completeness not established.','Historical truncation and original receipt time are not fully recorded.']],
   'provenance'=>['storage'=>'cdra_items.payload + cdra_discovery.metadata','research_item_id'=>(int)$row['id'],'research_content_hash'=>$row['content_hash'],'fields'=>[]]];

@@ -1,0 +1,188 @@
+{
+  "utc": "2026-11-11T05:32:30.139433+00:00",
+  "http": {
+    "/": 200,
+    "/threat-intelligence/": 200,
+    "/tools/": 200,
+    "/wp-admin/admin.php?page=cyberdat-content": 200,
+    "/wp-admin/admin.php?page=cyberdat-research": 200
+  },
+  "proof": {
+    "nvd_sql": 4052,
+    "nvd_projection": 4052,
+    "kev_sql": 1779,
+    "kev_projection": 1779,
+    "posts": {
+      "count": 61,
+      "hash": "0c37d5d8c70bc93de51404413ca7430f18cd18022c9d8e84deef6521138e34aa"
+    },
+    "jobs": [
+      {
+        "id": "1",
+        "status": "draft_ready",
+        "is_test": "1"
+      }
+    ],
+    "versions": 1,
+    "evidence_rows": 0,
+    "enrichment_rows": 0
+  },
+  "sql_restore": "four original Content tables restored only into TEMPORARY tables; full-column hashes match",
+  "file_restore": true,
+  "research_unchanged": true,
+  "timers_unchanged": true,
+  "theme_seo_unchanged": true,
+  "production_tree_unchanged": true,
+  "log_files_checked": 2,
+  "browser_interaction": "UNVERIFIED",
+  "backup": "/var/backups/cyberdat-staging/content-evidence-1.1-20261111T050721Z",
+  "overall_status": "PARTIAL",
+  "implementation_and_staging_backend": "PASS",
+  "runtime_base_commit": "44c96f8fe0b581483cd0913298d54b6890f0037a",
+  "branch": "feat/cyberdat-content-agent-0.9.0",
+  "content_runtime_sha256": {
+    "cyberdat-content.php": "9ac93c1f213b2386aa0e88728198a5250e0989876cc15d186dc9bb6749a6381f",
+    "includes/research.php": "fcc75f6f32bcf716a2a78f9dbbe5b764a4118f251ee8f9b6834bbc0e0926db96",
+    "includes/admin.php": "29831b46ce13f1a43c5ada21acc0f2122a237e0bf2317bf78a1eb544e102f50a",
+    "includes/cli.php": "750d9add7c4fe9a66006de05074607b40478360e791b0e13b5a84020bb8d6cdb",
+    "includes/api.php": "07987bfb7cd8933a6c9423fc71351e04c03f867bf57f0c896a9c30115682c1af",
+    "includes/store.php": "64df39189588b812f14ebaf4f6f60eb313ab2c66b3a67b74e1d3cc65fce7bf1b",
+    "includes/enrichment-store.php": "3a34ce34ad6604821d2cac82e78909f6f17d6c9488c028dbf8c7b4581e3bde83",
+    "includes/evidence.php": "5e69f42db131b2374fe7c572f4b6c67112c6a9d5a0b6ae032863d39ba92f16fa",
+    "includes/contracts.php": "85de50933d3443f4bd5defdba842315bc51dd668657f1b424c3f376e413cd7b9",
+    "includes/enrichment-client.php": "d48961a7fec4721d29a2da4908874d165b3f5687d711c804a922727357aa0bd4",
+    "tests/evidence-database.php": "ba7d8e85806603dfdde7887720f4fca072da53c0edaef7869bce46a6974f2fea",
+    "tests/evidence-network.php": "4be4184c6206258492e9c95dcf56f9c8f7d273a3de316bc9893324eba81bb55c",
+    "tests/database.php": "a1711486da890f985c2b02da5ae5c743c05df19ae2593dbdf9e249bae28f967b"
+  },
+  "tests": {
+    "content_database": 25,
+    "evidence_database": 24,
+    "worker_python": 8,
+    "installed_core_menu": 3,
+    "pure_evidence_policy_checks": 20,
+    "real_readonly_primary_cases": [
+      "arxiv:5663",
+      "crossref:6093",
+      "cisa-advisories:6145",
+      "nvd:6514"
+    ],
+    "real_topic_readonly": true,
+    "existing_contract_tests": "PASS",
+    "new_php_lint": "PASS"
+  },
+  "network_cases": [
+    {
+      "source": "arxiv",
+      "research_item": 5663,
+      "status": "partial",
+      "source_results": [
+        {
+          "source_id": "S1",
+          "status": "robots_denied",
+          "http_status": null,
+          "curl_errno": null
+        }
+      ],
+      "requests": 1,
+      "fragments": 1,
+      "levels": [
+        "abstract"
+      ],
+      "repeated_without_fetch": true
+    },
+    {
+      "source": "cisa-advisories",
+      "research_item": 6145,
+      "status": "partial",
+      "source_results": [
+        {
+          "source_id": "S1",
+          "status": "ok",
+          "http_status": 200,
+          "curl_errno": null
+        },
+        {
+          "source_id": "S2",
+          "status": "ok",
+          "http_status": 200,
+          "curl_errno": null
+        },
+        {
+          "source_id": "S3",
+          "status": "bounded_deferred"
+        },
+        {
+          "source_id": "S4",
+          "status": "bounded_deferred"
+        },
+        {
+          "source_id": "S5",
+          "status": "bounded_deferred"
+        },
+        {
+          "source_id": "S6",
+          "status": "bounded_deferred"
+        },
+        {
+          "source_id": "S7",
+          "status": "bounded_deferred"
+        }
+      ],
+      "requests": 4,
+      "fragments": 16,
+      "levels": [
+        "summary",
+        "summary",
+        "summary",
+        "summary",
+        "summary",
+        "summary",
+        "summary"
+      ],
+      "repeated_without_fetch": true
+    },
+    {
+      "source": "kev",
+      "research_item": 6144,
+      "status": "complete",
+      "source_results": [
+        {
+          "source_id": "S1",
+          "status": "ok",
+          "http_status": 200,
+          "curl_errno": null
+        },
+        {
+          "source_id": "S2",
+          "status": "ok",
+          "http_status": 200,
+          "curl_errno": null
+        }
+      ],
+      "requests": 4,
+      "fragments": 6,
+      "levels": [
+        "summary",
+        "summary"
+      ],
+      "repeated_without_fetch": true
+    }
+  ],
+  "newly_network_enriched_test_inputs": 2,
+  "network_test_inputs": 3,
+  "local_only_real_input_fixture_jobs": 4,
+  "all_enrichment_test_writes": "TEMPORARY tables; connection-scoped and dropped",
+  "full_text_available": false,
+  "real_jobs_selected": 0,
+  "llm_or_gpu_run": false,
+  "posts_published": 0,
+  "limits": [
+    "arXiv API denied by robots.txt: no bypass, existing abstract retained.",
+    "Crossref record has no summary/abstract: metadata_only, deep generation blocked.",
+    "Five extra sources in the seven-source CISA case deferred by two-source network budget.",
+    "Non-allowlisted publishers have no extraction/usage policy: metadata retained, no fetch.",
+    "Scientific full-text/PDF ingestion and human semantic evidence verification are not implemented.",
+    "Real browser interaction/keyboard/mobile and home-PC worker are UNVERIFIED."
+  ]
+}

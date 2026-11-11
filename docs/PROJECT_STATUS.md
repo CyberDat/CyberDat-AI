@@ -2,10 +2,24 @@
 
 Last updated: 2026-11-11
 Repository: CyberDat/CyberDat-AI
-Current stage: **Content Agent 0.9.0 Stage 1.1 — candidate tested; staging deployment/acceptance pending**
+Current stage: **Content Agent 0.9.0 Stage 1.1 — staging backend PASS; overall PARTIAL (full-text/browser limits)**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
+
+## Content evidence Stage 1.1 accepted with limits — 2026-11-11 05:32:30 UTC
+
+**Overall PARTIAL; implementation and staging backend checks PASS.** Branch `feat/cyberdat-content-agent-0.9.0`; initial implementation `44c96f8fe0b581483cd0913298d54b6890f0037a`, followed by final provenance/redaction/restore-harness hardening in the acceptance commit. Installed file hashes are recorded in [acceptance evidence](../deploy/content-0.9.0-stage1.1/acceptance-2026-11-11.json); source files match that manifest.
+
+Deployed: compatible `cyberdat-content-brief/2`, retained attribution/academic/CVE metadata and field provenance, content availability levels, depth-scoped sufficiency gate, separate `stg_cdca_enrichments`/`stg_cdca_evidence`, opt-in bounded CLI enrichment and editor inspection. Research's handoff/1 and collectors are unchanged; no automatic enrichment scheduler was installed. Existing mock1/version1 retained; no real item selected and no WordPress post created or modified.
+
+Tests PASS:25 existing Content DB +24 evidence DB checks in TEMPORARY tables;8 Python worker cases (v1/v2, real generation disabled);3 menu/access lifecycle cases;20 pure contract/network-policy checks. Four real inputs used only as read-only local-enrichment fixtures. Three live retrieval cases: two gained CISA/KEV evidence; arXiv robots denied retrieval, existing abstract retained. Repeat processing sent no additional HTTP requests. Crossref without abstract blocks generation; actual CVE/CVSS/CWE and a grouped real topic were checked.
+
+Authenticated Content/Research queues, homepage, Threat Intelligence and Tools HTTP200; Basic Auth401, worker-key403 and noindex PASS. SQL Dashboard equality NVD4052/KEV1779; posts61 and original mock job/version unchanged. Two checked logs show no new indicators. Research/timer/public theme/SEO/config and production file hashes unchanged; no production database operations.
+
+Backup `/var/backups/cyberdat-staging/content-evidence-1.1-20261111T050721Z`: gzip integrity, private file restoration/hash comparison and restoration of all four original Content tables into TEMPORARY tables with full-column hashes PASS. No destructive rollback or live SQL restore.
+
+**Limits:** full article/paper extraction is not established; only summaries/abstracts and bounded CISA excerpts are available. Scientific deep analysis remains blocked; no semantic truth guarantee or real model generation. Five sources deferred by the two-source network budget in one topic. Non-allowlisted extraction is denied. Actual browser/keyboard/mobile and home-PC worker acceptance UNVERIFIED. No GPU/LLM, new service, collector/timer change, Social Agent or automatic publication. [Full report and real redacted brief](../deploy/content-0.9.0-stage1.1/README.md). Work stops here.
 
 ## Content evidence Stage 1.1 preparation — 2026-11-11
 

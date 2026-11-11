@@ -1,0 +1,111 @@
+{
+  "schema": "cyberdat-content-brief/2",
+  "language": "en",
+  "template": "paper",
+  "is_test": false,
+  "content_coverage": {
+    "primary_level": "abstract",
+    "source_levels": {
+      "S1": "abstract"
+    },
+    "full_text_available": false
+  },
+  "sufficiency": {
+    "schema": "cyberdat-evidence-gate/1",
+    "template": "paper",
+    "status": "limited",
+    "allowed_format": "attributed_source_summary",
+    "deep_analysis_allowed": false,
+    "generation_allowed": false,
+    "missing_fields": [
+      "Research methodology, experiments/results and limitations beyond an abstract.",
+      "Complete relevant technical text, not merely a feed summary/abstract."
+    ],
+    "reasons": [
+      "Deterministic evidence availability gate, not truth verification.",
+      "Sources may repeat the same publisher claim; independence is not assumed."
+    ],
+    "human_review_required": true
+  },
+  "input_trust": "untrusted_source_material",
+  "evidence": {
+    "topic_id": "5efc404047eeebfb2aefc0c474bd2ea9df1480053a396441a610c33cf6cb80fe",
+    "research_item": 5644,
+    "source_hash": "a09735e7b14f4be48c3bc39daf57ac42406bdf9cf233bb24ce7924f1cd456976",
+    "subject": "TUTTI: Parallel CKKS Bootstrapping in under 3 ms on CPU",
+    "cves": [],
+    "limitations": [
+      "Source claims remain unverified; primary-source and date review required.",
+      "Full text is not inferred from an RSS summary, abstract or multiple URLs."
+    ],
+    "sources": [
+      {
+        "id": "S1",
+        "research_item_id": 5644,
+        "source_id": "2611.12854",
+        "source": "arxiv",
+        "canonical_url": "https://arxiv.org/abs/2611.12854",
+        "original_url": "https://arxiv.org/abs/2611.12854",
+        "published": "2026-11-09T18:45:00Z",
+        "source_updated": "2026-11-09T18:45:00Z",
+        "title": "TUTTI: Parallel CKKS Bootstrapping in under 3 ms on CPU",
+        "categories": [
+          "Scientific Research",
+          "Cryptography & Privacy"
+        ],
+        "priority": 33,
+        "cves": [],
+        "cwe": [],
+        "cvss": null,
+        "kev_confirmed": false,
+        "content": {
+          "level": "abstract",
+          "content_available": true,
+          "content_truncated": null,
+          "content_source_url": "https://arxiv.org/abs/2611.12854",
+          "content_fetched_at": "2026-11-10 15:31:41",
+          "content_hash": "2ff13bb22b98b5d569b4c3d3ec4674cdef1ddbe77ffb0106b58cd2a86271e44e",
+          "extraction_method": "research_feed_projection",
+          "extraction_status": "available",
+          "license_or_usage_notes": null,
+          "limitations": [
+            "Collector summary/abstract; full article completeness not established.",
+            "Historical truncation and original receipt time are not fully recorded."
+          ]
+        },
+        "authors": [
+          "[public author redacted]",
+          "[public author redacted]"
+        ],
+        "summary": "This paper introduces TUTTI, a new CKKS bootstrapping procedure that outperforms previous low-latency solutions in multi",
+        "paper": {
+          "doi": null,
+          "arxiv_id": "2611.12854",
+          "venue": null,
+          "publisher": "arXiv",
+          "review_status": "Preprint",
+          "open_access_url": "https://arxiv.org/abs/2611.12854",
+          "revision": "v1",
+          "abstract": "This paper introduces TUTTI, a new CKKS bootstrapping procedure that outperforms previous low-latency solutions in multi"
+        },
+        "provenance": {
+          "storage": "cdra_items.payload + cdra_discovery.metadata",
+          "research_item_id": 5644,
+          "research_content_hash": "ed583482541613be87746aaa53d0cae0e56b08fe1aa427a045a7e9e72ebfac3e"
+        }
+      }
+    ],
+    "fragments": [
+      {
+        "id": "E326e76ca5b31f16fe61c83fd7d20b0a3",
+        "research_item_id": 5644,
+        "source_id": "S1",
+        "url": "https://arxiv.org/abs/2611.12854",
+        "locator": "research.payload.summary",
+        "evidence_type": "source_claim",
+        "verification_status": "unverified",
+        "source_version_hash": "ed583482541613be87746aaa53d0cae0e56b08fe1aa427a045a7e9e72ebfac3e"
+      }
+    ]
+  }
+}

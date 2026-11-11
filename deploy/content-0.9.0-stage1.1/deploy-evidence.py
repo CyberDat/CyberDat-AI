@@ -15,12 +15,26 @@ def restore_sql_test(backup):
   old='stg_cdca_'+name;new='cdca_restore_test_'+name
   match=re.search(r'CREATE TABLE `'+old+r'` .*?\n\) ENGINE=.*?;',raw,re.S);m.need(match is not None,'Backup Content schema missing')
   sql.append(match[0].replace('CREATE TABLE `'+old+'`','CREATE TEMPORARY TABLE `'+new+'`',1))
-  for line in raw.splitlines():
-   if line.startswith('INSERT INTO `'+old+'` '):sql.append(line.replace('INSERT INTO `'+old+'`','INSERT INTO `'+new+'`',1))
+  # MariaDB may wrap INSERT VALUES across lines. Split only at an unquoted semicolon.
+  for match_insert in re.finditer(r'^INSERT INTO `'+old+r'` ',raw,re.M):
+   start=match_insert.start();quote=None;escaped=False;end=None
+   for pos in range(start,len(raw)):
+    c=raw[pos]
+    if escaped:escaped=False;continue
+    if quote:
+     if c=='\\':escaped=True
+     elif c==quote:quote=None
+    elif c in ["'",'"']:quote=c
+    elif c==';':end=pos+1;break
+   m.need(end is not None,'Incomplete backup INSERT')
+   sql.append(raw[start:end].replace('INSERT INTO `'+old+'`','INSERT INTO `'+new+'`',1))
   # Compare all restored columns to current untouched Content rows without printing row bodies.
   columns=re.findall(r'^  `([^`]+)` ',match[0],re.M);order='worker_id' if name=='agents' else 'id';expr="SHA2(GROUP_CONCAT(SHA2(CONCAT_WS(CHAR(31),"+','.join("COALESCE(CAST(`"+c+"` AS CHAR),'[NULL]')" for c in columns)+"),256) ORDER BY `"+order+"` SEPARATOR ''),256)"
   sql.append("SELECT '"+name+"',((SELECT COUNT(*) FROM `"+new+"`)=(SELECT COUNT(*) FROM `"+old+"`)),((SELECT "+expr+" FROM `"+new+"`)<=>(SELECT "+expr+" FROM `"+old+"`));")
- r=m.run(['/usr/bin/mariadb','--no-defaults','--protocol=SOCKET','--socket=/run/mysqld/mysqld.sock','--user=root','--skip-password','--batch','--skip-column-names','cyberdat_staging'],data='\n'.join(sql).encode())
+ r=m.run(['/usr/bin/mariadb','--no-defaults','--protocol=SOCKET','--socket=/run/mysqld/mysqld.sock','--user=root','--skip-password','--batch','--skip-column-names','cyberdat_staging'],data='\n'.join(sql).encode(),check=False)
+ if r.returncode:
+  diagnostics=re.findall(r'ERROR (\d+) \(([A-Z0-9]+)\) at line (\d+)',r.stderr.decode())
+  print('TEMPORARY RESTORE ERROR:',json.dumps(diagnostics));(backup/'restore-test-failure.sql').write_text('\n'.join(sql));raise RuntimeError('Temporary restore syntax/compatibility check failed; no runtime exchange')
  lines=r.stdout.decode().splitlines();m.need(len(lines)==4 and all(line.split('\t')[1:]==['1','1'] for line in lines),'Temporary SQL restore differs from unchanged Content state');print('PASS: original four Content tables restored into TEMPORARY tables; every row/column hash matches',flush=True)
 def smoke(basic,wordpress):
  m.need(m.fetch('/')[0]==401 and m.fetch('/wp-json/cyberdat-content/v1/worker')[0]==401,'Anonymous protection failed')
