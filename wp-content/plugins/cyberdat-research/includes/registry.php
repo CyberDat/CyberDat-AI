@@ -1,6 +1,6 @@
 <?php
 defined('ABSPATH') || exit;
-class CDRA_Error extends RuntimeException {public $retry;public function __construct($code,$retry=0){parent::__construct($code);$this->retry=(int)$retry;}}
+class CDRA_Error extends RuntimeException {public $retry;public $diagnostic;public function __construct($code,$retry=0,$diagnostic=[]){parent::__construct($code);$this->retry=(int)$retry;$this->diagnostic=$diagnostic;}}
 function cdra_need($ok,$code){if(!$ok){throw new CDRA_Error($code);}}
 function cdra_sources(){return [
  'kev'=>['name'=>'CISA KEV','url'=>'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json','format'=>'json','interval'=>21600,'fresh'=>28800,'hosts'=>['www.cisa.gov']],

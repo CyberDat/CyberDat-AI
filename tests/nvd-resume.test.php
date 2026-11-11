@@ -1,36 +1,30 @@
 <?php
-/** Offline real pagination/state-machine tests; no network or WordPress database. */
-define('ABSPATH','test');define('DB_NAME','cyberdat_staging');
-function wp_json_encode($v,$f=0){return json_encode($v,$f);}
-function cdra_staging(){return true;}
-require __DIR__.'/../wp-content/plugins/cyberdat-research/includes/registry.php';
-require __DIR__.'/../wp-content/plugins/cyberdat-research/includes/ingestion.php';
-class MemoryStore {
- public $values=[],$records=[],$fail=false;
- function log($source,$code){}
- function get($k,$d=null){return $this->values[$k]??$d;}
- function put($k,$v){$this->values[$k]=$v;}
- function upsert($r){if($this->fail){throw new CDRA_Error('database_error');}$this->records[$r['source_id']]=$r;}
- function transaction($f){$a=$this->values;$b=$this->records;try{return $f();}catch(Throwable $e){$this->values=$a;$this->records=$b;throw $e;}}
+/** Changing API membership, interruption and interval proof. No network/WordPress database. */
+define('ABSPATH','fixture');define('DB_NAME','cyberdat_staging');function wp_json_encode($v,$f=0){return json_encode($v,$f);}function cdra_staging(){return true;}function cdra_spec($s){return cdra_sources()[$s];}
+require __DIR__.'/../wp-content/plugins/cyberdat-research/includes/registry.php';require __DIR__.'/../wp-content/plugins/cyberdat-research/includes/nvd-progress.php';require __DIR__.'/../wp-content/plugins/cyberdat-research/includes/ingestion.php';
+function check($v,$name){if(!$v){throw new RuntimeException($name);}echo 'PASS: '.$name."\n";}
+class MemoryStore{public $values=[],$records=[],$metrics=[],$fail=false;function get($k,$d=null){return $this->values[$k]??$d;}function put($k,$v){$this->values[$k]=$v;}function log($s,$c){}function upsert($r){if($this->fail){throw new CDRA_Error('database_error');}$this->records[$r['source_id']]=$r;}function transaction($f){$a=$this->values;$b=$this->records;try{return $f();}catch(Throwable $e){$this->values=$a;$this->records=$b;throw $e;}}}
+class TimeAPI extends CDRA_Service{
+ public $pool=[],$queries=[],$throw_at=null,$after=null;
+ function __construct($s,$pool){parent::__construct($s,new stdClass());$this->pool=$pool;}
+ function page($q){$this->queries[]=$q;$this->requests++;if($this->throw_at===count($this->queries)){throw new CDRA_Error('transport',300,['kind'=>'timeout','curl_errno'=>28,'http_status'=>null]);}$rows=array_values(array_filter($this->pool,fn($r)=>cdra_time($r['source_updated'])>=cdra_time($q['lastModStartDate'])&&cdra_time($r['source_updated'])<=cdra_time($q['lastModEndDate'])));$page=['index'=>0,'total'=>count($rows),'rows'=>array_slice($rows,0,200),'count'=>min(200,count($rows))];if($this->after){call_user_func($this->after,$this,count($this->queries));}return [$page,['status'=>200,'headers'=>[]]];}
 }
-class Pages extends CDRA_Service {
- public $script,$offsets=[];
- function __construct($s,$script){parent::__construct($s,new stdClass());$this->script=$script;}
- function page($query){$this->offsets[]=$query['startIndex'];$this->requests++;$p=array_shift($this->script);if($p instanceof Throwable){throw $p;}cdra_need(is_array($p)&&$p['index']===$query['startIndex'],'unexpected_test_offset');return [$p,['status'=>200,'headers'=>[]]];}
-}
-function page($offset,$ids,$total){return ['index'=>$offset,'rows'=>array_map(static fn($id)=>['source_id'=>$id],$ids),'count'=>count($ids),'total'=>$total];}
-function check($ok,$label){if(!$ok){throw new RuntimeException($label);}echo "PASS: $label\n";}
-function store(){ $s=new MemoryStore();$s->put('nvd_window',['start'=>'2020-01-01T00:00:00Z','end'=>'2020-01-02T00:00:00Z','index'=>0,'total'=>null]);return $s;}
-$s=store();$s->put('health:nvd',['last_success'=>time(),'next_due'=>time()-1]);check(CDRA_Service::nvd_pending_due($s),'dispatcher continues a Fresh but incomplete window without a manual queue');$s->put('health:nvd',['next_due'=>time()+900]);check(!CDRA_Service::nvd_pending_due($s),'dispatcher respects backoff');$s->put('nvd_window',null);check(!CDRA_Service::nvd_pending_due($s),'completed window does not dispatch a new full import');
-$s=store();$a=page(0,['CVE-2020-0001','CVE-2020-0002'],3);$b=page(2,['CVE-2020-0003'],3);
-try{(new Pages($s,[$a,new CDRA_Error('http_429',900)]))->nvd();}catch(CDRA_Error $e){(new Pages($s,[]))->fail('nvd',$e);}
-check($s->get('nvd_window')['index']===2&&$s->get('nvd_checkpoint')===null,'429 retains committed page and no false completed checkpoint');
-check($s->get('health:nvd')['next_due']>=time()+899,'Retry-After retained in backoff');
-$p=new Pages($s,[$b]);$p->nvd();check($p->offsets===[2]&&count($s->records)===3,'new worker resumes exact startIndex without downloading prior page');
-$c=$s->get('nvd_last_completed_window');check($s->get('nvd_window')===null&&$c['verified_results']===3&&$s->get('nvd_checkpoint')===strtotime('2020-01-02 UTC'),'all contiguous unique pages required before durable completion checkpoint');
-$s=store();$s->put('nvd_window',['start'=>'2020-01-01T00:00:00Z','end'=>'2020-01-02T00:00:00Z','index'=>2,'total'=>3]);$p=new Pages($s,[$a,$b]);$p->nvd();check($p->offsets===[0,2]&&$s->get('nvd_last_completed_window')['verified_results']===3,'legacy cursor prefix audited once without discarding its committed position');
-$s=store();$s->fail=true;try{(new Pages($s,[$a]))->nvd();}catch(CDRA_Error $e){}check($s->get('nvd_window')['index']===0&&!$s->records,'failed transaction retains cursor and records atomically');
-$s=store();try{(new Pages($s,[$a,page(2,['CVE-2020-0002'],3)]))->nvd();}catch(CDRA_Error $e){check($e->getMessage()==='nvd_pagination_overlap','duplicate across pages detected');}check($s->get('nvd_checkpoint')===null&&$s->get('nvd_window')['index']===0,'moving pagination is not declared complete');
-$s=store();try{(new Pages($s,[$a,page(2,['CVE-2020-0003'],4)]))->nvd();}catch(CDRA_Error $e){check($e->getMessage()==='nvd_pagination_changed','changed total invalidates offsets safely');}check($s->get('nvd_checkpoint')===null&&count($s->records)===2,'changed total retains last-good rows without false completion');
-foreach(['http_503','transport'] as $code){$s=store();try{(new Pages($s,[$a,new CDRA_Error($code)]))->nvd();}catch(CDRA_Error $e){(new Pages($s,[]))->fail('nvd',$e);}check($s->get('nvd_window')['index']===2&&$s->get('health:nvd')['next_due']>=time()+299,$code.' retains page and applies backoff');}
-echo "PASS: NVD pagination/resumption tests; no network or database accessed\n";
+function record($id,$ts){return ['source_id'=>$id,'source_updated'=>gmdate('Y-m-d\TH:i:s\Z',$ts)];}
+$start=strtotime('2020-01-01 UTC');$end=$start+3600;
+function store($start,$end){$s=new MemoryStore();$s->put('nvd_checkpoint',$start);$s->put('nvd_window',['start'=>gmdate('Y-m-d\TH:i:s\Z',$start),'end'=>gmdate('Y-m-d\TH:i:s\Z',$end),'index'=>50,'total'=>999,'pages'=>[['index'=>0,'ids'=>['LEGACY-COMMITTED']]]]);$s->records['LEGACY-COMMITTED']=['source_id'=>'LEGACY-COMMITTED'];return $s;}
+$pool=[];for($i=0;$i<300;$i++){$pool[]=record('ID-'.$i,$start+$i*10);}
+$s=store($start,$end);$api=new TimeAPI($s,$pool);$api->after=static function($api,$n)use($start,$end){if($n===1){$api->pool=array_values(array_filter($api->pool,fn($r)=>$r['source_id']!=='ID-100'));$api->pool[]=record('ID-100',$end+600);$api->pool[]=record('ARRIVED-LATER',$end-1);}};
+cdra_nvd_progress($api);check($s->get('nvd_checkpoint')===$start&&$s->get('nvd_window')['legacy_prefix']['index']===50,'existing checkpoint and committed API cursor preserved during strategy adoption');check(count($s->get('nvd_window')['time_proof']['segments'])===1,'first complete slice proves forward coverage despite changing membership');
+$resume=new TimeAPI($s,$api->pool);cdra_nvd_progress($resume);$c=$s->get('nvd_last_completed_window');check($s->get('nvd_window')===null&&$s->get('nvd_checkpoint')===$end&&$c['status']==='Complete','checkpoint advances only after contiguous complete time coverage');check(isset($s->records['ARRIVED-LATER'],$s->records['LEGACY-COMMITTED'])&&count($s->records)===302,'new result retained, old records never deleted, upserts unique by ID');check(cdra_nvd_coverage_complete($c['time_proof']),'completed proof covers every interval without offset assumptions');check(array_unique(array_column(array_merge($api->queries,$resume->queries),'startIndex'))===[0],'no stale offsets reused across dynamic responses');
+$future=new TimeAPI($s,$api->pool);cdra_nvd_progress($future);for($i=0;$i<10&&$s->get('nvd_window');$i++){$future=new TimeAPI($s,$api->pool);cdra_nvd_progress($future);}check($s->records['ID-100']['source_updated']===gmdate('Y-m-d\TH:i:s\Z',$end+600),'a record modified out of an older range is refreshed in a later overlapping window');
+$s=store($start,$end);$api=new TimeAPI($s,$pool);$api->throw_at=2;try{cdra_nvd_progress($api);}catch(CDRA_Error $e){$api->fail('nvd',$e);}check($s->get('nvd_checkpoint')===$start&&count($s->get('nvd_window')['time_proof']['pending'])===2,'transport interruption retains pending ranges and completed data');check($s->get('health:nvd')['last_transport']['curl_errno']===28&&$s->get('health:nvd')['last_http_status']===null,'transport errno persisted without stale HTTP 200');$api=new TimeAPI($s,$pool);cdra_nvd_progress($api);check($s->get('nvd_checkpoint')===$end,'new worker resumes persisted pending ranges after interruption');
+$s=store($start,$end);$s->fail=true;$api=new TimeAPI($s,$pool);try{cdra_nvd_progress($api);}catch(CDRA_Error $e){}check($s->get('nvd_checkpoint')===$start&&count($s->get('nvd_window')['time_proof']['pending'])===1&&count($s->records)===1,'DB rollback cannot partially advance coverage or replace good rows');
+$s=store($start,$end);$empty=new TimeAPI($s,[]);cdra_nvd_progress($empty);check($s->get('nvd_checkpoint')===$end&&$s->get('nvd_last_completed_window')['verified_results']===0,'empty successful API window is complete without invented records');
+check($s->get('health:nvd')['catchup_pending']===true&&$s->get('health:nvd')['next_due']<=time()+300,'bounded catch-up uses existing five-minute continuation instead of falling behind on the normal poll interval');
+$s=store($start,$end);$boundary=[record('BOUNDARY',$start+1800)];for($i=0;$i<250;$i++){$boundary[]=record('B-'.$i,$start+5+$i*10);}$api=new TimeAPI($s,$boundary);for($i=0;$i<4&&$s->get('nvd_window');$i++){$api=new TimeAPI($s,$boundary);cdra_nvd_progress($api);}check(isset($s->records['BOUNDARY'])&&count(array_keys($s->records))===count(array_unique(array_keys($s->records))),'inclusive split boundary creates no omitted or duplicate DB identity');
+$s=store($start,$start+1);$dense=[];for($i=0;$i<201;$i++){$dense[]=record('D-'.$i,$start);}try{cdra_nvd_progress(new TimeAPI($s,$dense));throw new RuntimeException('dense falsely complete');}catch(CDRA_Error $e){check($e->getMessage()==='nvd_dense_slice'&&$s->get('nvd_checkpoint')===$start,'unprovable dense time bucket blocks instead of false completion or restart loop');}
+$s=store($start,$end);$error=new CDRA_Error('http_429',900,['kind'=>'http','curl_errno'=>0,'http_status'=>429]);(new CDRA_Service($s,new stdClass()))->fail('nvd',$error);check($s->get('health:nvd')['next_retry']>=time()+900&&$s->get('health:nvd')['last_http_status']===429,'Retry-After and HTTP status remain separate from window completeness');
+foreach(['increase','decrease'] as $change){$s=store($start,$end);$api=new TimeAPI($s,$pool);$api->after=static function($api,$n)use($change,$end){if($n===1){if($change==='increase'){$api->pool[]=record('INCREASED',$end-1);}else{$api->pool=array_values(array_filter($api->pool,fn($r)=>$r['source_id']!=='ID-299'));}}};cdra_nvd_progress($api);for($i=0;$i<5&&$s->get('nvd_window');$i++){$next=new TimeAPI($s,$api->pool);cdra_nvd_progress($next);}check($s->get('nvd_checkpoint')===$end&&cdra_nvd_coverage_complete($s->get('nvd_last_completed_window')['time_proof']),'totalResults '.$change.' does not restart or falsely complete changing offset pages');}
+$s=store($start,$end);$manual=new CDRA_Service($s,new stdClass());$manual->success('nvd',['status'=>200]);check(!isset($s->get('health:nvd')['last_scheduled_success'],$s->get('health:nvd')['last_new_item']),'manual success does not invent scheduled or new-item history');$automatic=new CDRA_Service($s,new stdClass());$automatic->scheduled=true;$s->metrics['nvd']=['inserted'=>1,'last_new_item'=>time()];$automatic->success('nvd',['status'=>200]);check($s->get('health:nvd')['last_scheduled_success']===time()&&$s->get('health:nvd')['last_run_outcome']==='received_new_items','scheduled new insertion distinct from checked-no-new-items');
+$view=cdra_nvd_progress_view($c);check(!isset($view['time_proof'],$view['pages'],$view['legacy_prefix'])&&isset($view['time_progress']),'public progress excludes private identifier ledgers');
+echo "PASS: changed totals/membership, transport, boundary dedup, rollback, dense buckets, empty windows and restart recovery\n";

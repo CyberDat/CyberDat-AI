@@ -2,10 +2,22 @@
 
 Last updated: 2026-11-11
 Repository: CyberDat/CyberDat-AI
-Current stage: **Content Agent 0.9.0 Stage 1.1 — staging backend PASS; overall PARTIAL (full-text/browser limits)**
+Current stage: **Research Agent 0.8.3 — staging fixes installed; natural-cycle acceptance in progress. Content Stage 1.1 retained.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
+
+## Research 0.8.3 stability — 2026-11-11 (acceptance in progress)
+
+Branch `feat/cyberdat-research-agent-0.8.3` is based on Content head `d0df9ca3698336ea0ee770c00821f04adeaf61af`, retaining the Research ancestor and Content Stage 1.1. Full backup `/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z`: SQL gzip, private file restoration/hashes and all 16 Research/Content tables restored into TEMPORARY tables with matching archived row counts PASS.
+
+Installed on staging at 17:26:39 UTC: time-sliced NVD progress with checkpoint preserved, safe transport diagnostics, Crossref future/incomplete-date handling with private per-window metadata retention, real scheduled telemetry, publication-versus-receipt Dashboard labels, and a local empty WP-CLI config that stops upward traversal outside open_basedir. Dispatcher reports failed collector outcomes as failure. No timer frequency/source toggle/checkpoint reset, historical import, Content processing, model/GPU/Ollama, publication or production change.
+
+Candidate fixtures PASS: 26 Research, 14 Discovery, 25 Content and 24 Evidence tests in TEMPORARY tables, plus offline NVD changing-membership/restart/transport/date/contract/worker/dashboard checks. All six Content tables matched the original backup by all-column hashes; eight auth/role/URL/indexing/theme options also matched. Posts61, original mock job1/version1 retained. Basic Auth/noindex, home Pulse2.1, six Dashboard charts/filter routes and login boundaries PASS. Actual browser/JS console/OTP flow unavailable; no active conventional MFA plugin/admin metadata was detected, so MFA is UNVERIFIED, not accepted by assumption.
+
+First natural NVD run completed at 17:45:44 UTC with two bounded probes, no errors, scheduled timestamps and persisted three pending slices; checkpoint unchanged pending full coverage. Crossref remains at saved cursor275 until naturally due. Sophos is BLOCKED: public DNS/TLS succeeded but the VPS probe got curl92/http2_stream, no HTTP response; HTTP/1.1 also failed, no speculative fallback/security weakening. Its next retry remains 2026-11-12 13:25:07 UTC.
+
+Overall acceptance PENDING further natural cycles and Crossref continuation. [Algorithm, limits, evidence and rollback boundaries](../deploy/research-0.8.3/README.md). Do not infer complete historical NVD or recovered Sophos. No next phase started.
 
 ## Content evidence Stage 1.1 accepted with limits — 2026-11-11 05:32:30 UTC
 

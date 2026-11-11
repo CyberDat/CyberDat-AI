@@ -1,0 +1,99 @@
+[
+  {
+    "suite": "research.test.php",
+    "exit": 0,
+    "passes": 68,
+    "output": "PASS: valid complete KEV fixture\nPASS: CISA original preserved shortDescription\nPASS: CISA original preserved requiredAction\nPASS: CISA original preserved dueDate\nPASS: CISA original preserved notes\nPASS: CISA original preserved knownRansomwareCampaignUse\nPASS: invalid JSON rejected\nPASS: empty catalog rejected\nPASS: partial KEV row rejected\nPASS: duplicate CISA ID rejected\nPASS: CVSS 3.1 score/version/source retained\nPASS: CWE and references retained\nPASS: CVSS version distinct 4.0\nPASS: CVSS version distinct 3.0\nPASS: CVSS version distinct 2.0\nPASS: explicit source NONE is preserved, distinct from missing severity\nPASS: absent CVSS never invented\nPASS: invalid CVSS rejected\nPASS: unexpected pagination rejected\nPASS: oversized page request denied\nPASS: arbitrary URL/query denied\nPASS: unregistered endpoint denied\nPASS: SSRF IP denied 127.0.0.1\nPASS: SSRF IP denied 10.0.0.1\nPASS: SSRF IP denied 169.254.169.254\nPASS: SSRF IP denied 100.100.100.200\nPASS: SSRF IP denied 192.168.1.1\nPASS: SSRF IP denied ::1\nPASS: SSRF IP denied fe80::1\nPASS: SSRF IP denied ::ffff:127.0.0.1\nPASS: SSRF IP denied 2001:db8::1\nPASS: public address validation\nPASS: official-host RSS normalized\nPASS: RSS whitespace around official link is trimmed safely\nPASS: XXE and DTD denied\nPASS: bounded feed accepts exactly 25 complete records without reading the large tail\nPASS: incomplete 25th XML record is not accepted\nPASS: byte-budget fallback can retain a smaller complete-record prefix\nPASS: repeated publisher GUID revisions collapse to newest source record\nPASS: bounded reader rejects DTD before extracting records\nPASS: Atom namespace and bounded complete entries remain valid\nPASS: empty feed denied\nPASS: canonical tracking/fragment normalization\nPASS: KEV priority with explicit reasons\nPASS: priority is not EPSS\nPASS: unauthorized status action denied\nPASS: invalid nonce denied\nPASS: authorized nonced review input\nPASS: Published is not an editorial status\nPASS: six human editorial statuses; legacy keys retained\nPASS: production environment refused\nPASS: no automatic publication in admin.php\nPASS: no automatic publication in analytics.php\nPASS: no automatic publication in cli.php\nPASS: no automatic publication in dashboard.php\nPASS: no automatic publication in discovery-admin.php\nPASS: no automatic publication in discovery-ingestion.php\nPASS: no automatic publication in discovery-store.php\nPASS: no automatic publication in discovery.php\nPASS: no automatic publication in fetch.php\nPASS: no automatic publication in ingestion.php\nPASS: no automatic publication in legacy-validators.php\nPASS: no automatic publication in normalize.php\nPASS: no automatic publication in nvd-progress.php\nPASS: no automatic publication in priority.php\nPASS: no automatic publication in registry.php\nPASS: no automatic publication in storage.php\nPASS: offline Research Agent tests; no live calls, DB changes or posts\n",
+    "stderr": ""
+  },
+  {
+    "suite": "research-discovery.test.php",
+    "exit": 0,
+    "passes": 29,
+    "output": "PASS: 40 discovery channels plus 5 existing collectors; publishers counted separately\nPASS: academic sources in current catalog\nPASS: tracking parameters and fragments removed\nPASS: non-HTTPS canonical URL rejected\nPASS: userinfo rejected\nPASS: source timezone normalized to UTC; never discovery time\nPASS: multi-category deterministic classification\nPASS: CVE attribution retained\nPASS: explainable bounded priority with confirmed KEV factor\nPASS: no inferred exploitation\nPASS: arXiv stable ID and revision separated\nPASS: DOI normalization never implies peer review\nPASS: namespaced Atom author parsed\nPASS: bounded abstract retained\nPASS: stable DOI enables cross-provider topic correlation\nPASS: venue and DOI alone do not prove peer review\nPASS: unknown exact publication date skipped instead of invented date\nPASS: XXE rejected before parsing\nPASS: bad JSON rejected\nPASS: academic API query is bounded and allowlisted\nPASS: arbitrary academic query keys rejected\nPASS: shared CVE never merges independent events\nPASS: near-identical dated coverage can correlate without deleting source rows\nPASS: scientific papers never merged on title similarity\nPASS: no publication/code execution in discovery-admin.php\nPASS: no publication/code execution in discovery-ingestion.php\nPASS: no publication/code execution in discovery-store.php\nPASS: no publication/code execution in discovery.php\nPASS: 28 offline discovery checks; no live ingestion claimed\n",
+    "stderr": ""
+  },
+  {
+    "suite": "research-classification-quality.test.php",
+    "exit": 0,
+    "passes": 1,
+    "output": "PASS: 14 classification regressions (reviewed titles/excerpts and negative controls), explicit publisher host allowlist, RSS author and source-specific canonical tracking; no LLM/DB/network\n",
+    "stderr": ""
+  },
+  {
+    "suite": "research-dispatch-fairness.test.php",
+    "exit": 0,
+    "passes": 9,
+    "output": "PASS: overdue Crossref precedes a later-due NVD continuation\nPASS: healthy overdue KEV is recovered after an early timer skip\nPASS: future API backoff is never bypassed\nPASS: due legacy retry remains eligible\nPASS: legacy bounded retry cap retained\nPASS: disabled discovery source never selected\nPASS: oldest due time provides progress without adding timers\nPASS: existing collector resumes after other source advances due time\nPASS: fair dispatch uses existing next_due/backoff; polling frequencies and checkpoints untouched\n",
+    "stderr": ""
+  },
+  {
+    "suite": "research-dispatch-outcome.test.php",
+    "exit": 0,
+    "passes": 2,
+    "output": "PASS: scheduled dispatch forwards context and successful result exits normally\nPASS: failed collector makes dispatcher fail, without fabricated service success\n",
+    "stderr": ""
+  },
+  {
+    "suite": "nvd-resume.test.php",
+    "exit": 0,
+    "passes": 22,
+    "output": "PASS: existing checkpoint and committed API cursor preserved during strategy adoption\nPASS: first complete slice proves forward coverage despite changing membership\nPASS: checkpoint advances only after contiguous complete time coverage\nPASS: new result retained, old records never deleted, upserts unique by ID\nPASS: completed proof covers every interval without offset assumptions\nPASS: no stale offsets reused across dynamic responses\nPASS: a record modified out of an older range is refreshed in a later overlapping window\nPASS: transport interruption retains pending ranges and completed data\nPASS: transport errno persisted without stale HTTP 200\nPASS: new worker resumes persisted pending ranges after interruption\nPASS: DB rollback cannot partially advance coverage or replace good rows\nPASS: empty successful API window is complete without invented records\nPASS: bounded catch-up uses existing five-minute continuation instead of falling behind on the normal poll interval\nPASS: inclusive split boundary creates no omitted or duplicate DB identity\nPASS: unprovable dense time bucket blocks instead of false completion or restart loop\nPASS: Retry-After and HTTP status remain separate from window completeness\nPASS: totalResults increase does not restart or falsely complete changing offset pages\nPASS: totalResults decrease does not restart or falsely complete changing offset pages\nPASS: manual success does not invent scheduled or new-item history\nPASS: scheduled new insertion distinct from checked-no-new-items\nPASS: public progress excludes private identifier ledgers\nPASS: changed totals/membership, transport, boundary dedup, rollback, dense buckets, empty windows and restart recovery\n",
+    "stderr": ""
+  },
+  {
+    "suite": "research-083-dates.test.php",
+    "exit": 0,
+    "passes": 6,
+    "output": "PASS: real future-date shape preserved without inventing current publication\nPASS: future publication distinct from deposited update date\nPASS: future metadata receives no already-published recency bonus\nPASS: incomplete date withheld with original metadata, no invented day\nPASS: one invalid date cannot poison valid records on the same page\nPASS: future update timestamp is still rejected outside Crossref publication context\n",
+    "stderr": ""
+  },
+  {
+    "suite": "threat-dashboard.test.php",
+    "exit": 0,
+    "passes": 17,
+    "output": "PASS: NVD, KEV and advisories remain separate real-record counts\nPASS: critical/high use actual selected score ranges; missing score not fabricated\nPASS: zero score differs from absent CVSS and chart includes every indexed NVD CVE\nPASS: CVSS versions retained and disaggregated\nPASS: publication chronology uses source publication, not receipt or modification\nPASS: KEV overlap and ransomware require confirmed fields\nPASS: source text remains data for escaped presentation\nPASS: filter arrays and injection rejected by exact allowlists\nPASS: combined source/severity/type filters work without JavaScript\nPASS: bounded per-source feed does not truncate aggregate counts or crowd out advisories\nPASS: six real source-labelled KPI cards rendered\nPASS: new Dashboard and genuine missing-data presentation rendered\nPASS: external titles and summaries safely escaped\nPASS: server HTML filters require no JavaScript\nPASS: 90-day series uses source dates and does not import old CVEs into publication trends\nPASS: all six real-data charts and native SVG controls rendered\nPASS: Dashboard offline tests; no network, database or production writes\n",
+    "stderr": ""
+  },
+  {
+    "suite": "dashboard-scope.test.php",
+    "exit": 0,
+    "passes": 2,
+    "output": "PASS: chart distinguishes 3 matched CVEs, 53 indexed NVD CVEs and 1769 KEV entries\nPASS: no source queries, cache clears, jobs or imports executed\n",
+    "stderr": ""
+  },
+  {
+    "suite": "content-evidence.test.php",
+    "exit": 0,
+    "passes": 21,
+    "output": "PASS: metadata_and_nulls_preserved\nPASS: abstract_not_fulltext_truncation_suspected\nPASS: abstract_blocks_full_scientific_review\nPASS: crossref_no_abstract_metadata_only\nPASS: private_urls_and_credentials_rejected\nPASS: injection_remains_untrusted_data_secrets_redacted\nPASS: source_claim_not_verified_and_version_bound\nPASS: source_claim_not_verified_and_version_bound\nPASS: reject_unsafe_fetch_policy\nPASS: reject_unsafe_fetch_policy\nPASS: reject_unsafe_fetch_policy\nPASS: reject_unsafe_fetch_policy\nPASS: robots_deny\nPASS: robots_longest_allow\nPASS: robots_specific_agent\nPASS: robots_crawl_delay\nPASS: api_abstract_extraction\nPASS: enrichment_xml\nPASS: official_html_excerpt_not_overclaimed_fulltext\nPASS: official_news_gate_is_scoped_to_brief\nPASS: pure evidence/contract/policy checks; no network or application writes\n",
+    "stderr": ""
+  },
+  {
+    "suite": "content-contract.test.php",
+    "exit": 0,
+    "passes": 13,
+    "output": "PASS: structural_checks_do_not_claim_truth\nPASS: template_news\nPASS: template_threat\nPASS: template_vulnerability\nPASS: template_paper\nPASS: template_ai\nPASS: reject_unsupported_cve\nPASS: reject_unknown_source\nPASS: reject_quotations_not_supported\nPASS: reject_mock_only\nPASS: reject_active_content\nPASS: worker_cannot_approve_or_publish\nPASS: mock_cannot_impersonate_real_article\n",
+    "stderr": ""
+  },
+  {
+    "suite": "threat-pulse.test.php",
+    "exit": 0,
+    "passes": 17,
+    "output": "PASS: 7-day selection uses only last seven actual dates\nPASS: 30/90-day period selection differs\nPASS: no invented zero-only trend\nPASS: short history unavailable\nPASS: noncontiguous history rejected\nPASS: negative count rejected\nPASS: confirmed KEV precedence is independent of import order\nPASS: unsafe signal URL rejected\nPASS: future publication rejected\nPASS: four real-value headline cards\nPASS: initial KPIs use the period model rather than all-time totals\nPASS: only KEV additions and NVD publication series rendered\nPASS: CVSS versions and missing rating remain explicit\nPASS: untrusted title escaped\nPASS: full dashboard/map not duplicated\nPASS: coverage and absent histories disclosed without JS\nPASS: missing projection shows no estimated metrics\n",
+    "stderr": ""
+  },
+  {
+    "suite": "analytics-query.test.php",
+    "exit": 0,
+    "passes": 54,
+    "output": "PASS: period 7 critical uses correct source date\nPASS: import date never drives period\nPASS: period 7 nvd uses correct source date\nPASS: import date never drives period\nPASS: period 7 kev uses correct source date\nPASS: import date never drives period\nPASS: period 7 ransomware uses correct source date\nPASS: import date never drives period\nPASS: period 30 critical uses correct source date\nPASS: import date never drives period\nPASS: period 30 nvd uses correct source date\nPASS: import date never drives period\nPASS: period 30 kev uses correct source date\nPASS: import date never drives period\nPASS: period 30 ransomware uses correct source date\nPASS: import date never drives period\nPASS: period 90 critical uses correct source date\nPASS: import date never drives period\nPASS: period 90 nvd uses correct source date\nPASS: import date never drives period\nPASS: period 90 kev uses correct source date\nPASS: import date never drives period\nPASS: period 90 ransomware uses correct source date\nPASS: import date never drives period\nPASS: valid drill group severity/Critical\nPASS: valid drill group severity/High\nPASS: valid drill group severity/Medium\nPASS: valid drill group severity/Low\nPASS: valid drill group severity/None\nPASS: valid drill group severity/Unrated\nPASS: valid drill group overlap/shared\nPASS: valid drill group overlap/kev_only\nPASS: valid drill group overlap/nvd_only\nPASS: valid drill group ransomware/known\nPASS: valid drill group ransomware/not_known\nPASS: valid drill group advisory/cisa-advisories\nPASS: valid drill group advisory/cert-eu\nPASS: valid drill group advisory/msrc\nPASS: invalid filter rejected {\"days\":91}\nPASS: invalid filter rejected {\"q\":\"' OR 1=1\"}\nPASS: invalid filter rejected {\"q\":[\"x\"]}\nPASS: invalid filter rejected {\"page\":0}\nPASS: invalid filter rejected {\"page\":601}\nPASS: invalid filter rejected {\"per_page\":51}\nPASS: invalid filter rejected {\"sort\":\"RAND()\"}\nPASS: invalid filter rejected {\"group\":\"admin\"}\nPASS: invalid filter rejected {\"value\":\"unknown\"}\nPASS: invalid filter rejected {\"revision\":\"bad\"}\nPASS: invalid filter rejected {\"extra\":\"x\"}\nPASS: invalid filter rejected {\"group\":\"day\",\"value\":\"nvd\",\"days\":7,\"date\":\"2026-02-30\"}\nPASS: day outside retained chart period rejected\nPASS: overlap membership does not double-count CVSS or clip all-date totals\nPASS: unconfirmed ransomware is not labeled safe\nPASS: explicit zero differs from missing selected score\n",
+    "stderr": ""
+  },
+  {
+    "suite": "content-worker.test.py",
+    "exit": 0,
+    "output": "",
+    "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.025s\n\nOK\n"
+  }
+]

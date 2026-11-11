@@ -1,0 +1,3 @@
+# Bound WP-CLI project-config discovery inside the existing open_basedir.
+# All runtime options remain supplied by the root-owned launcher/global config.
+{}

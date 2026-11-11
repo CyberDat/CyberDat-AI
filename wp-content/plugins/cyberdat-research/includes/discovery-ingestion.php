@@ -18,14 +18,15 @@ function cdra_discovery_ingest($service,$source){
  }
  $response=$service->request($source,$q,$s->count($source)&&!$window?$health:[]);
  if($response['status']===304){cdra_need($s->count($source)>0,'feed_304_without_cache');$service->success($source,$response,false);return;}
- $rows=cdra_discovery_parse($source,$response['body']);$stats=['discovered'=>count($rows),'inserted'=>0,'duplicates'=>0,'updated'=>0];$done=count($rows)<25;$next=null;$api_count=count($rows);
- if($spec['format']==='crossref'){$raw=json_decode($response['body'],true,64,JSON_THROW_ON_ERROR);$api_count=count($raw['message']['items']);$done=$api_count<25;$stats['skipped_missing_publication']=$api_count-count($rows);$next=$raw['message']['next-cursor']??null;cdra_need($done||is_string($next)&&$next!==$window['cursor'],'academic_cursor');}
+ $diagnostics=[];$rows=cdra_discovery_parse($source,$response['body'],$diagnostics);$stats=['discovered'=>count($rows),'inserted'=>0,'duplicates'=>0,'updated'=>0];$done=count($rows)<25;$next=null;$api_count=count($rows);
+ if($spec['format']==='crossref'){$raw=json_decode($response['body'],true,64,JSON_THROW_ON_ERROR);$api_count=count($raw['message']['items']);$done=$api_count<25;$stats['withheld_metadata']=count($diagnostics);$stats['skipped_missing_publication']=count(array_filter($diagnostics,static fn($d)=>$d['reason']==='crossref_publication_incomplete'));$next=$raw['message']['next-cursor']??null;cdra_need($done||is_string($next)&&$next!==$window['cursor'],'academic_cursor');}
  if($spec['format']==='arxiv'){
   foreach($rows as $row){if(cdra_time($row['source_updated'])<$window['start']){$done=true;}}
   cdra_need($window['offset']<=500,'academic_window_capacity');
  }
  $ds=new CDRA_Discovery_Store($s);
- $s->transaction(function()use($service,$s,$ds,$source,$rows,$response,$window,$done,$next,$spec,$api_count,&$stats){
+ $s->transaction(function()use($service,$s,$ds,$source,$rows,$response,$window,$done,$next,$spec,$api_count,$diagnostics,&$stats){
+  if($source==='crossref'&&$diagnostics){$withheld_key='discovery_withheld:crossref:'.substr(hash('sha256',$window['start'].':'.$window['end']),0,24);$withheld=$s->get($withheld_key,[]);foreach($diagnostics as $d){$withheld[$d['key']]=$d;}cdra_need(count($withheld)<=500&&strlen(cdra_json($withheld))<=2097152,'crossref_withheld_capacity');$s->put($withheld_key,$withheld);$stats['withheld_metadata_key']=$withheld_key;}
   foreach($rows as $record){
    if($window&&$spec['format']==='arxiv'&&cdra_time($record['source_updated'])<$window['start']){continue;}
    if($window&&isset($window['seen'][$record['source_id']])){throw new CDRA_Error('academic_pagination_shift');}

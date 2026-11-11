@@ -23,7 +23,7 @@ function cdra_dashboard_model($rows,$catalog,$state,$now=null){
   // Bound cache by source, not by combined volume: advisories cannot be crowded out by NVD.
   if(($seen[$source]??0)>=20){continue;}$seen[$source]=($seen[$source]??0)+1;
   $ids=array_values(array_filter($row['cve_ids']??[],static fn($id)=>is_string($id)&&preg_match('/^CVE-\d{4}-\d{4,19}$/D',$id)));$ransomware=(bool)array_intersect_key($ransom,array_fill_keys($ids,true));
-  $feeds[]=['id'=>$row['source_id'],'source'=>$source,'kind'=>$source==='nvd'?'cve':($source==='kev'?'kev':'advisory'),'title'=>$row['title'],'summary'=>$row['summary'],'url'=>$row['canonical_url'],'published'=>$row['published'],'source_updated'=>$row['source_updated'],'severity'=>$label,'assessment'=>$assessment,'cve_ids'=>$ids,'kev'=>!empty($row['kev_confirmed']),'ransomware'=>$ransomware];
+  $feeds[]=['id'=>$row['source_id'],'source'=>$source,'kind'=>$source==='nvd'?'cve':($source==='kev'?'kev':'advisory'),'title'=>$row['title'],'summary'=>$row['summary'],'url'=>$row['canonical_url'],'published'=>$row['published'],'source_updated'=>$row['source_updated'],'received_at'=>$row['first_seen']??null,'last_seen'=>$row['last_seen']??null,'severity'=>$label,'assessment'=>$assessment,'cve_ids'=>$ids,'kev'=>!empty($row['kev_confirmed']),'ransomware'=>$ransomware];
  }
  usort($feeds,static fn($a,$b)=>strcmp($b['published'],$a['published'])?:strcmp($a['source'],$b['source'])?:strcmp($a['id'],$b['id']));ksort($versions);
  return ['schema'=>1,'generated_at'=>$now,'reference_day'=>gmdate('Y-m-d',$now),'counts'=>$counts,'severity'=>$severity,'versions'=>$versions,'days'=>$days,'chart_series'=>['kev'=>$kev_days,'nvd'=>$nvd_days],'feed'=>$feeds,'by_source'=>$by_source,'source_health'=>$state['source_health'],'catalog_version'=>$catalog['catalogVersion']??null,'catalog_released'=>$catalog['dateReleased']??null,'origin'=>$state['origin'],'checkpoint'=>$state['checkpoint'],'window'=>$state['window'],'completed'=>$state['completed'],'backfill'=>$state['backfill'],'queue_total'=>$state['queue_total'],'publication_min'=>$nvd_min?gmdate('Y-m-d',$nvd_min):null,'publication_max'=>$nvd_max?gmdate('Y-m-d',$nvd_max):null,'feed_limit_per_source'=>20,'historical_nvd_complete'=>false];
@@ -31,14 +31,14 @@ function cdra_dashboard_model($rows,$catalog,$state,$now=null){
 function cdra_build_dashboard_analytics($store){
  // At most 12,000 indexed records / 5,000 NVD, matching existing hard storage limits.
  // No original payload bodies, credentials or references enter the read-model.
- $sql="SELECT source,source_id,canonical_url,published,source_updated,kev_confirmed,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.original_title')),2048) AS title,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.summary')),600) AS summary,JSON_EXTRACT(payload,'$.assessment') AS assessment,JSON_EXTRACT(payload,'$.cve_ids') AS cve_ids FROM {$store->prefix}items WHERE active=1 AND source IN ('kev','nvd','cisa-advisories','cert-eu','msrc') ORDER BY published DESC,id DESC LIMIT 12000";
+ $sql="SELECT source,source_id,canonical_url,published,source_updated,first_seen,last_seen,kev_confirmed,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.original_title')),2048) AS title,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.summary')),600) AS summary,JSON_EXTRACT(payload,'$.assessment') AS assessment,JSON_EXTRACT(payload,'$.cve_ids') AS cve_ids FROM {$store->prefix}items WHERE active=1 AND source IN ('kev','nvd','cisa-advisories','cert-eu','msrc') ORDER BY published DESC,id DESC LIMIT 12000";
  $previous=$store->db->suppress_errors(true);
  try{$rows=$store->db->get_results($sql,ARRAY_A);cdra_need(!$store->db->last_error&&is_array($rows),'analytics_database_read');}finally{$store->db->suppress_errors($previous);}
  foreach($rows as &$row){$row['assessment']=json_decode($row['assessment']??'null',true,64,JSON_THROW_ON_ERROR);$row['cve_ids']=json_decode($row['cve_ids']??'[]',true,64,JSON_THROW_ON_ERROR);}unset($row);
  $health=[];foreach(cdra_sources() as $id=>$spec){$health[$id]=$store->get('health:'.$id,[]);}
  $data=cdra_dashboard_model($rows,$store->get('kev_catalog'),['source_health'=>$health,'origin'=>$store->get('nvd_origin'),'checkpoint'=>$store->get('nvd_checkpoint'),'window'=>$store->get('nvd_window'),'completed'=>$store->get('nvd_last_completed_window'),'backfill'=>$store->get('backfill',['status'=>'not_requested']),'queue_total'=>$store->count()]);
  // Page ledgers remain in private state, not in HTML or the lightweight read-model.
- foreach(['window','completed'] as $key){if(is_array($data[$key])){unset($data[$key]['pages']);}}
+ foreach(['window','completed'] as $key){if(is_array($data[$key])){$data[$key]=cdra_nvd_progress_view($data[$key]);}}
  cdra_need(strlen(cdra_json($data))<=2097152,'analytics_cache_size');$store->put('dashboard_v1',$data);
 }
 function cyberdat_research_dashboard(){
