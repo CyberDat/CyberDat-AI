@@ -5,6 +5,11 @@ CONFIG={'base_url':'https://staging.cyberdat.eu','worker_id':'home-mock','worker
 class T(unittest.TestCase):
  def test_mock_and_prompt_boundaries(self):
   d=w.MockAdapter().generate(BRIEF,{});self.assertTrue(d['is_mock']);self.assertNotIn('curl',json.dumps(d));self.assertIn('untrusted',w.prompt_envelope(BRIEF)['system']);self.assertEqual(d['sources'][0]['url'],BRIEF['evidence']['sources'][0]['url'])
+ def test_v2_mock_contract(self):
+  b=dict(BRIEF,schema='cyberdat-content-brief/2',sufficiency={'status':'insufficient'})
+  self.assertTrue(w.MockAdapter().generate(b,{})['is_mock'])
+  b['is_test']=False
+  with self.assertRaises(w.WorkerError):w.MockAdapter().generate(b,{})
  def test_real_jobs_and_ollama_disabled(self):
   b=dict(BRIEF,is_test=False)
   with self.assertRaises(w.WorkerError):w.MockAdapter().generate(b,{})

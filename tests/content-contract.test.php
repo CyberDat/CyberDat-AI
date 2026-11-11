@@ -1,5 +1,5 @@
 <?php
-define('ABSPATH','/offline/');require __DIR__.'/../wp-content/plugins/cyberdat-content/includes/contracts.php';
+define('ABSPATH','/offline/');require __DIR__.'/../wp-content/plugins/cyberdat-content/includes/contracts.php';require __DIR__.'/../wp-content/plugins/cyberdat-content/includes/evidence.php';
 function ok($v,$name){if(!$v){throw new RuntimeException($name);}echo 'PASS: '.$name."\n";}
 $b=cdca_brief(cdca_fixture(),'paper',true);require __DIR__.'/../wp-content/plugins/cyberdat-content/tests/database.php';$d=cdca_test_document($b);$q=cdca_quality($d,$b);ok($q['truth_verified']===false,'structural_checks_do_not_claim_truth');
 foreach(['news','threat','vulnerability','paper','ai'] as $t){$x=cdca_brief(cdca_fixture(),$t,true);ok(count($x['required_sections'])===7&&$x['language']==='en','template_'.$t);}

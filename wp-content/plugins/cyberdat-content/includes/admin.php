@@ -6,6 +6,7 @@ function cdca_admin_hooks(){
  add_action('admin_menu',static function(){add_submenu_page('cyberdat-research','Content Queue — Mock Only','Content Queue','manage_options','cyberdat-content','cdca_admin_page');},20);
  add_action('admin_post_cdca_content',static function(){try{$v=wp_unslash($_POST);cdca_admin_authorize($v['_wpnonce']??'');$s=new CDCA_Store();$action=$v['operation']??'';
   if($action==='select'){cdca_need(preg_match('/^[1-9]\d{0,9}$/D',$v['research_id']??'')&&isset(cdca_templates()[$v['template']??'']),'selection_input');$s->create(cdca_selected_evidence((int)$v['research_id']),$v['template'],false,'user:'.get_current_user_id());}
+  elseif($action==='enrich'){cdca_need(preg_match('/^[1-9]\d{0,9}$/D',$v['id']??'')&&preg_match('/^[1-9]\d{0,9}$/D',$v['revision']??''),'review_input');cdca_enrichment_request((int)$v['id'],(int)$v['revision'],'user:'.get_current_user_id());}
   elseif($action==='transition'){cdca_need(preg_match('/^[1-9]\d{0,9}$/D',$v['id']??'')&&preg_match('/^[1-9]\d{0,9}$/D',$v['revision']??'')&&isset(cdca_statuses()[$v['status']??'']),'review_input');$s->transition((int)$v['id'],$v['status'],(int)$v['revision'],'user:'.get_current_user_id());}
   else{throw new CDCA_Error('content_action');}
   wp_safe_redirect(admin_url('admin.php?page=cyberdat-content'));exit;
@@ -16,6 +17,7 @@ function cdca_admin_page(){
  echo '<form method="post" action="'.esc_url(admin_url('admin-post.php')).'"><input type="hidden" name="action" value="cdca_content"><input type="hidden" name="operation" value="select">';wp_nonce_field('cdca_content');echo '<label>Selected Research item ID <input name="research_id" type="number" min="1" required></label> <label>Template <select name="template">';foreach(cdca_templates() as $k=>$label){echo '<option value="'.esc_attr($k).'">'.esc_html($label).'</option>';}echo '</select></label> <button class="button">Import as Selected</button></form>';
  $page=max(1,min(50,(int)($_GET['cp']??1)));$rows=$s->db->get_results($s->db->prepare("SELECT * FROM {$s->p}jobs ORDER BY id DESC LIMIT 20 OFFSET %d",($page-1)*20),ARRAY_A);echo '<p>Bounded queue: 20 jobs per page.</p>';
  foreach($rows as $j){$id=(int)$j['id'];$brief=json_decode($j['brief'],true);echo '<section style="margin:16px 0;padding:12px;background:#fff;border:1px solid #ccd0d4;max-width:100%;overflow-wrap:anywhere"><h2>#'.esc_html($id).' · '.esc_html($j['is_test']?'TEST MOCK — NOT AN ARTICLE':$brief['evidence']['subject']).'</h2><p>'.esc_html(cdca_statuses()[$j['status']].' · '.cdca_templates()[$j['template']].' · Attempts '.$j['attempts'].'/3 · Revision '.$j['revision'].' · '.$j['last_error']).'</p>';
+  cdca_admin_evidence($j);
   if($j['status']==='processing'&&(int)$j['lease_until']<time()){echo '<p>Worker lease expired; next worker claim will recover with bounded retry.</p>';}
   foreach($brief['evidence']['sources'] as $source){echo '<p><a target="_blank" rel="noopener noreferrer" href="'.esc_url($source['url']).'">'.esc_html($source['id'].' · '.$source['publisher'].' · '.$source['published']).'</a></p>';}
   $versions=$s->db->get_results($s->db->prepare("SELECT version,document,quality,created FROM {$s->p}versions WHERE job_id=%d ORDER BY version DESC LIMIT 10",$id),ARRAY_A);foreach($versions as $version){echo '<details><summary>TEST MOCK version '.esc_html($version['version']).' · '.esc_html(gmdate('c',(int)$version['created'])).'</summary><pre style="white-space:pre-wrap">'.esc_html(json_encode(['document'=>json_decode($version['document'],true),'quality'=>json_decode($version['quality'],true)],JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)).'</pre></details>';}
@@ -24,4 +26,17 @@ function cdca_admin_page(){
  }
  $agents=$s->db->get_results("SELECT worker_id,last_seen FROM {$s->p}agents ORDER BY worker_id LIMIT 10",ARRAY_A);foreach($agents as $a){echo '<p>'.esc_html('Worker '.$a['worker_id'].' · Last authenticated request '.gmdate('c',(int)$a['last_seen'])).'</p>';}
  echo '<p><a href="'.esc_url(add_query_arg(['page'=>'cyberdat-content','cp'=>max(1,$page-1)],admin_url('admin.php'))).'">Previous</a> · <a href="'.esc_url(add_query_arg(['page'=>'cyberdat-content','cp'=>min(50,$page+1)],admin_url('admin.php'))).'">Next</a></p></div>';
+}
+
+/** Read-only rendering. No fetch, retry, refresh or queue writes on GET. */
+function cdca_admin_evidence($job){
+ $s=new CDCA_Evidence_Store();$snapshot=$s->latest($job);$brief=cdca_job_brief($job,$s);$e=$brief['evidence'];$gate=$brief['sufficiency']??cdca_sufficiency($e,$job['template']);
+ $levels=array_count_values(array_map(static fn($source)=>$source['content']['level']??'unknown (legacy brief)',$e['sources']));
+ echo '<div class="cdca-evidence" data-evidence-schema="2"><h3>Evidence &amp; sufficiency</h3><p>'.esc_html('Content: '.cdca_json($levels).' · Gate: '.$gate['status'].' · Sources: '.count($e['sources']).' · Fragments: '.count($e['fragments']??[]).' · Enrichment: '.($snapshot['status']??'not requested')).'</p>';
+ echo '<p>'.esc_html('Allowed scope: '.($gate['allowed_format']??'none').'. Deep analysis is blocked without adequate reviewed technical context. All source text is untrusted; this gate does not verify truth.').'</p><ul>';
+ foreach($gate['missing_fields'] as $missing){echo '<li>'.esc_html($missing).'</li>';}echo '</ul>';
+ if($snapshot){$payload=json_decode($snapshot['payload'],true);echo '<p>'.esc_html('Attempts '.$snapshot['attempts'].'/3 · Error '.($snapshot['last_error']?:'none').' · Retry after '.((int)$snapshot['next_attempt']?gmdate('c',(int)$snapshot['next_attempt']):'none')).'</p><details><summary>Retrieval status and limitations</summary><pre style="white-space:pre-wrap">'.esc_html(json_encode($payload['sources']??[],JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)).'</pre></details>';}
+ echo '<details><summary>Source provenance and evidence (unverified)</summary><pre style="white-space:pre-wrap;max-height:400px;overflow:auto">'.esc_html(json_encode(['sources'=>$e['sources'],'fragments'=>$e['fragments']??[],'limitations'=>$e['limitations']],JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)).'</pre></details>';
+ if(in_array($job['status'],['selected','queued'],true)&&!(int)$job['is_test']){echo '<form method="post" action="'.esc_url(admin_url('admin-post.php')).'"><input type="hidden" name="action" value="cdca_content"><input type="hidden" name="operation" value="enrich"><input type="hidden" name="id" value="'.esc_attr($job['id']).'"><input type="hidden" name="revision" value="'.esc_attr($job['revision']).'">';wp_nonce_field('cdca_content');echo '<button class="button">Request bounded evidence enrichment</button><p>Creates a request only. An authorized CLI run performs retrieval; opening this page makes no source requests.</p></form>';}
+ echo '</div>';
 }

@@ -1,11 +1,19 @@
 # CyberDat — Project Status (source of truth)
 
-Last updated: 2026-11-10
+Last updated: 2026-11-11
 Repository: CyberDat/CyberDat-AI
-Current stage: **Content Agent 0.9.0 — Stage 1 staging/mock acceptance PASS; home/Ollama integration UNVERIFIED**
+Current stage: **Content Agent 0.9.0 Stage 1.1 — candidate tested; staging deployment/acceptance pending**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
+
+## Content evidence Stage 1.1 preparation — 2026-11-11
+
+Authorized no-GPU/no-LLM implementation on `feat/cyberdat-content-agent-0.9.0`, based on `a04d21be8d768fba6ca9abd911a75220528bb47b`. Installed Content/Research hashes and SQL schemas matched the prior audit. Backup `/var/backups/cyberdat-staging/content-evidence-1.1-20261111T050721Z`; gzip and private archive restore/hash checks PASS.
+
+Implemented brief/2 with retained provenance/academic/CVE metadata, two additive evidence tables, bounded opt-in enrichment, conservative content levels, template/depth sufficiency gate, admin evidence details and v1/v2 mock compatibility. Research collectors/timers, source payloads, editorial decisions, public theme/SEO and production are outside the change. Existing mock job1/draft1 is retained.
+
+Candidate tests: pure contracts/policy, 8 Python worker cases, 3 installed-core menu cases; 25 existing Content DB cases and23 new evidence DB cases pass. Four real inputs are read-only; writes use TEMPORARY fixture tables. Live robots policy correctly denies arXiv API retrieval; existing abstracts remain usable. Initial CISA HTML marker mismatch was observed in a bounded test and the extractor was adapted to article/main excerpts without claiming full text. Deployment and final HTTP/regression acceptance still PENDING at this preparation commit. [Design/limits](../deploy/content-0.9.0-stage1.1/README.md).
 
 ## Content Agent Stage 1 accepted — 2026-11-10 18:53:33 UTC
 
