@@ -1,19 +1,25 @@
 # CyberDat — approved Tools Roadmap
 
-Approved by the owner for the 0.7 architecture stage. All tools below are planned, not released.
+Superseded on 2026-11-11 by the owner's "CyberDat Tools" specification v1.0 (replaces the 0.7 list and roadmap v2.1).
+Release 1.1 is shown on `/tools/`; later releases stay in the catalogue data only. A tool is listed as Available only
+when its page passes the fail-closed readiness check.
 
-| Release | Phase | Tool | Permanent URL |
-|---|---|---|---|
-| 1.1 | 1 | Privacy Shield Log Anonymizer | `/tools/log-anonymizer/` |
-| 1.1 | 1 | IoT & Industrial Exposure Query Helper | `/tools/iot-exposure-query-builder/` |
-| 1.1 | 1 | LotL / LOLBAS Command Analyzer | `/tools/lolbas-analyzer/` |
-| 1.2 | 2 | LLM Prompt Injection Test Bench | `/tools/prompt-injection-test-bench/` |
-| 1.2 | 2 | Modbus/BACnet Frame Decoder | `/tools/modbus-decoder/` |
-| 1.2 | 2 | Docker & Kubernetes Hardening Audit Generator | `/tools/container-hardening-audit/` |
-| 1.2 | 2 | AI Model Bill of Materials (A-BOM) | `/tools/ai-model-bom/` |
-| 1.3 | 3 | YARA/Sigma Rule Validator & Converter | `/tools/yara-sigma-validator/` |
-| 1.3 | 3 | MITRE ATLAS Attack Vector Mapper | `/tools/mitre-atlas-mapper/` |
-| 1.3 | 3 | Security Webhook & OOB Listener | `/tools/webhook-oob-listener/` |
+| Release | Phase | Tool | Permanent URL | Status |
+|---|---|---|---|---|
+| 1.1 | 1 | Privacy Shield Log Anonymizer | `/tools/log-anonymizer/` | implemented, owner acceptance pending |
+| 1.1 | 1 | Indirect Prompt Injection Sanitizer & Detector | `/tools/prompt-sanitizer/` | planned |
+| 1.1 | 1 | LotL / LOLBAS Command Analyzer | `/tools/lolbas-analyzer/` | planned |
+| 1.2 | 2 | MCP Security & Policy Checker | `/tools/mcp-security-checker/` | planned |
+| 1.2 | 2 | System Prompt & Agent Leak Inspector | `/tools/agent-leak-inspector/` | planned |
+| 1.2 | 2 | AI Model Bill of Materials | `/tools/ai-model-bom/` | planned |
+| 1.2 | 2 | MITRE ATLAS Attack Vector Mapper | `/tools/mitre-atlas-mapper/` | planned |
+| 1.3 | 3 | LLM Prompt Injection Test Bench | `/tools/prompt-injection-test-bench/` | planned (prompt generation only, no paid API calls) |
+| 1.3 | 3 | YARA/Sigma Rule Validator & Converter | `/tools/yara-sigma-validator/` | planned |
+| 1.3 | 3 | Docker & Kubernetes Hardening Audit Generator | `/tools/container-hardening-audit/` | planned |
+
+Backlog (not started, not planned without an owner decision): Modbus/BACnet Frame Decoder, IoT & Industrial
+Exposure Query Helper, Security Webhook & OOB Listener. Their 0.7 draft pages (`/tools/modbus-decoder/`,
+`/tools/iot-exposure-query-builder/`, `/tools/webhook-oob-listener/`) may still exist as unpublished drafts on staging.
 
 ## Page contract
 

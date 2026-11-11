@@ -1,0 +1,275 @@
+{
+  "_note": "Synthetic samples only (RFC 5737/3849 addresses, example.* domains, AWS documentation examples). mask: must not survive anonymization with all categories enabled. keep: must survive unchanged. structure: extra checks beyond line/CR/delimiter preservation.",
+  "nginx-access.log": {
+    "mask": [
+      "203.0.113.10",
+      "203.0.113.11",
+      "alice",
+      "bob%40example.com",
+      "tkn8f7e6d5c4b3a",
+      "www.example.com",
+      "2001:db8:10::25",
+      "shop.example.com",
+      "198.51.100.20",
+      "carol@example.org",
+      " carol ",
+      "bob%"
+    ],
+    "keep": [
+      "[11/Nov/2026:09:00:00 +0100]",
+      "\"GET /index.html HTTP/2.0\" 200 5120",
+      "Chrome/120.0.0.0",
+      "curl/8.5.0",
+      "page=2",
+      "python-requests/2.31.0",
+      "Version/17.1"
+    ]
+  },
+  "nginx-error.log": {
+    "mask": [
+      "198.51.100.24",
+      "shop.example.com",
+      "evil.example.net",
+      "203.0.113.30",
+      "api.example.com",
+      "10.0.4.12",
+      "2001:db8::77"
+    ],
+    "keep": [
+      "2026/11/11 09:00:03 [error] 2211#2211: *15",
+      "(111: Connection refused)",
+      "/var/cache/nginx/proxy_temp/1/00/0000000001",
+      "signal process started"
+    ]
+  },
+  "apache-access.log": {
+    "mask": [
+      "192.0.2.44",
+      "192.0.2.45",
+      "dave",
+      "intranet.example.com",
+      "letmein",
+      "erin"
+    ],
+    "keep": [
+      "[11/Nov/2026:09:01:00 +0100]",
+      "Firefox/120.0",
+      "Nikto/2.5.0",
+      "\"GET /wp-admin/ HTTP/1.1\" 302 -"
+    ]
+  },
+  "apache-error.log": {
+    "mask": [
+      "192.0.2.44",
+      "www.example.com",
+      "frank",
+      "grace",
+      "192.0.2.46"
+    ],
+    "keep": [
+      "[Wed Nov 11 09:01:03.123456 2026]",
+      "[pid 1234:tid 140213]",
+      "AH01630",
+      ":51234]",
+      "Password Mismatch",
+      "'/usr/sbin/apache2'"
+    ]
+  },
+  "auth.log": {
+    "mask": [
+      "web-01",
+      "deploy",
+      "203.0.113.12",
+      "oracle",
+      "198.51.100.77",
+      "198.51.100.78",
+      "heidi",
+      " root ",
+      "rhost= ",
+      "pam_unix(passwd:SECRET"
+    ],
+    "keep": [
+      "sshd[3120]",
+      "SHA256:uK3a9Jmrz9W5yHnV0kq2Lw8sU2m9vQ4kP1oQ8XyZt3M",
+      "New session 42 of user",
+      "Server listening on 0.0.0.0 port 22.",
+      "Server listening on :: port 22.",
+      "(uid=0)",
+      "COMMAND=/bin/systemctl reload nginx",
+      "rhost=",
+      "PWD=/home/",
+      "pam_unix(passwd:chauthtok)",
+      "new user: name=",
+      ", shell=/bin/bash",
+      "home=/home/"
+    ]
+  },
+  "windows-event.txt": {
+    "mask": [
+      "DC01.corp.example.com",
+      "DC01$",
+      "CORP",
+      "ivan",
+      "WS-0042",
+      "203.0.113.77"
+    ],
+    "keep": [
+      "Event ID:      4625",
+      "Logon ID:\t\t0x3E7",
+      "Status:\t\t\t0xC000006D",
+      "Source Port:\t\t51515",
+      "Unknown user name or bad password."
+    ]
+  },
+  "windows-event.xml": {
+    "mask": [
+      "DC01.corp.example.com",
+      "DC01$",
+      ">CORP<",
+      "judy",
+      "WS-0043",
+      "203.0.113.78"
+    ],
+    "keep": [
+      "<EventID>4624</EventID>",
+      "{54849625-5478-4994-A5BA-3E3B0328C30D}",
+      "<Data Name=\"LogonType\">10</Data>",
+      "<Data Name=\"IpPort\">3389</Data>",
+      "C:\\Windows\\System32\\svchost.exe"
+    ]
+  },
+  "kubernetes.log": {
+    "mask": [
+      "ip-10-0-1-23.ec2.internal",
+      "10.0.1.45",
+      "10.0.1.23",
+      "registry.example.io",
+      "kim",
+      "203.0.113.90",
+      "Sup3rS3cret",
+      "pg.prod.svc.cluster.local"
+    ],
+    "keep": [
+      "I1111 09:04:00.123456    1234 kubelet.go:2412]",
+      "prod/api-7d9f8b6c5-x2k9p",
+      "api:1.4.2",
+      "/v1/orders",
+      ":5432/orders"
+    ]
+  },
+  "docker.jsonl": {
+    "mask": [
+      "liam",
+      "203.0.113.91",
+      "eyJzdWIiOiJtaWEifQ",
+      "r3disPass",
+      "cache.internal.example.com"
+    ],
+    "keep": [
+      "\"stream\":\"stderr\"",
+      "2026-11-11T09:05:00.123456789Z",
+      "\\n\"",
+      ":6379/0"
+    ],
+    "structure": "json-lines"
+  },
+  "cloudtrail.json": {
+    "mask": [
+      "user/Alice",
+      "\"Alice\"",
+      "AKIAIOSFODNN7EXAMPLE",
+      "203.0.113.64",
+      "\"Bob\"",
+      "user/Bob",
+      "mallory@example.com",
+      "ASIAIOSFODNN7EXAMPLE",
+      "2001:db8:aa::5",
+      "acme-payroll-exports.s3.eu-central-1.amazonaws.com",
+      "AIDAJ45Q7YFFAREXAMPLE",
+      "AROAEXAMPLEROLEID1234"
+    ],
+    "keep": [
+      "\"eventSource\": \"iam.amazonaws.com\"",
+      "\"eventSource\": \"s3.amazonaws.com\"",
+      "\"clientProvidedHostHeader\": \"iam.amazonaws.com\"",
+      "\"eventName\": \"CreateUser\"",
+      "aws-cli/2.13.5 Python/3.11.4",
+      "8d3f1a2b-4c5d-4e6f-8a9b-0c1d2e3f4a5b",
+      "TLS_AES_128_GCM_SHA256",
+      "\"eventVersion\": \"1.09\""
+    ],
+    "structure": "json-document"
+  },
+  "app.jsonl": {
+    "mask": [
+      "nina",
+      "nina@example.com",
+      "203.0.113.100",
+      "tok_8f7e6d5c4b3a29181716",
+      "9a8b7c6d5e4f",
+      "oscar",
+      "P@ss w0rd!",
+      "db02.internal.example.com",
+      "svc_app",
+      "dbS3cret",
+      "4111111111111111",
+      "123-45-6789",
+      "00:1a:2b:3c:4d:5e"
+    ],
+    "keep": [
+      "\"id\":42",
+      "\"remember\":true",
+      "\"port\":5432",
+      "\"retry\":3",
+      "\"amount\":42.5",
+      "4bf92f3577b34da6a3ce929d0e0e4736",
+      "\"version\":\"1.2.3.4\"",
+      "\"user-agent\":\"Mozilla/5.0\""
+    ],
+    "structure": "json-lines"
+  },
+  "keyvalue.log": {
+    "mask": [
+      "peggy",
+      "203.0.113.110",
+      "db01.corp.example.com",
+      "a1b2c3d4e5",
+      "k_live_abc123def456",
+      "hunter2",
+      "quinn",
+      "Tr0ub4dor",
+      "partner.example.net",
+      "abcdef0123456789"
+    ],
+    "keep": [
+      "msg=\"login failed\"",
+      "duration_ms=12",
+      "attempts=3",
+      "secret_name=prod-db",
+      "token_count=512",
+      "max_tokens=4096",
+      "version=2.4.1.0",
+      "status=204"
+    ]
+  },
+  "users.csv": {
+    "mask": [
+      "rita",
+      "rita@example.com",
+      "203.0.113.120",
+      ",sam,",
+      "sam@example.org",
+      "2001:db8::120",
+      "198.51.100.121"
+    ],
+    "keep": [
+      "timestamp,user,email,src_ip,user_agent,status,full_name,amount",
+      "\"Mozilla/5.0 (X11; Linux x86_64)\"",
+      "curl/8.5.0",
+      ",401,",
+      "19.99",
+      ",-,-,"
+    ],
+    "structure": "csv"
+  }
+}

@@ -1,0 +1,4 @@
+[Wed Nov 11 09:01:03.123456 2026] [authz_core:error] [pid 1234:tid 140213] [client 192.0.2.44:51234] AH01630: client denied by server configuration: /var/www/html/admin, referer: https://www.example.com/
+[Wed Nov 11 09:01:04.223456 2026] [auth_basic:error] [pid 1235:tid 140214] [client 192.0.2.45:51235] AH01618: user frank not found: /private
+[Wed Nov 11 09:01:05.323456 2026] [auth_basic:error] [pid 1236:tid 140215] [client 192.0.2.46:51236] AH01617: user grace: authentication failure for "/private": Password Mismatch
+[Wed Nov 11 09:01:06.423456 2026] [core:notice] [pid 1:tid 1] AH00094: Command line: '/usr/sbin/apache2'

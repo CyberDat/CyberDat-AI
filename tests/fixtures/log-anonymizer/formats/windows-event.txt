@@ -1,0 +1,29 @@
+Log Name:      Security
+Source:        Microsoft-Windows-Security-Auditing
+Date:          11/11/2026 9:03:00 AM
+Event ID:      4625
+Computer:      DC01.corp.example.com
+Description:
+An account failed to log on.
+
+Subject:
+	Security ID:		S-1-5-18
+	Account Name:		DC01$
+	Account Domain:		CORP
+	Logon ID:		0x3E7
+
+Logon Type:			3
+
+Account For Which Logon Failed:
+	Security ID:		S-1-0-0
+	Account Name:		ivan
+	Account Domain:		CORP
+
+Failure Information:
+	Failure Reason:		Unknown user name or bad password.
+	Status:			0xC000006D
+
+Network Information:
+	Workstation Name:	WS-0042
+	Source Network Address:	203.0.113.77
+	Source Port:		51515

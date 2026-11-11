@@ -1,0 +1,4 @@
+timestamp,user,email,src_ip,user_agent,status,full_name,amount
+2026-11-11T09:09:00Z,rita,rita@example.com,203.0.113.120,"Mozilla/5.0 (X11; Linux x86_64)",200,"Smith, Rita",19.99
+2026-11-11T09:09:01Z,sam,sam@example.org,2001:db8::120,curl/8.5.0,401,"Jones, Sam",0
+2026-11-11T09:09:02Z,-,-,198.51.100.121,-,500,"",0

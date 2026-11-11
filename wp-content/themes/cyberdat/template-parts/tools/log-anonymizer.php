@@ -12,7 +12,7 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 	<p class="cd-la-callout cd-la-callout--error" data-la-unsupported hidden><?php esc_html_e( 'Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.', 'cyberdat' ); ?></p>
 
 	<div class="cd-la-app" data-la-app hidden>
-		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Your log is processed in this browser tab. It is not uploaded, stored or sent to analytics.', 'cyberdat' ); ?></p>
+		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Your log is processed in this browser tab. The text you enter is never sent anywhere — not to CyberDat, not to analytics — and it is not stored.', 'cyberdat' ); ?></p>
 		<p class="cd-la-callout cd-la-callout--warning" role="note"><strong><?php esc_html_e( 'Review before sharing.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Automated anonymization cannot guarantee that every secret or personal detail is removed. Check the result manually before you share it.', 'cyberdat' ); ?></p>
 
 		<section class="cd-la-panel" aria-labelledby="cd-la-step-input">
@@ -142,7 +142,8 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 		<section aria-labelledby="cd-la-privacy">
 			<h2 id="cd-la-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'No upload: the page has no server endpoint for your data, and its Content Security Policy blocks network connections from scripts on this page.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The text you enter is never sent anywhere. The page has no server endpoint for your data, and its Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its two static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Nothing is saved: input, results and settings are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'No third parties: the page loads no external scripts, fonts or analytics.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Browser extensions you have installed can read page content. Use a private window without extensions for highly sensitive logs.', 'cyberdat' ); ?></li>
@@ -151,7 +152,7 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 		<section aria-labelledby="cd-la-limits">
 			<h2 id="cd-la-limits"><?php esc_html_e( 'Limitations of automated analysis', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'Detection is pattern-based. Secrets without a recognisable format or key name (for example a bare random string), names of people, street addresses and phone numbers are not detected.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Detection is pattern-based. Secrets without a recognizable format or key name (for example a bare random string), names of people, street addresses and phone numbers are not detected.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Hostnames are found from URLs, known key names, syslog headers and a list of top-level domains. Single-word hostnames outside those contexts are missed.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Four-part numbers such as 1.2.3.4 are treated as IPv4 addresses unless a version keyword precedes them. Some identifiers may be masked unnecessarily.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Values split across lines, encoded (Base64, URL-encoding inside other values) or in binary formats are not reliably detected. US SSNs are only detected in the 123-45-6789 format.', 'cyberdat' ); ?></li>

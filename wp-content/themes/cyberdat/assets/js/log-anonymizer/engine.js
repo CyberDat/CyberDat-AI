@@ -22,8 +22,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.0';
-	const RULESET_VERSION = '2026-11-11.1';
+	const VERSION = '1.0.1';
+	const RULESET_VERSION = '2026-11-11.2';
 	const CHUNK_CHARS = 1 << 20;
 	const MAX_KEY_BLOCK = 65536;
 	const MAX_CUSTOM_RULES = 20;
@@ -153,9 +153,18 @@
 	// Two-label names ending in these are usually files or code ("app.py", "user.id").
 	const TWO_LABEL_EXCLUDED = new Set('py rs sh md pl pm ps mo ml tf gs ms sc cr tk bz cc so ai app zip mov id to do is it in at by no as am be my on or an if me us cs ts js gz sk dll exe log ini yml'.split(' '));
 
+	/**
+	 * Shared AWS service endpoints ("iam.amazonaws.com", "ec2.eu-central-1.amazonaws.com") identify
+	 * nobody and are needed to read CloudTrail. Bucket or account-specific names have more labels
+	 * ("my-bucket.s3.eu-central-1.amazonaws.com") and are still masked.
+	 */
+	function isPublicServiceEndpoint(host) {
+		return /^[a-z0-9-]{2,40}(?:\.[a-z]{2}(?:-gov)?-[a-z]{4,9}-\d)?\.amazonaws\.com$/.test(host.toLowerCase());
+	}
+
 	function hostValid(host) {
 		const h = host.replace(/\.$/, '');
-		if (h.length < 4 || h.length > 253) { return false; }
+		if (h.length < 4 || h.length > 253 || isPublicServiceEndpoint(h)) { return false; }
 		const labels = h.split('.');
 		if (labels.length < 2) { return false; }
 		const tld = labels[labels.length - 1].toLowerCase();
@@ -187,7 +196,8 @@
 		const k = key.toLowerCase().replace(/[^a-z0-9]/g, '');
 		if (!k || k.length > 64) { return null; }
 		if ((KEY_EXCLUDED_SUFFIX.test(k) || KEY_EXCLUDED_PREFIX.test(k) || /tokens$/.test(k)) && !/(?:sessionid|sessid)$/.test(k)) { return null; }
-		if ((SECRET_KEY.test(k) && !SECRET_KEY_NOT_VALUE.test(k)) || SECRET_KEY_EXACT.test(k)) { return 'secret'; }
+		const namesSecret = SECRET_KEY_NOT_VALUE.test(k) && !/(?:sessionid|sessid)$/.test(k);
+		if ((SECRET_KEY.test(k) && !namesSecret) || SECRET_KEY_EXACT.test(k)) { return 'secret'; }
 		if (USER_KEY.test(k)) { return 'username'; }
 		if (HOST_KEY.test(k)) { return 'host'; }
 		return null;
@@ -202,7 +212,7 @@
 		authHeader: /(?<![A-Za-z0-9_-])(?:Proxy-)?Authorization(["']?)[ \t]{0,8}[:=][ \t]{0,8}(["']?)/gi,
 		jwt: /(?<![A-Za-z0-9_-])eyJ[A-Za-z0-9_-]{5,4096}\.eyJ[A-Za-z0-9_-]{5,8192}\.[A-Za-z0-9_-]{0,4096}(?![A-Za-z0-9_-])/g,
 		apiKeys: [
-			['AWS access key ID', /(?<![A-Z0-9])(?:AKIA|ASIA|ABIA|ACCA|AGPA|AIDA|AROA|ANPA|ANVA|AIPA)[A-Z0-9]{16}(?![A-Z0-9])/g],
+			['AWS access key ID', /(?<![A-Z0-9])(?:AKIA|ASIA|ABIA|ACCA|AGPA|AIDA|AROA|ANPA|ANVA|AIPA)[A-Z0-9]{16,17}(?![A-Z0-9])/g],
 			['GitHub token', /(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9]{36,255}(?![A-Za-z0-9_])/g],
 			['GitHub fine-grained token', /(?<![A-Za-z0-9_])github_pat_[A-Za-z0-9_]{22,255}(?![A-Za-z0-9_])/g],
 			['GitLab token', /(?<![A-Za-z0-9_-])glpat-[A-Za-z0-9_-]{20,255}(?![A-Za-z0-9_-])/g],
@@ -227,6 +237,8 @@
 		winText: /(?<![A-Za-z])(Account Name|Account Domain|Workstation Name|Source Workstation|Computer Name|User Name|Logon Account|Client Name|Caller User Name|Target User Name|Target Server Name|Client Address)[ \t]{0,8}:[ \t]{1,16}([^\s]{1,256})/gd,
 		card: /(?<![\d.-])\d(?:[ -]?\d){12,18}(?![\d])(?!-\d)/g,
 		ssn: /(?<![\d-])(?!000|666|9\d\d)\d{3}-(?!00)\d{2}-(?!0000)\d{4}(?![\d-])/g,
+		// URL-encoded form in query strings: bob%40example.com.
+		emailEncoded: /(?<![A-Za-z0-9._%+-])[A-Za-z0-9._+-]{1,64}%40(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,8}[A-Za-z]{2,63}(?![A-Za-z0-9-])/gi,
 		email: /(?<![A-Za-z0-9._%+-])[A-Za-z0-9._%+-]{1,64}@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,8}[A-Za-z]{2,63}(?![A-Za-z0-9-])/g,
 		ipv6: /(?<![0-9A-Za-z_:.])(?=[0-9A-Fa-f:]{0,39}:[0-9A-Fa-f]{0,4}:)[0-9A-Fa-f:]{2,39}(?:(?<=:)(?:\d{1,3}\.){3}\d{1,3})?(?:%[0-9A-Za-z._-]{1,32})?(?![0-9A-Za-z_:]|\.\d)/g,
 		ipv4: new RegExp('(?<![\\d.])(?<!\\d\\.)' + IPV4_SOURCE + '(?!\\d|\\.\\d)', 'g'),
@@ -240,10 +252,24 @@
 			/\b(?:Accepted|Failed) (?:password|publickey|keyboard-interactive(?:\/pam)?|none|gssapi-with-mic|hostbased) for (?:invalid user )?([^\s()\[\];,'"]{1,64}) from\b/gd,
 			/\b[Ii]nvalid user ([^\s()\[\];,'"]{1,64}) from\b/gd,
 			/\bConnection (?:closed|reset) by (?:authenticating|invalid) user ([^\s()\[\];,'"]{1,64}) /gd,
-			/\bfor user ([^\s()\[\];,'"]{1,64})(?=\(|[ \t]+by\b|[ \t]*$|[ \t]*[;,.])/gmd
+			/\bfor user ([^\s()\[\];,'"]{1,64})(?=\(|[ \t]+by\b|[ \t]*$|[ \t]*[;,.])/gmd,
+			/\bDisconnected from (?:authenticating |invalid )?user ([^\s()\[\];,'"]{1,64}) /gd,
+			/\bby ([A-Za-z0-9._-]{1,64})\(uid=\d{1,10}\)/gd,
+			/\bof user ([A-Za-z0-9_][A-Za-z0-9._-]{0,63}?)\.?(?=[ \t]|$)/gmd,
+			/\bnew (?:user|group): name=([^,\s]{1,64})/gd,
+			/\bpassword changed for ([^\s()\[\];,'"]{1,64})/gd,
+			// Apache httpd auth modules: "user bob not found", "user bob: authentication failure".
+			/\buser ([^\s:()\[\];,'"]{1,64})(?=: authentication failure| not found)/gd,
+			// Common/combined access log remote_user field: 'IP ident USER [11/Nov/2026:…'.
+			/^\S{1,256} \S{1,64} ([^\s\[\]"]{1,128}) \[\d{1,2}\/[A-Z][a-z]{2}\/\d{4}:/gmd,
+			// Nested JSON objects such as "user":{"id":1,"name":"alice"}.
+			/"(?:user|username|account|actor|owner|principal|customer)"[ \t]*:[ \t]*\{[^{}\r\n]{0,400}?"(?:name|login|username|display_?name|full_?name)"[ \t]*:[ \t]*"((?:[^"\\\r\n]|\\.){1,128})"/gd,
+			// AWS IAM/STS ARNs: arn:aws:iam::123456789012:user/path/Alice, assumed-role/Role/session.
+			/\barn:aws[a-z-]{0,12}:(?:iam|sts)::\d{12}:(?:user|federated-user)\/(?:[^\s"',\/]{1,128}\/){0,8}([^\s"',\/]{1,128})/gd,
+			/\barn:aws[a-z-]{0,12}:sts::\d{12}:assumed-role\/[^\s"',\/]{1,128}\/([^\s"',]{1,128})/gd
 		],
 		sudoUser: /\bsudo(?:\[\d{1,10}\])?:[ \t]{1,16}([A-Za-z0-9._-]{1,64})[ \t]{1,4}:/gd,
-		homePath: /(?:\/home\/|\/Users\/|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|\/)Users(?:\\\\|\\|\/))([^\s\/\\:*?"'<>|]{1,64})/gid,
+		homePath: /(?:\/home\/|\/Users\/|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|\/)Users(?:\\\\|\\|\/))([^\s\/\\:*?"'<>|,;]{1,64})/gid,
 		domainUser: /(?<![A-Za-z0-9_\\\/:.-])([A-Z][A-Z0-9-]{1,14})\\{1,2}([A-Za-z0-9][A-Za-z0-9._-]{0,63})(?![A-Za-z0-9_\\])/gd,
 		syslogHost: /^(?:<\d{1,3}>\d{0,2} ?)?(?:[A-Z][a-z]{2} [ 0-3]\d \d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:?\d{2})?) ([A-Za-z0-9][A-Za-z0-9._-]{0,253}) (?=[A-Za-z0-9_.\/-]{1,64}(?:\[\d{1,10}\])?(?::| - ))/gmd,
 		fqdn: /(?<![A-Za-z0-9_@.-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,126}[A-Za-z]{2,63}\.?(?![A-Za-z0-9_-]|\.[A-Za-z0-9])/g
@@ -396,7 +422,7 @@
 
 	function emitHostValue(emit, start, value) {
 		const v = value.replace(/\.$/, '');
-		if (!v || isPlaceholder(v) || v.toLowerCase() === 'localhost' || looksLikeAddress(v)) { return; }
+		if (!v || isPlaceholder(v) || v.toLowerCase() === 'localhost' || looksLikeAddress(v) || isPublicServiceEndpoint(v)) { return; }
 		if (!/^[A-Za-z0-9](?:[A-Za-z0-9._-]{0,252})$/.test(v)) { return; }
 		emit(start, start + v.length, 'host', 'HOST', v, v.toLowerCase());
 	}
@@ -416,7 +442,7 @@
 			}
 			if (host && host[0] !== '[') {
 				const h = hostToken(host);
-				if (!isIPv4(h) && h.toLowerCase() !== 'localhost' && /[A-Za-z]/.test(h) && /^[A-Za-z0-9._-]+$/.test(h)) {
+				if (!isIPv4(h) && h.toLowerCase() !== 'localhost' && !isPublicServiceEndpoint(h) && /[A-Za-z]/.test(h) && /^[A-Za-z0-9._-]+$/.test(h)) {
 					emit(idx[4][0], idx[4][0] + h.length, 'host', 'HOST', h, h.toLowerCase());
 				}
 			}
@@ -429,10 +455,15 @@
 		let m;
 		while ((m = re.exec(text)) !== null) {
 			const isSet = m[1].toLowerCase() === 'set-cookie';
-			const start = m.index + m[0].length;
+			let start = m.index + m[0].length;
 			const lineEnd = lineEndFrom(text, start);
 			const before = m.index > 0 ? text[m.index - 1] : '';
-			const quote = m[2] || (before === '"' || before === "'" ? before : '');
+			let quote = m[2] || (before === '"' || before === "'" ? before : '');
+			// JSON/YAML form: "cookie": "sid=…; theme=…" — the value has its own opening quote.
+			if (text[start] === '"' || text[start] === "'") {
+				quote = text[start];
+				start++;
+			}
 			let end = lineEnd;
 			if (quote) {
 				const q = text.indexOf(quote, start);
@@ -460,6 +491,8 @@
 		if (!trimmed || isPlaceholder(trimmed)) { return; }
 		const category = classifyKey(key);
 		if (!category) { return; }
+		// sudo/env "PWD=/home/alice" is the working directory, not a password.
+		if (category === 'secret' && /^pwd$/i.test(key.replace(/[^A-Za-z]/g, '')) && /^(?:\/|~|[A-Za-z]:[\\\/])/.test(trimmed)) { return; }
 		if (category === 'host') {
 			emitHostValue(emit, start, trimmed);
 			return;
@@ -482,7 +515,15 @@
 			const key = m[2];
 			const group = m[3] != null ? 3 : (m[4] != null ? 4 : 5);
 			if (m[group] == null || m[group] === '') { continue; }
-			emitClassified(emit, key, m[group], m.indices[group][0]);
+			const valueStart = m.indices[group][0];
+			const separator = text.slice(m.indices[2][1], valueStart);
+			// "ruser= rhost=x" / "new user: name=x": an empty value followed by the next key=value pair.
+			const nextPair = group === 5 && /[ \t]$/.test(separator) && /^[A-Za-z_][A-Za-z0-9_.-]{0,63}=(?!=|$)/.test(m[group]);
+			// PAM "pam_unix(passwd:chauthtok)" is service:module, not key: value.
+			const pamPair = /:/.test(separator) && m.index > 0 && text[m.index - 1] === '(';
+			if (!nextPair && !pamPair) {
+				emitClassified(emit, key, m[group], valueStart);
+			}
 			// Continue scanning inside the value so nested pairs are still found.
 			re.lastIndex = m.indices[group][0];
 		}
@@ -630,6 +671,34 @@
 		};
 	}
 
+	/** Split one CSV/TSV line; returns [{ value, start }] with offsets of the unquoted value, or null if malformed. */
+	function splitDelimited(line, delimiter) {
+		const fields = [];
+		let i = 0;
+		while (i <= line.length) {
+			if (line[i] === '"') {
+				let j = i + 1;
+				while (j < line.length) {
+					if (line[j] === '"' && line[j + 1] === '"') { j += 2; continue; }
+					if (line[j] === '"') { break; }
+					j++;
+				}
+				if (j >= line.length) { return null; }
+				fields.push({ value: line.slice(i + 1, j), start: i + 1 });
+				i = j + 1;
+				if (i < line.length && line[i] !== delimiter) { return null; }
+				i++;
+			} else {
+				let j = line.indexOf(delimiter, i);
+				if (j === -1) { j = line.length; }
+				fields.push({ value: line.slice(i, j), start: i });
+				i = j + 1;
+			}
+			if (fields.length > 512) { return null; }
+		}
+		return fields;
+	}
+
 	function countChar(text, code) {
 		let n = 0;
 		for (let i = 0; i < text.length; i++) { if (text.charCodeAt(i) === code) { n++; } }
@@ -652,6 +721,48 @@
 		for (const id of CATEGORY_IDS) { stats[id] = { replacements: 0, unique: 0 }; }
 		const warnings = { multilineCustom: 0 };
 
+		// CSV/TSV with a header row: classify columns by header name exactly like key=value keys.
+		// Decided once from the first two lines of the input; header line itself is never masked.
+		let csv = null;
+		let csvDecided = false;
+		let csvHeaderPending = false;
+		function decideCsv(text) {
+			csvDecided = true;
+			const lines = text.split('\n', 3).map(l => l.replace(/\r$/, ''));
+			if (lines.length < 2) { return; }
+			for (const d of [',', '\t', ';']) {
+				const head = splitDelimited(lines[0], d);
+				if (!head || head.length < 2 || !head.every(h => /^[A-Za-z_][A-Za-z0-9_ .-]{0,63}$/.test(h.value))) { continue; }
+				const second = splitDelimited(lines[1], d);
+				if (!second || second.length !== head.length) { continue; }
+				const columns = head.map(h => h.value);
+				if (columns.some(name => classifyKey(name))) {
+					csv = { delimiter: d, columns };
+					csvHeaderPending = true;
+				}
+				return;
+			}
+		}
+		function detectCsv(text, emit) {
+			if (!csvDecided) { decideCsv(text); }
+			if (!csv) { return; }
+			let pos = 0;
+			while (pos < text.length) {
+				let end = text.indexOf('\n', pos);
+				if (end === -1) { end = text.length; }
+				const line = text.slice(pos, end).replace(/\r$/, '');
+				if (csvHeaderPending) {
+					csvHeaderPending = false;
+				} else {
+					const fields = splitDelimited(line, csv.delimiter);
+					if (fields && fields.length === csv.columns.length) {
+						fields.forEach((f, i) => emitClassified(emit, csv.columns[i], f.value, pos + f.start));
+					}
+				}
+				pos = end + 1;
+			}
+		}
+
 		const detectors = [
 			['custom', (t, e) => detectCustom(t, e, compiled.rules, warnings)],
 			['privateKey', detectPrivateKeys],
@@ -662,9 +773,13 @@
 			['*', detectUrls],
 			['secret', detectCookies],
 			['*', detectKeyValues],
+			['*', detectCsv],
 			['card', (t, e) => detectSimple(RE.card, t, e, 'card', 'CARD', v => cardValid(v), v => v.replace(/\D/g, ''))],
 			['ssn', (t, e) => detectSimple(RE.ssn, t, e, 'ssn', 'SSN')],
-			['email', (t, e) => detectSimple(RE.email, t, e, 'email', 'EMAIL', null, v => v.toLowerCase())],
+			['email', (t, e) => {
+				detectSimple(RE.emailEncoded, t, e, 'email', 'EMAIL', null, v => v.replace(/%40/i, '@').toLowerCase());
+				detectSimple(RE.email, t, e, 'email', 'EMAIL', null, v => v.toLowerCase());
+			}],
 			['ipv6', (t, e) => detectSimple(RE.ipv6, t, e, 'ipv6', 'IPV6', v => isIPv6(v), v => v.toLowerCase())],
 			['ipv4', (t, e) => detectIPv4(t, e, options)],
 			['mac', (t, e) => {

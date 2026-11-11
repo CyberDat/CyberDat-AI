@@ -268,6 +268,52 @@ check('structure: chunk boundaries do not split private key blocks', () => {
 	assert.ok(!small.output.includes('QUJDREVG'));
 });
 
+// ---------------------------------------------------------------- real-format corpus
+
+const FORMATS = path.join(__dirname, 'fixtures/log-anonymizer/formats');
+const formatSpec = JSON.parse(fs.readFileSync(path.join(FORMATS, 'expected.json'), 'utf8'));
+// Shape of parsed JSON: keys and value types, values themselves ignored.
+function shape(v) {
+	if (Array.isArray(v)) { return v.map(shape); }
+	if (v && typeof v === 'object') { return Object.fromEntries(Object.keys(v).map(k => [k, shape(v[k])])); }
+	return typeof v;
+}
+function csvFields(line) {
+	let n = 1, q = false;
+	for (let i = 0; i < line.length; i++) {
+		if (line[i] === '"') { q = !q; } else if (line[i] === ',' && !q) { n++; }
+	}
+	return n;
+}
+for (const [file, spec] of Object.entries(formatSpec)) {
+	if (file.startsWith('_')) { continue; }
+	check(`format ${file}: ${spec.mask.length} sensitive values masked, ${spec.keep.length} context values kept, structure preserved`, () => {
+		const input = fs.readFileSync(path.join(FORMATS, file), 'utf8');
+		const output = run(input).output;
+		for (const m of spec.mask) { assert.ok(!output.includes(m), `${file} leaked "${m}"\n${output}`); }
+		for (const k of spec.keep) { assert.ok(output.includes(k), `${file} lost "${k}"\n${output}`); }
+		assert.equal(output.split('\n').length, input.split('\n').length, 'LF count');
+		assert.equal(output.split('\r').length, input.split('\r').length, 'CR count');
+		assert.equal(skeleton(output), skeleton(input), 'delimiter skeleton');
+		if (spec.structure === 'json-lines') {
+			input.split('\n').forEach((line, i) => { if (line.trim()) { assert.deepEqual(shape(JSON.parse(output.split('\n')[i])), shape(JSON.parse(line)), `JSON shape line ${i + 1}`); } });
+		}
+		if (spec.structure === 'json-document') {
+			assert.deepEqual(shape(JSON.parse(output)), shape(JSON.parse(input)), 'JSON document shape');
+		}
+		if (spec.structure === 'csv') {
+			input.split('\n').forEach((line, i) => assert.equal(csvFields(output.split('\n')[i]), csvFields(line), `CSV fields line ${i + 1}`));
+		}
+	});
+}
+
+check('format corpus: CSV header row is never masked; columns are only used with a consistent header', () => {
+	const csv = 'user,host,status\nalice,web01,ok\n';
+	assert.equal(out(csv), 'user,host,status\nUSER_1,HOST_1,ok\n');
+	const notCsv = 'user,host,status\nfree text line without the same fields\n';
+	assert.equal(out(notCsv), notCsv);
+});
+
 // ---------------------------------------------------------------- labels
 
 check('stable labels: same value → same label, different values → different labels, numbering in order of appearance', () => {

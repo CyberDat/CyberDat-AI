@@ -245,11 +245,11 @@ async function launch() {
 		await shot('02-desktop-large-file');
 		await click('[data-la-clear]');
 
-		// ---- zero network requests across every interaction
+		// ---- input text is never sent: no HTTP request after page load
 		phase = 'final';
 		const during = httpAfter();
 		assert.deepEqual(during.filter(r => r.phase !== 'csp-probe'), [], 'HTTP requests after page load');
-		pass('zero network requests while processing, toggling, copying, exporting and clearing', 'only blob: downloads; ' + requests.filter(r => r.phase !== 'load').length + ' non-HTTP or probe entries');
+		pass('input text is never sent: no HTTP requests while processing, toggling, copying, exporting and clearing', 'only blob: downloads; ' + requests.filter(r => r.phase !== 'load').length + ' non-HTTP or probe entries');
 		assert.deepEqual(consoleErrors.filter(e => e.phase !== 'csp-probe'), [], 'console errors during interaction');
 		pass('no console errors during interaction');
 

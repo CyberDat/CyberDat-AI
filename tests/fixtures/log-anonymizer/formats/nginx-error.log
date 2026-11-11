@@ -1,0 +1,4 @@
+2026/11/11 09:00:03 [error] 2211#2211: *15 open() "/var/www/html/wp-login.php" failed (2: No such file or directory), client: 198.51.100.24, server: shop.example.com, request: "GET /wp-login.php HTTP/1.1", host: "shop.example.com", referrer: "https://evil.example.net/"
+2026/11/11 09:00:04 [error] 2211#2211: *16 connect() failed (111: Connection refused) while connecting to upstream, client: 203.0.113.30, server: api.example.com, request: "GET /v2/orders HTTP/1.1", upstream: "http://10.0.4.12:8080/v2/orders", host: "api.example.com"
+2026/11/11 09:00:05 [warn] 2211#2211: *17 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 2001:db8::77, server: api.example.com
+2026/11/11 09:00:06 [notice] 1#1: signal process started
