@@ -1,0 +1,23 @@
+PASS: page load uses first-party resources only — 12 requests, all http://127.0.0.1:8090, worker and engine loaded before any input
+PASS: CSP connect-src blocks scripts on the page from making requests — blocked: Failed to fetch
+PASS: no console errors or CSP violations during page load
+PASS: network APIs are disabled inside the worker — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS: sample log anonymized in the browser — 35 highlighted replacements, 11 lines in = out, versions/IDs/timestamps kept, focus moved to results
+PASS: generic labels, keep-private IPv4 and a custom rule applied
+PASS: invalid custom regex: inline error, aria-invalid and focus on the field — This is not a valid regular expression: /(/g: Unterminated group
+PASS: HTML/script in input is rendered as text only (no elements, no dialogs)
+PASS: copy, result download and acknowledged map download work without requests — Result copied to the clipboard (1.0 KB).
+PASS: nothing written to localStorage, sessionStorage, IndexedDB, cookies or the URL — {"ls":0,"ss":0,"cookie":"","href":"http://127.0.0.1:8090/tools/log-anonymizer/"}
+PASS: 30 MB file processed in the worker without freezing the page — 30.0 MB in 2.3 s; longest main-thread gap 96 ms; progress updates seen 21; 323,454 lines processed in 2
+PASS: zero network requests while processing, toggling, copying, exporting and clearing — only blob: downloads; 0 non-HTTP or probe entries
+PASS: no console errors during interaction
+PASS: cancel restarts the worker; only its static same-origin scripts are re-requested, no input data — 2 asset requests
+PASS: keyboard: Tab reaches textarea, file picker, buttons, all categories, label mode and Anonymize with a visible focus ring — 23 tab stops
+PASS: keyboard: Enter on "Load sample log", Ctrl+Enter in the text box runs the tool
+PASS: every visible control has an accessible name; text contrast ≥ 4.5:1 (WCAG AA) — min 7.59:1 over 20 styles
+PASS: 360px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 360 ≤ 360
+PASS: 390px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 390 ≤ 390
+PASS: 768px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 768 ≤ 768
+PASS: without JavaScript: explanatory notice, How it works / Privacy / Limitations still visible, no dead controls
+
+21 browser checks passed. Evidence: C:\Users\CyberDat\CyberDat-tools-log-anonymizer-20261111T202205Z

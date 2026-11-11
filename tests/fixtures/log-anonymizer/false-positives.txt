@@ -1,0 +1,67 @@
+version 1.2.3.4
+v1.2.3.4
+Version: 10.0.19045.3803
+release=2.4.1.0
+build 1.0.0.1234
+firmware 7.1.2.3
+app_version=1.2.3.4
+{"version":"4.3.2.1","schema":"v2"}
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Safari/605.1.15
+10:20:30:40
+12:30:45.123
+elapsed=00:01:02:03 duration 1:02:03:04 ratio 1:2:3
+2026-11-11T10:20:30.123456Z
+date 2026-11-11 time 23:59:59 tz +01:00
+sha1 da39a3ee5e6b4b0d3255bfef95601890afd80709
+md5 d41d8cd98f00b204e9800998ecf8427e
+sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+sha512 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+image sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+git commit c3f9a5e7172f83006f3b078705a9d89e709619f8
+uuid 550e8400-e29b-41d4-a716-446655440000
+request_id=7c9e6679-7425-40de-944b-e07fc1f90ae7
+trace_id=4bf92f3577b34da6a3ce929d0e0e4736 span_id=00f067aa0ba902b7
+order_id=1234567890123456 invoice=INV-2026-000123
+unix=1731340800 ms=1731340800123 us=1731340800123456
+pid=12345 tid=67890 port=8443 uid=1000 gid=1000
+status=200 bytes=5120 latency_ms=12.5 cpu=93.5%
+level=INFO logger=com.example.billing.InvoiceService
+java.lang.NullPointerException at com.example.App.main(App.java:42)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+System.out.println("done"); Thread.run(); obj.Email.send()
+  File "/usr/lib/python3.12/site-packages/app.py", line 10, in <module>
+    for user in users:
+std::vector<int> v; foo::bar(); Foo::Bar::baz
+user.id user.name item.id config.page event.link
+token_count=512 max_tokens=4096 token_type=bearer token_expires_in=3600
+password_policy=strict password_min_length=12 password_required=true password=
+secret_name=prod-db-credentials secret_type=aws auth=ok key=homepage
+Invalid user input rejected by validator
+Basic plan selected; Bearer of bad news; The Authorization header was missing
+cookie consent accepted
+chmod 0755 umask 022 exit code 0x80070005
+GET /api/v1.2/items?page=2&limit=50 HTTP/1.1
+HTTP/1.1 200 OK
+Server: nginx/1.25.3
+Content-Type: application/json; charset=utf-8
+listen 0.0.0.0:80; netmask 255.255.255.0; mask 255.255.0.0 bcast 255.255.255.255
+npm WARN deprecated request@2.88.2
+pip install requests==2.31.0 numpy==1.26.4
+image: nginx:1.25.3-alpine
+Started nginx.service. Started session-42.scope.
+kernel: [12345.678901] eth0: link up 1000Mbps
+coordinates 52.5200,13.4050 temp=23.5C humidity=40%
+amount 1,234,567.89 EUR
+isbn 978-3-16-148410-0
+CVE-2024-3094 MITRE T1059.001 CWE-79
+/var/log/nginx/access.log /etc/nginx/nginx.conf C:\Windows\System32\drivers\etc\hosts
+HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+NT AUTHORITY\SYSTEM BUILTIN\Administrators
+C:\Program Files\Common Files\microsoft shared
+C:\Users\Public\Documents
+readme.md main.rs build.sh lib.so Safari.app archive.zip model.ai logo.ps
+e.g. i.e. etc. U.S. Node.js Vue.js
+machine: x86_64 node: v18.20.1
+phone 555-123-4567 ext 12
+000-12-3456 666-12-3456 900-12-3456
