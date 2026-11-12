@@ -421,7 +421,7 @@
 			high: ['High-risk injection patterns found.', 'Do not pass this text to an AI assistant or agent without review.'],
 			medium: ['Suspicious patterns found.', 'Review the findings before passing this text to an AI assistant or agent.'],
 			low: ['Only low-severity signals found.', 'They are often harmless (quoted phrases, documentation), but check them.'],
-			none: ['No known injection patterns found.', 'This does not mean the text is safe: reworded or novel attacks are not detected.']
+			none: ['No known patterns matched.', 'This does not mean the text is safe: reworded or novel attacks are not detected.']
 		};
 		const [head, tail] = levels[msg.level];
 		el.verdict.className = 'cd-pi-verdict cd-pi-verdict--' + msg.level;

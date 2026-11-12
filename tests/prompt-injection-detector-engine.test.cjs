@@ -258,6 +258,11 @@ check('static contract: no network, storage or cookie APIs are used (the worker 
 	assert.ok(!/\bfetch\s*\(|new XMLHttpRequest|new WebSocket|localStorage|sessionStorage|indexedDB/.test(worker));
 	assert.match(worker, /for \(const name of \['fetch', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'importScripts', 'WebTransport'\]\)/);
 });
+check('verdict without findings says "No known patterns matched" and never claims the text is safe or injection-free', () => {
+	const app = fs.readFileSync(path.join(DIR, 'app.js'), 'utf8');
+	assert.ok(app.includes("none: ['No known patterns matched.', 'This does not mean the text is safe"));
+	assert.ok(!/no (?:prompt )?injection (?:was )?found|(?<!does not mean the )text is safe\.|is safe to use|no threats? found/i.test(app));
+});
 check('the page example is synthetic: only example.com hosts and no real-looking secrets', () => {
 	const app = fs.readFileSync(path.join(DIR, 'app.js'), 'utf8');
 	const sample = app.slice(app.indexOf('const SAMPLE'), app.indexOf("].join('\\n')"));
