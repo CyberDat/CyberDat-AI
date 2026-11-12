@@ -14,6 +14,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { expand } = require('./prompt-injection-detector-corpus.test.cjs');
+const { fill } = require('./lib/synthetic-secrets.cjs');
 
 const URL_UNDER_TEST = process.argv[2] || 'http://127.0.0.1:8090/tools/prompt-injection-detector/';
 const ORIGIN = new URL(URL_UNDER_TEST).origin;
@@ -235,8 +236,8 @@ async function launch() {
 		// ---- large input via file (above the 10 MB warning threshold)
 		phase = 'large';
 		const big = path.join(profile, 'large.txt');
-		const corpus = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/benign.json'), 'utf8')).samples.map(x => x.text).join('\n\n') + '\n' +
-			JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/attacks.json'), 'utf8')).cases.map(c => expand(c.text)).join('\n') + '\n';
+		const corpus = JSON.parse(fill(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/benign.json'), 'utf8'))).samples.map(x => x.text).join('\n\n') + '\n' +
+			JSON.parse(fill(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/attacks.json'), 'utf8'))).cases.map(c => expand(c.text)).join('\n') + '\n';
 		const fd = fs.openSync(big, 'w');
 		let size = 0;
 		while (size < 12 * 1024 * 1024) { fs.writeSync(fd, corpus); size += Buffer.byteLength(corpus); }

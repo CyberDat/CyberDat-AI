@@ -70,6 +70,8 @@ const SYNTH = Object.freeze({
 	X_API_KEY_2: ['0f1', 'e2d3c4b5', 'a'].join(''),
 	// PEM armour opener; key bodies in the tests are short fake base64
 	PEM_BEGIN: ['----', '-BEGIN'].join(''),
+	// JWT, header {"alg":"HS256","typ":"JWT"}, payload {"sub":"1234"}, signature synthetic
+	PI_BENIGN_JWT: ['eyJ', 'hbGciOiJ', 'IUzI1NiI', 'sInR5cCI', '6IkpXVCJ', '9.eyJzdW', 'IiOiIxMj', 'M0In0.c2', 'lnbmF0dX', 'Jl'].join(''),
 });
 
 function fill(text) {

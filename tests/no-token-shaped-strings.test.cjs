@@ -14,7 +14,7 @@ const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..');
 const RULES = [
-	['aws-access-key-id', /(?<![A-Z0-9])(?:AKIA|ASIA|ABIA|ACCA|A3T[A-Z0-9])[A-Z0-9]{16}(?![A-Z0-9])/],
+	['aws-access-key-id', /(?<![A-Z0-9])(?:AKIA|ASIA|ABIA|ACCA|A3T[A-Z0-9])[A-Z0-9]{16}/],
 	['aws-unique-id', /(?<![A-Z0-9])(?:AIDA|AROA|AGPA|ANPA|ANVA|AIPA|APKA)[A-Z0-9]{16,}(?![A-Z0-9])/],
 	['aws-secret-example', /[A-Za-z0-9/+]{20,40}EXAMPLEKEY/],
 	['google-api-key', /AIza[0-9A-Za-z_-]{35}/],
