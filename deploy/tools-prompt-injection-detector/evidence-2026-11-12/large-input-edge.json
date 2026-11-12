@@ -1,0 +1,7 @@
+{
+  "bytes": 12589962,
+  "elapsedMs": 6263,
+  "longestMainThreadGapMs": 209,
+  "progressUpdates": 60,
+  "summary": "100,294 findings (52,424 high, 37,874 medium, 9,996 low) in 223,244 lines, 11,678,660 characters, analyzed in 6.0 s."
+}

@@ -1,0 +1,60 @@
+{
+  "browser": "webkit",
+  "version": "18.2",
+  "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+  "results": [
+    {
+      "label": "page load: first-party resources only",
+      "detail": "11 requests (worker script fetches are not always reported by this browser driver)"
+    },
+    {
+      "label": "same-origin Web Worker started before any input; its network APIs are disabled",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "label": "CSP connect-src blocks fetch from the page",
+      "detail": "blocked: Load failed"
+    },
+    {
+      "label": "no console errors during load"
+    },
+    {
+      "label": "example analyzed: all seven rule groups reported, highlights and before/after diff rendered",
+      "detail": "18 findings, 9 highlights, 8 removals"
+    },
+    {
+      "label": "HTML and script in the input (also Base64-encoded) are shown as text only, no dialogs"
+    },
+    {
+      "label": "sanitized copy and JSON report downloads are generated locally"
+    },
+    {
+      "label": "nothing written to storage, cookies or the URL"
+    },
+    {
+      "label": "10.5 MB file: large-input warning shown, analyzed without network requests",
+      "detail": "10.5 MB in 16.8 s (88,022 findings (46,045 high, 33,229 medium, 8,748 low))"
+    },
+    {
+      "label": "Cancel re-requests only the two static worker scripts",
+      "detail": "1 requests"
+    },
+    {
+      "label": "input text is never sent: no HTTP requests during analysis, downloads and clearing; no console errors"
+    },
+    {
+      "label": "360px: no horizontal overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360"
+    },
+    {
+      "label": "keyboard: options reachable with Tab; Ctrl+Enter runs the analysis",
+      "detail": "INPUT:file > BUTTON:button > BUTTON:button > INPUT:checkbox > INPUT:checkbox > INPUT:radio > RUN"
+    }
+  ],
+  "consoleErrors": [
+    {
+      "phase": "probe",
+      "text": "Refused to connect to http://127.0.0.1:8090/tools/prompt-injection-detector/ because it does not appear in the connect-src directive of the Content Security Policy."
+    }
+  ]
+}

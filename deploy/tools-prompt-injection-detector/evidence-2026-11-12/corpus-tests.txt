@@ -1,0 +1,58 @@
+
+Detection by group (own group reported; any severity / medium+):
+  role          11/12 = 91.7%   medium+ 10/12 = 83.3%   paraphrases 0/1   missed: role-11
+  override      13/15 = 86.7%   medium+ 13/15 = 86.7%   paraphrases 0/2   missed: override-14, override-15
+  exfiltration  11/12 = 91.7%   medium+ 11/12 = 91.7%   paraphrases 0/1   missed: exfil-12
+  hidden        11/12 = 91.7%   medium+ 10/12 = 83.3%   paraphrases 0/1   missed: hidden-12
+  encoded       11/12 = 91.7%   medium+ 11/12 = 91.7%   paraphrases 1/2   missed: encoded-12
+  obfuscation   10/12 = 83.3%   medium+ 10/12 = 83.3%   paraphrases 0/2   missed: obfuscation-11, obfuscation-12
+  extraction    10/12 = 83.3%   medium+ 10/12 = 83.3%   paraphrases 0/2   missed: extraction-11, extraction-12
+  TOTAL         77/87 = 88.5%   medium+ 75/87 = 86.2%
+
+False positives on 65 benign samples: any severity 10 (15.4%), medium+ 0 (0%)
+  docs           2/12 any, 0/12 medium+
+  email          0/8 any, 0/8 medium+
+  code           1/12 any, 0/12 medium+
+  ai-discussion  3/10 any, 0/10 medium+
+  multilingual   0/12 any, 0/12 medium+
+  other          1/8 any, 0/8 medium+
+  rag            3/3 any, 0/3 medium+
+  flagged docs-06: PI-EXF-009:low
+  flagged docs-07: PI-EXT-003:low
+  flagged code-01: PI-ROLE-006:low
+  flagged ai-01: PI-OVR-001:low
+  flagged ai-03: PI-EXT-001:low, PI-OVR-004:low
+  flagged ai-05: PI-ROLE-002:low, PI-ROLE-002:low
+  flagged other-05: PI-OVR-002:low
+  flagged rag:benign-article.html: PI-HID-007:low
+  flagged rag:benign-readme.md: PI-ROLE-006:low
+  flagged rag:benign-paper-pdf.txt: PI-OVR-001:low
+
+RAG documents:
+  benign-article.html        expected [] found [hidden]
+  benign-readme.md           expected [] found [role]
+  benign-paper-pdf.txt       expected [] found [override]
+  attack-product-page.html   expected [hidden,override] found [hidden,override]
+  attack-wiki.md             expected [hidden,exfiltration] found [hidden,exfiltration]
+  attack-resume-pdf.txt      expected [override] found [override]
+
+Held-out set (written after tuning, not tuned on):
+  role          4/4
+  override      4/6
+  exfiltration  2/4
+  hidden        4/4
+  encoded       4/4
+  obfuscation   4/4
+  extraction    4/4
+  TOTAL detected 26/30 = 86.7%; missed: h-ovr-5; h-ovr-6; h-exf-1; h-exf-4
+  benign 25: any severity 2 (8%), medium+ 2 (8%)
+  flagged hb-4: PI-EXF-005:medium
+  flagged hb-25: PI-ROLE-007:medium
+
+Metrics written to <evidence>//metrics.json
+PASS: every attack case belongs to a known group and every group has at least 10 cases
+PASS: non-paraphrase attacks: every group detects at least 90% (regression guard)
+PASS: false positives at medium+ on the benign corpus stay at or below 10%
+PASS: RAG attack documents: every expected group is found; benign RAG documents have no medium+ finding
+
+4 corpus checks passed.

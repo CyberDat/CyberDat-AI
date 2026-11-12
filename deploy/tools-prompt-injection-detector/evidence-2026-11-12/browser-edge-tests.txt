@@ -1,0 +1,23 @@
+PASS: page load uses first-party resources only — 13 requests, all http://127.0.0.1:8090; worker and engine loaded before any input
+PASS: CSP connect-src blocks scripts on the page from making requests — blocked: Failed to fetch
+PASS: no console errors or CSP violations during page load
+PASS: network APIs are disabled inside the worker — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS: example page analyzed in the browser — 18 findings in 7/7 groups, 9 highlights, 8 removals in the diff, 1 decoded fragment(s); focus moved to results
+PASS: "Show in text" moves focus to the highlighted passage — mark #0
+PASS: sanitizer options apply: normalization only, then no changes at all; changing options marks the result stale
+PASS: HTML, scripts and javascript: links in the input (also inside Base64) are shown as text only: no elements, no dialogs
+PASS: copy, sanitized download and JSON report work without requests — Sanitized copy copied to the clipboard (835 B). It is still untrusted text.
+PASS: nothing written to localStorage, sessionStorage, IndexedDB, cookies or the URL — {"ls":0,"ss":0,"cookie":"","href":"http://127.0.0.1:8090/tools/prompt-injection-detector/"}
+PASS: 12 MB file: large-input warning shown, analyzed in the worker without freezing the page — 12.0 MB in 6.3 s; longest main-thread gap 209 ms (rendering <= 500 findings); progress updates seen 60; 100,294 findings (52,424 high, 37,874 medium, 9,996 low)
+PASS: input text is never sent: no HTTP requests while analyzing, changing options, copying, exporting and clearing
+PASS: no console errors during interaction
+PASS: Cancel restarts the worker; only its two static same-origin scripts are re-requested, no input data — worker.js, engine.js
+PASS: keyboard: Tab reaches the text box, file picker, buttons, both options, the replacement choice and "Analyze text" with a visible focus ring — 8 tab stops
+PASS: keyboard: Enter on "Load example", Ctrl+Enter in the text box runs the analysis
+PASS: every visible control has an accessible name; text contrast ≥ 4.5:1 (WCAG AA) — min 7.59:1 over 32 styles incl. severity badges, marks and diff
+PASS: 360px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 360 ≤ 360
+PASS: 390px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 390 ≤ 390
+PASS: 768px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 768 ≤ 768
+PASS: without JavaScript: explanatory notice; How it works / Privacy / Limitations still visible; no dead controls
+
+21 browser checks passed. Evidence: <evidence>/edge

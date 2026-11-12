@@ -1,0 +1,39 @@
+PASS: renderer registered for /tools/log-anonymizer/ with the Tool template
+PASS: no renderer outside the /tools/ hub
+PASS: no renderer without the Tool template
+PASS: no renderer for a different tool
+PASS: no renderer for a post with the same slug
+PASS: no renderer for a missing post
+PASS: renderer of another tool is preserved
+PASS: workspace renders with same-origin worker URL
+PASS: all 13 built-in categories rendered as checkboxes
+PASS: required block present: How it works
+PASS: required block present: Privacy
+PASS: required block present: Limitations of automated analysis
+PASS: required block present: Automated anonymization cannot guarantee
+PASS: required block present: Contains the original values.
+PASS: no form can submit input to WordPress
+PASS: no third-party resource URLs in markup
+PASS: no inline script in tool markup
+PASS: input fields opt out of cloud spellcheck, grammar extensions and autofill
+PASS: live regions for status and errors
+PASS: inputs are well formed
+PASS: interface text is English only
+PASS: markup parses as HTML
+PASS: element ids are unique
+PASS: label for="cd-la-input" targets an element
+PASS: ordinary pages receive no tool CSP
+PASS: CSP: default, connect, object and base-uri are none
+PASS: CSP: scripts only from self plus per-response nonce
+PASS: CSP: worker, font and image sources restricted to self
+PASS: CSP: no external host, wildcard or unsafe script source
+PASS: referrer and MIME sniffing headers sent
+PASS: third-party emoji loader removed on tool pages
+PASS: WordPress inline scripts receive the CSP nonce
+PASS: no nonce added outside tool pages
+PASS: assets not loaded on other tool pages
+PASS: one stylesheet and one deferred script on the tool page
+PASS: asset is a first-party theme file: log-anonymizer.css
+PASS: asset is a first-party theme file: app.js
+PASS: script deferred
+All Log Anonymizer server checks passed.

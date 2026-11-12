@@ -1,0 +1,456 @@
+{
+  "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+  "browser": "msedge.exe",
+  "at": "2026-11-12T04:37:45.799Z",
+  "results": [
+    {
+      "status": "PASS",
+      "label": "page load uses first-party resources only",
+      "detail": "13 requests, all http://127.0.0.1:8090; worker and engine loaded before any input"
+    },
+    {
+      "status": "PASS",
+      "label": "CSP connect-src blocks scripts on the page from making requests",
+      "detail": "blocked: Failed to fetch"
+    },
+    {
+      "status": "PASS",
+      "label": "no console errors or CSP violations during page load"
+    },
+    {
+      "status": "PASS",
+      "label": "network APIs are disabled inside the worker",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "status": "PASS",
+      "label": "example page analyzed in the browser",
+      "detail": "18 findings in 7/7 groups, 9 highlights, 8 removals in the diff, 1 decoded fragment(s); focus moved to results"
+    },
+    {
+      "status": "PASS",
+      "label": "\"Show in text\" moves focus to the highlighted passage",
+      "detail": "mark #0"
+    },
+    {
+      "status": "PASS",
+      "label": "sanitizer options apply: normalization only, then no changes at all; changing options marks the result stale"
+    },
+    {
+      "status": "PASS",
+      "label": "HTML, scripts and javascript: links in the input (also inside Base64) are shown as text only: no elements, no dialogs"
+    },
+    {
+      "status": "PASS",
+      "label": "copy, sanitized download and JSON report work without requests",
+      "detail": "Sanitized copy copied to the clipboard (835 B). It is still untrusted text."
+    },
+    {
+      "status": "PASS",
+      "label": "nothing written to localStorage, sessionStorage, IndexedDB, cookies or the URL",
+      "detail": "{\"ls\":0,\"ss\":0,\"cookie\":\"\",\"href\":\"http://127.0.0.1:8090/tools/prompt-injection-detector/\"}"
+    },
+    {
+      "status": "PASS",
+      "label": "12 MB file: large-input warning shown, analyzed in the worker without freezing the page",
+      "detail": "12.0 MB in 6.3 s; longest main-thread gap 209 ms (rendering <= 500 findings); progress updates seen 60; 100,294 findings (52,424 high, 37,874 medium, 9,996 low)"
+    },
+    {
+      "status": "PASS",
+      "label": "input text is never sent: no HTTP requests while analyzing, changing options, copying, exporting and clearing"
+    },
+    {
+      "status": "PASS",
+      "label": "no console errors during interaction"
+    },
+    {
+      "status": "PASS",
+      "label": "Cancel restarts the worker; only its two static same-origin scripts are re-requested, no input data",
+      "detail": "worker.js, engine.js"
+    },
+    {
+      "status": "PASS",
+      "label": "keyboard: Tab reaches the text box, file picker, buttons, both options, the replacement choice and \"Analyze text\" with a visible focus ring",
+      "detail": "8 tab stops"
+    },
+    {
+      "status": "PASS",
+      "label": "keyboard: Enter on \"Load example\", Ctrl+Enter in the text box runs the analysis"
+    },
+    {
+      "status": "PASS",
+      "label": "every visible control has an accessible name; text contrast ≥ 4.5:1 (WCAG AA)",
+      "detail": "min 7.59:1 over 32 styles incl. severity badges, marks and diff"
+    },
+    {
+      "status": "PASS",
+      "label": "360px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360 ≤ 360"
+    },
+    {
+      "status": "PASS",
+      "label": "390px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 390 ≤ 390"
+    },
+    {
+      "status": "PASS",
+      "label": "768px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 768 ≤ 768"
+    },
+    {
+      "status": "PASS",
+      "label": "without JavaScript: explanatory notice; How it works / Privacy / Limitations still visible; no dead controls"
+    }
+  ],
+  "requestsAfterLoad": [
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js?ver=1794432616&ev=1794434772",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js?ver=1794434772",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css?ver=1794428495",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/prompt-injection-detector.css?ver=1794432813",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/app.js?ver=1794434757",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js?ver=1794432616&ev=1794434772",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js?ver=1794434772",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css?ver=1794428495",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/prompt-injection-detector.css?ver=1794432813",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/app.js?ver=1794434757",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js?ver=1794432616&ev=1794434772",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js?ver=1794434772",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css?ver=1794428495",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/prompt-injection-detector.css?ver=1794432813",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/app.js?ver=1794434757",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js?ver=1794432616&ev=1794434772",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js?ver=1794434772",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css?ver=1794428495",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/prompt-injection-detector.css?ver=1794432813",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/app.js?ver=1794434757",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js?ver=1794432616&ev=1794434772",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js?ver=1794434772",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/prompt-injection-detector/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css?ver=1794428495",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/prompt-injection-detector.css?ver=1794432813",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other",
+      "session": "page"
+    }
+  ],
+  "consoleErrors": []
+}

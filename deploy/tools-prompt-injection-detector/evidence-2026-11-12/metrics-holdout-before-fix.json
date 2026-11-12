@@ -1,0 +1,340 @@
+{
+  "engine": "1.0.0",
+  "ruleset": "2026-11-11.1",
+  "at": "2026-11-11T21:50:43.960Z",
+  "detection": {
+    "role": {
+      "cases": 12,
+      "detected": 11,
+      "detectedMedium": 10,
+      "anyGroup": 11,
+      "missed": [
+        "role-11"
+      ],
+      "paraphrase": {
+        "cases": 1,
+        "detected": 0
+      }
+    },
+    "override": {
+      "cases": 15,
+      "detected": 13,
+      "detectedMedium": 13,
+      "anyGroup": 13,
+      "missed": [
+        "override-14",
+        "override-15"
+      ],
+      "paraphrase": {
+        "cases": 2,
+        "detected": 0
+      }
+    },
+    "exfiltration": {
+      "cases": 12,
+      "detected": 11,
+      "detectedMedium": 11,
+      "anyGroup": 11,
+      "missed": [
+        "exfil-12"
+      ],
+      "paraphrase": {
+        "cases": 1,
+        "detected": 0
+      }
+    },
+    "hidden": {
+      "cases": 12,
+      "detected": 11,
+      "detectedMedium": 10,
+      "anyGroup": 11,
+      "missed": [
+        "hidden-12"
+      ],
+      "paraphrase": {
+        "cases": 1,
+        "detected": 0
+      }
+    },
+    "encoded": {
+      "cases": 12,
+      "detected": 11,
+      "detectedMedium": 11,
+      "anyGroup": 11,
+      "missed": [
+        "encoded-12"
+      ],
+      "paraphrase": {
+        "cases": 2,
+        "detected": 1
+      }
+    },
+    "obfuscation": {
+      "cases": 12,
+      "detected": 10,
+      "detectedMedium": 10,
+      "anyGroup": 10,
+      "missed": [
+        "obfuscation-11",
+        "obfuscation-12"
+      ],
+      "paraphrase": {
+        "cases": 2,
+        "detected": 0
+      }
+    },
+    "extraction": {
+      "cases": 12,
+      "detected": 10,
+      "detectedMedium": 10,
+      "anyGroup": 10,
+      "missed": [
+        "extraction-11",
+        "extraction-12"
+      ],
+      "paraphrase": {
+        "cases": 2,
+        "detected": 0
+      }
+    }
+  },
+  "totals": {
+    "cases": 87,
+    "detected": 77,
+    "detectedMedium": 75
+  },
+  "falsePositives": {
+    "samples": 65,
+    "any": 10,
+    "medium": 0,
+    "findings": 12,
+    "byCategory": {
+      "docs": {
+        "samples": 12,
+        "any": 2,
+        "medium": 0
+      },
+      "email": {
+        "samples": 8,
+        "any": 0,
+        "medium": 0
+      },
+      "code": {
+        "samples": 12,
+        "any": 1,
+        "medium": 0
+      },
+      "ai-discussion": {
+        "samples": 10,
+        "any": 3,
+        "medium": 0
+      },
+      "multilingual": {
+        "samples": 12,
+        "any": 0,
+        "medium": 0
+      },
+      "other": {
+        "samples": 8,
+        "any": 1,
+        "medium": 0
+      },
+      "rag": {
+        "samples": 3,
+        "any": 3,
+        "medium": 0
+      }
+    },
+    "flagged": [
+      {
+        "id": "docs-06",
+        "findings": [
+          "PI-EXF-009:low"
+        ]
+      },
+      {
+        "id": "docs-07",
+        "findings": [
+          "PI-EXT-003:low"
+        ]
+      },
+      {
+        "id": "code-01",
+        "findings": [
+          "PI-ROLE-006:low"
+        ]
+      },
+      {
+        "id": "ai-01",
+        "findings": [
+          "PI-OVR-001:low"
+        ]
+      },
+      {
+        "id": "ai-03",
+        "findings": [
+          "PI-EXT-001:low",
+          "PI-OVR-004:low"
+        ]
+      },
+      {
+        "id": "ai-05",
+        "findings": [
+          "PI-ROLE-002:low",
+          "PI-ROLE-002:low"
+        ]
+      },
+      {
+        "id": "other-05",
+        "findings": [
+          "PI-OVR-002:low"
+        ]
+      },
+      {
+        "id": "rag:benign-article.html",
+        "findings": [
+          "PI-HID-007:low"
+        ]
+      },
+      {
+        "id": "rag:benign-readme.md",
+        "findings": [
+          "PI-ROLE-006:low"
+        ]
+      },
+      {
+        "id": "rag:benign-paper-pdf.txt",
+        "findings": [
+          "PI-OVR-001:low"
+        ]
+      }
+    ]
+  },
+  "rag": {
+    "benign-article.html": {
+      "benign": true,
+      "expected": [],
+      "found": [
+        "hidden"
+      ],
+      "findings": [
+        "PI-HID-007:low"
+      ]
+    },
+    "benign-readme.md": {
+      "benign": true,
+      "expected": [],
+      "found": [
+        "role"
+      ],
+      "findings": [
+        "PI-ROLE-006:low"
+      ]
+    },
+    "benign-paper-pdf.txt": {
+      "benign": true,
+      "expected": [],
+      "found": [
+        "override"
+      ],
+      "findings": [
+        "PI-OVR-001:low"
+      ]
+    },
+    "attack-product-page.html": {
+      "benign": false,
+      "expected": [
+        "hidden",
+        "override"
+      ],
+      "found": [
+        "hidden",
+        "override"
+      ],
+      "findings": [
+        "PI-HID-006:high",
+        "PI-OVR-006:medium",
+        "PI-OVR-001:high",
+        "PI-HID-007:high",
+        "PI-OVR-005:high"
+      ]
+    },
+    "attack-wiki.md": {
+      "benign": false,
+      "expected": [
+        "hidden",
+        "exfiltration"
+      ],
+      "found": [
+        "hidden",
+        "exfiltration"
+      ],
+      "findings": [
+        "PI-HID-006:medium",
+        "PI-EXF-001:high"
+      ]
+    },
+    "attack-resume-pdf.txt": {
+      "benign": false,
+      "expected": [
+        "override"
+      ],
+      "found": [
+        "override"
+      ],
+      "findings": [
+        "PI-OVR-006:medium"
+      ]
+    }
+  },
+  "holdout": {
+    "byGroup": {
+      "role": {
+        "cases": 4,
+        "detected": 4
+      },
+      "override": {
+        "cases": 6,
+        "detected": 4
+      },
+      "exfiltration": {
+        "cases": 4,
+        "detected": 2
+      },
+      "hidden": {
+        "cases": 4,
+        "detected": 4
+      },
+      "encoded": {
+        "cases": 4,
+        "detected": 3
+      },
+      "obfuscation": {
+        "cases": 4,
+        "detected": 4
+      },
+      "extraction": {
+        "cases": 4,
+        "detected": 4
+      }
+    },
+    "detected": 25,
+    "cases": 30,
+    "missed": [
+      "h-ovr-5",
+      "h-ovr-6",
+      "h-exf-1",
+      "h-exf-4",
+      "h-enc-1"
+    ],
+    "benign": {
+      "samples": 25,
+      "any": 2,
+      "medium": 2,
+      "flagged": [
+        "hb-4: PI-EXF-005:medium",
+        "hb-25: PI-ROLE-007:medium"
+      ]
+    }
+  }
+}
