@@ -147,7 +147,7 @@ check('static contract: no network, storage or GitHub access in the browser code
 	const worker = fs.readFileSync(path.join(DIR, 'worker.js'), 'utf8');
 	assert.ok(!/\bfetch\s*\(|new XMLHttpRequest|github/i.test(worker));
 	assert.match(worker, /importScripts\('lolbas-data\.js'/);
-	assert.match(fs.readFileSync(path.join(DIR, 'app.js'), 'utf8'), /function dataLink\(url, text\) \{\n\t\tif \(!\/\^https:/);
+	assert.match(fs.readFileSync(path.join(DIR, 'app.js'), 'utf8'), /function dataLink\(url, text\) \{\r?\n\t\tif \(!\/\^https:/);
 });
 check('the page examples use example.com only and no working payloads', () => {
 	const app = fs.readFileSync(path.join(DIR, 'app.js'), 'utf8');
