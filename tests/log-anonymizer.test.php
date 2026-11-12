@@ -105,7 +105,8 @@ check( array() === $GLOBALS['enqueued'], 'assets not loaded on other tool pages'
 $GLOBALS['queried'] = 2;
 cyberdat_log_anonymizer_assets();
 $handles = array_column( $GLOBALS['enqueued'], 1 );
-check( array( 'cyberdat-log-anonymizer', 'cyberdat-log-anonymizer' ) === $handles, 'one stylesheet and one deferred script on the tool page' );
+check( array( 'cyberdat-tools-common', 'cyberdat-log-anonymizer', 'cyberdat-log-anonymizer' ) === $handles, 'shared tools-common stylesheet, own stylesheet and one deferred script on the tool page' );
+check( str_ends_with( $GLOBALS['enqueued'][0][2], '/assets/css/tools-common.css' ) && array( 'cyberdat-tools-common' ) === $GLOBALS['enqueued'][1][3], 'Log Anonymizer stylesheet builds on tools-common.css' );
 foreach ( $GLOBALS['enqueued'] as $asset ) { check( str_starts_with( $asset[2], 'https://staging.cyberdat.eu/wp-content/themes/cyberdat/assets/' ), 'asset is a first-party theme file: ' . basename( $asset[2] ) ); }
-check( 'defer' === $GLOBALS['enqueued'][1][3]['strategy'], 'script deferred' );
+check( 'defer' === $GLOBALS['enqueued'][2][3]['strategy'], 'script deferred' );
 echo "All Log Anonymizer server checks passed.\n";

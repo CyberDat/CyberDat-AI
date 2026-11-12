@@ -102,8 +102,8 @@ cyberdat_log_anonymizer_assets();
 check( array() === $GLOBALS['enqueued'], 'Log Anonymizer script and styles are not loaded under their own handles on the detector page' );
 cyberdat_prompt_detector_assets();
 $handles = array_column( $GLOBALS['enqueued'], 1 );
-check( array( 'cyberdat-tool-workspace', 'cyberdat-prompt-detector', 'cyberdat-prompt-detector' ) === $handles, 'shared workspace stylesheet, own stylesheet and one deferred script' );
-check( str_ends_with( $GLOBALS['enqueued'][0][2], '/assets/css/log-anonymizer.css' ) && array( 'cyberdat-tool-workspace' ) === $GLOBALS['enqueued'][1][3], 'detector stylesheet builds on the reused Log Anonymizer workspace styles' );
+check( array( 'cyberdat-tools-common', 'cyberdat-prompt-detector', 'cyberdat-prompt-detector' ) === $handles, 'shared tools-common stylesheet, own stylesheet and one deferred script' );
+check( str_ends_with( $GLOBALS['enqueued'][0][2], '/assets/css/tools-common.css' ) && array( 'cyberdat-tools-common' ) === $GLOBALS['enqueued'][1][3], 'detector stylesheet builds on the shared tools-common.css (not on log-anonymizer.css)' );
 foreach ( $GLOBALS['enqueued'] as $asset ) { check( str_starts_with( $asset[2], 'https://staging.cyberdat.eu/wp-content/themes/cyberdat/assets/' ), 'asset is a first-party theme file: ' . basename( $asset[2] ) ); }
 check( 'defer' === $GLOBALS['enqueued'][2][3]['strategy'], 'script deferred' );
 

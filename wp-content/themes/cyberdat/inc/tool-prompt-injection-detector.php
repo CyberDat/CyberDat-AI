@@ -6,8 +6,8 @@
  * (proposed URL, confirmed by the owner at acceptance). Publication still requires the
  * editorial fields and the "reviewed" flag enforced by inc/tools.php.
  *
- * Reuses the Log Anonymizer workspace: the strict CSP from inc/tool-security.php applies
- * to every Tool page, and the shared .cd-la component styles are loaded as a dependency.
+ * Reuses the tool framework: the strict CSP from inc/tool-security.php applies to every
+ * Tool page, and the shared .cd-la component styles come from assets/css/tools-common.css.
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -62,9 +62,9 @@ function cyberdat_prompt_detector_assets() {
 	if ( ! is_singular( 'page' ) || ! cyberdat_prompt_detector_is_page( get_queried_object_id() ) ) {
 		return;
 	}
-	// Shared workspace components (panels, buttons, callouts, info blocks) from the Log Anonymizer.
-	wp_enqueue_style( 'cyberdat-tool-workspace', get_theme_file_uri( '/assets/css/log-anonymizer.css' ), array( 'cyberdat-tools' ), cyberdat_theme_asset_version( '/assets/css/log-anonymizer.css' ) );
-	wp_enqueue_style( 'cyberdat-prompt-detector', get_theme_file_uri( '/assets/css/prompt-injection-detector.css' ), array( 'cyberdat-tool-workspace' ), cyberdat_theme_asset_version( '/assets/css/prompt-injection-detector.css' ) );
+	// Shared workspace components (panels, buttons, callouts, info blocks) used by every tool.
+	wp_enqueue_style( 'cyberdat-tools-common', get_theme_file_uri( '/assets/css/tools-common.css' ), array( 'cyberdat-tools' ), cyberdat_theme_asset_version( '/assets/css/tools-common.css' ) );
+	wp_enqueue_style( 'cyberdat-prompt-detector', get_theme_file_uri( '/assets/css/prompt-injection-detector.css' ), array( 'cyberdat-tools-common' ), cyberdat_theme_asset_version( '/assets/css/prompt-injection-detector.css' ) );
 	wp_enqueue_script( 'cyberdat-prompt-detector', get_theme_file_uri( '/assets/js/prompt-injection-detector/app.js' ), array(), cyberdat_theme_asset_version( '/assets/js/prompt-injection-detector/app.js' ), array( 'strategy' => 'defer', 'in_footer' => true ) );
 }
 add_action( 'wp_enqueue_scripts', 'cyberdat_prompt_detector_assets', 20 );

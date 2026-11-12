@@ -3,7 +3,7 @@
  * Indirect Prompt Injection Sanitizer & Detector — interactive workspace markup.
  * Static, server-rendered UI only. All user input is handled in the browser by
  * assets/js/prompt-injection-detector/*.js and is never posted back to WordPress.
- * Shared .cd-la-* component classes come from assets/css/log-anonymizer.css.
+ * Shared .cd-la-* component classes come from assets/css/tools-common.css.
  */
 defined( 'ABSPATH' ) || exit;
 $cyberdat_pi = cyberdat_prompt_detector_config();

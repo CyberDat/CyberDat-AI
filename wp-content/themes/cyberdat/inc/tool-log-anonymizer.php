@@ -65,7 +65,8 @@ function cyberdat_log_anonymizer_assets() {
 	if ( ! is_singular( 'page' ) || ! cyberdat_log_anonymizer_is_page( get_queried_object_id() ) ) {
 		return;
 	}
-	wp_enqueue_style( 'cyberdat-log-anonymizer', get_theme_file_uri( '/assets/css/log-anonymizer.css' ), array( 'cyberdat-tools' ), cyberdat_theme_asset_version( '/assets/css/log-anonymizer.css' ) );
+	wp_enqueue_style( 'cyberdat-tools-common', get_theme_file_uri( '/assets/css/tools-common.css' ), array( 'cyberdat-tools' ), cyberdat_theme_asset_version( '/assets/css/tools-common.css' ) );
+	wp_enqueue_style( 'cyberdat-log-anonymizer', get_theme_file_uri( '/assets/css/log-anonymizer.css' ), array( 'cyberdat-tools-common' ), cyberdat_theme_asset_version( '/assets/css/log-anonymizer.css' ) );
 	wp_enqueue_script( 'cyberdat-log-anonymizer', get_theme_file_uri( '/assets/js/log-anonymizer/app.js' ), array(), cyberdat_theme_asset_version( '/assets/js/log-anonymizer/app.js' ), array( 'strategy' => 'defer', 'in_footer' => true ) );
 }
 add_action( 'wp_enqueue_scripts', 'cyberdat_log_anonymizer_assets', 20 );
