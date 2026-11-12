@@ -1,5 +1,5 @@
 {
-  "_note": "Synthetic samples only (RFC 5737/3849 addresses, example.* domains, AWS documentation examples). mask: must not survive anonymization with all categories enabled. keep: must survive unchanged. structure: extra checks beyond line/CR/delimiter preservation.",
+  "_note": "Synthetic samples only (RFC 5737/3849 addresses, example.* domains, AWS documentation examples). mask: must not survive anonymization with all categories enabled. keep: must survive unchanged. structure: extra checks beyond line/CR/delimiter preservation. Token-shaped values are written as SYNTH placeholders (double braces, SYNTH:, name) in these fixtures and filled in at test time by tests/lib/synthetic-secrets.cjs, so the repository contains nothing a secret scanner reports.",
   "nginx-access.log": {
     "mask": [
       "203.0.113.10",
@@ -177,16 +177,16 @@
     "mask": [
       "user/Alice",
       "\"Alice\"",
-      "AKIAIOSFODNN7EXAMPLE",
+      "{{SYNTH:AWS_ACCESS_KEY_ID}}",
       "203.0.113.64",
       "\"Bob\"",
       "user/Bob",
       "mallory@example.com",
-      "ASIAIOSFODNN7EXAMPLE",
+      "{{SYNTH:AWS_TEMP_ACCESS_KEY_ID}}",
       "2001:db8:aa::5",
       "acme-payroll-exports.s3.eu-central-1.amazonaws.com",
-      "AIDAJ45Q7YFFAREXAMPLE",
-      "AROAEXAMPLEROLEID1234"
+      "{{SYNTH:AWS_IAM_USER_ID}}",
+      "{{SYNTH:AWS_ROLE_ID}}"
     ],
     "keep": [
       "\"eventSource\": \"iam.amazonaws.com\"",
@@ -205,7 +205,7 @@
       "nina",
       "nina@example.com",
       "203.0.113.100",
-      "tok_8f7e6d5c4b3a29181716",
+      "{{SYNTH:ACCESS_TOKEN_QUERY}}29181716",
       "9a8b7c6d5e4f",
       "oscar",
       "P@ss w0rd!",
@@ -234,7 +234,7 @@
       "203.0.113.110",
       "db01.corp.example.com",
       "a1b2c3d4e5",
-      "k_live_abc123def456",
+      "{{SYNTH:GENERIC_API_KEY}}",
       "hunter2",
       "quinn",
       "Tr0ub4dor",
