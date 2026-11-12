@@ -16,6 +16,7 @@ require_once __DIR__ . '/inc/tool-security.php';
 require_once __DIR__ . '/inc/tool-log-anonymizer.php';
 require_once __DIR__ . '/inc/tool-prompt-injection-detector.php';
 require_once __DIR__ . '/inc/tool-lotl-analyzer.php';
+require_once __DIR__ . '/inc/tool-mcp-checker.php';
 
 require_once __DIR__ . '/inc/intelligence-charts.php';
 

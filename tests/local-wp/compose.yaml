@@ -43,6 +43,7 @@ services:
       - ../../deploy/tools-log-anonymizer/editorial.json:/opt/cyberdat-seed/editorial.json:ro
       - ../../deploy/tools-prompt-injection-detector/editorial.json:/opt/cyberdat-seed/editorial-prompt-injection-detector.json:ro
       - ../../deploy/tools-lotl-analyzer/editorial.json:/opt/cyberdat-seed/editorial-lotl-command-analyzer.json:ro
+      - ../../deploy/tools-mcp-checker/editorial.json:/opt/cyberdat-seed/editorial-mcp-security-checker.json:ro
     networks: [internal, web]
     mem_limit: 768m
 

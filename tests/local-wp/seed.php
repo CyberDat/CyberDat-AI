@@ -58,8 +58,8 @@ if ( 'pages' === $phase ) {
 	$tool_id = $tool ? $tool->ID : wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => $copy['title'], 'post_name' => 'log-anonymizer', 'post_parent' => $hub_id, 'meta_input' => array( '_wp_page_template' => 'page-templates/tool.php' ) ) );
 	update_post_meta( $tool_id, '_cyberdat_tool', cyberdat_tool_sanitize( $meta ) );
 	wp_update_post( array( 'ID' => $tool_id, 'post_title' => $copy['title'], 'post_status' => 'publish' ) );
-	// Tools 2 (Prompt Injection Detector) and 3 (LotL Command Analyzer), same publication path.
-	foreach ( array( 'prompt-injection-detector', 'lotl-command-analyzer' ) as $pi_slug ) {
+	// Tools 2 (Prompt Injection Detector), 3 (LotL Command Analyzer) and 4 (MCP Security & Policy Checker), same publication path.
+	foreach ( array( 'prompt-injection-detector', 'lotl-command-analyzer', 'mcp-security-checker' ) as $pi_slug ) {
 		$pi_copy = json_decode( (string) file_get_contents( __DIR__ . '/editorial-' . $pi_slug . '.json' ), true );
 		if ( ! is_array( $pi_copy ) ) {
 			continue;

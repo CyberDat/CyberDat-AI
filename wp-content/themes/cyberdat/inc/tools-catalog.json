@@ -41,10 +41,10 @@
     "title": "MCP Security & Policy Checker",
     "slug": "mcp-security-checker",
     "url": "/tools/mcp-security-checker/",
-    "status": "planned",
+    "status": "available",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Planned static review of Model Context Protocol configurations for risky permissions.",
+    "description": "Static review of MCP client configurations and tool lists for secrets, risky launch commands, broad access and tool poisoning, with an optional policy check.",
     "icon_path": "M9 3v5 M15 3v5 M6 8h12v4a6 6 0 0 1-12 0Z M12 18v3"
   },
   {

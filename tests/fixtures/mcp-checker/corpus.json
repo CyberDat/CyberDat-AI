@@ -1,5 +1,5 @@
 {
-  "_note": "Synthetic MCP configurations written for CyberDat tests (not copied from any project). Token-shaped values are {{SYNTH:NAME}} placeholders filled in by tests/lib/synthetic-secrets.cjs. example.* hosts and RFC 5737 / RFC 1918 addresses only. legit: realistic configurations that must not produce medium+ findings. risky: one illustrative risk per case; expect.group and expect.min define a detection, expect.rule the most specific rule.",
+  "_note": "Synthetic MCP configurations written for CyberDat tests (not copied from any project). Token-shaped values are SYNTH placeholders (double braces, SYNTH:, name) filled in by tests/lib/synthetic-secrets.cjs. example.* hosts and RFC 5737 / RFC 1918 addresses only. legit: realistic configurations that must not produce medium+ findings. risky: one illustrative risk per case; expect.group and expect.min define a detection, expect.rule the most specific rule.",
   "legit": [
     { "id": "lg-fs-desktop", "config": { "mcpServers": { "filesystem": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/alice/Desktop", "/Users/alice/projects"] } } } },
     { "id": "lg-fs-win", "config": { "mcpServers": { "filesystem": { "command": "cmd", "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\alice\\Documents\\work"] } } } },
