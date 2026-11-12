@@ -28,3 +28,4 @@ docker compose exec -T wordpress php /opt/cyberdat-seed/seed.php install
 docker compose exec -T wordpress php /opt/cyberdat-seed/seed.php pages
 echo "Local tool: http://127.0.0.1:${LA_PORT}/tools/log-anonymizer/"
 echo "Local tool: http://127.0.0.1:${LA_PORT}/tools/prompt-injection-detector/"
+echo "Local tool: http://127.0.0.1:${LA_PORT}/tools/lotl-command-analyzer/"

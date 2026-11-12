@@ -19,9 +19,9 @@
     "release": "1.1",
     "phase": 1,
     "title": "LotL / LOLBAS Command Analyzer",
-    "slug": "lolbas-analyzer",
-    "url": "/tools/lolbas-analyzer/",
-    "status": "planned"
+    "slug": "lotl-command-analyzer",
+    "url": "/tools/lotl-command-analyzer/",
+    "status": "available"
   },
   {
     "release": "1.2",

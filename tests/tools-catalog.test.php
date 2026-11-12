@@ -26,9 +26,10 @@ class WP_Query {public $posts=[];function __construct($args){$this->posts=$GLOBA
 // Readiness doubles: a published Log Anonymizer page with reviewed content and a registered renderer.
 $GLOBALS['tool_post']=(object)['ID'=>5,'post_name'=>'log-anonymizer','post_password'=>''];
 $GLOBALS['pi_post']=(object)['ID'=>6,'post_name'=>'prompt-injection-detector','post_password'=>''];
-function get_post($id){return 5===$id?$GLOBALS['tool_post']:(6===$id?$GLOBALS['pi_post']:null);}
-function get_page_template_slug($id){return in_array($id,[5,6],true)?'page-templates/tool.php':'page-templates/tools.php';}
-function apply_filters($hook,$value,...$args){return 'cyberdat/tool/renderer'===$hook&&in_array($args[0]??0,[5,6],true)?'strlen':$value;}
+$GLOBALS['lotl_post']=(object)['ID'=>7,'post_name'=>'lotl-command-analyzer','post_password'=>''];
+function get_post($id){return [5=>$GLOBALS['tool_post'],6=>$GLOBALS['pi_post'],7=>$GLOBALS['lotl_post']][$id]??null;}
+function get_page_template_slug($id){return in_array($id,[5,6,7],true)?'page-templates/tool.php':'page-templates/tools.php';}
+function apply_filters($hook,$value,...$args){return 'cyberdat/tool/renderer'===$hook&&in_array($args[0]??0,[5,6,7],true)?'strlen':$value;}
 function get_post_meta(...$a){return ['reviewed'=>true,'summary'=>'s','how_it_works'=>'h','documentation'=>'d','examples'=>'e','faq'=>'f'];}
 function wp_strip_all_tags($s){return strip_tags($s);}
 function sanitize_text_field($s){return trim(strip_tags($s));}
@@ -63,6 +64,11 @@ preg_match_all('/<article class="cyberdat-tool-card tools-roadmap-card[^"]*".*?<
 check(str_contains($cards[0][1],'class="tools-status">Available')&&str_contains($cards[0][1],'href="https://staging.cyberdat.eu/tools/prompt-injection-detector/"'),'ready Prompt Injection Detector page: card says Available and links to /tools/prompt-injection-detector/');
 check(substr_count($html,'class="tools-status">Available')===2&&substr_count($html,'class="tools-status">Coming soon')===1&&!str_contains($cards[0][2],'<a '),'two tools available, LOLBAS Analyzer stays Coming soon and non-clickable');
 check(str_contains($html,'Indirect Prompt Injection Sanitizer &amp; Detector'),'tool name unchanged');
+$GLOBALS['ready_posts']=[$GLOBALS['tool_post'],$GLOBALS['pi_post'],$GLOBALS['lotl_post']];
+$html=render();
+preg_match_all('/<article class="cyberdat-tool-card tools-roadmap-card[^"]*".*?<\/article>/s',$html,$cards);
+check(substr_count($html,'class="tools-status">Available')===3&&!str_contains($html,'tools-status">Coming soon')&&str_contains($cards[0][2],'href="https://staging.cyberdat.eu/tools/lotl-command-analyzer/"'),'all three release 1.1 tools ready: three Available cards, LotL links to /tools/lotl-command-analyzer/');
+check(str_contains($html,'LotL / LOLBAS Command Analyzer'),'LotL tool name unchanged');
 $road=json_decode(file_get_contents(__DIR__.'/../deploy/staging/tools-roadmap.json'),true);
 $catalog=cyberdat_planned_tools();
 check(count($catalog)===10&&array_column($catalog,'slug')===array_column($road,'slug'),'catalogue keeps the ten approved tools (TZ v1.0) and matches the roadmap in order');

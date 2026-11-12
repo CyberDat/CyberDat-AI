@@ -27,12 +27,12 @@
     "release": "1.1",
     "phase": 1,
     "title": "LotL / LOLBAS Command Analyzer",
-    "slug": "lolbas-analyzer",
-    "url": "/tools/lolbas-analyzer/",
-    "status": "planned",
+    "slug": "lotl-command-analyzer",
+    "url": "/tools/lotl-command-analyzer/",
+    "status": "available",
     "category": "Threat Analysis",
     "category_slug": "threat-analysis",
-    "description": "Will statically explain suspicious PowerShell and shell command lines that abuse built-in system binaries. Commands are analyzed as text and never executed.",
+    "description": "Explain Windows command lines from logs and alerts that resemble documented LOLBAS abuse of built-in binaries, with ATT&CK ids from LOLBAS. Commands are analyzed as text and never executed.",
     "icon_path": "M4 5h16v14H4Z M7 9l3 3-3 3 M12 15h5"
   },
   {

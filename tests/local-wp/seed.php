@@ -58,19 +58,21 @@ if ( 'pages' === $phase ) {
 	$tool_id = $tool ? $tool->ID : wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => $copy['title'], 'post_name' => 'log-anonymizer', 'post_parent' => $hub_id, 'meta_input' => array( '_wp_page_template' => 'page-templates/tool.php' ) ) );
 	update_post_meta( $tool_id, '_cyberdat_tool', cyberdat_tool_sanitize( $meta ) );
 	wp_update_post( array( 'ID' => $tool_id, 'post_title' => $copy['title'], 'post_status' => 'publish' ) );
-	// Indirect Prompt Injection Sanitizer & Detector (tool 2), same publication path.
-	$pi_copy = json_decode( (string) file_get_contents( __DIR__ . '/editorial-prompt-injection-detector.json' ), true );
-	if ( is_array( $pi_copy ) ) {
+	// Tools 2 (Prompt Injection Detector) and 3 (LotL Command Analyzer), same publication path.
+	foreach ( array( 'prompt-injection-detector', 'lotl-command-analyzer' ) as $pi_slug ) {
+		$pi_copy = json_decode( (string) file_get_contents( __DIR__ . '/editorial-' . $pi_slug . '.json' ), true );
+		if ( ! is_array( $pi_copy ) ) {
+			continue;
+		}
 		$pi_meta = array( 'reviewed' => true );
 		foreach ( array( 'summary', 'how_it_works', 'documentation', 'examples', 'faq' ) as $key ) {
 			$pi_meta[ $key ] = $pi_copy[ $key ];
 		}
-		$pi = get_page_by_path( 'tools/prompt-injection-detector' );
-		$pi_id = $pi ? $pi->ID : wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => $pi_copy['title'], 'post_name' => 'prompt-injection-detector', 'post_parent' => $hub_id, 'meta_input' => array( '_wp_page_template' => 'page-templates/tool.php' ) ) );
+		$pi = get_page_by_path( 'tools/' . $pi_slug );
+		$pi_id = $pi ? $pi->ID : wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => $pi_copy['title'], 'post_name' => $pi_slug, 'post_parent' => $hub_id, 'meta_input' => array( '_wp_page_template' => 'page-templates/tool.php' ) ) );
 		update_post_meta( $pi_id, '_cyberdat_tool', cyberdat_tool_sanitize( $pi_meta ) );
 		wp_update_post( array( 'ID' => $pi_id, 'post_title' => $pi_copy['title'], 'post_status' => 'publish' ) );
-		printf( "tool=%s status=%s ready=%s
-", get_permalink( $pi_id ), get_post_status( $pi_id ), cyberdat_tool_ready( $pi_id ) ? 'yes' : 'no' );
+		printf( "tool=%s status=%s ready=%s\n", get_permalink( $pi_id ), get_post_status( $pi_id ), cyberdat_tool_ready( $pi_id ) ? 'yes' : 'no' );
 	}
 	// An unfinished second tool proves the publication guard still fails closed.
 	if ( ! get_page_by_path( 'tools/lolbas-analyzer' ) ) {
