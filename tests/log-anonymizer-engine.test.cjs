@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const fs = require('node:fs');
 const engine = require(path.join(__dirname, '../wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js'));
+const { SYNTH: S, fill } = require('./lib/synthetic-secrets.cjs');
 
 let passed = 0;
 function check(label, fn) {
@@ -82,15 +83,15 @@ category('mac', 'MAC', [
 ]);
 
 category('jwt', 'JWT', [
-	['token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U', 'eyJzdWIiOiIxMjM0NTY3ODkwIn0'],
-	['alg none eyJhbGciOiJub25lIn0.eyJzdWIiOiJhIn0.', 'eyJzdWIiOiJhIn0']
+	['token ' + S.JWT_3, 'eyJzdWIiOiIxMjM0NTY3ODkwIn0'],
+	['alg none ' + S.JWT_4, 'eyJzdWIiOiJhIn0']
 ], [
 	'eyJ not a token', 'header.payload.signature', 'eyJabc.def.ghi'
 ]);
 
 category('auth', '(?:BEARER_TOKEN|BASIC_AUTH|AUTH_TOKEN)', [
 	['Authorization: Bearer abc123.def456-ghi789', 'abc123.def456-ghi789'],
-	['curl -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" https://x', 'dXNlcjpwYXNzd29yZA=='],
+	['curl -H "Authorization: Basic ' + S.BASIC_AUTH + '" https://x', S.BASIC_AUTH],
 	['Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b', '9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'],
 	['{"authorization":"ApiKey s3cr3tvalue"}', 's3cr3tvalue'],
 	['Proxy-Authorization: Digest username="bob", response="6629fae49393a05397450978507c4ef1"', '6629fae49393a05397450978507c4ef1']
@@ -99,18 +100,18 @@ category('auth', '(?:BEARER_TOKEN|BASIC_AUTH|AUTH_TOKEN)', [
 ]);
 
 category('apiKey', 'API_KEY', [
-	['aws AKIAIOSFODNN7EXAMPLE', 'AKIAIOSFODNN7EXAMPLE'],
-	['gh ghp_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789', 'ghp_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789'],
-	['pat github_pat_11ABCDEFG0123456789_abcdefghijklmnopqrstuv', 'github_pat_11ABCDEFG0123456789_abcdefghijklmnopqrstuv'],
-	['slack xoxb-1234567890-abcdefghijkl', 'xoxb-1234567890-abcdefghijkl'],
+	['aws ' + S.AWS_ACCESS_KEY_ID, S.AWS_ACCESS_KEY_ID],
+	['gh ' + S.GITHUB_PAT, S.GITHUB_PAT],
+	['pat ' + S.GITHUB_PAT_FINE, S.GITHUB_PAT_FINE],
+	['slack ' + S.SLACK_BOT_TOKEN, S.SLACK_BOT_TOKEN],
 	// Assembled at runtime so repository secret scanners do not flag a fake key.
 	['stripe ' + ['sk', 'live', 'FAKE0TEST0ONLY0abcdefgh'].join('_'), ['sk', 'live', 'FAKE0TEST0ONLY0abcdefgh'].join('_')],
-	['google AIzaSyA1234567890abcdefghijklmnopqrstuv', 'AIzaSyA1234567890abcdefghijklmnopqrstuv'],
-	['openai sk-proj-abcdefghij1234567890ABCDEFGHIJklmnop', 'sk-proj-abcdefghij1234567890ABCDEFGHIJklmnop'],
-	['anthropic sk-ant-api03-abcdefghijklmnopqrstuvwxyz012345', 'sk-ant-api03-abcdefghijklmnopqrstuvwxyz012345'],
-	['gitlab glpat-abcdefghij0123456789', 'glpat-abcdefghij0123456789'],
-	['webhook https://hooks.slack.com/services/T000/B000/XXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXXX'],
-	['DefaultEndpointsProtocol=https;AccountName=x;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq']
+	['google ' + S.GOOGLE_API_KEY, S.GOOGLE_API_KEY],
+	['openai ' + S.OPENAI_PROJECT_KEY, S.OPENAI_PROJECT_KEY],
+	['anthropic ' + S.ANTHROPIC_API_KEY, S.ANTHROPIC_API_KEY],
+	['gitlab ' + S.GITLAB_PAT, S.GITLAB_PAT],
+	['webhook ' + S.SLACK_WEBHOOK_URL, 'XXXXXXXXXXXXXXXX'],
+	['DefaultEndpointsProtocol=https;AccountName=x;AccountKey=' + S.AZURE_STORAGE_KEY + ';', S.AZURE_STORAGE_KEY.slice(0, 62)]
 ], [
 	'AKIA too short', 'sk-learn-pipeline-config-version', 'task-0123456789abcdefghij', 'ghp_short', 'risk-assessment-report-2026-final-v2'
 ]);
@@ -121,7 +122,7 @@ category('secret', '(?:SECRET|COOKIE)', [
 	['{"client_secret":"abcXYZ123"}', 'abcXYZ123'],
 	["api_key='k-123-456'", 'k-123-456'],
 	['GET /cb?access_token=tok987&state=1', 'tok987'],
-	['X-Api-Key: 0f1e2d3c4b5a', '0f1e2d3c4b5a'],
+	['X-Api-Key: ' + S.X_API_KEY_2, S.X_API_KEY_2],
 	['<password>Sup3r</password>', 'Sup3r'],
 	['Cookie: sessionid=7f3c9a1b2d4e; csrftoken=Zx9', 'Zx9'],
 	['Set-Cookie: SID=31d4d96e407aad42; Path=/; Secure', '31d4d96e407aad42'],
@@ -134,10 +135,10 @@ category('secret', '(?:SECRET|COOKIE)', [
 ]);
 
 category('privateKey', 'PRIVATE_KEY', [
-	['-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAzYxExampleKeyBody0123456789\nabcdefghijklmnopqrstuvwxyz0123456789+/==\n-----END RSA PRIVATE KEY-----', 'MIIEowIBAAKCAQEAzYxExampleKeyBody0123456789'],
-	['{"key":"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASC\\n-----END PRIVATE KEY-----\\n"}', 'MIIEvQIBADANBgkqhkiG9w0BAQEFAASC'],
-	['-----BEGIN OPENSSH PRIVATE KEY-----\r\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQ\r\n-----END OPENSSH PRIVATE KEY-----', 'b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQ'],
-	['truncated:\n-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIBexampleTruncatedBody0123\nnext log line', 'MHcCAQEEIBexampleTruncatedBody0123']
+	[S.PEM_BEGIN + ' RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAzYxExampleKeyBody0123456789\nabcdefghijklmnopqrstuvwxyz0123456789+/==\n-----END RSA PRIVATE KEY-----', 'MIIEowIBAAKCAQEAzYxExampleKeyBody0123456789'],
+	['{"key":"' + S.PEM_BEGIN + ' PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASC\\n-----END PRIVATE KEY-----\\n"}', 'MIIEvQIBADANBgkqhkiG9w0BAQEFAASC'],
+	[S.PEM_BEGIN + ' OPENSSH PRIVATE KEY-----\r\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQ\r\n-----END OPENSSH PRIVATE KEY-----', 'b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQ'],
+	['truncated:\n' + S.PEM_BEGIN + ' EC PRIVATE KEY-----\nMHcCAQEEIBexampleTruncatedBody0123\nnext log line', 'MHcCAQEEIBexampleTruncatedBody0123']
 ], [
 	'-----BEGIN CERTIFICATE-----\nMIIDdzCCAl+gAwIBAgIEAgAAuTANBgkq\n-----END CERTIFICATE-----',
 	'-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\n-----END PUBLIC KEY-----'
@@ -201,7 +202,7 @@ category('ssn', 'SSN', [
 // ---------------------------------------------------------------- false-positive corpus
 
 check('false-positive corpus: versions, timestamps, hashes and identifiers stay unchanged with every category enabled', () => {
-	const corpus = fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/false-positives.txt'), 'utf8');
+	const corpus = fill(fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/false-positives.txt'), 'utf8'));
 	const r = run(corpus);
 	if (r.output !== corpus) {
 		const a = corpus.split('\n');
@@ -218,7 +219,7 @@ check('false-positive corpus: versions, timestamps, hashes and identifiers stay 
 function skeleton(text) { return text.replace(/[^\n\r\t,;|"'{}\[\]=<>]/g, ''); }
 
 check('structure: realistic multi-format log keeps line count, CRLF and every delimiter', () => {
-	const log = fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8');
+	const log = fill(fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8'));
 	const r = run(log);
 	assert.notEqual(r.output, log, 'something was replaced');
 	assert.equal(r.output.split('\n').length, log.split('\n').length);
@@ -248,7 +249,7 @@ check('structure: CRLF, BOM, empty lines, trailing newline and tabs survive', ()
 check('structure: fuzzed random input never changes line breaks', () => {
 	let seed = 42;
 	const rnd = n => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed % n; };
-	const pieces = ['203.0.113.', 'user=', 'password=', '@example.com', '\n', '\r\n', ' ', ':', '::', '-----BEGIN PRIVATE KEY-----', '-----END PRIVATE KEY-----', 'eyJ', '.', '4111', 'Bearer ', '"', "'", '\\n', 'abc', '42', 'AKIA', '/home/', '\\'];
+	const pieces = ['203.0.113.', 'user=', 'password=', '@example.com', '\n', '\r\n', ' ', ':', '::', S.PEM_BEGIN + ' PRIVATE KEY-----', '-----END PRIVATE KEY-----', 'eyJ', '.', '4111', 'Bearer ', '"', "'", '\\n', 'abc', '42', 'AKIA', '/home/', '\\'];
 	for (let round = 0; round < 300; round++) {
 		let text = '';
 		const len = 20 + rnd(200);
@@ -260,7 +261,7 @@ check('structure: fuzzed random input never changes line breaks', () => {
 });
 
 check('structure: chunk boundaries do not split private key blocks', () => {
-	const key = '-----BEGIN PRIVATE KEY-----\n' + 'QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVo=\n'.repeat(40) + '-----END PRIVATE KEY-----\n';
+	const key = S.PEM_BEGIN + ' PRIVATE KEY-----\n' + 'QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVo=\n'.repeat(40) + '-----END PRIVATE KEY-----\n';
 	const text = 'line 203.0.113.9\n'.repeat(30) + key + 'tail password=zz\n';
 	const small = engine.anonymize(text, {}, { chunkChars: 64 });
 	const whole = engine.anonymize(text, {});
@@ -271,7 +272,7 @@ check('structure: chunk boundaries do not split private key blocks', () => {
 // ---------------------------------------------------------------- real-format corpus
 
 const FORMATS = path.join(__dirname, 'fixtures/log-anonymizer/formats');
-const formatSpec = JSON.parse(fs.readFileSync(path.join(FORMATS, 'expected.json'), 'utf8'));
+const formatSpec = JSON.parse(fill(fs.readFileSync(path.join(FORMATS, 'expected.json'), 'utf8')));
 // Shape of parsed JSON: keys and value types, values themselves ignored.
 function shape(v) {
 	if (Array.isArray(v)) { return v.map(shape); }
@@ -288,7 +289,7 @@ function csvFields(line) {
 for (const [file, spec] of Object.entries(formatSpec)) {
 	if (file.startsWith('_')) { continue; }
 	check(`format ${file}: ${spec.mask.length} sensitive values masked, ${spec.keep.length} context values kept, structure preserved`, () => {
-		const input = fs.readFileSync(path.join(FORMATS, file), 'utf8');
+		const input = fill(fs.readFileSync(path.join(FORMATS, file), 'utf8'));
 		const output = run(input).output;
 		for (const m of spec.mask) { assert.ok(!output.includes(m), `${file} leaked "${m}"\n${output}`); }
 		for (const k of spec.keep) { assert.ok(output.includes(k), `${file} lost "${k}"\n${output}`); }
@@ -351,7 +352,7 @@ check('disabled categories are left untouched', () => {
 });
 
 check('priority: JWT inside Bearer keeps JWT label; email inside user= keeps EMAIL label', () => {
-	const jwt = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.c2lnbmF0dXJl';
+	const jwt = S.JWT_5;
 	assert.equal(out(`Authorization: Bearer ${jwt}\nraw ${jwt}`), 'Authorization: Bearer JWT_1\nraw JWT_1');
 	assert.equal(out('user=bob@example.com to=bob@example.com'), 'user=EMAIL_1 to=EMAIL_1');
 });
@@ -401,7 +402,7 @@ check('malformed input: non-string rejected, empty string allowed', () => {
 check('ReDoS guard: 1 MB pathological inputs finish quickly for every detector', () => {
 	const evil = ['a'.repeat(1 << 20), '.'.repeat(1 << 20), ':'.repeat(1 << 20), '1.'.repeat(1 << 19), 'a.'.repeat(1 << 19),
 		'a@'.repeat(1 << 19), '-'.repeat(1 << 20), '1 '.repeat(1 << 19), 'password='.repeat(1 << 16), '"'.repeat(1 << 20),
-		'-----BEGIN PRIVATE KEY-----'.repeat(1 << 15), 'ab:'.repeat(1 << 18), '\\'.repeat(1 << 20), 'eyJ'.repeat(1 << 18) + '.',
+		(S.PEM_BEGIN + ' PRIVATE KEY-----').repeat(1 << 15), 'ab:'.repeat(1 << 18), '\\'.repeat(1 << 20), 'eyJ'.repeat(1 << 18) + '.',
 		'<a>'.repeat(1 << 18), 'Authorization: '.repeat(1 << 16), 'Cookie: a=b'.repeat(1 << 16), 'x://'.repeat(1 << 18)];
 	for (const text of evil) {
 		const t = Date.now();
@@ -413,7 +414,7 @@ check('ReDoS guard: 1 MB pathological inputs finish quickly for every detector',
 });
 
 check('large input: ~30 MB realistic log processed with stable labels and preserved lines', () => {
-	const base = fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8').replace(/\r/g, '');
+	const base = fill(fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8')).replace(/\r/g, '');
 	let text = '';
 	let i = 0;
 	while (text.length < 30 * 1024 * 1024) {

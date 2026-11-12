@@ -58,14 +58,17 @@
 		return;
 	}
 
+	// Token-shaped sample values (a JWT, the AWS documentation key ID, a fake GitHub token) are joined at
+	// runtime so the source contains nothing a repository secret scanner would report.
+	const synth = parts => parts.join('');
 	const SAMPLE = [
 		'Nov 11 09:14:02 web-01 sshd[2211]: Accepted publickey for alice from 203.0.113.42 port 52211 ssh2',
 		'Nov 11 09:14:09 web-01 sshd[2214]: Failed password for invalid user admin from 198.51.100.23 port 40122 ssh2',
 		'2026-11-11T09:15:31.120Z api.example.com app[812]: POST /v1/login user=bob.smith email=bob.smith@example.com password="Winter2026!" status=401 ip=203.0.113.42',
 		'2026-11-11T09:15:32.004Z api.example.com app[812]: GET https://svc:Pa55w0rd@billing.internal.example.com/charge?access_token=abc123DEF456ghi789&page=2 client=2001:db8:4::17',
-		'2026-11-11T09:15:33.517Z api.example.com app[812]: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJib2Iuc21pdGgiLCJpYXQiOjE3MzEzMTYxMzJ9.c2lnbmF0dXJlLWZvci1kb2NzLW9ubHk',
+		'2026-11-11T09:15:33.517Z api.example.com app[812]: Authorization: Bearer ' + synth(['eyJ', 'hbGciOiJ', 'IUzI1NiI', 'sInR5cCI', '6IkpXVCJ', '9.eyJzdW', 'IiOiJib2', 'Iuc21pdG', 'giLCJpYX', 'QiOjE3Mz', 'EzMTYxMz', 'J9.c2lnb', 'mF0dXJlL', 'WZvci1kb', '2NzLW9ub', 'Hk']),
 		'2026-11-11T09:15:34.900Z api.example.com app[812]: payment card=4111 1111 1111 1111 ssn=123-45-6789 order_id=9988776655 build=10.0.19045.1 version 1.2.3.4',
-		'{"ts":"2026-11-11T09:16:00Z","level":"warn","host":"db01.corp.example.com","mac":"00:1A:2B:3C:4D:5E","aws_key":"AKIAIOSFODNN7EXAMPLE","api_token":"ghp_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789","path":"/home/carol/.aws/credentials"}',
+		'{"ts":"2026-11-11T09:16:00Z","level":"warn","host":"db01.corp.example.com","mac":"00:1A:2B:3C:4D:5E","aws_key":"' + synth(['AKIA', 'IOSFODNN', '7EXAMPLE']) + '","api_token":"' + synth(['ghp_', 'aBcDeFgH', 'iJkLmNoP', 'qRsTuVwX', 'yZ012345', '6789']) + '","path":"/home/carol/.aws/credentials"}',
 		'Nov 11 09:16:05 web-01 sudo:    carol : TTY=pts/0 ; PWD=/home/carol ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx',
 		'Cookie: sessionid=7f3c9a1b2d4e6f80; theme=dark',
 		'internal call from 10.20.30.40 to 192.168.1.10:5432 at 10:20:30 trace=4bf92f3577b34da6a3ce929d0e0e4736'

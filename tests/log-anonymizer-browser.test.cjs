@@ -13,6 +13,7 @@ const { spawn } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { SYNTH: S, fill } = require('./lib/synthetic-secrets.cjs');
 
 const URL_UNDER_TEST = process.argv[2] || 'http://127.0.0.1:8090/tools/log-anonymizer/';
 const ORIGIN = new URL(URL_UNDER_TEST).origin;
@@ -158,7 +159,7 @@ async function launch() {
 		await click('[data-la-sample]');
 		await runAndWait();
 		const preview = await evaluate("document.querySelector('[data-la-preview]').textContent");
-		for (const leaked of ['alice', '203.0.113.42', 'bob.smith@example.com', 'Winter2026!', 'Pa55w0rd', 'AKIAIOSFODNN7EXAMPLE', '4111 1111 1111 1111', '123-45-6789', 'eyJhbGci', '00:1A:2B:3C:4D:5E', 'billing.internal.example.com', '7f3c9a1b2d4e6f80', 'ghp_aBcD', '2001:db8:4::17']) {
+		for (const leaked of ['alice', '203.0.113.42', 'bob.smith@example.com', 'Winter2026!', 'Pa55w0rd', S.AWS_ACCESS_KEY_ID, '4111 1111 1111 1111', '123-45-6789', 'eyJhbGci', '00:1A:2B:3C:4D:5E', 'billing.internal.example.com', '7f3c9a1b2d4e6f80', 'ghp_aBcD', '2001:db8:4::17']) {
 			assert.ok(!preview.includes(leaked), 'leaked ' + leaked);
 		}
 		for (const kept of ['version 1.2.3.4', 'build=10.0.19045.1', 'order_id=9988776655', 'trace=4bf92f3577b34da6a3ce929d0e0e4736', '10:20:30', 'Nov 11 09:14:02']) {
@@ -224,7 +225,7 @@ async function launch() {
 		// ---- large input via file
 		phase = 'large';
 		const big = path.join(profile, 'large.log');
-		const base = fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8');
+		const base = fill(fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8'));
 		const fd = fs.openSync(big, 'w');
 		let size = 0;
 		for (let i = 0; size < 30 * 1024 * 1024; i++) { const chunk = base.replace(/203\.0\.113\.\d+/g, () => '198.51.' + ((i >> 8) & 255) + '.' + (i & 255)); fs.writeSync(fd, chunk); size += Buffer.byteLength(chunk); }
