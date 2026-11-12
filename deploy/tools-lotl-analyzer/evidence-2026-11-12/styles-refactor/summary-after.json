@@ -1,0 +1,50 @@
+{
+  "log-anonymizer-1440-initial": {
+    "elements": 162,
+    "stylesSha256": "098da891a13962a66f572dd6bc34a870a4e8d08d13a8c258aa1a158b5adea119",
+    "screenshotSha256": "6936d5120ee1a858a651c0e3b23ea26891b360ebb31097362ec3bdfa56d0f8a5",
+    "screenshots": 4
+  },
+  "log-anonymizer-1440-result": {
+    "elements": 252,
+    "stylesSha256": "62747e2cffd0e65123d744df360814265dc6a440cc821b8b9ffd0de1f9af4e8c",
+    "screenshotSha256": "f3d994e947dcdc1eed6c537c37439e1a14e97703751ff121aed9a1bb424e960e",
+    "screenshots": 5
+  },
+  "log-anonymizer-360-initial": {
+    "elements": 162,
+    "stylesSha256": "ec3c6eecaf9c324056cb21211969b90434a5509b182e24a46ee6f2ff5e91e3d6",
+    "screenshotSha256": "cd96ae0a690a14e4394b9e66603e78727eaa8a09f5d1b9f5dadb4774b577b8d3",
+    "screenshots": 6
+  },
+  "log-anonymizer-360-result": {
+    "elements": 252,
+    "stylesSha256": "79180a2936877191e3c2f14d736123073f276fe0603baef9f58a970bcfd5b01a",
+    "screenshotSha256": "79a7f4e5c675f8cec8de1feea78104bc9981b57d996a71cd8a95e60888f25f68",
+    "screenshots": 6
+  },
+  "prompt-injection-detector-1440-initial": {
+    "elements": 149,
+    "stylesSha256": "7afe1464968e42b7f29bc73b8dba7f6284397c7e0efa8903f159b1dc7af518af",
+    "screenshotSha256": "1f9450033b37f8af50ad6797b3ad74a31bc95a51b59f52f47bb4a2a124bffcfc",
+    "screenshots": 4
+  },
+  "prompt-injection-detector-1440-result": {
+    "elements": 470,
+    "stylesSha256": "7935997bb6311016cb9fe47a9b8ceee38cf838561692383effd908da084a1233",
+    "screenshotSha256": "e1daad431ee8a2e7a734b80781270b0298a27c088a9965e88c842fa4a9ca087b",
+    "screenshots": 6
+  },
+  "prompt-injection-detector-360-initial": {
+    "elements": 149,
+    "stylesSha256": "52f631da98a0d7900aa6a85cc1c197927ef39bcc25da31e4fe0e69ab6525b319",
+    "screenshotSha256": "8d7cffc3ff5564e9c156300adcbffab237c5c46842b857307aa797571bebedec",
+    "screenshots": 6
+  },
+  "prompt-injection-detector-360-result": {
+    "elements": 470,
+    "stylesSha256": "84cd90b4409627652efc922f306647a6e9127cc0f9fa8023ca2698479232d771",
+    "screenshotSha256": "e33edf70eb129bebbd287cbea99f549ba30cf8f98e7a6d46757b3e4e16df5e91",
+    "screenshots": 6
+  }
+}

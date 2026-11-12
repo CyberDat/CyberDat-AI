@@ -1,0 +1,43 @@
+PASS: renderer registered for /tools/prompt-injection-detector/ with the Tool template
+PASS: no renderer outside the /tools/ hub
+PASS: no renderer without the Tool template
+PASS: no renderer for a post with the same slug
+PASS: no renderer for the old planned slug prompt-sanitizer
+PASS: no renderer for a missing post
+PASS: Log Anonymizer keeps its own renderer (filters do not interfere)
+PASS: workspace renders with same-origin worker URL
+PASS: required text present: How it works
+PASS: required text present: Privacy
+PASS: required text present: Limitations of automated analysis
+PASS: required text present: The text you enter is never sent anywhere
+PASS: required text present: the background worker is restarted and the browser downloads its two static script files again
+PASS: required text present: Automated analysis cannot detect every prompt injection
+PASS: required text present: No guarantee of safety.
+PASS: required text present: Still untrusted.
+PASS: required text present: Changes: before and after
+PASS: required text present: Engine 1.0.0 · rules 2026-11-11.1
+PASS: no promise of complete safety anywhere in the interface
+PASS: the seven rule groups match the engine, in order
+PASS: engine and ruleset versions shown on the page match engine.js
+PASS: no form can submit input to WordPress
+PASS: no third-party resource URLs in markup
+PASS: no inline script in tool markup
+PASS: input field opts out of cloud spellcheck, grammar extensions and autofill
+PASS: live regions for status and errors
+PASS: interface text is English only
+PASS: markup parses as HTML
+PASS: element ids are unique
+PASS: label for="cd-pi-input" targets an element
+PASS: every option (6) is wrapped in its label
+PASS: strict CSP (connect-src none, worker self, no unsafe-eval) on the detector page
+PASS: detector assets not loaded on the Log Anonymizer page
+PASS: Log Anonymizer script and styles are not loaded under their own handles on the detector page
+PASS: shared tools-common stylesheet, own stylesheet and one deferred script
+PASS: detector stylesheet builds on the shared tools-common.css (not on log-anonymizer.css)
+PASS: asset is a first-party theme file: tools-common.css
+PASS: asset is a first-party theme file: prompt-injection-detector.css
+PASS: asset is a first-party theme file: app.js
+PASS: script deferred
+PASS: catalogue: tool 2 of release 1.1 points to /tools/prompt-injection-detector/
+PASS: catalogue: tool name unchanged
+All Prompt Injection Detector server checks passed.

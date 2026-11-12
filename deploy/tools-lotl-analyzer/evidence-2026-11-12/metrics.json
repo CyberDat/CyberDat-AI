@@ -1,0 +1,53 @@
+{
+  "engine": "1.0.0",
+  "ruleset": "2026-11-12.1",
+  "data": "2056cb7662509dc998fc6ce79636aec4e6c0397f",
+  "at": "2026-11-12T05:30:31.886Z",
+  "main": {
+    "suspicious": 35,
+    "flagged": 34,
+    "functionCorrect": 31,
+    "missed": [
+      "s-msbuild-1 (low)"
+    ],
+    "wrongFunction": [
+      "s-bitsadmin-1",
+      "s-msbuild-1",
+      "s-cmstp-1",
+      "s-log-1"
+    ],
+    "benign": 45,
+    "fpAny": 5,
+    "fpMedium": 0,
+    "flaggedBenign": [
+      "b-ps-2: low LOT-H-005:low",
+      "b-rundll32-1: low Shell32.dll/Execute/full",
+      "b-msiexec-1: low Msiexec.exe/Execute/partial",
+      "b-net-1: low LOT-H-011:low",
+      "b-msedge-1: low LOT-H-011:low"
+    ]
+  },
+  "holdout": {
+    "suspicious": 15,
+    "flagged": 13,
+    "functionCorrect": 12,
+    "missed": [
+      "h-12 (low)",
+      "h-13 (low)"
+    ],
+    "wrongFunction": [
+      "h-2",
+      "h-4",
+      "h-12"
+    ],
+    "benign": 15,
+    "fpAny": 4,
+    "fpMedium": 2,
+    "flaggedBenign": [
+      "hb-2: low LOT-H-011:low",
+      "hb-6: high Msiexec.exe/Execute/full, LOT-H-011:low",
+      "hb-8: medium Reg.exe/ADS/partial",
+      "hb-10: low Regsvr32.exe/Execute/full"
+    ]
+  }
+}

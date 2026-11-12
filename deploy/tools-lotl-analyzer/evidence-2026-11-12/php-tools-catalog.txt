@@ -1,0 +1,34 @@
+PASS: exactly the three release 1.1 tools rendered without JavaScript
+PASS: release 1.1 card: Privacy Shield Log Anonymizer
+PASS: release 1.1 card: Indirect Prompt Injection Sanitizer &amp; Detector
+PASS: release 1.1 card: LotL / LOLBAS Command Analyzer
+PASS: no card for IoT
+PASS: no card for Modbus
+PASS: no card for Webhook
+PASS: no card for MCP Security
+PASS: no card for ATLAS
+PASS: no card for YARA
+PASS: while no tool page is ready, all three honestly say Coming soon
+PASS: unavailable card is non-clickable
+PASS: unavailable card is non-clickable
+PASS: unavailable card is non-clickable
+PASS: one "More tools planned" line instead of empty roadmap cards
+PASS: notice does not claim availability before readiness
+PASS: no category filters for three cards
+PASS: heading and subtitle present
+PASS: ready Log Anonymizer page: card says Available and links to the tool
+PASS: other two stay Coming soon and non-clickable
+PASS: privacy notice uses the approved wording
+PASS: ready Prompt Injection Detector page: card says Available and links to /tools/prompt-injection-detector/
+PASS: two tools available, LOLBAS Analyzer stays Coming soon and non-clickable
+PASS: tool name unchanged
+PASS: all three release 1.1 tools ready: three Available cards, LotL links to /tools/lotl-command-analyzer/
+PASS: LotL tool name unchanged
+PASS: catalogue keeps the ten approved tools (TZ v1.0) and matches the roadmap in order
+PASS: release split 3/4/3 as approved
+PASS: backlog tools removed from the catalogue
+PASS: all six primary items preserved and Tools appended
+PASS: Tools is not duplicated
+PASS: footer menu unchanged
+PASS: Tools current page indicated
+PASS: catalog render and navigation suite

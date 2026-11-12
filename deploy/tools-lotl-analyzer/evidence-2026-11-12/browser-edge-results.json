@@ -1,0 +1,400 @@
+{
+  "url": "http://127.0.0.1:8090/tools/lotl-command-analyzer/",
+  "browser": "msedge.exe",
+  "at": "2026-11-12T05:39:16.063Z",
+  "results": [
+    {
+      "status": "PASS",
+      "label": "page load: first-party only; worker, engine and the bundled LOLBAS data load from this site, nothing from GitHub",
+      "detail": "14 requests"
+    },
+    {
+      "status": "PASS",
+      "label": "CSP connect-src blocks scripts on the page from reaching GitHub or any host",
+      "detail": "blocked: Failed to fetch"
+    },
+    {
+      "status": "PASS",
+      "label": "no console errors during page load"
+    },
+    {
+      "status": "PASS",
+      "label": "network APIs are disabled inside the worker",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "status": "PASS",
+      "label": "examples analyzed: 8 commands, documented LOLBAS functions with ATT&CK ids from LOLBAS, heuristics labeled separately, encoded PowerShell decoded; data links are plain https links",
+      "detail": "high, high, high, high, high, low, info, info; 73 links"
+    },
+    {
+      "status": "PASS",
+      "label": "HTML, scripts and javascript: URLs in commands are shown as text only: no elements, no non-https links, no dialogs"
+    },
+    {
+      "status": "PASS",
+      "label": "JSON report generated locally; nothing written to storage, cookies or the URL"
+    },
+    {
+      "status": "PASS",
+      "label": "4.9 MB file analyzed in the worker without network requests",
+      "detail": "0.4 s, longest main-thread gap 193 ms (incl. rendering 300 cards); 20,000 commands analyzed in 194 ms: 5,000 high, 3,500 medium, 1,500 low, 6,500 info only, 3,500 without any match. 62,88"
+    },
+    {
+      "status": "PASS",
+      "label": "input text is never sent: no HTTP requests after page load while analyzing, exporting and clearing; no console errors"
+    },
+    {
+      "status": "PASS",
+      "label": "Cancel restarts the worker; only its static same-origin scripts are re-requested",
+      "detail": "worker.js, lolbas-data.js, engine.js"
+    },
+    {
+      "status": "PASS",
+      "label": "keyboard: Tab order text box → file → buttons → Analyze with visible focus; Ctrl+Enter runs",
+      "detail": "TEXTAREA:textarea > INPUT:file > BUTTON:button > BUTTON:button > RUN"
+    },
+    {
+      "status": "PASS",
+      "label": "every control and link has an accessible name; text contrast ≥ 4.5:1",
+      "detail": "min 7.59:1 over 31 styles"
+    },
+    {
+      "status": "PASS",
+      "label": "360px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360"
+    },
+    {
+      "status": "PASS",
+      "label": "390px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 390"
+    },
+    {
+      "status": "PASS",
+      "label": "768px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 768"
+    },
+    {
+      "status": "PASS",
+      "label": "without JavaScript: notice shown; How it works, Data source and license, Privacy, Limitations still visible"
+    }
+  ],
+  "requestsAfterLoad": [
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js?ver=1794461466&ev=1794461422&dv=1794460989",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js?ver=1794460989",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js?ver=1794461422",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/lotl-command-analyzer/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools-common.css?ver=1794460640",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/lotl-analyzer.css?ver=1794461947",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/app.js?ver=1794461946",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js?ver=1794461466&ev=1794461422&dv=1794460989",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js?ver=1794460989",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js?ver=1794461422",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/lotl-command-analyzer/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools-common.css?ver=1794460640",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/lotl-analyzer.css?ver=1794461947",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/app.js?ver=1794461946",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js?ver=1794461466&ev=1794461422&dv=1794460989",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js?ver=1794460989",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js?ver=1794461422",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/lotl-command-analyzer/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools-common.css?ver=1794460640",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/lotl-analyzer.css?ver=1794461947",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/app.js?ver=1794461946",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js?ver=1794461466&ev=1794461422&dv=1794460989",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js?ver=1794460989",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js?ver=1794461422",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/lotl-command-analyzer/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools-common.css?ver=1794460640",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/lotl-analyzer.css?ver=1794461947",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/navigation.js?ver=1794426245",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/app.js?ver=1794461946",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js?ver=1794461466&ev=1794461422&dv=1794460989",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js?ver=1794460989",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js?ver=1794461422",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/tools/lotl-command-analyzer/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tokens.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/main.css?ver=1794426245",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools.css?ver=1794430246",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/tools-common.css?ver=1794460640",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/css/lotl-analyzer.css?ver=1794461947",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
+      "type": "Image"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:8090/wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
+      "type": "Other"
+    }
+  ],
+  "consoleErrors": []
+}

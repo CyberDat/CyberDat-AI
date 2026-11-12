@@ -1,0 +1,45 @@
+PASS: renderer registered for /tools/lotl-command-analyzer/ with the Tool template
+PASS: no renderer outside the /tools/ hub
+PASS: no renderer for the old planned slug lolbas-analyzer
+PASS: no renderer without the Tool template
+PASS: no renderer for a missing post
+PASS: other tools keep their renderers
+PASS: workspace renders with same-origin worker URL (engine and data versions)
+PASS: required text present: How it works
+PASS: required text present: Privacy
+PASS: required text present: Limitations of automated analysis
+PASS: required text present: Data source and license
+PASS: required text present: The text you enter is never sent anywhere
+PASS: required text present: the background worker is restarted and the browser downloads its static script files again
+PASS: required text present: A match is not a verdict.
+PASS: required text present: Most binaries listed in LOLBAS are legitimate
+PASS: required text present: no match does not mean the command is safe
+PASS: required text present: GNU General Public License v3.0
+PASS: required text present: modified version
+PASS: required text present: License text (GPL-3.0)
+PASS: required text present: ATT&amp;CK® is a registered trademark of The MITRE Corporation
+PASS: required text present: This work is reproduced and distributed with the permission of The MITRE Corporation
+PASS: required text present: No technique mapping is added by CyberDat
+PASS: required text present: never executed
+PASS: LOLBAS data commit and date shown on the page match the bundled snapshot
+PASS: license text linked from the theme (same origin)
+PASS: only expected links in markup: https://github.com/LOLBAS-Project/LOLBAS
+PASS: only expected links in markup: https://staging.cyberdat.eu/wp-content/themes/cyberdat/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt
+PASS: no auto-loading resources (img, iframe, script, link) in tool markup
+PASS: no form can submit input to WordPress
+PASS: GTFOBins is not used
+PASS: interface text is English only
+PASS: input opts out of spellcheck; live regions present
+PASS: markup parses as HTML
+PASS: element ids are unique
+PASS: label for="cd-lotl-input" targets an element
+PASS: engine and heuristics versions shown on the page match engine.js
+PASS: strict CSP on the analyzer page: no network connections, no external hosts
+PASS: other tools do not load their assets on this page
+PASS: tools-common.css, own stylesheet and one deferred script
+PASS: asset is a first-party theme file: tools-common.css
+PASS: asset is a first-party theme file: lotl-analyzer.css
+PASS: asset is a first-party theme file: app.js
+PASS: analyzer assets not loaded on other tool pages
+PASS: catalogue: tool 3 of release 1.1 points to /tools/lotl-command-analyzer/, name unchanged
+All LotL Command Analyzer server checks passed.

@@ -1,0 +1,127 @@
+{
+  "release": "Tools 1.1 — LotL / LOLBAS Command Analyzer (engine 1.0.0, heuristics 2026-11-12.1, LOLBAS data 2056cb7662509dc998fc6ce79636aec4e6c0397f)",
+  "repository": "CyberDat/CyberDat-AI",
+  "branch": "feature/tools-lotl-analyzer",
+  "theme_commit": "908ffd17abcb030c08184d7f26af7215e5084397",
+  "base_commit": "6e95847800444e95f613da5676338e1163d2d912",
+  "base_branch": "feature/tools-prompt-injection-detector",
+  "includes_commits": {
+    "shared_styles": "0f5e158e04e3f471fb521647802131b1bbfa35ab",
+    "detector_verdict": "ce08313d71d0c47050392c37b879ba434eb86da0"
+  },
+  "proposed_url": "/tools/lotl-command-analyzer/",
+  "requires_owner_approval_before_deploy": true,
+  "theme_directory": "wp-content/themes/cyberdat",
+  "files": {
+    "assets/css/log-anonymizer.css": {
+      "status": "modified",
+      "git_blob_sha1": "a41e161bd6c34ab9e4502ea377c8b19b95a0661e",
+      "sha256": "73f94b0c2f20ea972023e17e5da1c60925e105fba87bfbc439d11cc27e97cdb7",
+      "bytes": 2529,
+      "base_sha256": "7edb09a3056e575a3f27ed6bd93f3b1bb6df606c9ad561e72f9afc47bba48ec9"
+    },
+    "assets/css/lotl-analyzer.css": {
+      "status": "added",
+      "git_blob_sha1": "cf56cb52b3b0b23a38e1376735645a7ac50c7ee0",
+      "sha256": "bb5a9554fbaf27ed80548fef9ca2ecec8adb770774ed6c5843afaee13caf7751",
+      "bytes": 4530
+    },
+    "assets/css/prompt-injection-detector.css": {
+      "status": "modified",
+      "git_blob_sha1": "f0876de29526a94aa890eeb6a5126d89f8248c7f",
+      "sha256": "ef1c4fe80ea06f71d6c9eed5d32d25e3f64c41318328c847a4bd727a2de40e71",
+      "bytes": 4160,
+      "base_sha256": "a4ce835624ffb8030e7701c293b3ed9e73d2985d4f19be387348cac187fdde10"
+    },
+    "assets/css/tools-common.css": {
+      "status": "added",
+      "git_blob_sha1": "edc4b65958c55734283b932ad461150534aeee8b",
+      "sha256": "666412c19efd6252f9cf3dfbbb7bad2dbf18364d5c2c3df56cffd679235685bd",
+      "bytes": 6425
+    },
+    "assets/js/lotl-analyzer/LICENSE-LOLBAS.txt": {
+      "status": "added",
+      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149
+    },
+    "assets/js/lotl-analyzer/app.js": {
+      "status": "added",
+      "git_blob_sha1": "03fad60fbccf974feeafefcf32c4e80eae898052",
+      "sha256": "084ae4836b5cb2e3e5a2ba274fc0cf9219086d1cd3d4ba93ff69274b4d70649e",
+      "bytes": 17516
+    },
+    "assets/js/lotl-analyzer/engine.js": {
+      "status": "added",
+      "git_blob_sha1": "9ddf25d6210430841f71a63eed8cfd9047d195ff",
+      "sha256": "3f442e47a8af96173d4fd01e19ccfcddff3e3e1149beae7eacbb22247e89ea3e",
+      "bytes": 29298
+    },
+    "assets/js/lotl-analyzer/lolbas-data.js": {
+      "status": "added",
+      "git_blob_sha1": "e6fcf8f137da3c6956cffed83f99d7c822d9441a",
+      "sha256": "819ace6190502b694bd85747c3b9ff82135e2ea2f2cb8309f0203bbff97fa57b",
+      "bytes": 387712
+    },
+    "assets/js/lotl-analyzer/worker.js": {
+      "status": "added",
+      "git_blob_sha1": "0be341f389088d33825f884fea2e6f00143eb941",
+      "sha256": "498bc29811c5e3f4d42c987c1a6e25be0ac658e9e14564be52b4058b381edbfa",
+      "bytes": 3310
+    },
+    "assets/js/prompt-injection-detector/app.js": {
+      "status": "modified",
+      "git_blob_sha1": "c121ed811f96ee325e9cdc27c6e530eb9847f3b0",
+      "sha256": "d305b501139d1b2838e98b84a8f62c797e0f056e681f508678a120baf42d92cc",
+      "bytes": 25022,
+      "base_sha256": "56ca5c3805346add01e09d6d574d977f3a449dea21e8a821531ecd20a0ac4c61"
+    },
+    "functions.php": {
+      "status": "modified",
+      "git_blob_sha1": "7b4e7ad46efb03f04df9a759673991bf5a133de2",
+      "sha256": "92e9082a2989c6a725594de92b25684b62385b40d41009ce7c76e01dddff16ed",
+      "bytes": 863,
+      "base_sha256": "e8acef2b7390e0476add7a00c55591a3d189ac4e0df1b01a61fa5c97597f37f6"
+    },
+    "inc/tool-log-anonymizer.php": {
+      "status": "modified",
+      "git_blob_sha1": "9c4830b1e72348b992bd16d239771c38d5c717a5",
+      "sha256": "6ad030b81e0b1bef9bdbc7406d79fea49aef8888236f0d7d885235dc27e1b355",
+      "bytes": 4868,
+      "base_sha256": "9ffd8fa3c37f50c866da671a052162ef5b7efcf7112ccfb42a20f8227deecc24"
+    },
+    "inc/tool-lotl-analyzer.php": {
+      "status": "added",
+      "git_blob_sha1": "e560ec8f5e91061fb907473cde785a63503a7394",
+      "sha256": "b08def8e5af57c520c57cc9108f737dbcf28a6b06b793ba79ff569bc1a7c1e92",
+      "bytes": 3549
+    },
+    "inc/tool-prompt-injection-detector.php": {
+      "status": "modified",
+      "git_blob_sha1": "7ff5b29fe77adfbd340a9a5c2cc78050b03fa486",
+      "sha256": "960cc654afd19c3ce92c40166ffcbf5beb102a90b163b2f60a8f7a6827bd874b",
+      "bytes": 4456,
+      "base_sha256": "e0303498b1538fb3236ea291ab682c3d567855143315b236a1fa4c0be843bf36"
+    },
+    "inc/tools-catalog.json": {
+      "status": "modified",
+      "git_blob_sha1": "5914544b3fda790668187d39526ae541c13a776d",
+      "sha256": "07640e50dcf08584bad02a1ba4c33fe30e99339a9de19e355eddb646f17900ce",
+      "bytes": 4583,
+      "base_sha256": "53228659f93e4ec142197a31906a44397cf982b6a1696c85a1816a1d5339ca49"
+    },
+    "template-parts/tools/lotl-command-analyzer.php": {
+      "status": "added",
+      "git_blob_sha1": "bf48a7e313006817cfe5d3b9e5423caecad04566",
+      "sha256": "9a23b8f611a4f4992450279acb6488bb2bb348374708adc3f8244ba936092527",
+      "bytes": 12248
+    },
+    "template-parts/tools/prompt-injection-detector.php": {
+      "status": "modified",
+      "git_blob_sha1": "3361fb6ce6e78d41bb8413420a61e07db4b793db",
+      "sha256": "e7b020bef4b96942abd67226d294628338540a625ee978584e289be7029aad8b",
+      "bytes": 16395,
+      "base_sha256": "f406109f57cf531d3a5d298194df418debbd4aa58287be1ee71a538737a568c0"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "bytes": 5135452,
+  "elapsedMs": 398,
+  "longestMainThreadGapMs": 193,
+  "summary": "20,000 commands analyzed in 194 ms: 5,000 high, 3,500 medium, 1,500 low, 6,500 info only, 3,500 without any match. 62,880 lines over the limit of 20,000 commands were skipped."
+}

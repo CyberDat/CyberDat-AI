@@ -1,0 +1,9 @@
+PASS: log-anonymizer-1440-initial — 162 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: log-anonymizer-1440-result — 252 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: log-anonymizer-360-initial — 162 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: log-anonymizer-360-result — 252 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: prompt-injection-detector-1440-initial — 149 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: prompt-injection-detector-1440-result — 470 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: prompt-injection-detector-360-initial — 149 elements, 0 computed-style/box differences, screenshot byte-identical
+PASS: prompt-injection-detector-360-result — 470 elements, 0 computed-style/box differences, screenshot byte-identical
+1,218,940 computed property values compared (hashed per element, sorted; plus layout boxes and screenshots).

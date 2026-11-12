@@ -1,0 +1,76 @@
+{
+  "engine": "1.0.0",
+  "ruleset": "2026-11-12.1",
+  "data": "2056cb7662509dc998fc6ce79636aec4e6c0397f",
+  "at": "2026-11-12T05:27:20.819Z",
+  "main": {
+    "suspicious": 35,
+    "flagged": 24,
+    "functionCorrect": 22,
+    "missed": [
+      "s-certutil-1 (low)",
+      "s-certutil-2 (low)",
+      "s-certutil-3 (low)",
+      "s-bitsadmin-1 (low)",
+      "s-msbuild-1 (low)",
+      "s-wmic-2 (low)",
+      "s-ntdsutil-1 (low)",
+      "s-forfiles-1 (low)",
+      "s-odbcconf-1 (low)",
+      "s-cmd-1 (low)",
+      "s-log-1 (low)"
+    ],
+    "wrongFunction": [
+      "s-certutil-1",
+      "s-certutil-3",
+      "s-bitsadmin-1",
+      "s-mshta-1",
+      "s-rundll32-1",
+      "s-msbuild-1",
+      "s-wmic-2",
+      "s-cmstp-1",
+      "s-ntdsutil-1",
+      "s-odbcconf-1",
+      "s-cmd-1",
+      "s-log-1",
+      "s-log-2"
+    ],
+    "benign": 45,
+    "fpAny": 6,
+    "fpMedium": 3,
+    "flaggedBenign": [
+      "b-ps-2: low LOT-H-005:low",
+      "b-rundll32-1: medium Shell32.dll/Execute/partial, LOT-H-006:medium",
+      "b-msiexec-1: low Msiexec.exe/Execute/partial",
+      "b-net-1: low LOT-H-011:low",
+      "b-msedge-1: high Msedge.exe/Download/full, LOT-H-011:low",
+      "b-docs-2: medium Findstr.exe/Credentials/partial"
+    ]
+  },
+  "holdout": {
+    "suspicious": 15,
+    "flagged": 12,
+    "functionCorrect": 10,
+    "missed": [
+      "h-1 (low)",
+      "h-12 (low)",
+      "h-13 (low)"
+    ],
+    "wrongFunction": [
+      "h-1",
+      "h-2",
+      "h-4",
+      "h-12",
+      "h-15"
+    ],
+    "benign": 15,
+    "fpAny": 4,
+    "fpMedium": 2,
+    "flaggedBenign": [
+      "hb-2: low LOT-H-011:low",
+      "hb-6: high Msiexec.exe/Execute/full, LOT-H-011:low",
+      "hb-8: medium Reg.exe/ADS/partial",
+      "hb-10: low Regsvr32.exe/Execute/full"
+    ]
+  }
+}
