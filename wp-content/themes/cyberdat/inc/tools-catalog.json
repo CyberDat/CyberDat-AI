@@ -15,12 +15,12 @@
     "release": "1.1",
     "phase": 1,
     "title": "Indirect Prompt Injection Sanitizer & Detector",
-    "slug": "prompt-sanitizer",
-    "url": "/tools/prompt-sanitizer/",
-    "status": "planned",
+    "slug": "prompt-injection-detector",
+    "url": "/tools/prompt-injection-detector/",
+    "status": "available",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Will flag role spoofing, hidden instructions and encoded payloads in untrusted text before it reaches an LLM, with a reviewable sanitized copy. Local processing.",
+    "description": "Flag role spoofing, override directives, hidden text and encoded payloads in untrusted text before it reaches an LLM, with a reviewable sanitized copy. Runs in your browser.",
     "icon_path": "M4 5h16v10H10l-6 4Z M8 9h8 M8 12h5"
   },
   {

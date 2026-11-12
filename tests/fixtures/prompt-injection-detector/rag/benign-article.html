@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How to harden SSH on a Linux server</title>
+<!-- Global site tag removed for privacy. Theme: v2.3 -->
+<style>.hidden{display:none}.menu-toggle{color:#fff}</style>
+</head>
+<body>
+<header>
+  <nav>
+    <button class="menu-toggle" style="color:#ffffff;background:#0b3d2e">Menu</button>
+    <ul id="mobile-nav" style="display:none"><li><a href="/">Home</a></li><li><a href="/guides/">Guides</a></li></ul>
+  </nav>
+</header>
+<main>
+  <h1>How to harden SSH on a Linux server</h1>
+  <p>Disable password logins and use keys instead. Edit <code>/etc/ssh/sshd_config</code> and set <code>PasswordAuthentication no</code>.</p>
+  <!-- TODO: add a section about fail2ban -->
+  <h2>Restrict users</h2>
+  <p>Use <code>AllowUsers deploy</code> so that only the deploy account can log in. Forget the old advice about changing the port: it only reduces log noise.</p>
+  <div class="cookie-banner" hidden>We use cookies to remember your theme setting.</div>
+  <p>Read the <a href="https://www.example.com/docs/ssh?section=keys&amp;lang=en">full guide</a> for details.</p>
+</main>
+<footer><p>&copy; 2026 Example Guides. All rules described here were tested on Debian 12.</p></footer>
+</body>
+</html>

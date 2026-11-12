@@ -14,6 +14,7 @@ require_once __DIR__ . '/inc/nvd-data.php';
 require_once __DIR__ . '/inc/tools.php';
 require_once __DIR__ . '/inc/tool-security.php';
 require_once __DIR__ . '/inc/tool-log-anonymizer.php';
+require_once __DIR__ . '/inc/tool-prompt-injection-detector.php';
 
 require_once __DIR__ . '/inc/intelligence-charts.php';
 

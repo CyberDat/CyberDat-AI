@@ -41,6 +41,7 @@ services:
       - ../../wp-content/themes/cyberdat:/var/www/html/wp-content/themes/cyberdat:ro
       - ./seed.php:/opt/cyberdat-seed/seed.php:ro
       - ../../deploy/tools-log-anonymizer/editorial.json:/opt/cyberdat-seed/editorial.json:ro
+      - ../../deploy/tools-prompt-injection-detector/editorial.json:/opt/cyberdat-seed/editorial-prompt-injection-detector.json:ro
     networks: [internal, web]
     mem_limit: 768m
 

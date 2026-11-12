@@ -7,7 +7,7 @@ when its page passes the fail-closed readiness check.
 | Release | Phase | Tool | Permanent URL | Status |
 |---|---|---|---|---|
 | 1.1 | 1 | Privacy Shield Log Anonymizer | `/tools/log-anonymizer/` | implemented, owner acceptance pending |
-| 1.1 | 1 | Indirect Prompt Injection Sanitizer & Detector | `/tools/prompt-sanitizer/` | planned |
+| 1.1 | 1 | Indirect Prompt Injection Sanitizer & Detector | `/tools/prompt-injection-detector/` (proposed, confirmed at owner acceptance) | implemented, owner acceptance pending |
 | 1.1 | 1 | LotL / LOLBAS Command Analyzer | `/tools/lolbas-analyzer/` | planned |
 | 1.2 | 2 | MCP Security & Policy Checker | `/tools/mcp-security-checker/` | planned |
 | 1.2 | 2 | System Prompt & Agent Leak Inspector | `/tools/agent-leak-inspector/` | planned |

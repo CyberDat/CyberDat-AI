@@ -1,0 +1,16 @@
+Proceedings of the Workshop on Applied Security, 2026                                   12
+
+3.2 Threat model
+We assume an attacker who can place text in documents that a retrieval sys-
+tem later indexes. The attacker cannot modify the model or its conﬁguration,
+and has no access to the user’s ﬁles. Prior work [4, 7] showed that injected
+instructions such as “ignore the previous instructions” can redirect an
+assistant; we therefore evaluate defenses that ﬁlter retrieved passages.
+
+Table 2: Detection results (precision / recall)
+Method        P      R
+Keyword       0.91   0.42
+Classifier    0.88   0.71
+
+The ﬁrst author thanks the reviewers. Funding: grant 2026-0042.
+                                                                                          13

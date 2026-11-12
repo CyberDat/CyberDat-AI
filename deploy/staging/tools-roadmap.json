@@ -11,9 +11,9 @@
     "release": "1.1",
     "phase": 1,
     "title": "Indirect Prompt Injection Sanitizer & Detector",
-    "slug": "prompt-sanitizer",
-    "url": "/tools/prompt-sanitizer/",
-    "status": "planned"
+    "slug": "prompt-injection-detector",
+    "url": "/tools/prompt-injection-detector/",
+    "status": "available"
   },
   {
     "release": "1.1",
