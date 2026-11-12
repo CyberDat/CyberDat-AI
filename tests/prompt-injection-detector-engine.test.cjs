@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { SYNTH: S, fill } = require('./lib/synthetic-secrets.cjs');
 const DIR = path.join(__dirname, '../wp-content/themes/cyberdat/assets/js/prompt-injection-detector');
 const engine = require(path.join(DIR, 'engine.js'));
 const { expand, T } = require('./prompt-injection-detector-corpus.test.cjs');
@@ -186,7 +187,7 @@ check('multi-layer encoding is decoded up to three layers and the chain is shown
 	assert.match(f.detail, /base64 → base64 → hex/);
 });
 check('readable but harmless encoded text is listed as decoded, not reported; hashes and binary are not decoded', () => {
-	const r = analyze('print(base64) # aGVsbG8gd29ybGQgZnJvbSBweXRob24=\nsha256 3e4cd2cab0b7cb9e7f26fdc33dff77ae918db1bcdb8a7cabc36f3a4b518963b9\nkey AKIAIOSFODNN7EXAMPLEKEY');
+	const r = analyze('print(base64) # aGVsbG8gd29ybGQgZnJvbSBweXRob24=\nsha256 3e4cd2cab0b7cb9e7f26fdc33dff77ae918db1bcdb8a7cabc36f3a4b518963b9\nkey ' + S.AWS_ACCESS_KEY_ID + 'KEY');
 	assert.deepEqual(r.findings.map(f => f.ruleId), []);
 	assert.equal(r.normalization.decoded.length, 1);
 	assert.equal(r.normalization.decoded[0].preview, 'hello world from python');
@@ -300,8 +301,8 @@ check(`ReDoS: ${Object.keys(adversarial).length} adversarial ~1 MB inputs each f
 	}
 });
 check('10 MB realistic mixed input: analysis completes, progress is monotonic and reaches 100%', () => {
-	const benign = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/benign.json'), 'utf8')).samples.map(s => s.text).join('\n\n');
-	const attacks = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/attacks.json'), 'utf8')).cases.map(c => expand(c.text)).join('\n');
+	const benign = JSON.parse(fill(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/benign.json'), 'utf8'))).samples.map(s => s.text).join('\n\n');
+	const attacks = JSON.parse(fill(fs.readFileSync(path.join(__dirname, 'fixtures/prompt-injection-detector/attacks.json'), 'utf8'))).cases.map(c => expand(c.text)).join('\n');
 	let text = '';
 	while (text.length < 10 * 1024 * 1024) { text += benign + '\n' + attacks + '\n'; }
 	let last = -1;

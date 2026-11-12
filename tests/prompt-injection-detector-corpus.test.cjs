@@ -13,6 +13,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const engine = require(path.join(__dirname, '../wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js'));
+const { fill } = require('./lib/synthetic-secrets.cjs');
 
 const FIX = path.join(__dirname, 'fixtures/prompt-injection-detector');
 
@@ -58,7 +59,7 @@ function check(label, fn) {
 }
 
 // ---------------------------------------------------------------- attacks
-const attacks = JSON.parse(fs.readFileSync(path.join(FIX, 'attacks.json'), 'utf8')).cases;
+const attacks = JSON.parse(fill(fs.readFileSync(path.join(FIX, 'attacks.json'), 'utf8'))).cases;
 const byGroup = {};
 for (const g of engine.GROUPS) { byGroup[g.id] = { cases: 0, detected: 0, detectedMedium: 0, anyGroup: 0, missed: [], paraphrase: { cases: 0, detected: 0 } }; }
 for (const c of attacks) {
@@ -74,18 +75,18 @@ for (const c of attacks) {
 }
 
 // ---------------------------------------------------------------- RAG documents
-const rag = JSON.parse(fs.readFileSync(path.join(FIX, 'rag/expected.json'), 'utf8')).files;
+const rag = JSON.parse(fill(fs.readFileSync(path.join(FIX, 'rag/expected.json'), 'utf8'))).files;
 const ragResults = {};
 for (const [file, exp] of Object.entries(rag)) {
-	const r = engine.analyze(fs.readFileSync(path.join(FIX, 'rag', file), 'utf8'), {});
+	const r = engine.analyze(fill(fs.readFileSync(path.join(FIX, 'rag', file), 'utf8')), {});
 	const groups = Array.from(new Set(r.findings.map(f => f.group)));
 	ragResults[file] = { benign: exp.benign, expected: exp.groups || [], found: groups, findings: r.findings.map(f => f.ruleId + ':' + f.severity) };
 }
 
 // ---------------------------------------------------------------- benign
-const benign = JSON.parse(fs.readFileSync(path.join(FIX, 'benign.json'), 'utf8')).samples;
+const benign = JSON.parse(fill(fs.readFileSync(path.join(FIX, 'benign.json'), 'utf8'))).samples;
 for (const [file, exp] of Object.entries(rag)) {
-	if (exp.benign) { benign.push({ id: 'rag:' + file, category: 'rag', text: fs.readFileSync(path.join(FIX, 'rag', file), 'utf8') }); }
+	if (exp.benign) { benign.push({ id: 'rag:' + file, category: 'rag', text: fill(fs.readFileSync(path.join(FIX, 'rag', file), 'utf8')) }); }
 }
 const fp = { samples: benign.length, any: 0, medium: 0, findings: 0, byCategory: {}, flagged: [] };
 for (const s of benign) {
@@ -101,7 +102,7 @@ for (const s of benign) {
 }
 
 // ---------------------------------------------------------------- held-out set (not used for tuning; no thresholds)
-const holdout = JSON.parse(fs.readFileSync(path.join(FIX, 'holdout.json'), 'utf8'));
+const holdout = JSON.parse(fill(fs.readFileSync(path.join(FIX, 'holdout.json'), 'utf8')));
 const ho = { byGroup: {}, detected: 0, cases: 0, missed: [], benign: { samples: 0, any: 0, medium: 0, flagged: [] } };
 for (const c of holdout.attacks) {
 	const r = engine.analyze(expand(c.text), {});

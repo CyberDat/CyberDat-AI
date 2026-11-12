@@ -13,6 +13,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { SYNTH: S, fill } = require('./lib/synthetic-secrets.cjs');
 let playwright;
 try {
 	playwright = require('playwright');
@@ -91,7 +92,7 @@ async function runBrowser(name) {
 		await page.click('[data-la-sample]');
 		await run();
 		const preview = await page.textContent('[data-la-preview]');
-		for (const leaked of ['alice', '203.0.113.42', 'bob.smith@example.com', 'Winter2026!', 'Pa55w0rd', 'AKIAIOSFODNN7EXAMPLE', '123-45-6789', '00:1A:2B:3C:4D:5E']) {
+		for (const leaked of ['alice', '203.0.113.42', 'bob.smith@example.com', 'Winter2026!', 'Pa55w0rd', S.AWS_ACCESS_KEY_ID, '123-45-6789', '00:1A:2B:3C:4D:5E']) {
 			assert.ok(!preview.includes(leaked), 'leaked ' + leaked);
 		}
 		assert.ok(preview.includes('version 1.2.3.4') && preview.includes('trace=4bf92f3577b34da6a3ce929d0e0e4736'));
@@ -126,7 +127,7 @@ async function runBrowser(name) {
 
 		phase = 'large';
 		const big = path.join(os.tmpdir(), `cd-la-${name}-large.log`);
-		const base = fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8');
+		const base = fill(fs.readFileSync(path.join(__dirname, 'fixtures/log-anonymizer/mixed.log'), 'utf8'));
 		const fd = fs.openSync(big, 'w');
 		let size = 0;
 		for (let i = 0; size < 30 * 1024 * 1024; i++) { const c = base.replace(/203\.0\.113\.\d+/g, () => '198.51.' + ((i >> 8) & 255) + '.' + (i & 255)); fs.writeSync(fd, c); size += Buffer.byteLength(c); }

@@ -1,4 +1,4 @@
 {"timestamp":"2026-11-11T09:07:00Z","level":"info","user":{"id":42,"name":"nina","email":"nina@example.com"},"client_ip":"203.0.113.100","msg":"login ok"}
-{"timestamp":"2026-11-11T09:07:01Z","level":"debug","request":{"headers":{"authorization":"Bearer tok_8f7e6d5c4b3a29181716","cookie":"sid=9a8b7c6d5e4f; theme=dark","user-agent":"Mozilla/5.0"},"body":{"username":"oscar","password":"P@ss w0rd!","remember":true}}}
+{"timestamp":"2026-11-11T09:07:01Z","level":"debug","request":{"headers":{"authorization":"Bearer {{SYNTH:ACCESS_TOKEN_QUERY}}29181716","cookie":"sid=9a8b7c6d5e4f; theme=dark","user-agent":"Mozilla/5.0"},"body":{"username":"oscar","password":"P@ss w0rd!","remember":true}}}
 {"timestamp":"2026-11-11T09:07:02Z","level":"error","error":"db login failed","db":{"host":"db02.internal.example.com","user":"svc_app","password":"dbS3cret","port":5432},"retry":3}
 {"timestamp":"2026-11-11T09:07:03Z","level":"info","payment":{"card":"4111111111111111","amount":42.5,"currency":"EUR"},"ssn":"123-45-6789","mac":"00:1a:2b:3c:4d:5e","trace_id":"4bf92f3577b34da6a3ce929d0e0e4736","version":"1.2.3.4"}

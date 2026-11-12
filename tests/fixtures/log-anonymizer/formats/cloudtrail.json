@@ -4,10 +4,10 @@
       "eventVersion": "1.09",
       "userIdentity": {
         "type": "IAMUser",
-        "principalId": "AIDAJ45Q7YFFAREXAMPLE",
+        "principalId": "{{SYNTH:AWS_IAM_USER_ID}}",
         "arn": "arn:aws:iam::123456789012:user/Alice",
         "accountId": "123456789012",
-        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "accessKeyId": "{{SYNTH:AWS_ACCESS_KEY_ID}}",
         "userName": "Alice"
       },
       "eventTime": "2026-11-11T09:06:00Z",
@@ -17,7 +17,7 @@
       "sourceIPAddress": "203.0.113.64",
       "userAgent": "aws-cli/2.13.5 Python/3.11.4 Linux/6.2.0 exe/x86_64.ubuntu.22 prompt/off command/iam.create-user",
       "requestParameters": { "userName": "Bob" },
-      "responseElements": { "user": { "path": "/", "userName": "Bob", "userId": "AIDAJ45Q7YFFAREXAMPL2", "arn": "arn:aws:iam::123456789012:user/Bob", "createDate": "Nov 11, 2026 9:06:00 AM" } },
+      "responseElements": { "user": { "path": "/", "userName": "Bob", "userId": "{{SYNTH:AWS_IAM_USER_ID_2}}", "arn": "arn:aws:iam::123456789012:user/Bob", "createDate": "Nov 11, 2026 9:06:00 AM" } },
       "requestID": "8d3f1a2b-4c5d-4e6f-8a9b-0c1d2e3f4a5b",
       "eventID": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
       "readOnly": false,
@@ -29,7 +29,7 @@
     },
     {
       "eventVersion": "1.09",
-      "userIdentity": { "type": "AssumedRole", "principalId": "AROAEXAMPLEROLEID1234:mallory@example.com", "arn": "arn:aws:sts::123456789012:assumed-role/Admin/mallory@example.com", "accountId": "123456789012", "accessKeyId": "ASIAIOSFODNN7EXAMPLE" },
+      "userIdentity": { "type": "AssumedRole", "principalId": "{{SYNTH:AWS_ROLE_ID}}:mallory@example.com", "arn": "arn:aws:sts::123456789012:assumed-role/Admin/mallory@example.com", "accountId": "123456789012", "accessKeyId": "{{SYNTH:AWS_TEMP_ACCESS_KEY_ID}}" },
       "eventTime": "2026-11-11T09:06:30Z",
       "eventSource": "s3.amazonaws.com",
       "eventName": "GetObject",

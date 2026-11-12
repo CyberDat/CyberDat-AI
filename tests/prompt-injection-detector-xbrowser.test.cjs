@@ -14,6 +14,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { expand } = require('./prompt-injection-detector-corpus.test.cjs');
+const { fill } = require('./lib/synthetic-secrets.cjs');
 let playwright;
 try {
 	playwright = require('playwright');
@@ -31,8 +32,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const summary = {};
 
 const FIX = path.join(__dirname, 'fixtures/prompt-injection-detector');
-const corpus = JSON.parse(fs.readFileSync(path.join(FIX, 'benign.json'), 'utf8')).samples.map(x => x.text).join('\n\n') + '\n' +
-	JSON.parse(fs.readFileSync(path.join(FIX, 'attacks.json'), 'utf8')).cases.map(c => expand(c.text)).join('\n') + '\n';
+const corpus = JSON.parse(fill(fs.readFileSync(path.join(FIX, 'benign.json'), 'utf8'))).samples.map(x => x.text).join('\n\n') + '\n' +
+	JSON.parse(fill(fs.readFileSync(path.join(FIX, 'attacks.json'), 'utf8'))).cases.map(c => expand(c.text)).join('\n') + '\n';
 const BIG = path.join(os.tmpdir(), 'cd-pi-xbrowser-large.txt');
 {
 	const fd = fs.openSync(BIG, 'w');
