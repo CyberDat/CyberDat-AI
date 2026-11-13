@@ -4,7 +4,7 @@
   "authoredByToolAuthor": true,
   "description": "FORMAT EXAMPLE ONLY. Replace with 5-10 real log excerpts. mustMask: values that must disappear from the output. mustKeep: context that must stay unchanged (false positive if changed).",
   "samples": [
-    { "id": "nginx-1", "source": "nginx access log, web-01, 2026-11", "text": "203.0.113.10 - alice [11/Nov/2026:09:00:01 +0100] \"GET /admin?token=abc123def456 HTTP/1.1\" 200 512", "mustMask": ["203.0.113.10", "alice", "abc123def456"], "mustKeep": ["GET /admin", "HTTP/1.1"] },
+    { "id": "nginx-1", "source": "nginx access log, web-01, 2026-11", "text": "203.0.113.10 - alice [11/Nov/2026:09:00:01 +0100] \"GET /admin?page=2 HTTP/1.1\" 200 512", "mustMask": ["203.0.113.10", "alice"], "mustKeep": ["GET /admin", "HTTP/1.1"] },
     { "id": "app-1", "source": "application JSON log", "text": "{\"level\":\"info\",\"msg\":\"build 1.2.3.4 deployed\",\"user\":\"bob@example.com\"}", "mustMask": ["bob@example.com"], "mustKeep": ["build 1.2.3.4 deployed"] }
   ]
 }
