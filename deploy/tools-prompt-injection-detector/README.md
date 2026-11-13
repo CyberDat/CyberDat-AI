@@ -1,5 +1,8 @@
 # Tools 1.1 — Indirect Prompt Injection Sanitizer & Detector
 
+> **2026-11-13:** this tool is deployed as part of `integration/tools-release-1`. Its own `manifest.json` was replaced by the combined `deploy/tools-release-1/manifest.json`; follow `deploy/tools-release-1/HANDOFF.md`, not the staging steps below.
+
+
 Branch `feature/tools-prompt-injection-detector`, created from the tip of `feature/tools-log-anonymizer` (`c721e14`).
 Theme commit `f567a82` (see `manifest.json`). Engine `1.0.0`, ruleset `2026-11-11.1`.
 Proposed URL: `/tools/prompt-injection-detector/` (to be confirmed by the owner at acceptance). The tool name is unchanged.

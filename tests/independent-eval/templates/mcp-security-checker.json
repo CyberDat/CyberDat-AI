@@ -1,0 +1,11 @@
+{
+  "tool": "mcp-security-checker",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "threshold": "medium",
+  "description": "FORMAT EXAMPLE ONLY. config: an MCP configuration or tool list (object or JSON text) with secrets removed. label: risky or benign. expectGroups (optional): rule groups that must be flagged for a hit.",
+  "samples": [
+    { "id": "team-1", "source": "developer laptop, claude_desktop_config.json", "label": "risky", "expectGroups": ["files"], "config": { "mcpServers": { "filesystem": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"] } } } },
+    { "id": "team-2", "source": "project .vscode/mcp.json", "label": "benign", "config": { "servers": { "time": { "command": "uvx", "args": ["mcp-server-time==2025.7.1"] } } } }
+  ]
+}

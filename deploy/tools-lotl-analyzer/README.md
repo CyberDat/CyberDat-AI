@@ -1,5 +1,8 @@
 # Tools 1.1 — LotL / LOLBAS Command Analyzer
 
+> **2026-11-13:** this tool is deployed as part of `integration/tools-release-1`. Its own `manifest.json` was replaced by the combined `deploy/tools-release-1/manifest.json`; follow `deploy/tools-release-1/HANDOFF.md`, not the staging steps below.
+
+
 Branch `feature/tools-lotl-analyzer`, created from the tip of `feature/tools-prompt-injection-detector` (`6e95847`). Theme files are pinned in `manifest.json` (theme commit `908ffd1`).
 
 Versions: engine `1.0.0`, CyberDat heuristics `2026-11-12.1`, LOLBAS data `2056cb7662509dc998fc6ce79636aec4e6c0397f` (2026-09-26).

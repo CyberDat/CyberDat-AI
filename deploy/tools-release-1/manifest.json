@@ -1,0 +1,248 @@
+{
+  "release": "CyberDat Tools release 1 bundle: Log Anonymizer, Prompt Injection Detector, LotL / LOLBAS Command Analyzer (release 1.1) and MCP Security & Policy Checker (release 1.2)",
+  "repository": "CyberDat/CyberDat-AI",
+  "branch": "integration/tools-release-1",
+  "theme_commit": "cd7df0c2a2fa5b5634977d765884b599a3495340",
+  "base_commit": "c3f9a5e7172f83006f3b078705a9d89e709619f8",
+  "base_description": "feat/cyberdat-research-agent-0.8.3 tip; base_sha256 values are the files at this commit",
+  "requires_owner_approval_before_deploy": true,
+  "hashes": "sha256 of the file bytes as stored in git (LF line endings). Export with: git -c core.autocrlf=false archive <theme_commit> wp-content/themes/cyberdat",
+  "theme_directory": "wp-content/themes/cyberdat",
+  "supersedes": [
+    "deploy/tools-log-anonymizer/manifest.json",
+    "deploy/tools-prompt-injection-detector/manifest.json",
+    "deploy/tools-lotl-analyzer/manifest.json",
+    "deploy/tools-mcp-checker/manifest.json"
+  ],
+  "file_count": 32,
+  "files": {
+    "assets/css/log-anonymizer.css": {
+      "status": "added",
+      "tool": "log-anonymizer",
+      "git_blob_sha1": "a41e161bd6c34ab9e4502ea377c8b19b95a0661e",
+      "sha256": "73f94b0c2f20ea972023e17e5da1c60925e105fba87bfbc439d11cc27e97cdb7",
+      "bytes": 2529
+    },
+    "assets/css/lotl-analyzer.css": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "cf56cb52b3b0b23a38e1376735645a7ac50c7ee0",
+      "sha256": "bb5a9554fbaf27ed80548fef9ca2ecec8adb770774ed6c5843afaee13caf7751",
+      "bytes": 4530
+    },
+    "assets/css/mcp-checker.css": {
+      "status": "added",
+      "tool": "mcp-security-checker",
+      "git_blob_sha1": "faaf101a9cb07a0e374cda3c5d6bca7877c6527c",
+      "sha256": "5ab92a1dc5159b16029c7aa2327c164b7d2c019d146ad14499acb320c5172e6d",
+      "bytes": 4477
+    },
+    "assets/css/prompt-injection-detector.css": {
+      "status": "added",
+      "tool": "prompt-injection-detector",
+      "git_blob_sha1": "f0876de29526a94aa890eeb6a5126d89f8248c7f",
+      "sha256": "ef1c4fe80ea06f71d6c9eed5d32d25e3f64c41318328c847a4bd727a2de40e71",
+      "bytes": 4160
+    },
+    "assets/css/tools-common.css": {
+      "status": "added",
+      "tool": "shared",
+      "git_blob_sha1": "edc4b65958c55734283b932ad461150534aeee8b",
+      "sha256": "666412c19efd6252f9cf3dfbbb7bad2dbf18364d5c2c3df56cffd679235685bd",
+      "bytes": 6425
+    },
+    "assets/css/tools.css": {
+      "status": "modified",
+      "tool": "shared",
+      "git_blob_sha1": "fb9e2819f6d3f55f164e659b0493c02b9d900d1d",
+      "sha256": "58c25bb0da7dd0e3ff74059173281da3d0cee6ce7928c43e3573196545cd4010",
+      "bytes": 4993,
+      "base_sha256": "65b112810acddf8f316484afe1f4d3fd1e58f1a8dd8462c516d53a3e9714ee57"
+    },
+    "assets/js/log-anonymizer/app.js": {
+      "status": "added",
+      "tool": "log-anonymizer",
+      "git_blob_sha1": "dddb6212c28277bbfff913a879c0afe3c31ff0b7",
+      "sha256": "0d64e54815d24f3218bd46dbb4faa17554675803961df6e1f86237ad02145a36",
+      "bytes": 23228
+    },
+    "assets/js/log-anonymizer/engine.js": {
+      "status": "added",
+      "tool": "log-anonymizer",
+      "git_blob_sha1": "eb945549a7be4a77d402278fe28d58c5cac71c6c",
+      "sha256": "3e4cd2cab0b7cb9e7f26fdc33dff77ae918db1bcdb8a7cabc36f3a4b518963b9",
+      "bytes": 42487
+    },
+    "assets/js/log-anonymizer/worker.js": {
+      "status": "added",
+      "tool": "log-anonymizer",
+      "git_blob_sha1": "d0d88ebb57d3056f183fb3e073885c56f33695ec",
+      "sha256": "704abfd98f5143759275d5159bdad46fe44b92edb93b90497dc7bd4cd691c3e7",
+      "bytes": 3758
+    },
+    "assets/js/lotl-analyzer/app.js": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "03fad60fbccf974feeafefcf32c4e80eae898052",
+      "sha256": "084ae4836b5cb2e3e5a2ba274fc0cf9219086d1cd3d4ba93ff69274b4d70649e",
+      "bytes": 17516
+    },
+    "assets/js/lotl-analyzer/engine.js": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "a9bbc9686cdb63f1b3a34d0786df95c3ad91b301",
+      "sha256": "01e9466993900dc78cf428a061cddb55cdc9be05da6ec8eea6fa721484c2c1bb",
+      "bytes": 30089
+    },
+    "assets/js/lotl-analyzer/LICENSE-LOLBAS.txt": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149
+    },
+    "assets/js/lotl-analyzer/lolbas-data.js": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "e6fcf8f137da3c6956cffed83f99d7c822d9441a",
+      "sha256": "819ace6190502b694bd85747c3b9ff82135e2ea2f2cb8309f0203bbff97fa57b",
+      "bytes": 387712
+    },
+    "assets/js/lotl-analyzer/worker.js": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "0be341f389088d33825f884fea2e6f00143eb941",
+      "sha256": "498bc29811c5e3f4d42c987c1a6e25be0ac658e9e14564be52b4058b381edbfa",
+      "bytes": 3310
+    },
+    "assets/js/mcp-checker/app.js": {
+      "status": "added",
+      "tool": "mcp-security-checker",
+      "git_blob_sha1": "000cb3a08c7df9043d0e3a38af1dc6aab1151f8e",
+      "sha256": "2f1138edd2dcf599bbe18376cac931bfaf6f417f0cf8d5355e3845d7a8417c9b",
+      "bytes": 22273
+    },
+    "assets/js/mcp-checker/engine.js": {
+      "status": "added",
+      "tool": "mcp-security-checker",
+      "git_blob_sha1": "eaf378ddcbdec07357a43dbfa43a73aed5d2cb10",
+      "sha256": "801509969351300f83701242205623910811cae79d44e025614aadd0a2e11f8d",
+      "bytes": 107931
+    },
+    "assets/js/mcp-checker/worker.js": {
+      "status": "added",
+      "tool": "mcp-security-checker",
+      "git_blob_sha1": "864370508632939708e78282a1324543a63f8600",
+      "sha256": "581b5d64662cf35655fe031265d68c64e99ffc46a575ed05adb64304caa04598",
+      "bytes": 3302
+    },
+    "assets/js/prompt-injection-detector/app.js": {
+      "status": "added",
+      "tool": "prompt-injection-detector",
+      "git_blob_sha1": "c121ed811f96ee325e9cdc27c6e530eb9847f3b0",
+      "sha256": "d305b501139d1b2838e98b84a8f62c797e0f056e681f508678a120baf42d92cc",
+      "bytes": 25022
+    },
+    "assets/js/prompt-injection-detector/engine.js": {
+      "status": "added",
+      "tool": "prompt-injection-detector",
+      "git_blob_sha1": "fde297edb38bf34721ea977f67d5bf0d9f9f9de2",
+      "sha256": "a44177aa93333fcad8ce2052bd216f5caf7539124ffae3754b7d3a6b78511f9d",
+      "bytes": 81461
+    },
+    "assets/js/prompt-injection-detector/worker.js": {
+      "status": "added",
+      "tool": "prompt-injection-detector",
+      "git_blob_sha1": "7f9d90c9f536863b0949d8b7efb2d68617ca734a",
+      "sha256": "70e8c6271f9078966f2daccdc8da8515d98c342de916df6acd70e24ee0b33e14",
+      "bytes": 3750
+    },
+    "functions.php": {
+      "status": "modified",
+      "tool": "shared",
+      "git_blob_sha1": "5f9ed82393320d12999182612ae724e45acfd71f",
+      "sha256": "2dd42d0f92c759e1c1254a1a753e5f234bf3331e7130492433940b9fe15ea102",
+      "bytes": 915,
+      "base_sha256": "3e38ec3a4a5b19ff71202a8f3d6d454cd76485ce932e52c6122bb41ddb886523"
+    },
+    "inc/tool-log-anonymizer.php": {
+      "status": "added",
+      "tool": "log-anonymizer",
+      "git_blob_sha1": "9c4830b1e72348b992bd16d239771c38d5c717a5",
+      "sha256": "6ad030b81e0b1bef9bdbc7406d79fea49aef8888236f0d7d885235dc27e1b355",
+      "bytes": 4868
+    },
+    "inc/tool-lotl-analyzer.php": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "0b4e8c39c4492e033f6d6666d4f54501999bd0ec",
+      "sha256": "a385107366ceea0830e46a0cb30cbccd408f80d120cb78a0a4302993e277f574",
+      "bytes": 3549
+    },
+    "inc/tool-mcp-checker.php": {
+      "status": "added",
+      "tool": "mcp-security-checker",
+      "git_blob_sha1": "1a6dda5ce66bf99ad0775083b667b3cf79ca8bbd",
+      "sha256": "0ec6d949d2acad51d7ae99e18cfae3810eaa98da4e5d4c4ac657e0108d4b2997",
+      "bytes": 2616
+    },
+    "inc/tool-prompt-injection-detector.php": {
+      "status": "added",
+      "tool": "prompt-injection-detector",
+      "git_blob_sha1": "7ff5b29fe77adfbd340a9a5c2cc78050b03fa486",
+      "sha256": "960cc654afd19c3ce92c40166ffcbf5beb102a90b163b2f60a8f7a6827bd874b",
+      "bytes": 4456
+    },
+    "inc/tool-security.php": {
+      "status": "added",
+      "tool": "shared",
+      "git_blob_sha1": "7d12fa0c83aebf4356a42cba2d111f363e0f87fb",
+      "sha256": "c32a57b3db014260f316067411bbd6493df874b367f65da70c87f3a6d31b10c5",
+      "bytes": 3102
+    },
+    "inc/tools-catalog.json": {
+      "status": "modified",
+      "tool": "shared",
+      "git_blob_sha1": "96dc5be841c98d764c3ef90e3fc25ace71640d0c",
+      "sha256": "ff1ff6bd474a688de87a6be02b6cf06ddbea13f218467ec7de5013dd82f0a197",
+      "bytes": 4657,
+      "base_sha256": "d60b85e1528ba5f9fbdd7f40dff6bf82eefe3029346921d7fdb696c19390998d"
+    },
+    "page-templates/tools.php": {
+      "status": "modified",
+      "tool": "shared",
+      "git_blob_sha1": "cc96b562059a27fff58212001566662ba1527b42",
+      "sha256": "a3e67dad2d9cd61d91ca708d121462302af48c6dd1125f6b1cc167bbb27462c0",
+      "bytes": 3617,
+      "base_sha256": "1317967689950fe7cfbade494401fff920852e2b7cc544c1d408560202c9b3d0"
+    },
+    "template-parts/tools/log-anonymizer.php": {
+      "status": "added",
+      "tool": "log-anonymizer",
+      "git_blob_sha1": "16c28adb05264be03048289c23c8ee23d3221106",
+      "sha256": "61653c9f36d45d68ed43d8fb7ebf02af5f62dd5fa26ea90905b78e7f254c034b",
+      "bytes": 14846
+    },
+    "template-parts/tools/lotl-command-analyzer.php": {
+      "status": "added",
+      "tool": "lotl-command-analyzer",
+      "git_blob_sha1": "bf48a7e313006817cfe5d3b9e5423caecad04566",
+      "sha256": "9a23b8f611a4f4992450279acb6488bb2bb348374708adc3f8244ba936092527",
+      "bytes": 12248
+    },
+    "template-parts/tools/mcp-security-checker.php": {
+      "status": "added",
+      "tool": "mcp-security-checker",
+      "git_blob_sha1": "ad5255e3410375d65b82314588f501ad4ec08725",
+      "sha256": "65e4d28931999db43b0ca7f8a1ae1d1e54cecac04397275954994c25d5e2f0ea",
+      "bytes": 16532
+    },
+    "template-parts/tools/prompt-injection-detector.php": {
+      "status": "added",
+      "tool": "prompt-injection-detector",
+      "git_blob_sha1": "3361fb6ce6e78d41bb8413420a61e07db4b793db",
+      "sha256": "e7b020bef4b96942abd67226d294628338540a625ee978584e289be7029aad8b",
+      "bytes": 16395
+    }
+  }
+}

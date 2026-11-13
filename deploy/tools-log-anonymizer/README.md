@@ -1,5 +1,8 @@
 # Privacy Shield Log Anonymizer — Tools release 1.1, tool 1
 
+> **2026-11-13:** this tool is deployed as part of `integration/tools-release-1`. Its own `manifest.json` was replaced by the combined `deploy/tools-release-1/manifest.json`; follow `deploy/tools-release-1/HANDOFF.md`, not the staging steps below.
+
+
 Status: **conditionally accepted (PARTIAL); iteration 2 (quality, checks, wording) done locally; staging
 acceptance pending owner action.** Not deployed, not merged.
 Branch: `feature/tools-log-anonymizer`, based on `feat/cyberdat-research-agent-0.8.3` @ `c3f9a5e`

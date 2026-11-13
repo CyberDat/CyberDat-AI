@@ -1,5 +1,8 @@
 # MCP Security & Policy Checker — release 1.2, tool 4
 
+> **2026-11-13:** this tool is deployed as part of `integration/tools-release-1`. Its own `manifest.json` was replaced by the combined `deploy/tools-release-1/manifest.json`; follow `deploy/tools-release-1/HANDOFF.md`, not the staging steps below.
+
+
 Branch `feature/tools-mcp-checker` (from `feature/tools-lotl-analyzer` @ `23b8dd5`). Page `/tools/mcp-security-checker/`
 (URL from the Stage 0.9 roadmap, confirmed by the owner at acceptance). Not merged, not deployed. The owner allowed
 starting this tool before the release 1.1 staging session as a one-time exception.
@@ -57,7 +60,7 @@ CyberDat's own wording. The tool has no ATT&CK or OWASP mapping.
 | Group | Rules |
 |---|---|
 | Secrets (SEC 001–005) | literal secret in env by name; known credential formats anywhere (GitHub, GitLab, Slack, OpenAI, Anthropic, AWS key id/secret, Google, Stripe, JWT, private key, npm, Hugging Face); credentials in URLs (userinfo, query); literal credential headers; secrets as CLI arguments |
-| Launch commands (CMD 001–009) | download piped to a shell / `iex`; shell wrapper (info) or chained shell command (medium), encoded PowerShell; unpinned `npx`/`uvx`/`pnpm dlx`/`pipx run` (low); privileged containers, docker socket, host namespaces, dangerous capabilities; root/home mounts; sudo/doas/runas; executables in temp/downloads; inline code (`node -e`, `python -c`); installs from URL/Git without commit pin |
+| Launch commands (CMD 001–009) | download piped to a shell / `iex`; shell wrapper (info) or chained shell command (medium), encoded PowerShell; unpinned `npx`/`uvx`/`pnpm dlx`/`pipx run` (info since 2026-11-13, owner decision); privileged containers, docker socket, host namespaces, dangerous capabilities; root/home mounts; sudo/doas/runas; executables in temp/downloads; inline code (`node -e`, `python -c`); installs from URL/Git without commit pin |
 | File access (FS 001–004) | filesystem root, home directory, credential locations (`.ssh`, `.aws`, `.env`, `/etc`, keychains, MCP configs), wildcards |
 | Remote (NET 001–008) | plain HTTP to public hosts (high with credentials), no credentials (info), metadata addresses, tunnels, unusual hosts (raw IP, punycode, capture services, dynamic DNS), uncommon port (info), TLS checks disabled, private-network HTTP (info) |
 | Capabilities (CAP 001–008) | command/code execution (high with unrestricted argument), file write/delete (raised by root/sensitive access), arbitrary URL requests, browser automation/JS evaluation, email/messages, unrestricted code arguments, SQL execution, private data + outbound channel combination (high when auto-approved) |

