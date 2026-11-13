@@ -36,3 +36,6 @@ file_put_contents('/tmp/cyberdat-dashboard-fixture.html',$html);
 check(count($m['chart_series']['kev'])===90&&count($m['chart_series']['nvd'])===90&&array_sum($m['chart_series']['kev'])===1&&array_sum($m['chart_series']['nvd'])===3,'90-day series uses source dates and does not import old CVEs into publication trends');
 check(substr_count($html,'data-chart-id=')===6&&str_contains($html,'stroke-dasharray')&&str_contains($html,'data-period="90"'),'all six real-data charts and native SVG controls rendered');
 echo "PASS: Dashboard offline tests; no network, database or production writes\n";
+
+// Exercise the bounded read-model at the configured NVD ceiling; no DB/network.
+$scale=[];for($i=0;$i<10000;$i++){$scale[]=row('nvd','CVE-2020-'.(10000+$i),5.5,'3.1');}$large=cdra_dashboard_model($scale,$catalog,$state,$now);check($large['counts']['nvd']===10000&&count($large['feed'])===20&&strlen(cdra_json($large))<2097152&&memory_get_peak_usage(true)<100663296,'ten-thousand-row bounded model retains exact counts, bounded feed/cache and less than 96 MiB fixture peak');echo 'SCALE FIXTURE PEAK BYTES: '.memory_get_peak_usage(true)."\n";

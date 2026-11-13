@@ -29,7 +29,7 @@ function cdra_dashboard_model($rows,$catalog,$state,$now=null){
  return ['schema'=>1,'generated_at'=>$now,'reference_day'=>gmdate('Y-m-d',$now),'counts'=>$counts,'severity'=>$severity,'versions'=>$versions,'days'=>$days,'chart_series'=>['kev'=>$kev_days,'nvd'=>$nvd_days],'feed'=>$feeds,'by_source'=>$by_source,'source_health'=>$state['source_health'],'catalog_version'=>$catalog['catalogVersion']??null,'catalog_released'=>$catalog['dateReleased']??null,'origin'=>$state['origin'],'checkpoint'=>$state['checkpoint'],'window'=>$state['window'],'completed'=>$state['completed'],'backfill'=>$state['backfill'],'queue_total'=>$state['queue_total'],'publication_min'=>$nvd_min?gmdate('Y-m-d',$nvd_min):null,'publication_max'=>$nvd_max?gmdate('Y-m-d',$nvd_max):null,'feed_limit_per_source'=>20,'historical_nvd_complete'=>false];
 }
 function cdra_build_dashboard_analytics($store){
- // At most 12,000 indexed records / 5,000 NVD, matching existing hard storage limits.
+ // At most 12,000 indexed records / 10,000 NVD; total storage/read-model bound unchanged.
  // No original payload bodies, credentials or references enter the read-model.
  $sql="SELECT source,source_id,canonical_url,published,source_updated,first_seen,last_seen,kev_confirmed,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.original_title')),2048) AS title,LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload,'$.summary')),600) AS summary,JSON_EXTRACT(payload,'$.assessment') AS assessment,JSON_EXTRACT(payload,'$.cve_ids') AS cve_ids FROM {$store->prefix}items WHERE active=1 AND source IN ('kev','nvd','cisa-advisories','cert-eu','msrc') ORDER BY published DESC,id DESC LIMIT 12000";
  $previous=$store->db->suppress_errors(true);

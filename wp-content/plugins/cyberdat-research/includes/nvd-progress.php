@@ -30,12 +30,13 @@ function cdra_nvd_progress($service,$backfill=false){
    $s->put($key,$window);
   }
   $proof=$window['time_proof'];cdra_need(count($proof['segments'])+count($proof['pending'])<=2048,'nvd_proof_capacity');
-  $range=$proof['pending'][0];[$start,$end]=$range;$query=['lastModStartDate'=>gmdate('Y-m-d\TH:i:s\Z',$start),'lastModEndDate'=>gmdate('Y-m-d\TH:i:s\Z',$end),'resultsPerPage'=>200,'startIndex'=>0];
+  $range=$proof['pending'][0];[$start,$end]=$range;$query=['lastModStartDate'=>gmdate('Y-m-d\TH:i:s\Z',$start),'lastModEndDate'=>gmdate('Y-m-d\TH:i:s\Z',$end),'resultsPerPage'=>$end-$start<=1?2000:200,'startIndex'=>0];
   try{[$page,$response]=$service->page($query);}catch(CDRA_Error $e){
-   if($e->getMessage()!=='response_size'){throw $e;}
+   if($e->getMessage()!=='response_size'){throw $e;}if($end-$start<=1){throw new CDRA_Error('nvd_dense_response_size',0,$e->diagnostic);}
    array_shift($proof['pending']);$proof['pending']=array_merge(cdra_nvd_split_range($range),$proof['pending']);$proof['probes']++;$window['time_proof']=$proof;$s->put($key,$window);
    $health=$s->get('health:nvd',[]);$health['job']='Idle';$health['next_due']=time()+300;$health['last_progress']='split_response_size';$s->put('health:nvd',$health);return;
   }
+  if($end-$start<=1&&$page['count']!==$page['total']){throw new CDRA_Error('nvd_dense_slice',0,['kind'=>'dense_slice','http_status'=>$response['status'],'curl_errno'=>0,'total_results'=>$page['total'],'returned'=>$page['count']]);}
   $done=false;$s->transaction(function()use($s,$page,$response,$range,&$proof,&$window,&$done,$key,$cpkey,$backfill,$service){
    foreach($page['rows'] as $record){$s->upsert($record);}
    $proof['probes']++;array_shift($proof['pending']);
@@ -54,7 +55,7 @@ function cdra_nvd_progress($service,$backfill=false){
    if(!$backfill){$s->put('nvd_origin',$s->get('nvd_origin',$window['start']));$service->success('nvd',$response);$s->put('nvd_last_incremental_success',time());$h=$s->get('health:nvd');$h['catchup_pending']=$done&&cdra_time($window['end'])<time()-600;if(!$done||$h['catchup_pending']){$h['next_due']=time()+300;}$s->put('health:nvd',$h);}
    else{$request=$s->get('backfill');$request['last_success']=time();$request['next_due']=time()+7200;if($done&&cdra_time($window['end'])>=$request['end']){$request['status']='complete';}$s->put('backfill',$request);}
   });
-  if($done){break;}
+  if($done||$page['count']>200){break;} // At most one larger dense response is processed per run.
  }
 }
 

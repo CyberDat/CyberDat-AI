@@ -1,0 +1,844 @@
+{
+  "as_of_utc": "2026-11-13T15:13:44.409775+00:00",
+  "status": "PARTIAL",
+  "branch": "feat/cyberdat-research-agent-0.8.3",
+  "base_commit": "d0df9ca3698336ea0ee770c00821f04adeaf61af",
+  "initial_implementation_commit": "c3f9a5e7172f83006f3b078705a9d89e709619f8",
+  "original_backup": "/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z",
+  "continuation_backup": "/var/backups/cyberdat-staging/research-0.8.3-continuation-20261113T145510Z",
+  "first_deploy_utc": "2026-11-11T17:26:39.458477+00:00",
+  "last_fix_utc": "2026-11-13T15:07:03.822391+00:00",
+  "before_original_backup": {
+    "queue": 6705,
+    "nvd": 4139,
+    "kev": 1779,
+    "checkpoint": 1794320346
+  },
+  "before_deploy": {
+    "queue": 6785,
+    "nvd": 4219,
+    "kev": 1779,
+    "crossref": 169,
+    "posts": 61,
+    "content_jobs": 1
+  },
+  "current": {
+    "counts": {
+      "queue": 10655,
+      "nvd": 7567,
+      "kev": 1779,
+      "crossref": 488,
+      "posts": 61,
+      "content_jobs": 1
+    },
+    "duplicates": 0,
+    "db_bytes": 58540032
+  },
+  "state": {
+    "dashboard_v1": {
+      "generated_at": 1794582607,
+      "counts": {
+        "kev": 1779,
+        "nvd": 7567,
+        "critical": 577,
+        "high": 3089,
+        "ransomware": 361,
+        "advisories": 118,
+        "nvd_7": 3754,
+        "nvd_30": 5200,
+        "kev_7": 10,
+        "kev_30": 34,
+        "rated": 6641,
+        "kev_nvd": 87
+      },
+      "feed_count": 91
+    },
+    "discovery_checkpoint:crossref": 1794324106,
+    "discovery_window:crossref": {
+      "start": 1794320506,
+      "end": 1794513309,
+      "offset": 500,
+      "cursor_present": true,
+      "seen_count": 292
+    },
+    "health:cert-eu": {
+      "job": "Idle",
+      "last_attempt": 1794576306,
+      "last_success": 1794576306,
+      "last_scheduled_attempt": 1794576306,
+      "last_scheduled_success": 1794576306,
+      "last_received": 1794576306,
+      "last_new_item": 1794510664,
+      "last_error": "",
+      "last_error_at": 1794153933,
+      "last_http_status": 200,
+      "next_due": 1794597906,
+      "next_retry": 0,
+      "retry_backoff_seconds": 0,
+      "last_transport": {
+        "kind": "http",
+        "curl_errno": 0,
+        "http_status": 200,
+        "connect_ms": 14,
+        "tls_ms": 94,
+        "total_ms": 244
+      },
+      "last_run_outcome": "checked_no_new_items",
+      "last_run_stats": {
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 10,
+        "stale": 0
+      }
+    },
+    "health:cisa-advisories": {
+      "job": "Idle",
+      "last_attempt": 1794574206,
+      "last_success": 1794574206,
+      "last_scheduled_attempt": 1794574206,
+      "last_scheduled_success": 1794574206,
+      "last_received": 1794574206,
+      "last_new_item": 1794508869,
+      "last_error": "",
+      "last_error_at": 1794153927,
+      "last_http_status": 200,
+      "next_due": 1794595806,
+      "next_retry": 0,
+      "retry_backoff_seconds": 0,
+      "last_transport": {
+        "kind": "intentional_bounded_feed",
+        "curl_errno": 23,
+        "http_status": 200,
+        "connect_ms": 4,
+        "tls_ms": 84,
+        "total_ms": 180
+      },
+      "last_run_outcome": "checked_no_new_items",
+      "last_run_stats": {
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 25,
+        "stale": 0
+      }
+    },
+    "health:crossref": {
+      "job": "Failed",
+      "last_attempt": 1794579907,
+      "last_success": 1794536712,
+      "last_scheduled_attempt": 1794579907,
+      "last_scheduled_success": 1794536712,
+      "last_received": 1794536712,
+      "last_new_item": 1794536712,
+      "last_error": "academic_window_capacity",
+      "last_error_at": 1794579918,
+      "last_http_status": 200,
+      "next_due": 1794618318,
+      "next_retry": 1794618318,
+      "retry_backoff_seconds": 38400,
+      "last_transport": {
+        "kind": "http",
+        "curl_errno": 0,
+        "http_status": 200,
+        "connect_ms": 94,
+        "tls_ms": 194,
+        "total_ms": 11093
+      },
+      "last_failure": {
+        "code": "academic_window_capacity",
+        "at": 1794579918,
+        "diagnostic": {
+          "kind": "not_recorded",
+          "curl_errno": null,
+          "http_status": 200
+        },
+        "backoff_seconds": 38400,
+        "next_retry": 1794618318
+      },
+      "last_run_outcome": "error",
+      "last_run_stats": {
+        "inserted": 24,
+        "updated": 1,
+        "unchanged": 0,
+        "stale": 0
+      }
+    },
+    "health:kev": {
+      "job": "Idle",
+      "last_attempt": 1794574805,
+      "last_success": 1794574805,
+      "last_scheduled_attempt": 1794574805,
+      "last_scheduled_success": 1794574805,
+      "last_received": 1794353142,
+      "last_error": "",
+      "last_http_status": 304,
+      "next_due": 1794596405,
+      "next_retry": 0,
+      "retry_backoff_seconds": 0,
+      "last_transport": {
+        "kind": "http",
+        "curl_errno": 0,
+        "http_status": 304,
+        "connect_ms": 4,
+        "tls_ms": 99,
+        "total_ms": 147
+      },
+      "last_run_outcome": "checked_no_new_items",
+      "last_run_stats": {
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "stale": 0
+      }
+    },
+    "health:msrc": {
+      "job": "Idle",
+      "last_attempt": 1794563105,
+      "last_success": 1794563105,
+      "last_scheduled_attempt": 1794563105,
+      "last_scheduled_success": 1794563105,
+      "last_received": 1794518709,
+      "last_new_item": 1794518709,
+      "last_error": "",
+      "last_error_at": 1794153941,
+      "last_http_status": 304,
+      "next_due": 1794584705,
+      "next_retry": 0,
+      "retry_backoff_seconds": 0,
+      "last_transport": {
+        "kind": "http",
+        "curl_errno": 0,
+        "http_status": 304,
+        "connect_ms": 69,
+        "tls_ms": 150,
+        "total_ms": 762
+      },
+      "last_run_outcome": "checked_no_new_items",
+      "last_run_stats": {
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "stale": 0
+      }
+    },
+    "health:nvd": {
+      "job": "Failed",
+      "last_attempt": 1794558544,
+      "last_success": 1794511813,
+      "last_scheduled_attempt": 1794558544,
+      "last_scheduled_success": 1794511813,
+      "last_received": 1794511813,
+      "last_new_item": 1794504048,
+      "last_error": "nvd_dense_slice",
+      "last_error_at": 1794558558,
+      "last_http_status": 200,
+      "next_due": 1794596958,
+      "next_retry": 1794596958,
+      "retry_backoff_seconds": 38400,
+      "last_transport": {
+        "kind": "http",
+        "curl_errno": 0,
+        "http_status": 200,
+        "connect_ms": 13,
+        "tls_ms": 235,
+        "total_ms": 8075
+      },
+      "last_failure": {
+        "code": "nvd_dense_slice",
+        "at": 1794558558,
+        "diagnostic": {
+          "kind": "not_recorded",
+          "curl_errno": null,
+          "http_status": 200
+        },
+        "backoff_seconds": 38400,
+        "next_retry": 1794596958
+      },
+      "last_run_outcome": "error",
+      "last_run_stats": {
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 200,
+        "stale": 0
+      },
+      "catchup_pending": false
+    },
+    "health:sophos": {
+      "job": "Failed",
+      "last_attempt": 1794567905,
+      "last_scheduled_attempt": 1794567905,
+      "last_error": "transport",
+      "last_error_at": 1794567905,
+      "last_http_status": null,
+      "next_due": 1794644705,
+      "next_retry": 1794644705,
+      "retry_backoff_seconds": 76800,
+      "last_transport": {
+        "kind": "http2_stream",
+        "curl_errno": 92,
+        "http_status": null,
+        "connect_ms": 4,
+        "tls_ms": 84,
+        "total_ms": 101
+      },
+      "last_failure": {
+        "code": "transport",
+        "at": 1794567905,
+        "diagnostic": {
+          "kind": "http2_stream",
+          "curl_errno": 92,
+          "http_status": null,
+          "connect_ms": 4,
+          "tls_ms": 84,
+          "total_ms": 101
+        },
+        "backoff_seconds": 76800,
+        "next_retry": 1794644705
+      },
+      "last_run_outcome": "error"
+    },
+    "nvd_checkpoint": 1794425717,
+    "nvd_last_completed_window": {
+      "start": "2026-11-11T16:35:17Z",
+      "end": "2026-11-11T19:35:17Z",
+      "index": 243,
+      "total": 243,
+      "strategy": "single_response_time_slices_v1",
+      "pages_format": "time_proof.segments",
+      "completed_at": 1794497145,
+      "status": "Complete",
+      "verified_results": 243,
+      "completion_basis": "contiguous inclusive time slices, each returned completely in one API response; not an API snapshot",
+      "time_progress": {
+        "covered_until": 1794425717,
+        "target_end": 1794425717,
+        "completed_slices": 3,
+        "pending_slices": 0,
+        "certified_unique": 243,
+        "probes": 5
+      },
+      "legacy_cursor": 0
+    },
+    "nvd_window": {
+      "start": "2026-11-11T17:35:17Z",
+      "end": "2026-11-11T20:35:17Z",
+      "index": 0,
+      "total": null,
+      "strategy": "single_response_time_slices_v1",
+      "time_progress": {
+        "covered_until": 1794427800,
+        "target_end": 1794429317,
+        "completed_slices": 6,
+        "pending_slices": 8,
+        "certified_unique": 212,
+        "probes": 19
+      },
+      "legacy_cursor": 0
+    }
+  },
+  "automatic_log_summary": {
+    "nvd": {
+      "codes": {
+        "sync_complete": 81,
+        "transport": 6,
+        "nvd_dense_slice": 8
+      },
+      "first_success_utc": "2026-11-11 17:45:44",
+      "last_success_utc": "2026-11-12 19:10:39",
+      "successful_batches": 81,
+      "recent": [
+        {
+          "source": "nvd",
+          "code": "sync_complete",
+          "utc": "2026-11-12 18:45:46"
+        },
+        {
+          "source": "nvd",
+          "code": "sync_complete",
+          "utc": "2026-11-12 19:10:39"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-12 19:30:49"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-12 19:50:16"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-12 20:15:18"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-12 20:55:18"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-12 21:55:18"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-12 23:30:12"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-13 02:29:11"
+        },
+        {
+          "source": "nvd",
+          "code": "nvd_dense_slice",
+          "utc": "2026-11-13 08:29:18"
+        }
+      ]
+    },
+    "crossref": {
+      "codes": {
+        "sync_complete": 24,
+        "academic_window_capacity": 8
+      },
+      "first_success_utc": "2026-11-11 18:25:06",
+      "last_success_utc": "2026-11-13 02:25:12",
+      "successful_batches": 24,
+      "recent": [
+        {
+          "source": "crossref",
+          "code": "sync_complete",
+          "utc": "2026-11-13 02:05:12"
+        },
+        {
+          "source": "crossref",
+          "code": "sync_complete",
+          "utc": "2026-11-13 02:25:12"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 02:45:14"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 03:00:14"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 03:20:13"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 03:55:06"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 04:45:14"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 06:10:15"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 09:00:08"
+        },
+        {
+          "source": "crossref",
+          "code": "academic_window_capacity",
+          "utc": "2026-11-13 14:25:18"
+        }
+      ]
+    }
+  },
+  "timers": {
+    "kev": true,
+    "nvd": true,
+    "cisa-advisories": true,
+    "cert-eu": true,
+    "msrc": true,
+    "dispatch": true
+  },
+  "units": {
+    "nvd": [
+      "Result=success",
+      "ExecMainStartTimestamp=Fri 2026-11-13 15:29:03 CET",
+      "ExecMainExitTimestamp=Fri 2026-11-13 15:29:08 CET",
+      "ExecMainStatus=0",
+      "ActiveState=inactive"
+    ],
+    "dispatch": [
+      "Result=success",
+      "ExecMainStartTimestamp=Fri 2026-11-13 16:10:01 CET",
+      "ExecMainExitTimestamp=Fri 2026-11-13 16:10:08 CET",
+      "ExecMainStatus=0",
+      "ActiveState=inactive"
+    ]
+  },
+  "load": [
+    0.2177734375,
+    0.18994140625,
+    0.18115234375
+  ],
+  "memory": {
+    "MemTotal": "4015940 kB",
+    "MemAvailable": "2270012 kB",
+    "SwapTotal": "2097148 kB",
+    "SwapFree": "1982192 kB"
+  },
+  "db_temporary_suites": {
+    "research": 30,
+    "discovery": 15,
+    "content": 25,
+    "evidence": 24
+  },
+  "verification": {
+    "utc": "2026-11-13T15:07:47.529863+00:00",
+    "wp_cli_warning_free": true,
+    "sql": {
+      "counts": {
+        "kev": 1779,
+        "nvd": 7567,
+        "critical": 577,
+        "high": 3089,
+        "ransomware": 361,
+        "advisories": 118,
+        "nvd_7": 3754,
+        "nvd_30": 5200,
+        "kev_7": 10,
+        "kev_30": 34,
+        "rated": 6641,
+        "kev_nvd": 87
+      },
+      "severity": {
+        "Critical": 577,
+        "High": 3089,
+        "Medium": 2671,
+        "Low": 301,
+        "None": 3,
+        "Unrated": 926
+      },
+      "generated_at": 1794582310,
+      "checkpoint": 1794425717,
+      "window": {
+        "start": "2026-11-11T17:35:17Z",
+        "end": "2026-11-11T20:35:17Z",
+        "index": 0,
+        "total": null,
+        "strategy": "single_response_time_slices_v1",
+        "time_progress": {
+          "covered_until": "2026-11-11T20:10:00Z",
+          "target_end": "2026-11-11T20:35:17Z",
+          "certified_unique": 212,
+          "completed_slices": 6,
+          "pending_slices": 8,
+          "probes": 19
+        }
+      },
+      "completed": {
+        "start": "2026-11-11T16:35:17Z",
+        "end": "2026-11-11T19:35:17Z",
+        "index": 243,
+        "total": 243,
+        "strategy": "single_response_time_slices_v1",
+        "pages_format": "time_proof.segments",
+        "completed_at": 1794497145,
+        "status": "Complete",
+        "verified_results": 243,
+        "completion_basis": "contiguous inclusive time slices, each returned completely in one API response; not an API snapshot",
+        "time_progress": {
+          "covered_until": "2026-11-11T19:35:17Z",
+          "target_end": "2026-11-11T19:35:17Z",
+          "certified_unique": 243,
+          "completed_slices": 3,
+          "pending_slices": 0,
+          "probes": 5
+        }
+      },
+      "missing_certified_ids": 0,
+      "duplicate_ids": 0,
+      "dashboard_sql_match": true,
+      "feed_publication_matches": true,
+      "feed_receipt_rows": 91,
+      "feed_count": 91,
+      "content_queue": [
+        {
+          "status": "draft_ready",
+          "is_test": "1",
+          "n": "1"
+        }
+      ],
+      "content_rows_sha256": "ff13a3e4336ce2959c674b72d2052713f5807a5f412de19874966f63342267dc",
+      "posts": 61,
+      "content_enrichment_tables": true,
+      "mfa_plugins": [],
+      "admin_mfa_metadata_keys": [],
+      "blog_public": "0"
+    },
+    "sophos_scheduled_health": {
+      "last_attempt": 1794567905,
+      "last_error": "transport",
+      "last_transport": {
+        "kind": "http2_stream",
+        "curl_errno": 92,
+        "http_status": null,
+        "connect_ms": 4,
+        "tls_ms": 84,
+        "total_ms": 101
+      },
+      "next_due": 1794644705
+    },
+    "http": {
+      "dashboard": 200,
+      "charts": 6,
+      "freshness_labels": true,
+      "noindex": true,
+      "anonymous": 401,
+      "home": 200,
+      "pulse_2_1": true,
+      "filters": true,
+      "admin_login_boundary": true
+    },
+    "mfa_actual_otp": "UNVERIFIED",
+    "browser_visual_js_console": "UNVERIFIED"
+  },
+  "preserved": {
+    "checks": [
+      {
+        "table": "stg_cdca_jobs",
+        "matches_backup": true
+      },
+      {
+        "table": "stg_cdca_versions",
+        "matches_backup": true
+      },
+      {
+        "table": "stg_cdca_events",
+        "matches_backup": true
+      },
+      {
+        "table": "stg_cdca_agents",
+        "matches_backup": true
+      },
+      {
+        "table": "stg_cdca_enrichments",
+        "matches_backup": true
+      },
+      {
+        "table": "stg_cdca_evidence",
+        "matches_backup": true
+      },
+      {
+        "kind": "options",
+        "matches_backup": true,
+        "rows": 8
+      },
+      {
+        "posts": 61
+      }
+    ],
+    "production_files_unchanged": true,
+    "protected_configs_unchanged": true,
+    "content_code_unchanged": true
+  },
+  "final_proofs": {
+    "utc": "2026-11-13T15:07:50.562568+00:00",
+    "schema_unchanged": true,
+    "tables_checked": 16,
+    "nvd_retention": {
+      "original_nvd": 4139,
+      "missing_nvd": 0
+    },
+    "logs_since_deploy": {
+      "/var/log/cyberdat-staging/php-errors.log": {
+        "fatal": 0,
+        "warning": 0,
+        "database": 0,
+        "undated_indicators": 0
+      },
+      "/var/log/nginx/cyberdat-staging.error.log": {
+        "fatal": 0,
+        "warning": 0,
+        "database": 0,
+        "undated_indicators": 0
+      }
+    },
+    "protected_and_production_unchanged": true
+  },
+  "restore": [
+    {
+      "table": "stg_cdra_items",
+      "restored_rows": 10655
+    },
+    {
+      "json_table": "stg_cdra_items",
+      "invalid_json": 0
+    },
+    {
+      "table": "stg_cdra_aliases",
+      "restored_rows": 10783
+    },
+    {
+      "table": "stg_cdra_cves",
+      "restored_rows": 10416
+    },
+    {
+      "table": "stg_cdra_state",
+      "restored_rows": 76
+    },
+    {
+      "json_table": "stg_cdra_state",
+      "invalid_json": 0
+    },
+    {
+      "table": "stg_cdra_logs",
+      "restored_rows": 1029
+    },
+    {
+      "table": "stg_cdra_events",
+      "restored_rows": 0
+    },
+    {
+      "table": "stg_cdra_discovery",
+      "restored_rows": 1191
+    },
+    {
+      "table": "stg_cdra_categories",
+      "restored_rows": 2055
+    },
+    {
+      "table": "stg_cdra_identifiers",
+      "restored_rows": 523
+    },
+    {
+      "table": "stg_cdra_discovery_audit",
+      "restored_rows": 1536
+    },
+    {
+      "table": "stg_cdca_jobs",
+      "restored_rows": 1
+    },
+    {
+      "table": "stg_cdca_versions",
+      "restored_rows": 1
+    },
+    {
+      "table": "stg_cdca_events",
+      "restored_rows": 4
+    },
+    {
+      "table": "stg_cdca_agents",
+      "restored_rows": 1
+    },
+    {
+      "table": "stg_cdca_enrichments",
+      "restored_rows": 0
+    },
+    {
+      "table": "stg_cdca_evidence",
+      "restored_rows": 0
+    }
+  ],
+  "dense_diagnostic": {
+    "utc": "2026-11-13T15:01:07.365170+00:00",
+    "no_upsert_or_health_write": true,
+    "result": {
+      "error": "http_503",
+      "diagnostic": {
+        "kind": "http",
+        "curl_errno": 0,
+        "http_status": 503,
+        "connect_ms": 4,
+        "tls_ms": 190,
+        "total_ms": 303
+      },
+      "peak_bytes": 60096512
+    }
+  },
+  "small_probe": {
+    "utc": "2026-11-13T14:56:08.866184+00:00",
+    "nvd": {
+      "error": "transport",
+      "diagnostic": {
+        "kind": "timeout",
+        "curl_errno": 28,
+        "http_status": null,
+        "connect_ms": 4,
+        "tls_ms": 189,
+        "total_ms": 12002
+      }
+    }
+  },
+  "model_memory": {
+    "test_only": true,
+    "no_writes": true,
+    "rows": 10000,
+    "feed": 20,
+    "cache_bytes": 12951,
+    "peak_bytes": 78970880,
+    "memory_limit": "-1"
+  },
+  "runtime_hashes": {
+    "cyberdat-research.php": "b6db41f1c7911b276d79a056aaaddc97203659be24d084ea8e2937960303cebc",
+    "includes/storage.php": "327f1e9cb2c5236f53bc072e7d2cd1c34143feba41814171c1d0276841004554",
+    "includes/nvd-progress.php": "c2d78469bba380bdecc1c50e1fe58ac431b4c4b93a4da7490e222e461a240205",
+    "includes/discovery-sources.json": "9dfcdde9e3350626ba144a9c7537f76860cfacecc053a8af7f5cbf4a7e582764",
+    "includes/priority.php": "e4337fbbb5b6518b174605e8efd00a1224a19348314a53a255baefee0f7c9666",
+    "includes/admin.php": "d1181ef4cd31abf74a595e7dfa61ad42904d32508cf233272f64b46e36d0a4fe",
+    "includes/ingestion.php": "a34b58f18a8fe4e60d687669adb5f77e1d46f51cf728889f06ac2189435c11b5",
+    "includes/discovery-admin.php": "fc47be6fb7d8b420c6d8635da4562e83f30194af06e2b0828ddb2e45a1e05959",
+    "includes/dashboard.php": "4581b1aa60757a1c5999d51ee1f9d23cf754024d87f7aa900d2fe196eb8ff2f2",
+    "includes/discovery.php": "333b2ed78cace66214addadb1cf38e6afb59b9ced9d214a3c7406e222bb6b273",
+    "includes/cli.php": "f24df9020e1d8ebf2db52b71b523efc4138bfb0cb09ae5b68de3f03601550a32",
+    "includes/analytics.php": "269d8af05458b303dd5b1cf60a48aafa2bfa6615ee5bea9f058016caca59cc51",
+    "includes/normalize.php": "10e39fc86e753b8eea5a1f37e76ee51d808e3a915d1dddd828fe7bd464565afb",
+    "includes/registry.php": "e42bb6bc9771f7f3c8af0b71012933cebe7f1885c5c48ce16ae667af727b0266",
+    "includes/fetch.php": "59935752cbe938c39bb743890bbc2431052457a6972c5fc5e8726608749733d0",
+    "includes/legacy-validators.php": "025d86ced113cc6e17e971042a255db10e6852a0a224e4301d245dc8e1a6af86",
+    "includes/discovery-ingestion.php": "5bb2a7a1c196b2e12d40fd96dfd1b8dd5a431287cbcb318eb9a75f623ce2db21",
+    "includes/discovery-store.php": "661a6dad442157731024c71d39862683d5d82f0576c1c72474660a25e5cb159a",
+    "assets/discovery-admin.css": "08b698e3f9eef1e42077f61df40b36cfc7949303446d447a542be81621d96e0d",
+    "tests/discovery-database.php": "204dfade4dcb16185155d300af28dba9a4a40753edca49fe6b2d5afe1b148dd1",
+    "tests/database.php": "579ac336b2bdc11e2b814f00e7155ede56d9035ca3bc5ffc7a1cc80977ececb8",
+    "tests/fixtures.json": "66abcbb921ceaa0e1947cfd896506732f8875355e6e736edcca4fa990e3fff95"
+  },
+  "theme_template_sha256": "9542286b83f013fd9818047dc0f3719b908c3cc9c7f4eec9f57a36df5bc7e8e2",
+  "launcher_sha256": "68336d2eb2f8752465fdfa849972a3113d7e85ebcd2378103be8f7c9ac722e8d",
+  "source_runtime_match": true,
+  "protected_and_production_unchanged": true,
+  "unverified": [
+    "natural NVD and Crossref recovery after Nov13 last fix: existing backoff retained",
+    "actual browser/responsive/JS console",
+    "actual MFA OTP challenge",
+    "Sophos successful ingestion remains BLOCKED"
+  ],
+  "admin_verification": {
+    "utc": "2026-11-13T15:13:32.468074+00:00",
+    "password_valid": true,
+    "credentials_changed": false,
+    "mfa_actual_otp": "UNVERIFIED",
+    "authentication": "existing_password_login_succeeded",
+    "second_factor_challenge_observed": false,
+    "admin_pages": {
+      "/wp-admin/admin.php?page=cyberdat-research": {
+        "http": 200,
+        "marker": true
+      },
+      "/wp-admin/admin.php?page=cyberdat-content": {
+        "http": 200,
+        "marker": true
+      }
+    },
+    "test_session_logged_out": true
+  },
+  "checkpoint_age_seconds_as_of_snapshot": 157107
+}

@@ -1,23 +1,25 @@
 # CyberDat — Project Status (source of truth)
 
-Last updated: 2026-11-11
+Last updated: 2026-11-13
 Repository: CyberDat/CyberDat-AI
-Current stage: **Research Agent 0.8.3 — staging fixes installed; natural-cycle acceptance in progress. Content Stage 1.1 retained.**
+Current stage: **Research Agent 0.8.3 — PARTIAL; staging fixes/tests complete, final scheduled recovery UNVERIFIED. Content Stage 1.1 retained.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Research 0.8.3 stability — 2026-11-11 (acceptance in progress)
+## Research 0.8.3 acceptance — 2026-11-13 15:13:44 UTC
 
-Branch `feat/cyberdat-research-agent-0.8.3` is based on Content head `d0df9ca3698336ea0ee770c00821f04adeaf61af`, retaining the Research ancestor and Content Stage 1.1. Full backup `/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z`: SQL gzip, private file restoration/hashes and all 16 Research/Content tables restored into TEMPORARY tables with matching archived row counts PASS.
+**Overall PARTIAL.** Branch `feat/cyberdat-research-agent-0.8.3`, based on Content head `d0df9ca3698336ea0ee770c00821f04adeaf61af`; no main merge. Full initial backup `/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z`, fresh continuation backup `/var/backups/cyberdat-staging/research-0.8.3-continuation-20261113T145510Z`. Both isolated restoration checks pass; fresh16 TEMP tables/JSON, original4139 NVD IDs retained, zero missing certified IDs/duplicates, schemas unchanged.
 
-Installed on staging at 17:26:39 UTC: time-sliced NVD progress with checkpoint preserved, safe transport diagnostics, Crossref future/incomplete-date handling with private per-window metadata retention, real scheduled telemetry, publication-versus-receipt Dashboard labels, and a local empty WP-CLI config that stops upward traversal outside open_basedir. Dispatcher reports failed collector outcomes as failure. No timer frequency/source toggle/checkpoint reset, historical import, Content processing, model/GPU/Ollama, publication or production change.
+NVD7567/KEV1779/advisories118, Crossref488, queue10655. Since initial deployment17:26:39 UTC11Nov:81 successful NVD batch logs and24 Crossref; original NVD window completed and checkpoint advanced2026-11-10 14:19:06→2026-11-11 19:35:17 UTC. Last validated NVD response2026-11-12 19:30:13; last Crossref success2026-11-13 02:25:12. Changing totalResults no longer resets offset history: private contiguous time-range proofs, idempotent upsert, atomic completion/checkpoint, compact public progress. No historical import.
 
-Candidate fixtures PASS: 26 Research, 14 Discovery, 25 Content and 24 Evidence tests in TEMPORARY tables, plus offline NVD changing-membership/restart/transport/date/contract/worker/dashboard checks. All six Content tables matched the original backup by all-column hashes; eight auth/role/URL/indexing/theme options also matched. Posts61, original mock job1/version1 retained. Basic Auth/noindex, home Pulse2.1, six Dashboard charts/filter routes and login boundaries PASS. Actual browser/JS console/OTP flow unavailable; no active conventional MFA plugin/admin metadata was detected, so MFA is UNVERIFIED, not accepted by assumption.
+Crossref future publication metadata caused discovery_date and was corrected without invented dates; real automatic continuation proven. Observation then exposed dense NVD seconds (>200 results) and the old Crossref raw-window cap500. Nov13 fixes allow a single complete <=2000-response leaf (body4MiB, one large response/run), cursor continuation up to10000 raw/2MiB state (still25/page), page-specific withheld metadata archives, and future6h Crossref catch-up windows. Existing bounds/opaque cursors/checkpoints/health/backoff preserved byte-for-byte. Latest real NVD read-only probes returned timeout28/HTTP503, so post-fix API recovery is not claimed. Next_due NVD2026-11-13 19:09:18; Crossref2026-11-14 01:05:18 UTC. Natural recovery after the latest code remains UNVERIFIED; no forced sync, timer change or manual error/backoff clearing.
 
-First natural NVD run completed at 17:45:44 UTC with two bounded probes, no errors, scheduled timestamps and persisted three pending slices; checkpoint unchanged pending full coverage. Crossref remains at saved cursor275 until naturally due. Sophos is BLOCKED: public DNS/TLS succeeded but the VPS probe got curl92/http2_stream, no HTTP response; HTTP/1.1 also failed, no speculative fallback/security weakening. Its next retry remains 2026-11-12 13:25:07 UTC.
+Sophos BLOCKED: natural13Nov attempt again curl92/http2_stream, HTTP null; separate HTTP1.1 probe timeout28 after12s. No ingestion/connection claimed, no UA/TLS/SSRF/redirect/proxy bypass. Scheduled telemetry/last-failure diagnostics, dispatcher failure exit, publication/receipt/source-sync labels and bounded latest12/latest6 scope implemented. WP-CLI local empty config fixes upward open_basedir discovery without expanding allowed paths. NVD cap10000, global12000 retained; peak for10000-row model75.3MiB inside WordPress, cgroup256MiB/CPU25% unchanged. Finite retention remains a limit.
 
-Overall acceptance PENDING further natural cycles and Crossref continuation. [Algorithm, limits, evidence and rollback boundaries](../deploy/research-0.8.3/README.md). Do not infer complete historical NVD or recovered Sophos. No next phase started.
+PASS:30 Research/15 Discovery/25 Content/24 Evidence TEMP checks,14 offline suites, Dashboard/Pulse2.1 SQL/HTTP/filter/six-chart checks, BasicAuth401/noindex, authenticated Research/Content HTTP200, no new staging PHP/SQL indicators. All6 Content tables and8 auth/role/URL/indexing/theme options match original backup by hashes; Content Stage1.1/brief2 intact, job1/version1 TEST MOCK and posts61 retained. Production/protected configs/public design/SEO/JS unchanged; only one informational Dashboard template changed. All6 timers active, scheduled timestamps observed rather than backfilled. Actual browser/responsive/JS console and MFA/OTP UNVERIFIED; ordinary login did not challenge OTP. No model/GPU/Ollama/Social/publication or new service.
+
+[Full final report, limits and rollback](../deploy/research-0.8.3/REPORT.md), [machine evidence](../deploy/research-0.8.3/acceptance-2026-11-13.json). Rollback preflight tested; live rollback not run. Work stops here; do not start the next phase. A future read-only observation should verify scheduled recovery after existing backoff.
 
 ## Content evidence Stage 1.1 accepted with limits — 2026-11-11 05:32:30 UTC
 

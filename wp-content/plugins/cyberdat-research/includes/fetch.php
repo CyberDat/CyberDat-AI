@@ -12,7 +12,7 @@ function cdra_query($source,$query){
  cdra_need(isset(cdra_sources()[$source]),'source_not_allowed');
  if($source!=='nvd'){cdra_need(!$query,'query_rejected');return '';}
  cdra_need(!array_diff(array_keys($query),['cveIds','lastModStartDate','lastModEndDate','resultsPerPage','startIndex']),'query_rejected');
- cdra_need(isset($query['resultsPerPage'],$query['startIndex'])&&is_int($query['resultsPerPage'])&&$query['resultsPerPage']>=1&&$query['resultsPerPage']<=200&&is_int($query['startIndex'])&&$query['startIndex']>=0,'query_pagination');
+ cdra_need(isset($query['resultsPerPage'],$query['startIndex'])&&is_int($query['resultsPerPage'])&&$query['resultsPerPage']>=1&&$query['resultsPerPage']<=cdra_nvd_page_cap($query)&&is_int($query['startIndex'])&&$query['startIndex']>=0,'query_pagination');
  if(isset($query['cveIds'])){cdra_need(!isset($query['lastModStartDate'],$query['lastModEndDate'])&&preg_match('/^CVE-\d{4}-\d{4,19}(?:,CVE-\d{4}-\d{4,19}){0,2}$/D',$query['cveIds']),'query_cve_ids');}
  else{cdra_need(isset($query['lastModStartDate'],$query['lastModEndDate']),'query_window');$start=cdra_time($query['lastModStartDate']);$end=cdra_time($query['lastModEndDate']);cdra_need($end>=$start&&$end-$start<=86400&&$end<=time()+300,'query_window');}
  return '?'.http_build_query($query,'','&',PHP_QUERY_RFC3986);

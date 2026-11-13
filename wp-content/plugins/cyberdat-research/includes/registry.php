@@ -19,3 +19,6 @@ function cdra_time($value){
 }
 
 function cdra_hash($value){$sort=static function($item)use(&$sort){if(!is_array($item)){return $item;}if(!array_is_list($item)){ksort($item,SORT_STRING);}foreach($item as $key=>$child){$item[$key]=$sort($child);}return $item;};return hash('sha256',cdra_json($sort($value)));}
+
+/** Only indivisible time slices may use NVD's larger single-response envelope. */
+function cdra_nvd_page_cap($query){if(isset($query['lastModStartDate'],$query['lastModEndDate'])&&!isset($query['cveIds'])&&($query['startIndex']??0)===0){$span=cdra_time($query['lastModEndDate'])-cdra_time($query['lastModStartDate']);if($span>=0&&$span<=1){return 2000;}}return 200;}

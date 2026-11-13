@@ -2,8 +2,8 @@
 """Pinned staging-only release, read-only observations and code-only rollback."""
 import sys,os,pathlib,importlib.util,json,hashlib,subprocess,shutil,pwd,time,ctypes,datetime,fcntl,argparse
 sys.dont_write_bytecode=True
-P=pathlib.Path;D=P(__file__).parent;W=D.parent/'research-0.8.3-work';B=P('/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z')
-spec=importlib.util.spec_from_file_location('support',D.parent/'content-0.9.0-prepared/support.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+P=pathlib.Path;D=P(__file__).parent;W=P('/home/cyberdat/cyberdat-deploy/research-0.8.3-work');B=P('/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z')
+spec=importlib.util.spec_from_file_location('support',P('/home/cyberdat/cyberdat-deploy/content-0.9.0-prepared/support.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 os.chdir(m.ROOT);os.umask(0o077)
 
 def digest(p):return hashlib.sha256(P(p).read_bytes()).hexdigest()

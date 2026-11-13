@@ -3,7 +3,7 @@ sys.dont_write_bytecode=True
 from pathlib import Path
 D=Path(__file__).parent;spec=importlib.util.spec_from_file_location('manager',D/'manage.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 # Only read SQL/unit state; wait for natural cycles. No sync or due-time changes.
-end=time.time()+2200;last=0
+end=time.time()+1600;last=0
 while time.time()<end:
  minute=int(time.time()//60)
  if minute%5==1 and minute!=last:

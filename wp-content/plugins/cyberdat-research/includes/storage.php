@@ -94,7 +94,7 @@ class CDRA_Store {
   $source=$record['source'];$identity=hash('sha256',$record['source_id']);$url=hash('sha256',$record['canonical_url']);
   $existing=$this->db->get_results($this->db->prepare("SELECT * FROM {$this->prefix}items WHERE source=%s AND (id IN (SELECT item_id FROM {$this->prefix}aliases WHERE source=%s AND source_key=%s) OR url_key=%s) FOR UPDATE",$source,$source,$identity,$url),ARRAY_A);
   cdra_need(count($existing)<=1,'ambiguous_identity');$old=$existing[0]??null;
-  if(!$old){cdra_need($this->count()<12000&&($source!=='nvd'||$this->count('nvd')<5000),'storage_capacity');}
+  if(!$old){cdra_need($this->count()<12000&&($source!=='nvd'||$this->count('nvd')<10000),'storage_capacity');}
   if($old&&$source==='kev'){$previous_record=json_decode($old['payload'],true,64,JSON_THROW_ON_ERROR);if(cdra_hash($previous_record['cisa_original'])===cdra_hash($record['cisa_original'])){$record['source_updated']=$previous_record['source_updated'];$record['source_updated_basis']=$previous_record['source_updated_basis'];}else{$record['source_updated']=$record['catalog_release'];$record['source_updated_basis']='catalog release containing an observed item change; exact item modification time unavailable';}}
   $text=cdra_json($record);cdra_need(strlen($text)<=131072,'item_size');$hash_record=$record;unset($hash_record['catalog_release']);$hash=cdra_hash($hash_record);
 

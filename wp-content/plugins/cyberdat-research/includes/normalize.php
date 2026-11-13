@@ -33,7 +33,7 @@ function cdra_nvd_page($body,$query){
  try{$raw=json_decode($body,true,64,JSON_THROW_ON_ERROR);}catch(Throwable $e){throw new CDRA_Error('nvd_json');}
  cdra_need(is_array($raw)&&($raw['format']??'')==='NVD_CVE'&&($raw['version']??'')==='2.0','nvd_envelope');
  foreach(['totalResults','resultsPerPage','startIndex'] as $key){cdra_need(isset($raw[$key])&&is_int($raw[$key])&&$raw[$key]>=0,'nvd_pagination');}
- cdra_need($raw['startIndex']===(int)($query['startIndex']??0)&&$raw['resultsPerPage']<=min(200,(int)($query['resultsPerPage']??200))&&$raw['totalResults']<=1000000&&is_array($raw['vulnerabilities']??null)&&array_is_list($raw['vulnerabilities'])&&count($raw['vulnerabilities'])<=min(200,(int)($query['resultsPerPage']??200)),'nvd_pagination');
+ cdra_need($raw['startIndex']===(int)($query['startIndex']??0)&&$raw['resultsPerPage']<=min(cdra_nvd_page_cap($query),(int)($query['resultsPerPage']??200))&&$raw['totalResults']<=1000000&&is_array($raw['vulnerabilities']??null)&&array_is_list($raw['vulnerabilities'])&&count($raw['vulnerabilities'])<=min(cdra_nvd_page_cap($query),(int)($query['resultsPerPage']??200)),'nvd_pagination');
  cdra_need(count($raw['vulnerabilities'])+$raw['startIndex']<=$raw['totalResults']&&($raw['vulnerabilities']||$raw['totalResults']===0),'nvd_partial_page');
  $rows=[];$seen=[];
  foreach($raw['vulnerabilities'] as $wrapper){

@@ -2,7 +2,7 @@
 import sys,os,pathlib,importlib.util,json,hashlib,datetime,getpass,re,base64,urllib.request,urllib.error
 sys.dont_write_bytecode=True
 P=pathlib.Path;D=P(__file__).parent;B=P('/var/backups/cyberdat-staging/research-0.8.3-20261111T170009Z')
-spec=importlib.util.spec_from_file_location('support',D.parent/'content-0.9.0-prepared/support.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+spec=importlib.util.spec_from_file_location('support',P('/home/cyberdat/cyberdat-deploy/content-0.9.0-prepared/support.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 os.umask(0o077);os.chdir(m.RUNTIME)
 report={'utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
 release=json.loads((B/'release.json').read_text());m.need(m.research_code()==release['research'],'Installed Research release hash mismatch');m.need(m.sha(m.THEME/'template-parts/home/threat-dashboard.php')==release['theme_sha256'],'Installed template hash mismatch')
@@ -30,9 +30,8 @@ if r.returncode:
  print('BLOCKED: SQL/application verification',flush=True)
  print(json.dumps(re.findall(r'(?:PHP Fatal error:|Uncaught [A-Za-z_\\]+:)[^\n]*',r.stderr.decode(errors='replace'))));sys.exit(1)
 report['sql']=json.loads(r.stdout);m.need(report['sql']['feed_receipt_rows']==report['sql']['feed_count'],'Receipt projection not yet rebuilt by a scheduled cycle');print('PASS: projection, publication/receipt, certified IDs and Content queue checked',flush=True)
-# One diagnostic fetch through the installed secure client, no ingestion or health/checkpoint write.
-code="try{$r=(new CDRA_Client())->get('sophos');echo wp_json_encode(['status'=>$r['status'],'diagnostic'=>$r['diagnostic'],'rows'=>count(cdra_discovery_parse('sophos',$r['body']))]);}catch(CDRA_Error $e){echo wp_json_encode(['error'=>$e->getMessage(),'diagnostic'=>$e->diagnostic]);}"
-r=m.wp('eval',code,check=False);m.need(r.returncode==0,'Sophos diagnostic failed');report['sophos_probe']=json.loads(r.stdout);print('SOPHOS DIAGNOSTIC',json.dumps(report['sophos_probe']),flush=True)
+# Read the actual scheduled Sophos failure; do not force another source request.
+r=m.wp('eval',"$h=(new CDRA_Store())->get('health:sophos',[]);echo wp_json_encode(['last_attempt'=>$h['last_attempt']??null,'last_error'=>$h['last_error']??null,'last_transport'=>$h['last_transport']??null,'next_due'=>$h['next_due']??null]);");report['sophos_scheduled_health']=json.loads(r.stdout);print('SOPHOS SCHEDULED HEALTH',json.dumps(report['sophos_scheduled_health']),flush=True)
 basic=getpass.getpass('EXISTING staging HTTP Basic Auth password (hidden): ')
 status,h,body=m.fetch('/threat-intelligence/',basic);m.need(status==200,'Staging Basic Auth rejected')
 text=body.decode('utf-8','replace');m.need('Latest 12 published entries from configured sources' in text and 'Latest 6 published advisories from configured sources' in text and 'NVD last successful sync:' in text,'Freshness labels missing');m.need('noindex' in h.get('X-Robots-Tag',''),'Noindex missing');m.need(text.count('data-chart-id=')==6,'Dashboard charts missing');report['http']={'dashboard':status,'charts':6,'freshness_labels':True,'noindex':True,'anonymous':m.fetch('/threat-intelligence/')[0]};m.need(report['http']['anonymous']==401,'Basic Auth not enforced')
