@@ -75,6 +75,9 @@ foreach ( $xp->query( '//*[@id]' ) as $node ) { $ids[] = $node->getAttribute( 'i
 check( count( $ids ) === count( array_unique( $ids ) ), 'element ids are unique' );
 foreach ( $xp->query( '//label[@for]' ) as $label ) { check( in_array( $label->getAttribute( 'for' ), $ids, true ), 'label for="' . $label->getAttribute( 'for' ) . '" targets an element' ); }
 
+preg_match( '#id="cd-mcp-limits".*?<li>(.*?)</li>#s', $html, $first );
+check( str_starts_with( $first[1] ?? '', 'TOML and YAML are not supported.' ), 'Limitations start with: TOML and YAML are not supported' );
+
 // Versions -------------------------------------------------------------------------
 $engine = file_get_contents( __DIR__ . '/../wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js' );
 preg_match( "/const VERSION = '([^']+)';\s*const RULESET_VERSION = '([^']+)';/", $engine, $v );

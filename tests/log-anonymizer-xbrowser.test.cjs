@@ -134,6 +134,9 @@ async function runBrowser(name) {
 		fs.closeSync(fd);
 		await page.setInputFiles('[data-la-file]', big);
 		await until(() => /Large files are not displayed/.test(document.querySelector('[data-la-source]').textContent));
+		const webkitNote = await page.$eval('[data-la-source]', e => /WebKit-based browsers/.test(e.textContent));
+		assert.equal(webkitNote, name === 'webkit', 'WebKit large-input note shown only in WebKit');
+		pass('large input: the WebKit speed note is ' + (webkitNote ? 'shown (WebKit)' : 'not shown (' + name + ')'));
 		await page.evaluate(() => { window.__gap = 0; window.__last = performance.now(); window.__probe = setInterval(() => { const n = performance.now(); window.__gap = Math.max(window.__gap, n - window.__last); window.__last = n; }, 50); });
 		const t0 = Date.now();
 		await run(180000);

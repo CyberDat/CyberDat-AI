@@ -59,6 +59,8 @@ check( 13 === substr_count( $html, 'data-la-category' ), 'all 13 built-in catego
 foreach ( array( 'How it works', 'Privacy', 'Limitations of automated analysis', 'Automated anonymization cannot guarantee', 'Contains the original values.' ) as $needle ) {
 	check( str_contains( $html, $needle ), "required block present: $needle" );
 }
+preg_match( '#id="cd-la-limits".*?<li>(.*?)</li>#s', $html, $first_limit );
+check( str_starts_with( $first_limit[1] ?? '', 'Names of people and phone numbers are not detected.' ), 'Limitations start with: names of people and phone numbers are not detected' );
 check( ! preg_match( '/<form\b|action=|method=/i', $html ), 'no form can submit input to WordPress' );
 check( ! preg_match( '#(src|href)=["\']https?://(?!staging\.cyberdat\.eu/)#i', $html ), 'no third-party resource URLs in markup' );
 check( ! preg_match( '/<script\b(?![^>]*type="?text\/template)/i', $html ), 'no inline script in tool markup' );

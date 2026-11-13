@@ -18,7 +18,7 @@
 	'use strict';
 
 	const VERSION = '1.0.0';
-	const RULESET_VERSION = '2026-11-12.1';
+	const RULESET_VERSION = '2026-11-13.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_POLICY_CHARS = 256 * 1024;
 	const MAX_DEPTH = 64;
@@ -840,7 +840,7 @@
 				if (p.kind === 'source') { if (!p.pinned) { emit('MCP-CMD-009', 'medium', s, sub(sp.idx), sp.spec); } s.packages.push({ name: p.name, ecosystem: eco, pinned: p.pinned, version: '', sub: sub(sp.idx) }); continue; }
 				if (p.kind === 'local') { continue; }
 				s.packages.push({ name: p.name, ecosystem: eco, pinned: p.pinned, version: p.version, sub: sub(sp.idx) });
-				if (!p.pinned) { emit('MCP-CMD-003', 'low', s, sub(sp.idx), base + ' ' + sp.spec + (p.version ? ' (version "' + p.version + '" is not exact)' : ' (no version)')); }
+				if (!p.pinned) { emit('MCP-CMD-003', 'info', s, sub(sp.idx), base + ' ' + sp.spec + (p.version ? ' (version "' + p.version + '" is not exact)' : ' (no version)')); }
 			}
 			// Positional arguments after the package are server arguments.
 			const rest = first >= 0 ? pkgArgs.slice(first + 1) : [];

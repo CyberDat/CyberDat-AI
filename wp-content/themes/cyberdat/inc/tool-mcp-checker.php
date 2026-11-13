@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_MCP_SLUG = 'mcp-security-checker';
 const CYBERDAT_MCP_ENGINE = '1.0.0';
-const CYBERDAT_MCP_RULESET = '2026-11-12.1';
+const CYBERDAT_MCP_RULESET = '2026-11-13.1';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */
 function cyberdat_mcp_is_page( $post_id ) {

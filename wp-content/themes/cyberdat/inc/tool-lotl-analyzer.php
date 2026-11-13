@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_LOTL_SLUG = 'lotl-command-analyzer';
 const CYBERDAT_LOTL_ENGINE = '1.0.0';
-const CYBERDAT_LOTL_RULESET = '2026-11-12.1';
+const CYBERDAT_LOTL_RULESET = '2026-11-13.1';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */
 function cyberdat_lotl_is_page( $post_id ) {

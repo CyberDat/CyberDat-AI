@@ -160,6 +160,15 @@
 		el.source.textContent = note || '';
 	}
 
+	// Safari and every browser on iOS use WebKit, which processed large logs several times slower in tests
+	// (about 23 s for 30 MB on desktop WebKit vs about 3 s in Edge/Firefox). Warn before large inputs.
+	const WEBKIT_NOTE_BYTES = 10 * 1024 * 1024;
+	const ua = navigator.userAgent || '';
+	const webkitOnly = (/AppleWebKit\//.test(ua) && !/(?:Chrome|Chromium|Edg|OPR|Android)\//.test(ua)) || /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+	function webkitNote(bytes) {
+		return webkitOnly && bytes > WEBKIT_NOTE_BYTES ? ' Safari and other WebKit-based browsers (all browsers on iPhone and iPad) process large inputs much more slowly; 30 MB took about 23 seconds in tests and phones may run out of memory. If it takes too long, select Cancel and split the file or use a desktop browser.' : '';
+	}
+
 	function loadFile(file) {
 		showError('');
 		if (!file) { return; }
@@ -173,13 +182,13 @@
 		if (file.size <= INLINE_FILE_BYTES) {
 			file.text().then(text => {
 				el.input.value = text;
-				setTextSource('Loaded “' + file.name + '” (' + formatBytes(file.size) + '). You can edit it before anonymizing.');
+				setTextSource('Loaded “' + file.name + '” (' + formatBytes(file.size) + '). You can edit it before anonymizing.' + webkitNote(file.size));
 			}, () => showError('The file could not be read. Make sure it is a plain-text file.'));
 			return;
 		}
 		state.source = { kind: 'file', file };
 		el.input.value = '';
-		el.source.textContent = 'Loaded “' + file.name + '” (' + formatBytes(file.size) + '). Large files are not displayed; they are processed in the background. Type in the box to switch back to pasted text.';
+		el.source.textContent = 'Loaded “' + file.name + '” (' + formatBytes(file.size) + '). Large files are not displayed; they are processed in the background. Type in the box to switch back to pasted text.' + webkitNote(file.size);
 	}
 
 	function hasInput() {
@@ -320,7 +329,7 @@
 		const jobId = ++state.jobId;
 		const source = state.source.kind === 'file' ? { kind: 'file', file: state.source.file } : { kind: 'text', text: el.input.value };
 		setRunning(true);
-		setStatus('Anonymizing locally…');
+		setStatus('Anonymizing locally…' + webkitNote(state.source.kind === 'file' ? state.source.file.size : el.input.value.length));
 		state.timer = window.setTimeout(() => {
 			if (state.jobId === jobId && state.running) {
 				cancel('Processing took longer than ' + (JOB_TIMEOUT_MS / 1000) + ' seconds and was stopped. A custom rule may be too complex, or the input too large.');

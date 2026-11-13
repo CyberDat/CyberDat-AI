@@ -24,7 +24,7 @@
 	'use strict';
 
 	const VERSION = '1.0.0';
-	const RULESET_VERSION = '2026-11-12.1';
+	const RULESET_VERSION = '2026-11-13.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_LINE_CHARS = 32768;
 	const MAX_COMMANDS = 20000;
@@ -228,6 +228,13 @@
 	const ENC_PARAM_RE = /^[-/](?:e|ec|en|enc|enco|encod|encode|encoded|encodedc|encodedco|encodedcom|encodedcomm|encodedcomma|encodedcomman|encodedcommand)$/i;
 	const URL_RE = /\b(?:https?|ftp):\/\/[^\s"'<>]{3,}/i;
 	const UNC_RE = /(?:^|[\s"'=(,])\\\\[A-Za-z0-9._-]{1,253}\\[^\s"']+/;
+	/** \\host\share on an internal network: single-label host, internal DNS suffix or private IPv4 (WebDAV @SSL/@port is never internal). */
+	function internalShare(t) {
+		const m = String(t).match(/^\\\\([^\\]{1,253})\\/);
+		if (!m || /@/.test(m[1])) { return false; }
+		const h = m[1].toLowerCase();
+		return !h.includes('.') || /\.(?:local|lan|internal|corp|intranet|home\.arpa|localdomain)$/.test(h) || /^(?:10\.\d{1,3}|192\.168|172\.(?:1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}$/.test(h);
+	}
 	const WRITABLE_RE = /%(?:temp|tmp|appdata|localappdata|public|programdata)%|\$env:(?:temp|tmp|appdata|localappdata|public|programdata)|\\(?:users\\public|appdata\\(?:local|roaming)|programdata|windows\\temp|temp)\\/i;
 	const ADS_RE = /[A-Za-z0-9_\-\\)]\.[A-Za-z0-9]{1,8}:[A-Za-z0-9_.-]{1,64}(?:[\s"']|$)/;
 	const DOWNLOAD_RE = /\b(?:Net\.WebClient|DownloadString|DownloadFile|DownloadData|Invoke-WebRequest|Invoke-RestMethod|Start-BitsTransfer|Net\.Http\.HttpClient|XMLHTTP|WinHttpRequest)\b|(?:^|[\s;|(])(?:iwr|irm|curl|wget)\s+["']?(?:https?:)?\/\//i;
@@ -399,14 +406,17 @@
 			const shownName = raw.replace(/^.*\\/, '').replace(/,.*$/, '');
 			if (caseObfuscated(shownName)) { de.notes.push('random letter case in the binary name "' + shownName + '"'); }
 			const hasRemote = args.some(t => URL_RE.test(t) || /^\\\\[^\\]+\\/.test(t));
+			// Internal file shares (single-label host, internal suffix, private address) are routine for software
+			// deployment: they keep the LOLBAS match but do not raise it to high on their own.
+			const hasExternal = args.some(t => URL_RE.test(t) || (/^\\\\[^\\]+\\/.test(t) && !internalShare(t)));
 			if (hasRemote && !inv.matches.some(m => m.category === 'Download' || m.category === 'Upload') && entry.categories.some(c => c === 'Download' || c === 'Upload') && !/browser/i.test(entry.description)) {
 				addH('LOT-H-014', entry.name + ' (LOLBAS documents: ' + entry.categories.join(', ') + ')');
 			}
 			for (const m of inv.matches) {
 				let sev;
-				if (m.quality === 'full') { sev = RISKY.has(m.category) ? 'high' : (hasRemote ? 'high' : 'medium'); }
+				if (m.quality === 'full') { sev = RISKY.has(m.category) ? 'high' : (hasExternal ? 'high' : 'medium'); }
 				else { sev = RISKY.has(m.category) ? 'medium' : 'low'; }
-				if (m.category === 'Execute' && m.quality === 'full' && !m.specific && !hasRemote && !args.some(t => WRITABLE_RE.test(t) || /(?:java|vb)script:/i.test(t))) { sev = 'low'; }
+				if (m.category === 'Execute' && m.quality === 'full' && !m.specific && !hasExternal &&!args.some(t => WRITABLE_RE.test(t) || /(?:java|vb)script:/i.test(t))) { sev = 'low'; }
 				if (m.remote) { sev = maxSev(sev, 'medium'); }
 				m.severity = sev;
 				inv.severity = maxSev(inv.severity, sev);

@@ -129,9 +129,9 @@ $cyberdat_mcp = cyberdat_mcp_config();
 		<section aria-labelledby="cd-mcp-limits">
 			<h2 id="cd-mcp-limits"><?php esc_html_e( 'Limitations', 'cyberdat' ); ?></h2>
 			<ul>
+				<li><?php esc_html_e( 'TOML and YAML are not supported. Only JSON (with comments) is read, so configurations in TOML or YAML must be converted first. Client settings stored elsewhere and environment variables resolved at runtime are not visible to the tool.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Conclusions are based only on the text of the configuration and tool lists. The tool does not start servers or run commands, does not check the reputation of packages, images or domains online, and does not audit server code. A server can behave differently from its description.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Tool descriptions and annotations come from the server and may be untrusted. A tool list you paste shows what the server reported at that moment; servers can change their tools later.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Only JSON is read. TOML or YAML configurations, client-side settings stored elsewhere and environment variables resolved at runtime are not visible to the tool.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Look-alike package detection compares names with a short built-in list of well-known MCP packages. It does not contact npm, PyPI, container registries or MCP registries.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Description poisoning is recognized by wording, markup and hidden characters. Reworded or novel injections can be missed, and legitimate descriptions can occasionally match.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Secret detection relies on variable names and known credential formats. Unusual secrets can be missed, and an ordinary value in a variable called “password” is reported as a secret.', 'cyberdat' ); ?></li>

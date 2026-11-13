@@ -152,7 +152,8 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 		<section aria-labelledby="cd-la-limits">
 			<h2 id="cd-la-limits"><?php esc_html_e( 'Limitations of automated analysis', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'Detection is pattern-based. Secrets without a recognizable format or key name (for example a bare random string), names of people, street addresses and phone numbers are not detected.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Names of people and phone numbers are not detected. A name is masked only when it appears as a user name in a recognized field (for example user=…, an email address or a login line); everywhere else, check names and phone numbers yourself.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Detection is pattern-based. Secrets without a recognizable format or key name (for example a bare random string) and street addresses are not detected.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Hostnames are found from URLs, known key names, syslog headers and a list of top-level domains. Single-word hostnames outside those contexts are missed.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Four-part numbers such as 1.2.3.4 are treated as IPv4 addresses unless a version keyword precedes them. Some identifiers may be masked unnecessarily.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Values split across lines, encoded (Base64, URL-encoding inside other values) or in binary formats are not reliably detected. US SSNs are only detected in the 123-45-6789 format.', 'cyberdat' ); ?></li>
