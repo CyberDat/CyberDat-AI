@@ -33,7 +33,10 @@ const SECRETS = [S.GITHUB_PAT_FINE, S.GITHUB_PAT, S.OPENAI_PROJECT_KEY, S.JWT];
 async function runBrowser(name) {
 	const results = [];
 	const pass = (label, detail) => { results.push({ label, detail }); console.log(`PASS [${name}]: ${label}${detail ? ' — ' + detail : ''}`); };
-	const browser = await playwright[name].launch();
+	// Optional task-local WebKit loader preserves private LD_LIBRARY_PATH;
+	// no OS library/cache changes are required. Other browsers use stock launch.
+	const launchOptions = name === 'webkit' && process.env.CYBERDAT_WEBKIT_EXECUTABLE ? { executablePath: process.env.CYBERDAT_WEBKIT_EXECUTABLE } : {};
+	const browser = await playwright[name].launch(launchOptions);
 	const context = await browser.newContext(Object.assign({ acceptDownloads: true, viewport: { width: 1280, height: 900 } }, require('./lib/basic-auth.cjs').playwrightOptions()));
 	const requests = [];
 	const consoleErrors = [];
@@ -154,12 +157,21 @@ async function runBrowser(name) {
 		pass('360px: no horizontal overflow, touch targets ≥ 44px', 'scrollWidth ' + o.sw);
 
 		await page.fill('[data-mcp-input]', '{"mcpServers":{"fs":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","/"]}}}');
-		await page.focus('[data-mcp-input]');
-		await page.keyboard.press('Shift+Tab');
-		await page.keyboard.press('Tab');
+		// Start inside the document. Shift+Tab from its first field may enter
+		// browser chrome in Firefox; Tab back is not guaranteed to restore it.
+		// Walk backwards from Run and assert the actual target before Ctrl+Enter.
+		await page.focus('[data-mcp-run]');
+		const focusWalk = [];
+		for (let i = 0; i < 20; i++) {
+			await page.keyboard.press('Shift+Tab');
+			const focus = await page.evaluate(() => ({ id: document.activeElement.id, input: document.hasFocus() && document.activeElement === document.querySelector('[data-mcp-input]') }));
+			focusWalk.push(focus.id);
+			if (focus.input) { break; }
+		}
+		assert.equal(await page.evaluate(() => document.hasFocus() && document.activeElement === document.querySelector('[data-mcp-input]')), true, 'Tab navigation must reach the input before the shortcut');
 		await page.keyboard.press('Control+Enter');
 		await until(() => !document.querySelector('[data-mcp-results]').hidden && /MCP-FS-001/.test(document.querySelector('[data-mcp-list]').textContent));
-		pass('keyboard: Ctrl+Enter in the text box runs the check');
+		pass('keyboard: Tab navigation reaches the text box and Ctrl+Enter runs the check', focusWalk.join(' > '));
 	} finally {
 		summary[name] = results.length;
 		fs.writeFileSync(path.join(EVIDENCE, name + '-results.json'), JSON.stringify({ browser: name, version: browser.version(), results, consoleErrors }, null, 2));

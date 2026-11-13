@@ -22,7 +22,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.1';
+	const VERSION = '1.0.2';
 	const RULESET_VERSION = '2026-11-11.2';
 	const CHUNK_CHARS = 1 << 20;
 	const MAX_KEY_BLOCK = 65536;
@@ -275,6 +275,12 @@
 		fqdn: /(?<![A-Za-z0-9_@.-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,126}[A-Za-z]{2,63}\.?(?![A-Za-z0-9_-]|\.[A-Za-z0-9])/g
 	};
 
+	// Scan keys first: parsing up to4096 value characters for every unrelated
+	// "ab:" in a long line otherwise repeats the same work. The exact original
+	// value grammar is retained and is applied only at recognized key positions.
+	const KV_HEAD_RE = /(?<![A-Za-z0-9_.-])(["']?)([A-Za-z0-9_][A-Za-z0-9_.-]{0,63})\1[ \t]{0,8}(?:=>|:=|[:=])[ \t]{0,8}/gd;
+	const KV_VALUE_RE = new RegExp(RE.kv.source, 'dy');
+
 	const DOMAIN_USER_EXCLUDED = /^(?:HKLM|HKCU|HKCR|HKU|HKCC|HKEY_[A-Z_]+|BUILTIN|NT|AUTHORITY|SERVICE|APPPOOL|SYSTEM32|SYSWOW64|WINDOWS)$/;
 	const USER_STOPWORDS = new Set(['in', 'of', 'the', 'a', 'an', 'and', 'or', 'to', 'with', 'from', 'by', 'for', 'is', 'not', 'on', 'at', 'input', 'name', 'id']);
 	const HOME_EXCLUDED = new Set(['public', 'default', 'default user', 'all users', 'shared', 'defaultuser0', '%username%', '$user', '${user}', '~']);
@@ -487,10 +493,10 @@
 
 	function emitClassified(emit, key, value, start) {
 		if (value == null) { return; }
-		const trimmed = value.replace(/[ \t]+$/, '');
-		if (!trimmed || isPlaceholder(trimmed)) { return; }
 		const category = classifyKey(key);
 		if (!category) { return; }
+		const trimmed = value.replace(/[ \t]+$/, '');
+		if (!trimmed || isPlaceholder(trimmed)) { return; }
 		// sudo/env "PWD=/home/alice" is the working directory, not a password.
 		if (category === 'secret' && /^pwd$/i.test(key.replace(/[^A-Za-z]/g, '')) && /^(?:\/|~|[A-Za-z]:[\\\/])/.test(trimmed)) { return; }
 		if (category === 'host') {
@@ -508,10 +514,27 @@
 	}
 
 	function detectKeyValues(text, emit) {
-		let re = RE.kv;
-		re.lastIndex = 0;
-		let m;
-		while ((m = re.exec(text)) !== null) {
+		KV_HEAD_RE.lastIndex = 0;
+		let head, m;
+		while ((head = KV_HEAD_RE.exec(text)) !== null) {
+			if (!classifyKey(head[2])) {
+				// The old scanner resumed *inside* a quoted value. Preserve that
+				// boundary (including empty/malformed values), so nested quoted
+				// pairs receive exactly the same handling as before.
+				if (text[KV_HEAD_RE.lastIndex] === '"' || text[KV_HEAD_RE.lastIndex] === "'") {
+					KV_VALUE_RE.lastIndex = head.index;
+					const quoted = KV_VALUE_RE.exec(text);
+					if (quoted) {
+						const group = quoted[3] != null ? 3 : (quoted[4] != null ? 4 : 5);
+						KV_HEAD_RE.lastIndex = quoted[group] ? quoted.indices[group][0] : KV_VALUE_RE.lastIndex;
+					} else { KV_HEAD_RE.lastIndex = head.index + 1; }
+				}
+				continue;
+			}
+			KV_VALUE_RE.lastIndex = head.index;
+			m = KV_VALUE_RE.exec(text);
+			if (!m) { continue; }
+			KV_HEAD_RE.lastIndex = KV_VALUE_RE.lastIndex;
 			const key = m[2];
 			const group = m[3] != null ? 3 : (m[4] != null ? 4 : 5);
 			if (m[group] == null || m[group] === '') { continue; }
@@ -525,9 +548,9 @@
 				emitClassified(emit, key, m[group], valueStart);
 			}
 			// Continue scanning inside the value so nested pairs are still found.
-			re.lastIndex = m.indices[group][0];
+			KV_HEAD_RE.lastIndex = m.indices[group][0];
 		}
-		re = RE.xml;
+		let re = RE.xml;
 		re.lastIndex = 0;
 		while ((m = re.exec(text)) !== null) {
 			emitClassified(emit, m[1], m[2], m.indices[2][0]);

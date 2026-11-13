@@ -1,0 +1,110 @@
+{
+  "schema": "cyberdat-gpl-boundary/1",
+  "status": "PARTIAL",
+  "basis": "owner D6 optionA; engineering dependency inspection, not a legal opinion",
+  "declared_gpl3_only": [
+    {
+      "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/app.js",
+      "sha256": "b9f3c0adef6572dfc96d16d73519ccf1b0d889c402a4eac091b2f0d3c2c7fe71"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js",
+      "sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js",
+      "sha256": "e491a746e48000548a78dd11a137d140a5835971207e8123bdea6e7f19339d40"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js",
+      "sha256": "830db013054b2b9f4764daa8dcd49ae16704b3772f6a1b83e678f637f583261a"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/css/lotl-analyzer.css",
+      "sha256": "3afd4afa66200da6628c318a59e76c2b8eb5b52b77685ab3a52836cd26ff512c"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/inc/tool-lotl-analyzer.php",
+      "sha256": "e0c2b1e43d66228d58163dc175c9af9867e77286e2bcc4437c37257f6c1e035b"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/template-parts/tools/lotl-command-analyzer.php",
+      "sha256": "af951c47f2604452de220dc5e78a0d8ad4ac1adee8d084e5f79a8f02af601164"
+    },
+    {
+      "path": "deploy/tools-lotl-analyzer/update-lolbas-data.cjs",
+      "sha256": "a9757a411f9e19bd41e078d4551386c8c142ae7e39b47477d05a8f894ca83193"
+    }
+  ],
+  "provided_shared_theme_source": [
+    {
+      "path": "wp-content/themes/cyberdat/functions.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/page-templates/tool.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/inc/tools.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/inc/tool-security.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/inc/assets.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/inc/setup.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/inc/tools-catalog.json",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/header.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/footer.php",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/css/tokens.css",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/css/main.css",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/css/tools.css",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    },
+    {
+      "path": "wp-content/themes/cyberdat/assets/js/navigation.js",
+      "existing_license": "theme GPLv2-or-later; no automatic relicensing in this task"
+    }
+  ],
+  "upstream_source_files": 251,
+  "yaml_files": 248,
+  "source_archive_sha256": "fa823d580bcbac5eb8ccd3eaa191ca34943a745985d5812f01f669a68794c8a6",
+  "legal_classification_of_shared_theme": "UNVERIFIED",
+  "independent_components": [
+    "Log Anonymizer",
+    "Prompt Injection Detector",
+    "MCP Checker",
+    "Research Agent",
+    "Content Agent",
+    "SEO Intelligence"
+  ],
+  "automatic_relicensing_of_independent_components": false
+}

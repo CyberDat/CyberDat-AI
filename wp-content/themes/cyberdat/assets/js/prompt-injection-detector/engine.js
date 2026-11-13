@@ -30,7 +30,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.0';
+	const VERSION = '1.0.1';
 	const RULESET_VERSION = '2026-11-11.1';
 	const MAX_INPUT_CHARS = 20 * 1024 * 1024;
 	const MAX_FINDINGS = 2000;
@@ -125,6 +125,9 @@
 	 */
 	function scanInvisible(text) {
 		const runs = [];
+		// Reuse immutable character metadata, not offsets/context. Bounded per call;
+		// every run still contributes to findings, counts, mapping and sanitization.
+		const metadataCache = new Map();
 		INVISIBLE_RE.lastIndex = 0;
 		let m;
 		while ((m = INVISIBLE_RE.exec(text)) !== null) {
@@ -134,10 +137,15 @@
 			const next = end < text.length ? text.codePointAt(end) : -1;
 			const prevChar = prev >= 0 ? String.fromCodePoint(prev) : '';
 			const nextChar = next >= 0 ? String.fromCodePoint(next) : '';
-			const cps = Array.from(m[0], ch => ch.codePointAt(0));
-			const kinds = {};
-			for (const cp of cps) { const k = kindOf(cp); kinds[k] = (kinds[k] || 0) + 1; }
-			const only = Object.keys(kinds);
+			let meta = m[0].length <= 2 ? metadataCache.get(m[0]) : null;
+			if (!meta) {
+				const cps = Array.from(m[0], ch => ch.codePointAt(0));
+				const kinds = {};
+				for (const cp of cps) { const k = kindOf(cp); kinds[k] = (kinds[k] || 0) + 1; }
+				meta = { cps, kinds, only: Object.keys(kinds) };
+				if (m[0].length <= 2 && metadataCache.size < 256) { metadataCache.set(m[0], meta); }
+			}
+			const { cps, kinds, only } = meta;
 			let legit = false;
 			const afterEmoji = EMOJI_RE.test(prevChar) || prev === 0x20E3 || (prev >= 0x30 && prev <= 0x39) || prev === 0x23 || prev === 0x2A || (prev >= 0x2190 && prev <= 0x2BFF) || (prev >= 0x3000 && prev <= 0x9FFF);
 			if (only.length === 1 && only[0] === 'zeroWidth' && cps.length <= 2 && cps.every(cp => cp === 0x200D) && EMOJI_RE.test(prevChar) && EMOJI_RE.test(nextChar)) {
@@ -936,7 +944,9 @@
 		// 4. Hidden text: invisible characters (original offsets)
 		for (const run of runs) {
 			if (run.legit) { continue; }
-			const desc = describeInvisible(run);
+			// A single zero-width run uses its contextual message below; building
+			// a codepoint description for it allocates work that is never displayed.
+			const desc = (run.kinds.tag || run.kinds.variation || run.kinds.bidi || run.cps.length >= 8) ? describeInvisible(run) : '';
 			if (run.kinds.tag) {
 				const hidden = decodeTags(run.cps);
 				const inner = hidden ? scanText(quickNormalize(hidden), 0, []) : [];
@@ -957,7 +967,7 @@
 				raw.push({ ruleId: 'PI-HID-002', severity: 'high', oStart: run.start, oEnd: run.end, layer: 'hidden', detail: run.cps.length + ' consecutive invisible characters (' + desc + ').' });
 			} else if (run.kinds.zeroWidth) {
 				const inWord = run.prevIsLetter && run.nextIsLetter;
-				raw.push({ ruleId: 'PI-HID-001', severity: inWord ? 'medium' : 'low', oStart: run.start, oEnd: run.end, layer: 'hidden', detail: zw + ' zero-width character' + (zw === 1 ? '' : 's') + (inWord ? ' inside a word.' : '.') });
+				raw.push({ ruleId: 'PI-HID-001', severity: inWord ? 'medium' : 'low', oStart: run.start, oEnd: run.end, layer: 'hidden', detail: zw === 1 ? (inWord ? '1 zero-width character inside a word.' : '1 zero-width character.') : zw + ' zero-width characters' + (inWord ? ' inside a word.' : '.') });
 			}
 			if (run.kinds.bidi) {
 				const rtl = RTL_RE.test(lineAround(text, run.start));

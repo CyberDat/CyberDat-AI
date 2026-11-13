@@ -1,0 +1,16 @@
+{
+  "source_commit": "ae48da0e635b45a5e1fefdda54bb95eed2b2cd61",
+  "contracts": {
+    "la": {
+      "cases": 4006,
+      "sha256": "4164372ab08382d1e574f92456a1f7ab96020335decacb4d6c204c9bf9e7304f",
+      "source_blob_sha1": "eb945549a7be4a77d402278fe28d58c5cac71c6c"
+    },
+    "pi": {
+      "cases": 245,
+      "sha256": "99b797bbe3cf763d61b8f8dd3400cd7bc99bde42e6ceced72cb9c3cf375ac925",
+      "source_blob_sha1": "fde297edb38bf34721ea977f67d5bf0d9f9f9de2"
+    }
+  },
+  "pi_rules_sha256": "bb988fd6430969ee59c29bf2f8901847488fb35a263c04a72e4188f2e00021fc"
+}

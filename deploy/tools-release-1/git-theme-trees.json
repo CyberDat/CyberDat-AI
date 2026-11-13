@@ -1177,10 +1177,10 @@
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js",
-      "sha": "eb945549a7be4a77d402278fe28d58c5cac71c6c",
+      "sha": "e468c7feaf698e09b534a77f540420bc9c6c19cc",
       "mode": "100644",
       "type": "blob",
-      "size": 42487
+      "size": 43723
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js",
@@ -1275,10 +1275,10 @@
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js",
-      "sha": "fde297edb38bf34721ea977f67d5bf0d9f9f9de2",
+      "sha": "21fbd4114a67046e2aaebb3de8cf37804d846146",
       "mode": "100644",
       "type": "blob",
-      "size": 81461
+      "size": 82196
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js",
@@ -1436,7 +1436,7 @@
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-log-anonymizer.php",
-      "sha": "9c4830b1e72348b992bd16d239771c38d5c717a5",
+      "sha": "7578a0e1217373c4eb26d4e52bd46d19767419b7",
       "mode": "100644",
       "type": "blob",
       "size": 4868
@@ -1457,7 +1457,7 @@
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-prompt-injection-detector.php",
-      "sha": "7ff5b29fe77adfbd340a9a5c2cc78050b03fa486",
+      "sha": "89b7974f77bab40e47b978dde812d65cdadea1ab",
       "mode": "100644",
       "type": "blob",
       "size": 4456
@@ -1638,6 +1638,6 @@
       "size": 4899
     }
   ],
-  "target_tree_sha1": "e7f385e56de29a6eeb1fbcfe3b3107dfd96dbaf8",
-  "target_description": "D5/D6/D7 revised theme125, based on803da063; oldcd7df0c target superseded"
+  "target_tree_sha1": "09bdf8b38031bb7b8059678d8c8d759b0d445de8",
+  "target_description": "Tools final test stabilization fromae48da0, theme125; Research0ef03e9 retained"
 }

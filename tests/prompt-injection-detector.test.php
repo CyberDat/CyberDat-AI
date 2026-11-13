@@ -55,7 +55,7 @@ ob_start();
 cyberdat_prompt_detector_render( 2 );
 $html = ob_get_clean();
 check( str_contains( $html, 'data-prompt-detector' ) && str_contains( $html, 'data-worker-src="https://staging.cyberdat.eu/wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js?ver=123&#038;ev=123"' ), 'workspace renders with same-origin worker URL' );
-$required = array( 'How it works', 'Privacy', 'Limitations of automated analysis', 'This tool does not transmit the text you enter', 'the background worker is restarted and the browser downloads its two static script files again', 'Automated analysis cannot detect every prompt injection', 'No guarantee of safety.', 'Still untrusted.', 'Changes: before and after', 'Engine 1.0.0 · rules 2026-11-11.1' );
+$required = array( 'How it works', 'Privacy', 'Limitations of automated analysis', 'This tool does not transmit the text you enter', 'the background worker is restarted and the browser downloads its two static script files again', 'Automated analysis cannot detect every prompt injection', 'No guarantee of safety.', 'Still untrusted.', 'Changes: before and after', 'Engine 1.0.1 · rules 2026-11-11.1' );
 foreach ( $required as $needle ) {
 	check( str_contains( $html, $needle ), "required text present: $needle" );
 }

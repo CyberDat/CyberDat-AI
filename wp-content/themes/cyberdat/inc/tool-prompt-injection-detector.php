@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_PROMPT_DETECTOR_SLUG = 'prompt-injection-detector';
-const CYBERDAT_PROMPT_DETECTOR_ENGINE = '1.0.0';
+const CYBERDAT_PROMPT_DETECTOR_ENGINE = '1.0.1';
 const CYBERDAT_PROMPT_DETECTOR_RULESET = '2026-11-11.1';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */

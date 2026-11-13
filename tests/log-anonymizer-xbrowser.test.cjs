@@ -34,7 +34,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function runBrowser(name) {
 	const results = [];
 	const pass = (label, detail) => { results.push({ label, detail }); console.log(`PASS [${name}]: ${label}${detail ? ' — ' + detail : ''}`); };
-	const browser = await playwright[name].launch();
+	// Optional task-local WebKit loader preserves private LD_LIBRARY_PATH;
+	// no OS library/cache changes are required. Other browsers use stock launch.
+	const launchOptions = name === 'webkit' && process.env.CYBERDAT_WEBKIT_EXECUTABLE ? { executablePath: process.env.CYBERDAT_WEBKIT_EXECUTABLE } : {};
+	const browser = await playwright[name].launch(launchOptions);
 	const context = await browser.newContext(Object.assign({ acceptDownloads: true, viewport: { width: 1280, height: 900 } }, require('./lib/basic-auth.cjs').playwrightOptions()));
 	const requests = [];
 	const consoleErrors = [];
