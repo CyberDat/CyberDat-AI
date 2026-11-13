@@ -3,6 +3,9 @@
 Owner chose GPL compliance with LOLBAS retained; no repository settings changed.
 This records technical delivery and the remaining legal uncertainty, not a legal opinion.
 
+Concrete file/dependency boundary and remaining legal questions are now listed in
+[GPL-BOUNDARY.md](GPL-BOUNDARY.md) and gpl-boundary.json. D6 remains PARTIAL.
+
 ## Scope and preferred source
 
 LOLBAS upstream is pinned at `2056cb7662509dc998fc6ce79636aec4e6c0397f`.

@@ -1,0 +1,52 @@
+PASS: versions and the seven groups are exported
+PASS: every rule has a unique id, a known group, a severity, a title and an explanation
+PASS: every finding carries rule id, group, severity, position and explanation
+PASS: finding offsets point at the original text even after invisible removal and NFKC
+PASS: line and column count from 1 and handle CRLF
+PASS: all 33 text rules fire on a minimal positive example
+PASS: 19 close-but-benign sentences produce no medium/high finding
+PASS: quoted or example phrases are still reported, with low severity and an explanation
+PASS: negation suppresses secret-extraction matches ("never print your API keys")
+PASS: Unicode tag characters are decoded and their hidden instruction is reported
+PASS: variation-selector smuggling is decoded; a single emoji presentation selector is not reported
+PASS: zero-width runs: inside a word medium, isolated low, long binary-like run high
+PASS: legitimate invisible characters are not reported: emoji ZWJ, BOM, RLM in Arabic, ZWNJ in Persian, flag tags, soft hyphen
+PASS: bidi override is reported (medium without RTL script, low inside RTL text)
+PASS: HTML comments: plain comments ignored, AI-addressed medium, with injection high
+PASS: CSS-hidden elements: injection high, AI address medium, long plain text low, empty or short not reported
+PASS: Base64, Base64URL, hex, \x escapes, URL encoding, HTML entities and \u escapes are decoded and analyzed
+PASS: multi-layer encoding is decoded up to three layers and the chain is shown
+PASS: readable but harmless encoded text is listed as decoded, not reported; hashes and binary are not decoded
+PASS: homoglyphs, leetspeak, spaced letters, fullwidth, math letters and zero-width splits are caught
+PASS: plain Russian, Greek and mixed technical words are not reported as homoglyphs
+PASS: sanitized copy replaces the flagged sentence and keeps the rest
+PASS: sanitized copy removes invisible characters but keeps emoji joiners; options control NFKC and replacement
+PASS: the diff reproduces the sanitized copy exactly and makes removed invisible characters visible
+PASS: multi-line flagged passages keep their line breaks, so line numbers stay comparable
+PASS: excerpts and previews make invisible characters visible and never contain markup interpretation
+PASS: static contract: app.js writes user text only with textContent/text nodes; no eval or HTML sinks anywhere
+PASS: static contract: no network, storage or cookie APIs are used (the worker only disables them)
+PASS: verdict without findings says "No known patterns matched" and never claims the text is safe or injection-free
+PASS: the page example is synthetic: only example.com hosts and no real-looking secrets
+PASS: input above 20 MB is refused with TOO_LARGE
+      repeated ignore                1.00 MB  935 ms
+      repeated ignore all previous   0.95 MB  1027 ms
+      one 1 MB line of a             1.00 MB  587 ms
+      one 1 MB Base64-like token     1.00 MB  1060 ms
+      many unclosed comments         0.95 MB  602 ms
+      many unclosed image links      0.81 MB  555 ms
+      percent escapes                0.94 MB  936 ms
+      HTML entities                  0.97 MB  888 ms
+      spaced letters                 0.95 MB  724 ms
+      hidden tags without close      0.99 MB  1758 ms
+      role labels                    0.92 MB  606 ms
+      curl without end               0.95 MB  1367 ms
+      mixed-script words             0.93 MB  1380 ms
+      leet tokens                    0.93 MB  762 ms
+      zero-width every other char    0.95 MB  3131 ms
+      quotes and example words       0.97 MB  592 ms
+PASS: ReDoS: 16 adversarial ~1 MB inputs each finish in under 4 s
+      10.0 MB in 31.8 s, 90265 findings (2000 listed)
+PASS: 10 MB realistic mixed input: analysis completes, progress is monotonic and reaches 100%
+
+33 engine checks passed.

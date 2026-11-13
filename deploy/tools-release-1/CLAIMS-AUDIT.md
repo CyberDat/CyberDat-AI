@@ -1,4 +1,7 @@
-# Limited user-claims audit — D5/D6/D7
+# Limited user-claims audit — D5/D6/D7 (historical snapshot)
+
+Performance/browser outcomes below describe ae48da0 before stabilization; the current
+REPORT.md supersedes those outcomes. Claim wording and limitations remain applicable.
 
 Scope: four tool templates, tool hub, UI/engine comments, proposed editorial JSON,
 COPY-REVIEW and relevant tests. This is a bounded source/fixture review, not a claim

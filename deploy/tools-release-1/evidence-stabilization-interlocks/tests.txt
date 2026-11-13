@@ -1,0 +1,15 @@
+test_all_22_release_lock_contention_blocks_before_body (__main__.D15Tests.test_all_22_release_lock_contention_blocks_before_body) ... ok
+test_all_22_tools_present_block_before_body_imports_or_lock (__main__.D15Tests.test_all_22_tools_present_block_before_body_imports_or_lock) ... ok
+test_all_candidates_compile_and_original_bodies_are_preserved (__main__.D15Tests.test_all_candidates_compile_and_original_bodies_are_preserved) ... ok
+test_approved_scope_is_exactly_11_plus_11 (__main__.D15Tests.test_approved_scope_is_exactly_11_plus_11) ... ok
+test_read_only_checker_rejects_late_guard (__main__.D15Tests.test_read_only_checker_rejects_late_guard) ... ok
+test_read_only_checker_succeeds_without_running_guard_or_creating_lock (__main__.D15Tests.test_read_only_checker_succeeds_without_running_guard_or_creating_lock) ... ok
+test_scheduled_launcher_does_not_reference_any_target (__main__.D15Tests.test_scheduled_launcher_does_not_reference_any_target) ... ok
+test_symlink_lock_refused_before_body (__main__.D15Tests.test_symlink_lock_refused_before_body) ... ok
+test_tools_absent_only_sandbox_sentinel_allowed (__main__.D15Tests.test_tools_absent_only_sandbox_sentinel_allowed) ... ok
+test_wrong_lock_mode_refused_before_body (__main__.D15Tests.test_wrong_lock_mode_refused_before_body) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.470s
+
+OK

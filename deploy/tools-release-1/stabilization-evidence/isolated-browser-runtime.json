@@ -1,0 +1,22 @@
+{
+  "system_fingerprints_before": {
+    "/var/lib/dpkg/status": "12dfe7462f3aca1da49a06abf9c59aaa872ba5330aefb094ca15ad3db2021bb7"
+  },
+  "system_fingerprints_after": {
+    "/var/lib/dpkg/status": "12dfe7462f3aca1da49a06abf9c59aaa872ba5330aefb094ca15ad3db2021bb7"
+  },
+  "system_changes": false,
+  "playwright": "1.56.1",
+  "browser_downloads": "private Debian13 builds",
+  "ldconfig_updated": false,
+  "apt_install_or_update": false,
+  "services_added_or_changed": false,
+  "webkit_wrapper": "#!/bin/sh\nexport WEBKIT_EXEC_PATH=\"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-browsers/webkit-2215/minibrowser-wpe/bin\"\nexport WEBKIT_INJECTED_BUNDLE_PATH=\"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-browsers/webkit-2215/minibrowser-wpe/lib\"\nexport WEBKIT_INSPECTOR_RESOURCES_PATH=\"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-browsers/webkit-2215/minibrowser-wpe/share\"\nexport WEBKIT_FORCE_COMPLEX_TEXT=\"1\"\nexport LIBGL_ALWAYS_SOFTWARE=1\nexport GALLIUM_DRIVER=llvmpipe\nexport EGL_PLATFORM=surfaceless\nexport __EGL_VENDOR_LIBRARY_FILENAMES=\"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-libs/usr/share/glvnd/egl_vendor.d/50_mesa.json\"\nexport LIBGL_DRIVERS_PATH=\"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-libs/usr/lib/x86_64-linux-gnu/dri\"\nexport LD_LIBRARY_PATH=\"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-browsers/webkit-2215/minibrowser-wpe/lib:/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-browsers/webkit-2215/minibrowser-wpe/sys/lib:/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-libs/usr/lib/x86_64-linux-gnu:/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-libs/lib/x86_64-linux-gnu:/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/browser-libs/usr/lib/x86_64-linux-gnu:/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/browser-libs/lib/x86_64-linux-gnu\"\nexec \"/home/cyberdat/cyberdat-deploy/tools-release-test-runtime/stabilization-browsers/webkit-2215/minibrowser-wpe/bin/MiniBrowser\" \"$@\"\n",
+  "browser_binary_modified": false,
+  "webkit_launch": {
+    "pass": true,
+    "version": "26.0"
+  },
+  "old_global_cache_validation_issue": "Playwright1.49 selected Ubuntu20.04; newer WebKit wrapper overwrites LD_LIBRARY_PATH and the validator consults global ldconfig, which cannot see private libraries. Task-local executablePath wrapper preserves all private and bundled paths, with real dynamic-loader validation and a real browser launch.",
+  "private_dependency_packages": 52
+}

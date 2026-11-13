@@ -1,0 +1,13 @@
+PASS [webkit]: first-party page load; same-origin worker with network APIs disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [webkit]: CSP blocks page scripts from contacting registries or any host — blocked: Load failed
+PASS [webkit]: example checked: high verdict, findings per server, fake token masked — 7 cards
+PASS [webkit]: recognized synthetic fixture credentials are masked in results and the downloaded report
+PASS [webkit]: markup and scripts in configurations are shown as text only; no dialogs
+PASS [webkit]: policy check: schema error explained, example policy violations listed, policy downloaded; nothing stored
+PASS [webkit]: 4.8 MB tool list checked without network requests — 2.7 s
+PASS [webkit]: Cancel re-requests only static same-origin worker scripts — 2 requests
+PASS [webkit]: input text is never sent: no HTTP requests during checks, exports and clearing; no console errors
+PASS [webkit]: 360px: no horizontal overflow, touch targets ≥ 44px — scrollWidth 360
+PASS [webkit]: keyboard: Tab navigation reaches the text box and Ctrl+Enter runs the check —  >  >  > cd-mcp-file > cd-mcp-input
+
+All cross-browser checks passed: {"webkitLargeMs":2739,"webkit":11}

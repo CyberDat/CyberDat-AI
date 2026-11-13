@@ -1,0 +1,16 @@
+PASS [webkit]: page loads under strict CSP with nonce; app.js executed; only first-party requests — 9 requests
+PASS [webkit]: Web Worker starts from the same origin under worker-src 'self'; its network APIs are disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [webkit]: CSP connect-src blocks fetch from the page — blocked: Load failed
+PASS [webkit]: no console errors or CSP violations while loading
+PASS [webkit]: sample anonymized, highlighted preview rendered
+PASS [webkit]: markup in input stays text (no elements, no dialogs)
+PASS [webkit]: result and acknowledged map downloads work (blob:, no HTTP)
+PASS [webkit]: nothing stored in localStorage, sessionStorage, IndexedDB, cookies or the URL
+PASS [webkit]: large input: the WebKit speed note is shown (WebKit)
+PASS [webkit]: 30 MB file processed in the worker; page stays responsive — 112.3 s, longest main-thread gap 563 ms
+PASS [webkit]: Cancel restarts the worker; only its two static scripts may be re-requested — worker.js, engine.js
+PASS [webkit]: input text never sent: no HTTP requests while processing, downloading or clearing; no console errors
+PASS [webkit]: 360 px viewport: no horizontal overflow — 360 ≤ 360
+PASS [webkit]: keyboard: Tab reaches every control up to "Anonymize log"; Enter activates it — 22 stops
+webkit 26.0: 14 checks passed
+Evidence: /home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/deploy/tools-release-1/stabilization-evidence/log-anonymizer-webkit

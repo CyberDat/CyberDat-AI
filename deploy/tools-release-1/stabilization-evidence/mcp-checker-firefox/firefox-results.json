@@ -1,0 +1,52 @@
+{
+  "browser": "firefox",
+  "version": "142.0.1",
+  "results": [
+    {
+      "label": "first-party page load; same-origin worker with network APIs disabled",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "label": "CSP blocks page scripts from contacting registries or any host",
+      "detail": "blocked: NetworkError when attempting to fetch res"
+    },
+    {
+      "label": "example checked: high verdict, findings per server, fake token masked",
+      "detail": "7 cards"
+    },
+    {
+      "label": "recognized synthetic fixture credentials are masked in results and the downloaded report"
+    },
+    {
+      "label": "markup and scripts in configurations are shown as text only; no dialogs"
+    },
+    {
+      "label": "policy check: schema error explained, example policy violations listed, policy downloaded; nothing stored"
+    },
+    {
+      "label": "4.8 MB tool list checked without network requests",
+      "detail": "1.9 s"
+    },
+    {
+      "label": "Cancel re-requests only static same-origin worker scripts",
+      "detail": "1 requests"
+    },
+    {
+      "label": "input text is never sent: no HTTP requests during checks, exports and clearing; no console errors"
+    },
+    {
+      "label": "360px: no horizontal overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360"
+    },
+    {
+      "label": "keyboard: Tab navigation reaches the text box and Ctrl+Enter runs the check",
+      "detail": " >  >  > cd-mcp-file > cd-mcp-input"
+    }
+  ],
+  "consoleErrors": [
+    {
+      "phase": "probe",
+      "text": "[JavaScript Error: \"Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at https://registry.npmjs.org/ because it violates the following directive: “connect-src 'none'”\" {file: \"debugger eval code line 290 > eval\" line: 1}]"
+    }
+  ]
+}

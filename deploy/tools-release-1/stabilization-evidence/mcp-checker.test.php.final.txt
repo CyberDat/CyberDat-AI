@@ -1,0 +1,52 @@
+PASS: renderer registered for /tools/mcp-security-checker/ with the Tool template
+PASS: no renderer outside the /tools/ hub
+PASS: no renderer without the Tool template
+PASS: no renderer for a missing post
+PASS: other tools keep their renderers
+PASS: workspace renders with same-origin worker URL (engine version)
+PASS: required text present: How it works
+PASS: required text present: Privacy
+PASS: required text present: Limitations
+PASS: required text present: Sources
+PASS: required text present: This tool does not transmit the text you enter
+PASS: required text present: the background worker is restarted and the browser downloads its static script files again
+PASS: required text present: A review aid, not a guarantee.
+PASS: required text present: no finding does not mean the configuration is safe
+PASS: required text present: does not start servers or run commands
+PASS: required text present: does not check the reputation of packages, images or domains online
+PASS: required text present: does not audit server code
+PASS: required text present: URLs found in your configuration are never opened or checked online
+PASS: required text present: The policy leaves the tab only if you download it
+PASS: required text present: Masking is best effort, not a guarantee of secret removal
+PASS: required text present: It does not contain the full configuration
+PASS: required text present: Model Context Protocol specification
+PASS: required text present: referenced here by name only
+PASS: required text present: Security check
+PASS: required text present: Policy check
+PASS: required text present: Load example policy
+PASS: required text present: Download policy
+PASS: required text present: Policy settings
+PASS: required text present: No corrected configuration is generated
+PASS: no links in the tool markup (sources are referenced by name only)
+PASS: no auto-loading resources (img, iframe, script, link) in tool markup
+PASS: no form can submit input to WordPress
+PASS: interface text is English only
+PASS: both text boxes opt out of spellcheck; live regions present
+PASS: mode choice is a labelled radio group
+PASS: markup parses as HTML
+PASS: element ids are unique
+PASS: label for="cd-mcp-input" targets an element
+PASS: label for="cd-mcp-policy" targets an element
+PASS: Limitations start with: TOML and YAML are not supported
+PASS: engine and rules versions shown on the page match engine.js
+PASS: strict CSP on the checker page: no network connections, no external hosts
+PASS: other tools do not load their assets on this page
+PASS: tools-common.css, own stylesheet and one deferred script
+PASS: asset is a first-party theme file: tools-common.css
+PASS: asset is a first-party theme file: mcp-checker.css
+PASS: asset is a first-party theme file: app.js
+PASS: script deferred
+PASS: checker assets not loaded on other tool pages
+PASS: catalogue: tool 4 (first of release 1.2) points to /tools/mcp-security-checker/, name and release unchanged
+PASS: editorial fields: English, tool name unchanged
+All MCP Security & Policy Checker server checks passed.

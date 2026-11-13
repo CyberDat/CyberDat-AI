@@ -1,0 +1,32 @@
+{
+  "utc": "2026-11-13T21:13:59.706222+00:00",
+  "scope": "offline/sandbox only; fake JSON pages, real Linux atomic exchange and PHP lint",
+  "tests": 46,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "php_lint": [
+    {
+      "file": "staging-contract.php",
+      "exit": 0
+    },
+    {
+      "file": "wp-state.php",
+      "exit": 0
+    },
+    {
+      "file": "tool-pages.php",
+      "exit": 0
+    }
+  ],
+  "archive_sha256": "9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b",
+  "staging_deployment": false,
+  "wordpress_bootstrap": false,
+  "sql_execution": false,
+  "unverified": [
+    "live FPM/OPcache and renderer HTTP",
+    "real WordPress selective SQL restore",
+    "browser acceptance"
+  ],
+  "pass": true
+}

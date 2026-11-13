@@ -1,0 +1,7 @@
+PASS: 4006 log cases preserve the frozen pre-stabilization output, map, counts, warnings and preview
+PASS: 245 Unicode/injection cases preserve findings, severity, offsets, counts, normalization and sanitized text
+PASS: every Injection text signature/flag and rule descriptor remains identical
+PASS: cached invisible metadata retains per-run emoji/word context and fresh per-call offsets
+PASS: pathological repeated log keys stay below the existing4000ms budget; sensitive tails still redacted
+PASS: one million alternating visible/invisible characters stays below4000ms without dropping500000 detections
+{"checks":6,"pass":true,"times":[{"tool":"log","chars":786479,"ms":379.288626},{"tool":"log","chars":655407,"ms":214.53147200000012},{"tool":"log","chars":1179695,"ms":504.6965110000001},{"tool":"injection","chars":1000000,"ms":2575.7866759999997}]}

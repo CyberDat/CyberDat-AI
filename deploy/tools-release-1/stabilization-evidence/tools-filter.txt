@@ -1,0 +1,2 @@
+PASS: all categories filter correctly, reset works, counts and aria-pressed stay consistent
+PASS: unrelated click and absent catalog are harmless; no browser/network dependencies

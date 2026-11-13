@@ -1,0 +1,17 @@
+{
+  "source_commit": "54d43356fec8ca22f8d99c26fc5c28d5964c4d08",
+  "theme_tree": "09bdf8b38031bb7b8059678d8c8d759b0d445de8",
+  "all125_git_blobs_match": true,
+  "protected_plugins": [
+    {
+      "path": "wp-content/plugins/cyberdat-research",
+      "git_tree": "8ca5d17924c60c0e83d82b65f829c28f5bc152f9",
+      "unchanged": true
+    },
+    {
+      "path": "wp-content/plugins/cyberdat-content",
+      "git_tree": "ddb0a2d153550f347e39d014651acb8be102278a",
+      "unchanged": true
+    }
+  ]
+}

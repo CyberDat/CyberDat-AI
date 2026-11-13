@@ -33,7 +33,7 @@ in stabilization-evidence/isolated-browser-runtime.json. A diagnostic native
 WebKit automation warning is retained in the launch log; page creation/navigation
 and the real suite determine success, not just process startup.
 
-Run tests/tools-sandbox-server.py --port18091 in the isolated source checkout;
+Run tests/tools-sandbox-server.py --port 18091 in the isolated source checkout;
 it renders pure PHP doubles and static files, not WordPress/plugins/SQL. Tests
 receive explicit http://127.0.0.1:18091/tools/<slug>/ URLs and private evidence paths.
 Set NODE_PATH=<private Playwright node_modules>, PLAYWRIGHT_BROWSERS_PATH,

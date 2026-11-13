@@ -1,0 +1,86 @@
+[
+  {
+    "test": "log-anonymizer",
+    "browser": "chromium-cdp",
+    "exit": 0,
+    "seconds": 26.45,
+    "log": "log-anonymizer-chromium-cdp.txt"
+  },
+  {
+    "test": "prompt-injection-detector",
+    "browser": "chromium-cdp",
+    "exit": 0,
+    "seconds": 46.25,
+    "log": "prompt-injection-detector-chromium-cdp.txt"
+  },
+  {
+    "test": "lotl-analyzer",
+    "browser": "chromium-cdp",
+    "exit": 0,
+    "seconds": 11.87,
+    "log": "lotl-analyzer-chromium-cdp.txt"
+  },
+  {
+    "test": "mcp-checker",
+    "browser": "chromium-cdp",
+    "exit": 0,
+    "seconds": 11.64,
+    "log": "mcp-checker-chromium-cdp.txt"
+  },
+  {
+    "test": "log-anonymizer",
+    "browser": "firefox",
+    "exit": 0,
+    "seconds": 24.33,
+    "log": "log-anonymizer-firefox.txt"
+  },
+  {
+    "test": "prompt-injection-detector",
+    "browser": "firefox",
+    "exit": 0,
+    "seconds": 34.45,
+    "log": "prompt-injection-detector-firefox.txt"
+  },
+  {
+    "test": "lotl-analyzer",
+    "browser": "firefox",
+    "exit": 0,
+    "seconds": 13.23,
+    "log": "lotl-analyzer-firefox.txt"
+  },
+  {
+    "test": "mcp-checker",
+    "browser": "firefox",
+    "exit": 0,
+    "seconds": 12.48,
+    "log": "mcp-checker-firefox.txt"
+  },
+  {
+    "test": "log-anonymizer",
+    "browser": "webkit",
+    "exit": 0,
+    "seconds": 123.34,
+    "log": "log-anonymizer-webkit.txt"
+  },
+  {
+    "test": "prompt-injection-detector",
+    "browser": "webkit",
+    "exit": 0,
+    "seconds": 86.91,
+    "log": "prompt-injection-detector-webkit.txt"
+  },
+  {
+    "test": "lotl-analyzer",
+    "browser": "webkit",
+    "exit": 0,
+    "seconds": 12.21,
+    "log": "lotl-analyzer-webkit.txt"
+  },
+  {
+    "test": "mcp-checker",
+    "browser": "webkit",
+    "exit": 0,
+    "seconds": 13.93,
+    "log": "mcp-checker-webkit.txt"
+  }
+]

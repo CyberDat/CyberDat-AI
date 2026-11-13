@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-13T21:10:01.956629+00:00",
+  "live_theme_files": 95,
+  "base95_exact": true,
+  "protected43_exact": true,
+  "legacy_repository_prefixes": 11,
+  "legacy_prepared_prefixes": 11,
+  "legacy_body_execution": false,
+  "wordpress_bootstrap": false,
+  "sql_access": false,
+  "staging_writes": false,
+  "production_access": false
+}

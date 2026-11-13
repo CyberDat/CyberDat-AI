@@ -1,0 +1,22 @@
+PASS: renderer registered for /tools/prompt-injection-detector/ with the Tool template
+PASS: no renderer outside the /tools/ hub
+PASS: no renderer without the Tool template
+PASS: no renderer for a post with the same slug
+PASS: no renderer for the old planned slug prompt-sanitizer
+PASS: no renderer for a missing post
+PASS: Log Anonymizer keeps its own renderer (filters do not interfere)
+PASS: workspace renders with same-origin worker URL
+PASS: required text present: How it works
+PASS: required text present: Privacy
+PASS: required text present: Limitations of automated analysis
+PASS: required text present: This tool does not transmit the text you enter
+PASS: required text present: the background worker is restarted and the browser downloads its two static script files again
+PASS: required text present: Automated analysis cannot detect every prompt injection
+PASS: required text present: No guarantee of safety.
+PASS: required text present: Still untrusted.
+PASS: required text present: Changes: before and after
+PHP Fatal error:  Uncaught RuntimeException: FAIL: required text present: Engine 1.0.0 · rules 2026-11-11.1 in /home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector.test.php:36
+Stack trace:
+#0 /home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector.test.php(60): check()
+#1 {main}
+  thrown in /home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector.test.php on line 36

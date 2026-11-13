@@ -1,24 +1,25 @@
-# Tools Release 1 — D5/D6/D7 prepared package
+# Tools Release1 — stabilized preparation package
 
 **PARTIAL. D1 installation is NOT authorized. Stop after preparation.**
-Branch feat/tools-release-1-license-claims starts at803da063. Installed Research
+Branch feat/tools-release-1-license-claims; this stabilization starts atae48da0.
+Technical suites PASS; D6 remains PARTIAL. Installed Research
 must remain0ef03e9cb0d8821546983c84fc6998e85cf03f2e. D15 is already applied in its
 approved11+11 scope; do not reinstall it or restore old unguarded copies.
 
 ## Exact delivery
 
-- Final source revision: `a5611f225ad1ff9858f84103036b73cc7c38568c`.
-- Theme Git tree: `e7f385e56de29a6eeb1fbcfe3b3107dfd96dbaf8`.
-- Archive: `/home/cyberdat/cyberdat-deploy/tools-release-1-d567-package/theme.tar.gz`.
-- Archive SHA256: `783eec70b43bb7149c0fa0c122aadb23699cbf11534bd2070404849a6c1507ed`.
-- package.json SHA256: `d49674a6abaa41821d402469a21fcd0fb31a99eba485980ea228d0cee4643cbf`.
+- Final source revision: `54d43356fec8ca22f8d99c26fc5c28d5964c4d08`.
+- Theme Git tree: `09bdf8b38031bb7b8059678d8c8d759b0d445de8`.
+- Archive: `/home/cyberdat/cyberdat-deploy/tools-release-1-stabilized-package/theme.tar.gz`.
+- Archive SHA256: `9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b`.
+- package.json SHA256: `590ffd091e8225776a661bd1a3a7e526dae8430f1445467e803dae8f4f2463b5`.
 - Complete manifest.json: base95/target125 regular files, all SHA256/length/mode
   entries.125 = original123 plus complete upstream NOTICE and SOURCE.md.34-file
   delta over95:4 modifications/30 additions, no deletions.
 - Archive contains onlycyberdat/ theme files. No plugins, SQL, deployment helpers,
   configs, Research/Content code, launchers or timers. Never deploy repository root.
 - Files0644/directories0755, no symlinks, no unexpected file/directory allowed.
-- Original7fc33b... artifact and intermediate33975f... builds are SUPERSEDED.
+- Original7fc33b..., intermediate33975f... and prior D5/D6/D7 artifact783eec... are SUPERSEDED.
   Never reuse their hashes/authorization for this archive.
 
 ## Reproduce in isolated workspace
@@ -27,7 +28,7 @@ Use the final branch head (including the updated controls), an isolated exact95-
 and fresh private output paths. Do not point these commands at installed WordPress.
 
 ```bash
-python3 -I -B deploy/tools-release-1/build-package.py --base-theme "$BASE_THEME" --output "$PRIVATE_OUTPUT/package" --source-commit a5611f225ad1ff9858f84103036b73cc7c38568c
+python3 -I -B deploy/tools-release-1/build-package.py --base-theme "$BASE_THEME" --output "$PRIVATE_OUTPUT/package" --source-commit 54d43356fec8ca22f8d99c26fc5c28d5964c4d08
 python3 -I -B deploy/tools-release-1/run-tests.py --base-theme "$BASE_THEME" --package "$PRIVATE_OUTPUT/package" --output "$PRIVATE_OUTPUT/evidence"
 ```
 
@@ -40,8 +41,8 @@ YAML/notice/license are in assets/js/lotl-analyzer/SOURCE.md and LICENSES.md.
 
 ## Future separately authorized installation order
 
-1. Resolve DECISIONS.md: D6 legal scope review, D1 install approval and remaining
-   product failures/UNVERIFIED conditions; page/SEO decisions separately. Current
+1. Resolve DECISIONS.md: D6 legal scope review, D1 install approval and independent
+   D14 product acceptance; page/SEO decisions separately. Current
    D5 PASS does not waive independent D14 acceptance or permit page publication.
 2. Recheck staging identity and exact base95/protected43 hashes, D15 prefixes and
    shared release lock. Natural Research SQL activity is expected; never reset it.
@@ -83,11 +84,17 @@ atomically exchange the theme and verify original95. No full SQL rollback or
 Research checkpoint rewind. Existing Research rollback scripts refuse Tools drift;
 future use requires review. Keep backups/failed slots, never blindly reapply.
 
+Current detailed results: REPORT.md and stabilization-acceptance.json. The8-file
+GPL scope and14 shared dependencies are documented in GPL-BOUNDARY.md. Isolated
+browser setup is in ISOLATED-BROWSER-TESTS.md. Do not install test dependencies
+globally or treat fixture checks as installed WordPress acceptance.
+
 ## Remaining limits
 
 D6 legal characterization UNVERIFIED; D7 public source8/8 anonymous HTTP checks
-pass. Chromium78 local checks pass; MCP Firefox keyboard failure and all WebKit
-acceptance are unresolved. Two pre-existing engine performance guards fail.
+pass in the new anonymous source-access verification. Current Chromium78/Firefox48/
+WebKit48 fixture checks PASS; original4000ms guards and6 new regressions PASS.
+Physical Safari/iOS and legal combined-work classification remain UNVERIFIED.
 Actual WordPress selective SQL recovery/FPM/header/renderer acceptance is UNVERIFIED
 because installation is forbidden. D8 hub visibility and D2/D4/D9/D11/D14 remain
 explicit. Historical22 out-of-scope unsafe copies must not be run/restored.

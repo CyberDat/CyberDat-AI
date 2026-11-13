@@ -1,6 +1,6 @@
 {
-  "utc": "2026-11-13T20:29:26.398073+00:00",
-  "source_commit": "a5611f225ad1ff9858f84103036b73cc7c38568c",
+  "utc": "2026-11-13T21:21:16.275224+00:00",
+  "source_commit": "54d43356fec8ca22f8d99c26fc5c28d5964c4d08",
   "checks": [
     {
       "url": "https://github.com/CyberDat/CyberDat-AI/tree/feat/tools-release-1-license-claims/wp-content/themes/cyberdat/assets/js/lotl-analyzer",
@@ -8,8 +8,8 @@
       "cookies_sent": false,
       "http": 200,
       "final_url": "https://github.com/CyberDat/CyberDat-AI/tree/feat/tools-release-1-license-claims/wp-content/themes/cyberdat/assets/js/lotl-analyzer",
-      "bytes": 185706,
-      "sha256": "05286773fa35e871ad38a0b70c4654891a9c2c726ad14bf8ef9c941dfa845df3"
+      "bytes": 185705,
+      "sha256": "3b47ae9dbb6928c3037d4337180d63d47456dc8dab9945f62bdefaec834fce01"
     },
     {
       "url": "https://github.com/CyberDat/CyberDat-AI/tree/feat/tools-release-1-license-claims/wp-content/themes/cyberdat",
@@ -17,8 +17,8 @@
       "cookies_sent": false,
       "http": 200,
       "final_url": "https://github.com/CyberDat/CyberDat-AI/tree/feat/tools-release-1-license-claims/wp-content/themes/cyberdat",
-      "bytes": 222580,
-      "sha256": "fbca22f77a4b34fbd80a52a91fee5804d14153ed0dd47751c8f60c15f535cf6f"
+      "bytes": 222578,
+      "sha256": "fd817f7911a5e419a3f60c95ec20e45e6def8279046e53f3977ccd4a5c7a255c"
     },
     {
       "url": "https://github.com/CyberDat/CyberDat-AI/blob/feat/tools-release-1-license-claims/deploy/tools-lotl-analyzer/update-lolbas-data.cjs",
@@ -26,8 +26,8 @@
       "cookies_sent": false,
       "http": 200,
       "final_url": "https://github.com/CyberDat/CyberDat-AI/blob/feat/tools-release-1-license-claims/deploy/tools-lotl-analyzer/update-lolbas-data.cjs",
-      "bytes": 425830,
-      "sha256": "77e8e7068c8ee20221d6e80f2892988fe2479baa5fee704a4a029fa004430cd5"
+      "bytes": 425821,
+      "sha256": "cc5a5c0a2fff9d591561261300f02f8762a0cf2c9afad5a0abd38968296efbcb"
     },
     {
       "url": "https://github.com/CyberDat/CyberDat-AI/raw/refs/heads/feat/tools-release-1-license-claims/deploy/tools-lotl-analyzer/upstream-source-2056cb7.tar.gz",
@@ -46,35 +46,35 @@
       "cookies_sent": false,
       "http": 200,
       "final_url": "https://github.com/CyberDat/CyberDat-AI/blob/feat/tools-release-1-license-claims/deploy/tools-lotl-analyzer/upstream-source-manifest.json",
-      "bytes": 362601,
-      "sha256": "fd5f5381c90941330e27df4ecf9ab826db22e20cc2216e0094eb4781ccc2d276"
+      "bytes": 362600,
+      "sha256": "15acb91c1cb616981cf1784acaaeab77617889a92cb90e84e6e5da7466384e27"
     },
     {
-      "url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/a5611f225ad1ff9858f84103036b73cc7c38568c/wp-content/themes/cyberdat/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt",
+      "url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/54d43356fec8ca22f8d99c26fc5c28d5964c4d08/wp-content/themes/cyberdat/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt",
       "authorization_sent": false,
       "cookies_sent": false,
       "http": 200,
-      "final_url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/a5611f225ad1ff9858f84103036b73cc7c38568c/wp-content/themes/cyberdat/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt",
+      "final_url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/54d43356fec8ca22f8d99c26fc5c28d5964c4d08/wp-content/themes/cyberdat/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt",
       "bytes": 35149,
       "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
       "bytes_match": true
     },
     {
-      "url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/a5611f225ad1ff9858f84103036b73cc7c38568c/wp-content/themes/cyberdat/assets/js/lotl-analyzer/NOTICE-LOLBAS.md",
+      "url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/54d43356fec8ca22f8d99c26fc5c28d5964c4d08/wp-content/themes/cyberdat/assets/js/lotl-analyzer/NOTICE-LOLBAS.md",
       "authorization_sent": false,
       "cookies_sent": false,
       "http": 200,
-      "final_url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/a5611f225ad1ff9858f84103036b73cc7c38568c/wp-content/themes/cyberdat/assets/js/lotl-analyzer/NOTICE-LOLBAS.md",
+      "final_url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/54d43356fec8ca22f8d99c26fc5c28d5964c4d08/wp-content/themes/cyberdat/assets/js/lotl-analyzer/NOTICE-LOLBAS.md",
       "bytes": 9172,
       "sha256": "17c221edfe2093dbcd3c444af0b9eb83d8923047d4a134a778d647d94a85bdbc",
       "bytes_match": true
     },
     {
-      "url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/a5611f225ad1ff9858f84103036b73cc7c38568c/wp-content/themes/cyberdat/assets/js/lotl-analyzer/SOURCE.md",
+      "url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/54d43356fec8ca22f8d99c26fc5c28d5964c4d08/wp-content/themes/cyberdat/assets/js/lotl-analyzer/SOURCE.md",
       "authorization_sent": false,
       "cookies_sent": false,
       "http": 200,
-      "final_url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/a5611f225ad1ff9858f84103036b73cc7c38568c/wp-content/themes/cyberdat/assets/js/lotl-analyzer/SOURCE.md",
+      "final_url": "https://raw.githubusercontent.com/CyberDat/CyberDat-AI/54d43356fec8ca22f8d99c26fc5c28d5964c4d08/wp-content/themes/cyberdat/assets/js/lotl-analyzer/SOURCE.md",
       "bytes": 3389,
       "sha256": "6319061e03c4397527062bbe89f00c6f72bfb7fa86a05b375a0fe92bb7365637",
       "bytes_match": true

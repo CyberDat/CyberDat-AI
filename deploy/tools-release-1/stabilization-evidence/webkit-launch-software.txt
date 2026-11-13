@@ -1,0 +1,14 @@
+STAGE launching webkit
+2026-11-13T21:04:12.991Z pw:browser <launching> /home/cyberdat/cyberdat-deploy/tools-release-test-runtime/webkit-stabilization --inspector-pipe --headless --no-startup-window
+2026-11-13T21:04:12.997Z pw:browser <launched> pid=278259
+STAGE launched webkit
+2026-11-13T21:04:13.180Z pw:browser [pid=278259][err] 
+2026-11-13T21:04:13.182Z pw:browser [pid=278259][err] ** (MiniBrowser:278259): CRITICAL **: 22:04:13.179: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
+STAGE new page webkit
+STAGE navigated webkit
+{"browser":"webkit","version":"26.0","pass":true}
+2026-11-13T21:04:15.034Z pw:browser [pid=278259] <gracefully close start>
+2026-11-13T21:04:16.185Z pw:browser [pid=278259] <process did exit: exitCode=0, signal=null>
+2026-11-13T21:04:16.186Z pw:browser [pid=278259] starting temporary directories cleanup
+2026-11-13T21:04:16.190Z pw:browser [pid=278259] finished temporary directories cleanup
+2026-11-13T21:04:16.190Z pw:browser [pid=278259] <gracefully close end>

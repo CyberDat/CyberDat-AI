@@ -1,0 +1,12 @@
+STAGE launching webkit
+2026-11-13T21:01:41.810Z pw:browser <launching> /home/cyberdat/cyberdat-deploy/tools-release-test-runtime/webkit-stabilization --inspector-pipe --headless --no-startup-window
+2026-11-13T21:01:41.819Z pw:browser <launched> pid=277778
+STAGE launched webkit
+2026-11-13T21:01:42.033Z pw:browser [pid=277778][err] 
+2026-11-13T21:01:42.034Z pw:browser [pid=277778][err] ** (MiniBrowser:277778): CRITICAL **: 22:01:42.032: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
+2026-11-13T21:01:42.158Z pw:browser [pid=277778][err] Could not create WPE EGL display: EGL_SUCCESS. Aborting...
+HARD_TIMEOUT: browser smoke25s
+2026-11-13T21:02:06.779Z pw:browser [pid=277778] <kill>
+2026-11-13T21:02:06.780Z pw:browser [pid=277778] <will force kill>
+2026-11-13T21:02:06.780Z pw:browser [pid=277778] starting temporary directories cleanup
+2026-11-13T21:02:06.781Z pw:browser [pid=277778] finished temporary directories cleanup

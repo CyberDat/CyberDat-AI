@@ -1,0 +1,48 @@
+{
+  "browser": "firefox",
+  "version": "142.0.1",
+  "results": [
+    {
+      "label": "first-party page load; same-origin worker with network APIs disabled",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "label": "CSP blocks page scripts from contacting GitHub or any host",
+      "detail": "blocked: NetworkError when attempting to fetch res"
+    },
+    {
+      "label": "examples analyzed: LOLBAS matches with ATT&CK ids from LOLBAS, encoded PowerShell decoded",
+      "detail": "high,high,high,high,high,low,info,info"
+    },
+    {
+      "label": "markup and scripts in commands are shown as text only; no dialogs"
+    },
+    {
+      "label": "JSON report generated locally; nothing stored"
+    },
+    {
+      "label": "4.9 MB file analyzed without network requests",
+      "detail": "2.8 s"
+    },
+    {
+      "label": "Cancel re-requests only static same-origin worker scripts",
+      "detail": "1 requests"
+    },
+    {
+      "label": "input text is never sent: no HTTP requests during analysis, export and clearing; no console errors"
+    },
+    {
+      "label": "360px: no horizontal overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360"
+    },
+    {
+      "label": "keyboard: Ctrl+Enter in the text box runs the analysis"
+    }
+  ],
+  "consoleErrors": [
+    {
+      "phase": "probe",
+      "text": "[JavaScript Error: \"Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at https://raw.githubusercontent.com/ because it violates the following directive: “connect-src 'none'”\" {file: \"debugger eval code line 290 > eval\" line: 1}]"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+PASS [webkit]: first-party page load; same-origin worker with network APIs disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [webkit]: CSP blocks page scripts from contacting GitHub or any host — blocked: Load failed
+PASS [webkit]: examples analyzed: LOLBAS matches with ATT&CK ids from LOLBAS, encoded PowerShell decoded — high,high,high,high,high,low,info,info
+PASS [webkit]: markup and scripts in commands are shown as text only; no dialogs
+PASS [webkit]: JSON report generated locally; nothing stored
+PASS [webkit]: 4.9 MB file analyzed without network requests — 5.0 s
+PASS [webkit]: Cancel re-requests only static same-origin worker scripts — 3 requests
+PASS [webkit]: input text is never sent: no HTTP requests during analysis, export and clearing; no console errors
+PASS [webkit]: 360px: no horizontal overflow, touch targets ≥ 44px — scrollWidth 360
+PASS [webkit]: keyboard: Ctrl+Enter in the text box runs the analysis
+
+All cross-browser checks passed: {"webkitLargeMs":4959,"webkit":10}

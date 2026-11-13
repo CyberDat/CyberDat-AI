@@ -1,0 +1,12 @@
+PASS [firefox]: first-party page load; same-origin worker with network APIs disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [firefox]: CSP blocks page scripts from contacting GitHub or any host — blocked: NetworkError when attempting to fetch res
+PASS [firefox]: examples analyzed: LOLBAS matches with ATT&CK ids from LOLBAS, encoded PowerShell decoded — high,high,high,high,high,low,info,info
+PASS [firefox]: markup and scripts in commands are shown as text only; no dialogs
+PASS [firefox]: JSON report generated locally; nothing stored
+PASS [firefox]: 4.9 MB file analyzed without network requests — 2.8 s
+PASS [firefox]: Cancel re-requests only static same-origin worker scripts — 1 requests
+PASS [firefox]: input text is never sent: no HTTP requests during analysis, export and clearing; no console errors
+PASS [firefox]: 360px: no horizontal overflow, touch targets ≥ 44px — scrollWidth 360
+PASS [firefox]: keyboard: Ctrl+Enter in the text box runs the analysis
+
+All cross-browser checks passed: {"firefoxLargeMs":2841,"firefox":10}

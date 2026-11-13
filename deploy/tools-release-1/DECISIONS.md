@@ -1,6 +1,6 @@
-# Tools Release 1 — owner decisions after D5/D6/D7 preparation
+# Tools Release1 — decisions after Final Test Stabilization
 
-Preparation branch: feat/tools-release-1-license-claims, from803da063.
+Preparation branch: feat/tools-release-1-license-claims, task baseae48da0.
 Owner instructions supersede earlier alternatives; no installation authorization.
 
 | ID | Current status | Consequence |
@@ -16,15 +16,22 @@ Owner instructions supersede earlier alternatives; no installation authorization
 | D8 | Hub release1.1 still lists3 tools; MCP1.2 direct URL implementation present | Claim that all4 are discoverable on hub is not accepted |
 | D9 | Reuse of ID51/stale Rank Math description, old ID53 and removed backlog drafts not decided | Page/meta/SEO work |
 | D11 | SEO publication/sitemap policy pending; protected legacy entry points do not approve SEO actions | SEO acceptance/publication |
-| D14 | Independent5–10 samples/tool evaluation pending; performance and MCP Firefox failures retained | Product release/READY |
+| D14 | Independent5–10 samples/tool evaluation pending; technical performance and browser failures now resolved | Product release/READY |
 | D10/D12/D13 | Naming unchanged; main merge not requested; historical scanner alerts not waived | No unrelated changes |
 
-New blocking observations: unchanged Log Anonymizer pathological-input test took
-12561ms against4000ms; unchanged Injection test4234.8ms against4000ms on this host.
-Baseline failures before this task's changes were11650ms/4058.9ms respectively.
-Thresholds were not weakened. MCP Firefox Ctrl+Enter acceptance timed out;
-WebKit is UNVERIFIED because required host libraries are unavailable. These are
-not full browser PASS and need resolution/reliable rerun before READY.
+Technical stabilization PASS:61 Log/33 Injection/20 LotL/24 MCP engine checks,
+9 privacy +6 new regressions,4006/245 frozen-result equivalence cases,174 browser
+checks on Chromium/Firefox/WebKit,46 deployment tests and10 interlock tests.
+Original4000ms limits/signatures unchanged;3-repeat worst times434.61/2393.13ms.
+Firefox timeout was a test focus target error, not a product keyboard regression.
+WebKit runs with private Debian13 libraries/Mesa; no OS installation/config change.
+
+D6 remains PARTIAL.8 declared GPL3 files and14 shared dependencies now have exact
+paths/hashes in GPL-BOUNDARY.md/gpl-boundary.json. Full source/notices delivery and
+rebuild pass, but the shared-theme combined-work/aggregate legal question is not
+settled by those technical checks. Do not declare full compliance or automatic
+relicensing of Research/Content/SEO/other tools. D7 remains public, no settings change.
+No critical technical FAIL remains in this stage. D1 still NOT authorized.
 
 The22 historical source copies in d15-residual-paths.json remain outside approved
 scope and unguarded. Never execute with sudo or restore them over guarded entry

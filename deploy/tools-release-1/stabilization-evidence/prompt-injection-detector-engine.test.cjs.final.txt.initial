@@ -1,0 +1,27 @@
+FAIL: versions and the seven groups are exported
+/home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector-engine.test.cjs:13
+	try { fn(); } catch (e) { console.error('FAIL: ' + label); throw e; }
+	                                                           ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'1.0.1' !== '1.0.0'
+
+    at /home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector-engine.test.cjs:25:9
+    at check (/home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector-engine.test.cjs:13:8)
+    at Object.<anonymous> (/home/cyberdat/cyberdat-deploy/tools-release-1-stabilization-work/tests/prompt-injection-detector-engine.test.cjs:24:1)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '1.0.1',
+  expected: '1.0.0',
+  operator: 'strictEqual'
+}
+
+Node.js v22.14.0

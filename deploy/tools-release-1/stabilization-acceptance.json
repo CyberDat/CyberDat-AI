@@ -1,0 +1,357 @@
+{
+  "utc": "2026-11-13T21:17:59.662703+00:00",
+  "base_commit": "ae48da0e635b45a5e1fefdda54bb95eed2b2cd61",
+  "source_commit": "54d43356fec8ca22f8d99c26fc5c28d5964c4d08",
+  "branch": "feat/tools-release-1-license-claims",
+  "verdict": "PARTIAL",
+  "points": {
+    "1": "PASS",
+    "2": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "6": "PASS",
+    "7": "PARTIAL",
+    "8": "PASS",
+    "9": "PASS"
+  },
+  "critical_technical_failures": [],
+  "D1": "NOT_AUTHORIZED",
+  "D6": "PARTIAL legal combined-work/theme boundary UNVERIFIED",
+  "theme_files": 125,
+  "base_files": 95,
+  "archive_sha256": "9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b",
+  "package_sha256": "590ffd091e8225776a661bd1a3a7e526dae8430f1445467e803dae8f4f2463b5",
+  "engine_checks": {
+    "log": 61,
+    "injection": 33,
+    "lotl": 20,
+    "mcp": 24
+  },
+  "privacy_checks": 9,
+  "new_stabilization_checks": 6,
+  "baseline_equivalence_cases": {
+    "log": 4006,
+    "injection": 245
+  },
+  "performance_budget_ms": 4000,
+  "performance_repeats": [
+    {
+      "tool": "log-anonymizer",
+      "ms": 429.01540600000004,
+      "outputLength": 786432,
+      "attempt": 1
+    },
+    {
+      "tool": "log-anonymizer",
+      "ms": 434.612741,
+      "outputLength": 786432,
+      "attempt": 2
+    },
+    {
+      "tool": "log-anonymizer",
+      "ms": 411.912504,
+      "outputLength": 786432,
+      "attempt": 3
+    },
+    {
+      "tool": "prompt-injection-detector",
+      "ms": 2393.131617,
+      "counts": {
+        "total": 500000,
+        "bySeverity": {
+          "high": 0,
+          "medium": 499999,
+          "low": 1
+        },
+        "byGroup": {
+          "role": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "override": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "exfiltration": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "hidden": {
+            "high": 0,
+            "medium": 499999,
+            "low": 1,
+            "total": 500000
+          },
+          "encoded": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "obfuscation": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "extraction": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          }
+        },
+        "byRule": {
+          "PI-HID-001": 500000
+        }
+      },
+      "outputLength": 500000,
+      "attempt": 1
+    },
+    {
+      "tool": "prompt-injection-detector",
+      "ms": 2122.273361,
+      "counts": {
+        "total": 500000,
+        "bySeverity": {
+          "high": 0,
+          "medium": 499999,
+          "low": 1
+        },
+        "byGroup": {
+          "role": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "override": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "exfiltration": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "hidden": {
+            "high": 0,
+            "medium": 499999,
+            "low": 1,
+            "total": 500000
+          },
+          "encoded": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "obfuscation": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "extraction": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          }
+        },
+        "byRule": {
+          "PI-HID-001": 500000
+        }
+      },
+      "outputLength": 500000,
+      "attempt": 2
+    },
+    {
+      "tool": "prompt-injection-detector",
+      "ms": 2174.250861,
+      "counts": {
+        "total": 500000,
+        "bySeverity": {
+          "high": 0,
+          "medium": 499999,
+          "low": 1
+        },
+        "byGroup": {
+          "role": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "override": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "exfiltration": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "hidden": {
+            "high": 0,
+            "medium": 499999,
+            "low": 1,
+            "total": 500000
+          },
+          "encoded": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "obfuscation": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          },
+          "extraction": {
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "total": 0
+          }
+        },
+        "byRule": {
+          "PI-HID-001": 500000
+        }
+      },
+      "outputLength": 500000,
+      "attempt": 3
+    }
+  ],
+  "php_checks": {
+    "log": 41,
+    "injection": 42,
+    "lotl": 47,
+    "mcp": 51,
+    "tools": 27,
+    "catalog": 36
+  },
+  "browser_checks": [
+    {
+      "tool": "log-anonymizer",
+      "browser": "chromium-cdp",
+      "checks": 21,
+      "version": null,
+      "exit": 0
+    },
+    {
+      "tool": "prompt-injection-detector",
+      "browser": "chromium-cdp",
+      "checks": 21,
+      "version": null,
+      "exit": 0
+    },
+    {
+      "tool": "lotl-analyzer",
+      "browser": "chromium-cdp",
+      "checks": 16,
+      "version": null,
+      "exit": 0
+    },
+    {
+      "tool": "mcp-checker",
+      "browser": "chromium-cdp",
+      "checks": 20,
+      "version": null,
+      "exit": 0
+    },
+    {
+      "tool": "log-anonymizer",
+      "browser": "firefox",
+      "checks": 14,
+      "version": "142.0.1",
+      "exit": 0
+    },
+    {
+      "tool": "prompt-injection-detector",
+      "browser": "firefox",
+      "checks": 13,
+      "version": "142.0.1",
+      "exit": 0
+    },
+    {
+      "tool": "lotl-analyzer",
+      "browser": "firefox",
+      "checks": 10,
+      "version": "142.0.1",
+      "exit": 0
+    },
+    {
+      "tool": "mcp-checker",
+      "browser": "firefox",
+      "checks": 11,
+      "version": "142.0.1",
+      "exit": 0
+    },
+    {
+      "tool": "log-anonymizer",
+      "browser": "webkit",
+      "checks": 14,
+      "version": "26.0",
+      "exit": 0
+    },
+    {
+      "tool": "prompt-injection-detector",
+      "browser": "webkit",
+      "checks": 13,
+      "version": "26.0",
+      "exit": 0
+    },
+    {
+      "tool": "lotl-analyzer",
+      "browser": "webkit",
+      "checks": 10,
+      "version": "26.0",
+      "exit": 0
+    },
+    {
+      "tool": "mcp-checker",
+      "browser": "webkit",
+      "checks": 11,
+      "version": "26.0",
+      "exit": 0
+    }
+  ],
+  "browser_total_checks": 174,
+  "deployment_tests": 46,
+  "interlock_tests": 10,
+  "php_theme_lint": 42,
+  "gpl_preferred_source_checks": 7,
+  "system_installation": false,
+  "staging_changes": false,
+  "wordpress_or_sql_access": false,
+  "production_access": false,
+  "main_merge": false,
+  "real_rollback": false,
+  "new_staging_backup": null,
+  "source_public_access": {
+    "checks": 8,
+    "pass": true,
+    "source_commit": "54d43356fec8ca22f8d99c26fc5c28d5964c4d08"
+  },
+  "security_scan": {
+    "pass": true,
+    "rules": 18,
+    "available_tracked_text_files": 516
+  }
+}

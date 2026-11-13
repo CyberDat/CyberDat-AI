@@ -1,0 +1,265 @@
+{
+  "system_install": false,
+  "packages": [
+    {
+      "file": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb",
+      "sha256": "52b45eb6e49c53c0a35ef45555a9457b094482eafef27d27cd777b916a2f06de",
+      "bytes": 59256
+    },
+    {
+      "file": "libegl-mesa0_25.0.7-2+deb13u1_amd64.deb",
+      "sha256": "0ddebd7e91b048aac812611d6bd008343386cb140b51e5e66df74c6b6263be65",
+      "bytes": 128456
+    },
+    {
+      "file": "libegl1_1.7.0-1+b2_amd64.deb",
+      "sha256": "62e7bc8ccd47a60e55aad17f83d8d474310d782eb8589bbce2ab714c31712406",
+      "bytes": 34588
+    },
+    {
+      "file": "libenchant-2-2_2.8.2+dfsg1-3_amd64.deb",
+      "sha256": "83f208d89db1c48e6ede8a23e8ffa2bcddd4f99427bfd1279201247bbf27ca58",
+      "bytes": 56756
+    },
+    {
+      "file": "libepoxy0_1.5.10-2_amd64.deb",
+      "sha256": "4c4c8024f2175086de65bca9fdc3fbb967f2863ebf249d489c66d0c8103dd3a3",
+      "bytes": 192728
+    },
+    {
+      "file": "libevdev2_1.13.4+dfsg-1_amd64.deb",
+      "sha256": "02e85fb9461b85b23f775d5fcf5a31c55d37bec40b63fd98ca5d3a2763714ae7",
+      "bytes": 32372
+    },
+    {
+      "file": "libevent-2.1-7t64_2.1.13-stable-1~deb13u1_amd64.deb",
+      "sha256": "9a2a9a6c4ceaafe280f8f39ffa217bb50719c5e79feb75f412755c4036a76ca0",
+      "bytes": 182984
+    },
+    {
+      "file": "libflite1_2.2-7_amd64.deb",
+      "sha256": "5945190970be7d4a1f71fb6f7e3e340ba2675e770605df0754051d617a6c5ee6",
+      "bytes": 12811404
+    },
+    {
+      "file": "libgl1-mesa-dri_25.0.7-2+deb13u1_amd64.deb",
+      "sha256": "722fad9944bdfd29eb6421576331a2697f83bc4b3551d693edb7aefdde6bb198",
+      "bytes": 46240
+    },
+    {
+      "file": "libgl1_1.7.0-1+b2_amd64.deb",
+      "sha256": "87fa2f6e5abaed4ed385fac879c8dd735af719ee2300222d901793c66e041678",
+      "bytes": 89504
+    },
+    {
+      "file": "libgles2_1.7.0-1+b2_amd64.deb",
+      "sha256": "e12c18aa77939d122ee1dea520ba0440b97dc19200b7396e03dff03a3ece74c1",
+      "bytes": 17256
+    },
+    {
+      "file": "libglvnd0_1.7.0-1+b2_amd64.deb",
+      "sha256": "887f74008166549ce9e100c906aa937e95d6e5ce1c8d86efe8c95fd953359b9c",
+      "bytes": 51960
+    },
+    {
+      "file": "libglx-mesa0_25.0.7-2+deb13u1_amd64.deb",
+      "sha256": "2e6ab57de9931e890621d3ade04213b06e7142a4ae8a72a1756c44d0271aaeb7",
+      "bytes": 143408
+    },
+    {
+      "file": "libglx0_1.7.0-1+b2_amd64.deb",
+      "sha256": "2721fdca0fe3bd963cb39482eabc253af52b88f4a7f6dbb69e475549daf5af3b",
+      "bytes": 34892
+    },
+    {
+      "file": "libgraphene-1.0-0_1.10.8-5_amd64.deb",
+      "sha256": "ddcf98f17f6c0a7c76974d7238be1468e59c186034c1b806638d32d9f446ea6e",
+      "bytes": 42352
+    },
+    {
+      "file": "libgstreamer-gl1.0-0_1.26.2-1+deb13u2_amd64.deb",
+      "sha256": "2ae205e07780a08cb88e3806a1c77337f79bc19a0354e7b28193c1889842d120",
+      "bytes": 270272
+    },
+    {
+      "file": "libgstreamer-plugins-bad1.0-0_1.26.2-3+deb13u3_amd64.deb",
+      "sha256": "0467873a5ad6a12dde998b33eae15487fbb8c9c56e12540b4bd536d7a2f51133",
+      "bytes": 1043568
+    },
+    {
+      "file": "libgstreamer-plugins-base1.0-0_1.26.2-1+deb13u2_amd64.deb",
+      "sha256": "b476f0e622edf46394c8f7eb40032a5db30d60eccae3332d2cd8d03ac65b8a8a",
+      "bytes": 996672
+    },
+    {
+      "file": "libgstreamer1.0-0_1.26.2-2_amd64.deb",
+      "sha256": "08b463307fbde5496a346b1bb300b465cd22bd326f6f4634f482bf441af28a9b",
+      "bytes": 1421116
+    },
+    {
+      "file": "libgtk-4-1_4.18.6+ds-2_amd64.deb",
+      "sha256": "51ab1114a57702e703cce745c24caf5bd31ec1d2a900c72fd15fe47c6c030e68",
+      "bytes": 3166640
+    },
+    {
+      "file": "libgudev-1.0-0_238-6_amd64.deb",
+      "sha256": "890a55ea26f52062f377389e6326abeadb72a14741c95ab6a1c5a19c77c3c3d0",
+      "bytes": 14504
+    },
+    {
+      "file": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb",
+      "sha256": "0b45d951629e98673c0da73b2bcd0886a467d833bb3b7499892a168f247165d2",
+      "bytes": 15452
+    },
+    {
+      "file": "libharfbuzz-subset0_10.2.0-1+deb13u1_amd64.deb",
+      "sha256": "2d0de8588408af221927b372c3c8d439d638a0a8abb549660ed5813ab529e6bc",
+      "bytes": 559548
+    },
+    {
+      "file": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb",
+      "sha256": "89c546cb55be403ce63fe668baff2515979100a30fa07e2b97de186b9c07f01e",
+      "bytes": 12664
+    },
+    {
+      "file": "libhwy1t64_1.2.0-2+b2_amd64.deb",
+      "sha256": "540c4ff28255fbfa89468061b722dfc2b773b0c1ecf163a063202482dea5b119",
+      "bytes": 676044
+    },
+    {
+      "file": "libhyphen0_2.8.8-7+b2_amd64.deb",
+      "sha256": "fa9dca7b8cf1381fd52800c44a385c5725a78a88bd705f7c39b1046a5293435e",
+      "bytes": 30664
+    },
+    {
+      "file": "libjxl0.11_0.11.2-0.1~deb13u3_amd64.deb",
+      "sha256": "ddcb149f875b2ed6ab9160c59c1f46eef48b821005033e574dc829e6deacc26e",
+      "bytes": 1133480
+    },
+    {
+      "file": "libllvm19_1%3a19.1.7-3+b1_amd64.deb",
+      "sha256": "db0d614d61345ca710fb73e75105f1ec6e38898fa7b3aa99fa7eb7d8b0a11d57",
+      "bytes": 25978316
+    },
+    {
+      "file": "libmanette-0.2-0_0.2.12-1_amd64.deb",
+      "sha256": "98841a467692c46fd1870275113235691ebbfe71a3524f6b2a0fa7e9c33c6e56",
+      "bytes": 43752
+    },
+    {
+      "file": "libopengl0_1.7.0-1+b2_amd64.deb",
+      "sha256": "50ea65a1141cbf6b02e41492963656ad0ba71d257cc4066ee9756bca7a6c1ac3",
+      "bytes": 30940
+    },
+    {
+      "file": "libopus0_1.5.2-2_amd64.deb",
+      "sha256": "794056db33d71b2ac4bd8b5a4eb23b627bcb8a49d123c33b6e841a996253a067",
+      "bytes": 2851932
+    },
+    {
+      "file": "liborc-0.4-0t64_1%3a0.4.41-1_amd64.deb",
+      "sha256": "5b9afe78be0dd71399c0d4d7e5f26beb6ddf207279997942d8280be1b20bd58c",
+      "bytes": 189604
+    },
+    {
+      "file": "libsecret-1-0_0.21.7-1_amd64.deb",
+      "sha256": "949c5428cd3427486ac6c4dfc6d9400ce786c504c02334acc903c873aa52d14f",
+      "bytes": 111224
+    },
+    {
+      "file": "libsoup-3.0-0_3.6.5-3_amd64.deb",
+      "sha256": "7031c74a7a355db57d7eb9d48f1e81c7ccbb41da35db7db501e08b3fe3c2c88a",
+      "bytes": 280004
+    },
+    {
+      "file": "libvpx9_1.15.0-2.1+deb13u1_amd64.deb",
+      "sha256": "5c2baac5c97a1fe01c4f0a2216743b901dc72437351e7451725a394c08037bcc",
+      "bytes": 1114728
+    },
+    {
+      "file": "libvulkan1_1.4.309.0-1_amd64.deb",
+      "sha256": "f47da79cd140264fe21cceb08bc87a71bc7fec05819e4a421f3f518d21101a37",
+      "bytes": 130128
+    },
+    {
+      "file": "libwayland-client0_1.23.1-3_amd64.deb",
+      "sha256": "d1607e1db1a7c5378a2e5c6ae7b20f64dc6acf134f953d84a7f5204b74339f33",
+      "bytes": 26816
+    },
+    {
+      "file": "libwayland-egl1_1.23.1-3_amd64.deb",
+      "sha256": "7c5c3429028b39b9432792db08cb218c43891df439ebc648b83ebee676a80ec5",
+      "bytes": 5860
+    },
+    {
+      "file": "libwayland-server0_1.23.1-3_amd64.deb",
+      "sha256": "2967212bd582e0dffca443fdc44f4c660e7368d41f7ee3a7f6314e0c3abfe9ea",
+      "bytes": 34432
+    },
+    {
+      "file": "libwebpdemux2_1.5.0-0.1_amd64.deb",
+      "sha256": "b6e4aba184b2c3f7ce88b3e49557fe0c38c909df54528ebe5e167ad651f0f593",
+      "bytes": 113392
+    },
+    {
+      "file": "libwebpmux3_1.5.0-0.1_amd64.deb",
+      "sha256": "8bc86d509406ad496b6414c7068b3dadc0f8c502027973cbf1765c7bb54fabdf",
+      "bytes": 126140
+    },
+    {
+      "file": "libwoff1_1.0.2-2+b2_amd64.deb",
+      "sha256": "628a2a993556027adaa4e93a675fee341e3d47d306db7f3811ff56ea84a42022",
+      "bytes": 44288
+    },
+    {
+      "file": "libx264-164_2%3a0.164.3108+git31e19f9-2+b1_amd64.deb",
+      "sha256": "325c90dc0888be316c8979b94aee546d223d4edf03b30927d1e9d431f67e33b2",
+      "bytes": 558464
+    },
+    {
+      "file": "libxcb-dri3-0_1.17.0-2+b1_amd64.deb",
+      "sha256": "f446d42fb5fcebbb3e347368ba83616769fdb271d85b2f49048e337f3163d267",
+      "bytes": 106892
+    },
+    {
+      "file": "libxcb-glx0_1.17.0-2+b1_amd64.deb",
+      "sha256": "cc59a3fa1c4ce376c3a32798179950810bd7b9be9a35bc76de1f5b5e7cc3925e",
+      "bytes": 122380
+    },
+    {
+      "file": "libxcb-present0_1.17.0-2+b1_amd64.deb",
+      "sha256": "db95ea4630c55bd7f3281cb60ccf75b1627ef2f4399e1939f8f6161e584a92fb",
+      "bytes": 105612
+    },
+    {
+      "file": "libxcb-randr0_1.17.0-2+b1_amd64.deb",
+      "sha256": "f5d9fe5fdf797918f81f0abf6cfd4270bd54659540cddb4da709ab7154523214",
+      "bytes": 116736
+    },
+    {
+      "file": "libxcb-xfixes0_1.17.0-2+b1_amd64.deb",
+      "sha256": "f9c1aafc18bf9e4662e34bbaf3bb00f1f4e8c2fc1dd786fdfb6cb9cb6c64fae7",
+      "bytes": 109288
+    },
+    {
+      "file": "libxshmfence1_1.3.3-1_amd64.deb",
+      "sha256": "7b339e9e5b2349723d35af4df89bcc7aa456bbdf8ba1754358f9b44c3fe1f964",
+      "bytes": 10884
+    },
+    {
+      "file": "libxxf86vm1_1%3a1.1.4-1+b4_amd64.deb",
+      "sha256": "f9f8487e536293e7ecf91fe7feb14e97e02a3aa652e207c661442dce775d3b14",
+      "bytes": 19320
+    },
+    {
+      "file": "libz3-4_4.13.3-1_amd64.deb",
+      "sha256": "71383373523ef62d47eccf660cf6535c3febcbb3f88e54cb7a43124014b57359",
+      "bytes": 8560036
+    },
+    {
+      "file": "mesa-libgallium_25.0.7-2+deb13u1_amd64.deb",
+      "sha256": "3e610f29321cdcc61337c86e6b4031ff60f0c9915fe19e6a862ac06480620ff4",
+      "bytes": 9630224
+    }
+  ]
+}

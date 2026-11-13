@@ -1,0 +1,14 @@
+{
+  "browser": "Firefox132",
+  "original_focus": [
+    "cd-mcp-input",
+    "cd-mcp-input DOM reference after Shift+Tab/browser chrome",
+    "cd-mcp-file after Tab"
+  ],
+  "shortcut_target": "cd-mcp-file",
+  "app_handler_requires": "input or policy textarea",
+  "app_error": null,
+  "fix": "walk backwards from Run inside document and assert textarea focus before Ctrl+Enter",
+  "same_browser_fixed_checks": 11,
+  "product_code_changed": false
+}

@@ -2,12 +2,44 @@
 
 Last updated: 2026-11-13
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release1 D5/D6/D7 preparation — PARTIAL; D5 PASS, D6 PARTIAL, D7 PASS. Theme-only125-file package prepared; D1 installation NOT authorized.**
+Current stage: **Tools Release1 Final Test Stabilization — technical PASS, overall PARTIAL (D6 legal scope/D1 approval pending). No staging installation authorized or performed.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release1 D5/D6/D7 preparation —2026-11-13
+## Tools Release1 Final Test Stabilization —2026-11-13
+
+Task baseae48da0, same branch feat/tools-release-1-license-claims. Theme/source
+commit `54d43356fec8ca22f8d99c26fc5c28d5964c4d08`. Log1.0.2 avoids repeated unrelated-key value parsing;
+Injection1.0.1 reuses bounded invisible metadata and avoids unused descriptions.
+4006 log/245 Unicode cases preserve the original complete results; all33 Injection
+signatures unchanged. Original4000ms tests PASS, worst fresh-process3-repeat
+Log434.61ms / Injection2393.13ms.61/33/20/24 engine checks,9 privacy and6 new
+stabilization checks PASS; PHP/corpus guards PASS with unchanged known LotL limits.
+
+MCP Firefox timeout localized to shortcut sent to file input after browser-chrome
+focus traversal; corrected test verifies actual textarea focus. Product MCP code
+unchanged. Chromium 141:78 + Firefox 142:48 + WebKit 26:48 =174 local browser checks PASS,
+12/12 processes exit0. Private Debian13 Playwright/libraries/Mesa run WebKit without
+system package/config/service changes. Physical Safari/iOS remains UNVERIFIED.
+
+New theme-only125-file package, SHA256 `9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b`,
+path /home/cyberdat/cyberdat-deploy/tools-release-1-stabilized-package/.42 PHP lint,
+46/46 deployment sandbox and10/10 interlock tests PASS. All source Git blobs match;
+installed theme95/protected43 and11+11 legacy prefixes remain unchanged. No staging
+install, WordPress/SQL/page/plugin/collector/checkpoint/backoff/timer/config/
+production change, main merge, real rollback or new service. No new staging backup.
+
+D6 remains PARTIAL: concrete8 GPL3 files/14 shared paths documented; full preferred
+source/notices/rebuild checks PASS, legal combined-work/theme scope UNVERIFIED.
+D1 remains NOT approved. D14 independent product acceptance and D2/D4/D8/D9/D11
+page/hub/SEO decisions remain separate. No critical technical FAIL remains; overall
+PARTIAL, no automatic next stage. [Report](../deploy/tools-release-1/REPORT.md),
+[handoff](../deploy/tools-release-1/HANDOFF.md),
+[decisions](../deploy/tools-release-1/DECISIONS.md),
+[GPL boundary](../deploy/tools-release-1/GPL-BOUNDARY.md).
+
+## Tools Release1 D5/D6/D7 preparation —2026-11-13 (history atae48da0)
 
 Owner selected D6 optionA and D7 public repository. Separate branch
 `feat/tools-release-1-license-claims` starts803da063. D5 universal secret masking

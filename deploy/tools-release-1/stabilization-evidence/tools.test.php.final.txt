@@ -1,0 +1,27 @@
+PASS: reviewed metadata alone cannot release a fake tool
+PASS: reviewed implemented tool with all content can be ready
+PASS: missing summary blocks readiness
+PASS: missing how_it_works blocks readiness
+PASS: missing documentation blocks readiness
+PASS: missing examples blocks readiness
+PASS: missing faq blocks readiness
+PASS: password-protected tool excluded
+PASS: unsafe GitHub URL removed
+PASS: unsafe GitHub URL removed
+PASS: unsafe GitHub URL removed
+PASS: unsafe GitHub URL removed
+PASS: published GitHub HTTPS URL allowed
+PASS: editorial HTML sanitized
+PASS: save rejects missing capability and nonce
+PASS: valid nonce cannot replace capability
+PASS: authorized nonced save succeeds
+PASS: publish fails closed
+PASS: future fails closed
+PASS: normal editorial posts unaffected
+PASS: unfinished tool excluded from Rank Math sitemap
+PASS: noindex added without weakening nofollow
+PASS: Rank Math cannot weaken staging robots
+PASS: existing news Article entity refined through Rank Math
+PASS: sample fixture is not promoted to NewsArticle
+PASS: theme does not emit a second JSON-LD graph
+PASS: tools contract suite

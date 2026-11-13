@@ -1,0 +1,2 @@
+PASS: scanner self-test: 14 rules detect the synthetic values
+PASS: no token-shaped strings in 516 tracked text files (18 rules)

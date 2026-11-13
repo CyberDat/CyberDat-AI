@@ -1,0 +1,180 @@
+{
+  "url": "http://127.0.0.1:18091/tools/log-anonymizer/",
+  "at": "2026-11-13T21:14:20.529Z",
+  "playwright": "1.56.1",
+  "summary": {
+    "webkit": {
+      "browser": "webkit",
+      "version": "26.0",
+      "results": [
+        {
+          "label": "page loads under strict CSP with nonce; app.js executed; only first-party requests",
+          "detail": "9 requests"
+        },
+        {
+          "label": "Web Worker starts from the same origin under worker-src 'self'; its network APIs are disabled",
+          "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+        },
+        {
+          "label": "CSP connect-src blocks fetch from the page",
+          "detail": "blocked: Load failed"
+        },
+        {
+          "label": "no console errors or CSP violations while loading"
+        },
+        {
+          "label": "sample anonymized, highlighted preview rendered"
+        },
+        {
+          "label": "markup in input stays text (no elements, no dialogs)"
+        },
+        {
+          "label": "result and acknowledged map downloads work (blob:, no HTTP)"
+        },
+        {
+          "label": "nothing stored in localStorage, sessionStorage, IndexedDB, cookies or the URL"
+        },
+        {
+          "label": "large input: the WebKit speed note is shown (WebKit)"
+        },
+        {
+          "label": "30 MB file processed in the worker; page stays responsive",
+          "detail": "112.3 s, longest main-thread gap 563 ms"
+        },
+        {
+          "label": "Cancel restarts the worker; only its two static scripts may be re-requested",
+          "detail": "worker.js, engine.js"
+        },
+        {
+          "label": "input text never sent: no HTTP requests while processing, downloading or clearing; no console errors"
+        },
+        {
+          "label": "360 px viewport: no horizontal overflow",
+          "detail": "360 ≤ 360"
+        },
+        {
+          "label": "keyboard: Tab reaches every control up to \"Anonymize log\"; Enter activates it",
+          "detail": "22 stops"
+        }
+      ],
+      "consoleErrors": [
+        {
+          "phase": "probe",
+          "text": "Refused to connect to http://127.0.0.1:18091/tools/log-anonymizer/ because it does not appear in the connect-src directive of the Content Security Policy."
+        }
+      ],
+      "requestsAfterLoad": [
+        {
+          "phase": "large",
+          "url": "blob:http://127.0.0.1:18091/5728e9da-626d-4478-be02-a5eb561cbc15",
+          "type": "xhr"
+        },
+        {
+          "phase": "cancel",
+          "url": "blob:http://127.0.0.1:18091/3968c799-8461-47bb-ada2-2ebc106359cb",
+          "type": "xhr"
+        },
+        {
+          "phase": "cancel",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794602883",
+          "type": "xhr"
+        },
+        {
+          "phase": "cancel",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794602883",
+          "type": "xhr"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/tools/log-anonymizer/",
+          "type": "document"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/tokens.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/main.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/tools.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/tools-common.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
+          "type": "script"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794602883",
+          "type": "xhr"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794602883",
+          "type": "xhr"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/tools/log-anonymizer/",
+          "type": "document"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/tokens.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/main.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/tools.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/tools-common.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+          "type": "stylesheet"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
+          "type": "script"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794602883",
+          "type": "xhr"
+        },
+        {
+          "phase": "final",
+          "url": "http://127.0.0.1:18091/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794602883",
+          "type": "xhr"
+        }
+      ]
+    }
+  }
+}
