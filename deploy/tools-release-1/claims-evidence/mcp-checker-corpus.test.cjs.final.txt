@@ -1,0 +1,3 @@
+main corpus: detected 52/52 (100.0%), most specific rule 52/52 (100.0%); legit with medium+ 0/40 (0.0%), with low+ 1/40 (2.5%)
+held-out set: detected 15/15 (100.0%), most specific rule 15/15 (100.0%); legit with medium+ 0/15 (0.0%), with low+ 0/15 (0.0%)
+PASS: corpus regression guards (main corpus detection >= 90%, medium+ false positives <= 5%)

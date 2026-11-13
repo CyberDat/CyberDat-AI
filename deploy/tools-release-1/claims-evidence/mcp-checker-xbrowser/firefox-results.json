@@ -1,0 +1,48 @@
+{
+  "browser": "firefox",
+  "version": "132.0",
+  "results": [
+    {
+      "label": "first-party page load; same-origin worker with network APIs disabled",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "label": "CSP blocks page scripts from contacting registries or any host",
+      "detail": "blocked: NetworkError when attempting to fetch res"
+    },
+    {
+      "label": "example checked: high verdict, findings per server, fake token masked",
+      "detail": "7 cards"
+    },
+    {
+      "label": "secrets never appear in full in the results or the downloaded report"
+    },
+    {
+      "label": "markup and scripts in configurations are shown as text only; no dialogs"
+    },
+    {
+      "label": "policy check: schema error explained, example policy violations listed, policy downloaded; nothing stored"
+    },
+    {
+      "label": "4.8 MB tool list checked without network requests",
+      "detail": "2.7 s"
+    },
+    {
+      "label": "Cancel re-requests only static same-origin worker scripts",
+      "detail": "1 requests"
+    },
+    {
+      "label": "input text is never sent: no HTTP requests during checks, exports and clearing; no console errors"
+    },
+    {
+      "label": "360px: no horizontal overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360"
+    }
+  ],
+  "consoleErrors": [
+    {
+      "phase": "probe",
+      "text": "[JavaScript Error: \"Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at https://registry.npmjs.org/ because it violates the following directive: “connect-src 'none'”\" {file: \"debugger eval code line 234 > eval\" line: 1}]"
+    }
+  ]
+}

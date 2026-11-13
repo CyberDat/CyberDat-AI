@@ -118,7 +118,7 @@ class ReleaseTests(unittest.TestCase):
         link = self.root / 'lock-link'; link.symlink_to(p)
         with self.assertRaises(OSError): acquire_lock(link)
 
-    def test_actual_123_file_package_install_and_rollback(self):
+    def test_actual_125_file_package_install_and_rollback(self):
         need_env = ['CYBERDAT_TEST_PACKAGE', 'CYBERDAT_TEST_BASE_THEME']
         if not all(os.environ.get(k) for k in need_env):
             self.skipTest('actual package/base export not supplied; run run-tests.py')
@@ -135,7 +135,7 @@ class ReleaseTests(unittest.TestCase):
         tx = Transaction(full, self.root / 'full-backup', spec, pages, self.guard)
         tx.install(package / 'theme.tar.gz')
         verify(full, spec['target'])
-        self.assertEqual(len(manifest(full)), 123)
+        self.assertEqual(len(manifest(full)), 125)
         tx.rollback()
         verify(full, spec['base'])
         self.assertEqual(len(manifest(full)), 95)

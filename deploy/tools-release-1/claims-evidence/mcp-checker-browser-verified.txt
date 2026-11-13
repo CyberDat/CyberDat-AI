@@ -1,0 +1,22 @@
+PASS: page load: first-party only; worker and engine load from this site — 10 requests
+PASS: CSP connect-src blocks scripts on the page from reaching npm or any host — blocked: Failed to fetch
+PASS: no console errors during page load
+PASS: network APIs are disabled inside the worker — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS: example checked: high verdict, findings in six groups with location, line and suggested fix; the fake token is masked; no links created — high, high, high, medium, medium, medium, info
+PASS: secrets masked: no full value in the results or the JSON report, which holds findings and summaries only — 9 secret findings
+PASS: HTML, scripts and javascript: URLs in configurations are shown as text only: no elements, no links, no dialogs
+PASS: invalid JSON: clear message with line and column — Invalid JSON at line 2, column 3: property names must use double quotes ("), not single qu
+PASS: policy schema errors are listed clearly — The policy has errors: • Unknown setting (name omitted) (line 1). Did you mean "allowedHosts"? • "maxServers" 
+PASS: policy check: example policy finds violations with rule, location and fix — Checked 6 servers and 3 tools against 15 policy settings (allowedCommands, deniedCommands, allowedPa
+PASS: policy download returns exactly the policy text; empty policy explained; nothing written to storage, cookies or the URL
+PASS: 4.8 MB tool list checked in the worker without network requests — 1.7 s; Checked 1 separate tool list with 9,008 tools in 1.6 s: 0 high, 0 medium, 2 low, 0 info.
+PASS: input text is never sent: no HTTP requests after page load while checking, exporting, downloading the policy and clearing; no console errors
+PASS: Cancel restarts the worker; only its static same-origin scripts are re-requested — worker.js, engine.js
+PASS: keyboard: Tab order text box → file → buttons → mode → Check with visible focus; arrow keys switch mode; Ctrl+Enter runs — TEXTAREA:textarea > INPUT:file > BUTTON:button > BUTTON:button > INPUT:radio > RUN
+PASS: every control has an accessible name; text contrast ≥ 4.5:1 — min 7.59:1 over 27 styles
+PASS: 360px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 360
+PASS: 390px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 390
+PASS: 768px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 768
+PASS: without JavaScript: notice shown; How it works, Privacy, Limitations and Sources still visible
+
+20 browser checks passed. Evidence: /home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/deploy/tools-release-1/claims-evidence/mcp-checker-browser-verified

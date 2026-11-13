@@ -1,0 +1,9 @@
+ok   dm-npx-unpinned-info [MCP-HYG-003:info MCP-CMD-003:info]
+ok   dm-uvx-latest-info [MCP-HYG-003:info MCP-CMD-003:info]
+ok   dm-npx-at-latest-info [MCP-HYG-003:info MCP-CMD-003:info]
+ok   dm-git-source-stays-medium [MCP-CMD-009:medium MCP-HYG-003:info]
+ok   dm-typosquat-stays-medium [MCP-NAME-004:medium MCP-HYG-003:info MCP-CMD-003:info]
+ok   dm-unpinned-plus-pipe-stays-high [MCP-CMD-001:high MCP-HYG-003:info MCP-CMD-003:info]
+ok   dm-one-note-per-package [MCP-HYG-003:info MCP-CMD-003:info]
+dependent examples (MCP: unpinned npx/uvx is an info-level note; other launch risks keep their severity): 7/7 as expected
+PASS: dependent MCP examples

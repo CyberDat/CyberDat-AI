@@ -1,0 +1,11 @@
+PASS [firefox]: first-party page load; same-origin worker with network APIs disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [firefox]: CSP blocks page scripts from contacting registries or any host — blocked: NetworkError when attempting to fetch res
+PASS [firefox]: example checked: high verdict, findings per server, fake token masked — 7 cards
+PASS [firefox]: secrets never appear in full in the results or the downloaded report
+PASS [firefox]: markup and scripts in configurations are shown as text only; no dialogs
+PASS [firefox]: policy check: schema error explained, example policy violations listed, policy downloaded; nothing stored
+PASS [firefox]: 4.8 MB tool list checked without network requests — 2.7 s
+PASS [firefox]: Cancel re-requests only static same-origin worker scripts — 1 requests
+PASS [firefox]: input text is never sent: no HTTP requests during checks, exports and clearing; no console errors
+PASS [firefox]: 360px: no horizontal overflow, touch targets ≥ 44px — scrollWidth 360
+FAIL: Timed out: () => !document.querySelector('[data-mcp-results]').hidden && /MCP-FS-001/.test(

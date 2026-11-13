@@ -1,41 +1,38 @@
-# Owner decisions — safe preparation,2026-11-13
+# Tools Release 1 — owner decisions after D5/D6/D7 preparation
 
-Latest owner instructions supersede the previous handoff. Preparation does not
-authorize installation; unrelated Research/Content approvals do not apply here.
+Preparation branch: feat/tools-release-1-license-claims, from803da063.
+Owner instructions supersede earlier alternatives; no installation authorization.
 
-| ID | Actual status | Blocks |
+| ID | Current status | Consequence |
 |---|---|---|
-| D1 | Preparation authorized; staging install NOT authorized | Any live installation/page mutation/rollback |
-| D3 | DECIDED: retain Research0ef03e9; separate theme-only payload | Full repository deployment forbidden |
-| D2 | Pending corrected route policy and legacy-check adoption; old status-only patch insufficient | Publication/checks |
-| D4 | Confirm four canonical slugs; old LotL draft uses lolbas-analyzer | Creating pages |
-| D5 | Per-page editorial/copy review, including MCP masking claims | reviewed/publish |
-| D6 | LOLBAS A source/license delivery, B independent rules/data, or C permission undecided | Installing this payload and publishing LotL: static JS/data is served with theme |
-| D7 | Repository visibility/source-distribution decision pending | D6/LotL source links |
-| D8 | Hub currently release1.1 only; MCP1.2 direct URL works but is absent from hub | Claim of all4 discoverable on hub |
-| D9 | Decide reuse of ID51/stale Rank Math description; old LotL ID53 and3 removed backlog drafts. No deletion/redirect chosen | Pages/SEO |
-| D10 | Naming difference unchanged | Not a technical blocker |
-| D11 | SEO publication/sitemap policy and interlocking old SEO deploy/SQL rollback pending | SEO acceptance/publication |
-| D12 | Main merge not requested or performed | Not required for staging |
-| D13 | Existing test-secret alerts unchanged | Not a deployment blocker |
-| D14 | Independent5–10 samples/tool evaluation pending | Product acceptance PASS |
-| D15 | AUTHORIZED AND APPLIED: 11 repository entry points and their 11 manifest-listed prepared copies protected,2026-11-13T16:41:51Z; backup tools-d15-20261113T164151Z | Closed for this exact scope; no scope expansion |
+| D1 | NOT AUTHORIZED: package preparation/tests only | No staging install, page changes, publication or real rollback |
+| D3 | DECIDED: retain Research0ef03e9; theme-only payload | Repository-root/plugin deployment forbidden |
+| D5 | PASS for claim correction and bounded technical tests | Best-effort masking, export limits and browser-control limits disclosed; independent product acceptance still D14 |
+| D6 | Owner selected A; PARTIAL technical delivery complete, legal combined-work/theme boundary UNVERIFIED | Resolve scope review before treating D6 as closed for installation |
+| D7 | PASS: retain public repository, anonymous source URLs verified | No repository visibility/settings change; source access must remain available |
+| D15 | PASS, previously APPLIED_APPROVED_SCOPE:11 repository +11 prepared entry points | Current static checks and10 isolated interlock tests pass; no reapplication today |
+| D2 | Corrected catalog/manifests/200-renderer vs404 policy prepared; adoption by old SEO publication checks pending | Page publication/checks |
+| D4 | Four canonical slugs still require explicit page-action confirmation; old lolbas-analyzer alias stays404 | Creating/changing pages |
+| D8 | Hub release1.1 still lists3 tools; MCP1.2 direct URL implementation present | Claim that all4 are discoverable on hub is not accepted |
+| D9 | Reuse of ID51/stale Rank Math description, old ID53 and removed backlog drafts not decided | Page/meta/SEO work |
+| D11 | SEO publication/sitemap policy pending; protected legacy entry points do not approve SEO actions | SEO acceptance/publication |
+| D14 | Independent5–10 samples/tool evaluation pending; performance and MCP Firefox failures retained | Product release/READY |
+| D10/D12/D13 | Naming unchanged; main merge not requested; historical scanner alerts not waived | No unrelated changes |
 
-Before future install: valid root-owned controls/authorization, fresh backup and
-live preflight. Arbitrary root execution outside controlled entry points cannot
-be prevented by a userspace interlock. Old Research rollback hash guards remain
-unchanged and will refuse Tools drift; future Research rollback needs review.
+New blocking observations: unchanged Log Anonymizer pathological-input test took
+12561ms against4000ms; unchanged Injection test4234.8ms against4000ms on this host.
+Baseline failures before this task's changes were11650ms/4058.9ms respectively.
+Thresholds were not weakened. MCP Firefox Ctrl+Enter acceptance timed out;
+WebKit is UNVERIFIED because required host libraries are unavailable. These are
+not full browser PASS and need resolution/reliable rerun before READY.
 
-The22 historical source copies listed in d15-residual-paths.json were inspected
-but NOT modified: they are outside the approved manifest. Do not invoke them with
-sudo or restore them over guarded entry points. Collectors do not reference these
-Python entry points. Old legacy --verify modes are not an approved read-only route:
-some perform cache/fixture/scheduler operations. Use the new read-only preflight
-or static legacy_guard.py checker. Neither executes old code.
+The22 historical source copies in d15-residual-paths.json remain outside approved
+scope and unguarded. Never execute with sudo or restore them over guarded entry
+points. Arbitrary root execution cannot be prevented by these userspace interlocks.
+Do not expand maintenance scope automatically. Research timers/collectors do not
+invoke these Python deployment entry points.
 
-D1 remains NOT approved. D6/D7 remain unresolved; D5's MCP promise of complete
-secret concealment is not accepted or fixed by D15. These are not waived for release.
-
-D8 changes or D6 optionB require a new artifact/hash/tests. Never modify approved
-bytes while keeping old hashes. Real WP selective restore/HTTP/browser acceptance
-remain UNVERIFIED under today's read-only staging restriction.
+No decision authorizes automatic publication. Any later D1 must bind exact new
+archive/package hashes, fresh staging identity/base/protected checks, controls and
+expiry. authorization.example.json remains fail-closed. Existing Research rollback
+hash guards remain unchanged and will refuse Tools theme drift.

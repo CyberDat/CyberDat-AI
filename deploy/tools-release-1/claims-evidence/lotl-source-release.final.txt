@@ -1,0 +1,8 @@
+PASS: pinned source archive SHA256
+PASS: all 251 preferred source files and 248 original YAML hashes
+PASS: complete original license and MITRE notices preserved verbatim
+PASS: offline generator byte-exact reproduction of shipped JavaScript data
+PASS: tampered preferred source rejected
+PASS: dated GPL notices in all four LotL JavaScript files
+PASS: scope and legal uncertainty disclosed, no blanket relicensing claim
+{"checks": 7, "status": "PASS", "source_archive_sha256": "fa823d580bcbac5eb8ccd3eaa191ca34943a745985d5812f01f669a68794c8a6"}

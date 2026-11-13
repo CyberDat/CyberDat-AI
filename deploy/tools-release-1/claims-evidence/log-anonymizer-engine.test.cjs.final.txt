@@ -1,0 +1,80 @@
+PASS: ipv4: 6 positive samples detected
+PASS: ipv4: 19 negative samples unchanged
+PASS: ipv6: 6 positive samples detected
+PASS: ipv6: 8 negative samples unchanged
+PASS: email: 4 positive samples detected
+PASS: email: 6 negative samples unchanged
+PASS: mac: 3 positive samples detected
+PASS: mac: 5 negative samples unchanged
+PASS: jwt: 2 positive samples detected
+PASS: jwt: 3 negative samples unchanged
+PASS: auth: 5 positive samples detected
+PASS: auth: 4 negative samples unchanged
+PASS: apiKey: 11 positive samples detected
+PASS: apiKey: 5 negative samples unchanged
+PASS: secret: 12 positive samples detected
+PASS: secret: 12 negative samples unchanged
+PASS: privateKey: 4 positive samples detected
+PASS: privateKey: 2 negative samples unchanged
+PASS: username: 13 positive samples detected
+PASS: username: 9 negative samples unchanged
+PASS: host: 10 positive samples detected
+PASS: host: 20 negative samples unchanged
+PASS: card: 6 positive samples detected
+PASS: card: 8 negative samples unchanged
+PASS: ssn: 2 positive samples detected
+PASS: ssn: 9 negative samples unchanged
+PASS: false-positive corpus: versions, timestamps, hashes and identifiers stay unchanged with every category enabled
+PASS: structure: realistic multi-format log keeps line count, CRLF and every delimiter
+PASS: structure: CRLF, BOM, empty lines, trailing newline and tabs survive
+PASS: structure: fuzzed random input never changes line breaks
+PASS: structure: chunk boundaries do not split private key blocks
+PASS: format nginx-access.log: 12 sensitive values masked, 7 context values kept, structure preserved
+PASS: format nginx-error.log: 7 sensitive values masked, 4 context values kept, structure preserved
+PASS: format apache-access.log: 6 sensitive values masked, 4 context values kept, structure preserved
+PASS: format apache-error.log: 5 sensitive values masked, 6 context values kept, structure preserved
+PASS: format auth.log: 10 sensitive values masked, 13 context values kept, structure preserved
+PASS: format windows-event.txt: 6 sensitive values masked, 5 context values kept, structure preserved
+PASS: format windows-event.xml: 6 sensitive values masked, 5 context values kept, structure preserved
+PASS: format kubernetes.log: 8 sensitive values masked, 5 context values kept, structure preserved
+PASS: format docker.jsonl: 5 sensitive values masked, 4 context values kept, structure preserved
+PASS: format cloudtrail.json: 12 sensitive values masked, 8 context values kept, structure preserved
+PASS: format app.jsonl: 13 sensitive values masked, 8 context values kept, structure preserved
+PASS: format keyvalue.log: 10 sensitive values masked, 8 context values kept, structure preserved
+PASS: format users.csv: 7 sensitive values masked, 6 context values kept, structure preserved
+PASS: format corpus: CSV header row is never masked; columns are only used with a consistent header
+PASS: stable labels: same value → same label, different values → different labels, numbering in order of appearance
+PASS: stable labels: consistent across chunk boundaries and across detectors (URL host vs bare FQDN)
+PASS: generic labels: REDACTED_<CATEGORY> everywhere
+PASS: keep private IPv4 ranges option
+PASS: disabled categories are left untouched
+PASS: priority: JWT inside Bearer keeps JWT label; email inside user= keeps EMAIL label
+PASS: replacement map lists originals once per unique value
+PASS: custom rules: matches replaced with the custom label and run before built-ins
+PASS: custom rules: invalid regex, empty match, bad label and too many rules are rejected with messages
+PASS: custom rules: multi-line matches are skipped and counted, structure preserved
+PASS: malformed input: non-string rejected, empty string allowed
+FAIL: ReDoS guard: 1 MB pathological inputs finish quickly for every detector
+/home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/tests/log-anonymizer-engine.test.cjs:11
+	try { fn(); } catch (e) { console.error('FAIL: ' + label); throw e; }
+	                                                           ^
+
+AssertionError [ERR_ASSERTION]: pathological input "ab:ab:ab:ab:…" took 12561 ms
+    at /home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/tests/log-anonymizer-engine.test.cjs:411:10
+    at check (/home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/tests/log-anonymizer-engine.test.cjs:11:8)
+    at Object.<anonymous> (/home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/tests/log-anonymizer-engine.test.cjs:402:1)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0

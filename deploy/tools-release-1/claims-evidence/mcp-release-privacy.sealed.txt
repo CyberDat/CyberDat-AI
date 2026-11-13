@@ -1,0 +1,10 @@
+PASS: known credentials masked in analysis and policy serialized results
+PASS: unknown opaque values suppressed by env/argument/URL structure without claiming detection
+PASS: unusual Unicode and escaped credential values do not escape result suppression
+PASS: fixed rule identifiers survive values equal to severity or rule names
+PASS: unknown secret in free-form prose can be missed: warning is explicit, no absolute claim
+PASS: parser and policy errors omit arbitrary input words, keys and invalid values
+PASS: known credentials in valid policy values are masked in policy reports
+PASS: worker errors/results/progress do not log or echo opaque diagnostic fixtures
+PASS: UI/export copy scopes redaction and warns about verbatim policy downloads
+9 MCP release privacy checks passed.

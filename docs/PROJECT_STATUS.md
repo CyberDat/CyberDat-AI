@@ -2,12 +2,43 @@
 
 Last updated: 2026-11-13
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release 1 D15 — PASS for11+11 legacy entry points; Tools installation still NOT authorized. Research0ef03e9/Content/theme95 unchanged; release decisions remain open.**
+Current stage: **Tools Release1 D5/D6/D7 preparation — PARTIAL; D5 PASS, D6 PARTIAL, D7 PASS. Theme-only125-file package prepared; D1 installation NOT authorized.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release 1 D15 adoption — 2026-11-13
+## Tools Release1 D5/D6/D7 preparation —2026-11-13
+
+Owner selected D6 optionA and D7 public repository. Separate branch
+`feat/tools-release-1-license-claims` starts803da063. D5 universal secret masking
+claims corrected across UI/docs/tests; MCP1.0.1 adds bounded output suppression and
+safe diagnostic wording.9 privacy +24 MCP engine tests PASS; unknown free-form
+secret limitation explicitly demonstrated. Four-tool privacy claims scoped to tool
+behavior; no claim about extensions/session restore/secure deletion.
+
+D6 technical source delivery PASS: original GPL/NOTICE,248 complete YAML plus
+LICENSE/NOTICE/README, dated GPL notices, exact offline regeneration,8 public URLs
+verified anonymously. Legal combined-work/theme boundary UNVERIFIED: **D6 PARTIAL**,
+not closed. D7 PASS, repository settings unchanged. Source/theme commit `a5611f225ad1ff9858f84103036b73cc7c38568c`.
+
+Final theme-only125 files/base95,34 deltas (4 modified/30 added); archive SHA256
+`783eec70b43bb7149c0fa0c122aadb23699cbf11534bd2070404849a6c1507ed`. Package at
+`/home/cyberdat/cyberdat-deploy/tools-release-1-d567-package/`. All42 PHP lint,
+46/46 sandbox deployment tests and10/10 D15 tests PASS; static11+11 live prefixes
+verified without executing legacy bodies. Chromium78 local checks PASS/33 screenshots.
+Two pre-existing engine4s performance guards still FAIL; MCP Firefox keyboard wait
+FAIL, WebKit missing-library launch UNVERIFIED. No full cross-browser/READY claim.
+
+Read-only installed theme95 and protected43 fingerprints unchanged. No staging
+installation, page/SQL/plugin/timer/checkpoint/backoff/config/production change,
+WordPress bootstrap, model run, real rollback or main merge. No new staging backup
+because no live changes; previous D15 scripts backup retained. D1 remains NOT
+approved. D2/D4/D8/D9/D11/D14 gates and22 historical unsafe copies remain documented.
+[Current report](../deploy/tools-release-1/REPORT.md),
+[decisions](../deploy/tools-release-1/DECISIONS.md),
+[handoff](../deploy/tools-release-1/HANDOFF.md). Stop after preparation.
+
+## Tools Release 1 D15 adoption — 2026-11-13 (historical; latest status above)
 
 Owner authorized D15 only, starting731c9cd. Applied at16:41:51 UTC to exactly11
 repository deployment entry points and their11 manifest-listed prepared copies.

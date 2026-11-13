@@ -75,7 +75,7 @@ def authorize(path, spec, package_path):
 
 def guard(spec):
     sql_read_identity()
-    need(spec['research_commit'] == RESEARCH and len(spec['base']) == 95 and len(spec['target']) == 123,
+    need(spec['research_commit'] == RESEARCH and len(spec['base']) == 95 and len(spec['target']) == 125,
          'wrong pinned release')
     protections = json.loads((HERE / 'protected-files.json').read_text())
     for name, sha in protections['files'].items():

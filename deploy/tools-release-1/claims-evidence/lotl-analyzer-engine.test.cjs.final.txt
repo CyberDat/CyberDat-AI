@@ -1,0 +1,33 @@
+PASS: data snapshot: LOLBAS source, pinned commit and date, GPL-3.0, and the snapshot record agrees
+PASS: data file carries the GPL-3.0 notice, the modification notice and the verbatim upstream license next to it
+PASS: data contains only Windows LOLBAS sections (no GTFOBins) and every command keeps LOLBAS category and MitreID
+PASS: YAML subset parser: block scalars, quoted scalars, nested sequences; and refuses flow collections
+PASS: a documented usage is reported with category, description and ATT&CK id copied from the LOLBAS entry
+PASS: every reported ATT&CK id exists in the LOLBAS data for that binary; heuristics carry no ATT&CK id
+PASS: ordinary use of LOLBAS binaries is info or low, never medium+
+PASS: no match: verdict data says nothing matched; the page wording never claims safety
+PASS: cmd.exe carets, quotes inside words, Unicode dashes and random case are removed before matching and reported
+PASS: PowerShell -EncodedCommand and its abbreviations are decoded from UTF-16LE Base64 and analyzed (never executed)
+PASS: nested commands after cmd /c and powershell -Command are analyzed
+PASS: CommandLine fields are extracted from JSON and key: value log records
+PASS: binary started outside its LOLBAS locations is flagged; script protocols and ADS syntax are flagged
+PASS: prose that merely mentions a binary name is not treated as an invocation
+PASS: static contract: user text is written with textContent only; no eval, HTML sinks or dynamic code
+PASS: static contract: no network, storage or GitHub access in the browser code (the worker only disables network APIs)
+PASS: the page examples use example.com only and no working payloads
+PASS: input above 5 MB is refused with TOO_LARGE
+      long single token      4 ms
+      many carets            6 ms
+      many quotes            3 ms
+      separators             13 ms
+      nested cmd /c          216 ms
+      enc without value      76 ms
+      Base64 blob            10 ms
+      unclosed JSON field    10 ms
+      ADS-like               7 ms
+      URLs                   9 ms
+PASS: ReDoS: 10 adversarial 32 KB lines each finish in under 1 s
+      5.0 MB, 20000 commands in 1.3 s (64560 over the 20,000 command limit skipped)
+PASS: 5 MB of mixed command lines: completes, progress reaches the end
+
+20 engine checks passed.

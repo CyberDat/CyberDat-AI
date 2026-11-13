@@ -1,0 +1,126 @@
+{
+  "utc": "2026-11-13T20:33:38.195000+00:00",
+  "starting_commit": "803da0639fa72c09d9d18c25631605c21f6f20bd",
+  "source_commit": "a5611f225ad1ff9858f84103036b73cc7c38568c",
+  "theme_git_tree": "e7f385e56de29a6eeb1fbcfe3b3107dfd96dbaf8",
+  "branch": "feat/tools-release-1-license-claims",
+  "decisions": {
+    "D5": "PASS",
+    "D6": "PARTIAL",
+    "D7": "PASS",
+    "D1": "NOT_AUTHORIZED"
+  },
+  "verdict": "PARTIAL",
+  "archive_sha256": "783eec70b43bb7149c0fa0c122aadb23699cbf11534bd2070404849a6c1507ed",
+  "package_sha256": "d49674a6abaa41821d402469a21fcd0fb31a99eba485980ea228d0cee4643cbf",
+  "base_files": 95,
+  "target_files": 125,
+  "theme_php_linted": 42,
+  "sandbox_tests": {
+    "utc": "2026-11-13T20:29:41.159998+00:00",
+    "scope": "offline/sandbox only; fake JSON pages, real Linux atomic exchange and PHP lint",
+    "tests": 46,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "php_lint": [
+      {
+        "file": "staging-contract.php",
+        "exit": 0
+      },
+      {
+        "file": "wp-state.php",
+        "exit": 0
+      },
+      {
+        "file": "tool-pages.php",
+        "exit": 0
+      }
+    ],
+    "archive_sha256": "783eec70b43bb7149c0fa0c122aadb23699cbf11534bd2070404849a6c1507ed",
+    "staging_deployment": false,
+    "wordpress_bootstrap": false,
+    "sql_execution": false,
+    "unverified": [
+      "live FPM/OPcache and renderer HTTP",
+      "real WordPress selective SQL restore",
+      "browser acceptance"
+    ],
+    "pass": true
+  },
+  "interlocks": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass": true,
+    "scope": "interlock AST only; 22 candidates; no legacy body executed; temporary sandbox lock/theme paths",
+    "real_legacy_executed": false,
+    "wp_or_sql_executed": false
+  },
+  "source_public_access": true,
+  "new_mcp_privacy_tests": {
+    "checks": 9,
+    "pass": true
+  },
+  "chromium": [
+    {
+      "test": "mcp-checker",
+      "exit": 0
+    },
+    {
+      "test": "lotl-analyzer",
+      "exit": 0
+    },
+    {
+      "test": "log-anonymizer",
+      "exit": 0
+    },
+    {
+      "test": "prompt-injection-detector",
+      "exit": 0
+    }
+  ],
+  "firefox": {
+    "log": 14,
+    "lotl": 10,
+    "injection": 13,
+    "mcp": {
+      "completed_checks": 10,
+      "pass": false,
+      "failure": "Ctrl+Enter wait timeout"
+    }
+  },
+  "webkit": "UNVERIFIED missing host libraries",
+  "performance_failures": [
+    {
+      "tool": "Log Anonymizer",
+      "ms": 12561,
+      "limit_ms": 4000,
+      "baseline_failed": true
+    },
+    {
+      "tool": "Prompt Injection Detector",
+      "ms": 4234.8,
+      "limit_ms": 4000,
+      "baseline_failed": true
+    }
+  ],
+  "preserved_staging": {
+    "utc": "2026-11-13T20:24:39.336984+00:00",
+    "scope": "read-only file hashing; no WordPress/SQL/systemd/HTTP invocation",
+    "live_theme_files": 95,
+    "base95_exact": true,
+    "protected_files": 43,
+    "mismatches": [],
+    "staging_writes": false,
+    "production_access": false
+  },
+  "no_staging_installation": true,
+  "no_wp_bootstrap_or_sql_access": true,
+  "no_real_rollback": true,
+  "no_github_settings_change": true,
+  "production_access": false,
+  "new_staging_backup": null,
+  "previous_d15_backup": "/var/backups/cyberdat-staging/tools-d15-20261113T164151Z"
+}

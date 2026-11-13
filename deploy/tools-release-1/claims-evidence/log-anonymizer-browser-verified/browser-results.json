@@ -1,0 +1,403 @@
+{
+  "url": "http://127.0.0.1:18090/tools/log-anonymizer/",
+  "browser": "chrome-sandbox-tests",
+  "at": "2026-11-13T17:41:35.769Z",
+  "results": [
+    {
+      "status": "PASS",
+      "label": "page load uses first-party resources only",
+      "detail": "10 requests, all http://127.0.0.1:18090, worker and engine loaded before any input"
+    },
+    {
+      "status": "PASS",
+      "label": "CSP connect-src blocks scripts on the page from making requests",
+      "detail": "blocked: Failed to fetch"
+    },
+    {
+      "status": "PASS",
+      "label": "no console errors or CSP violations during page load"
+    },
+    {
+      "status": "PASS",
+      "label": "network APIs are disabled inside the worker",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "status": "PASS",
+      "label": "sample log anonymized in the browser",
+      "detail": "35 highlighted replacements, 11 lines in = out, versions/IDs/timestamps kept, focus moved to results"
+    },
+    {
+      "status": "PASS",
+      "label": "generic labels, keep-private IPv4 and a custom rule applied"
+    },
+    {
+      "status": "PASS",
+      "label": "invalid custom regex: inline error, aria-invalid and focus on the field",
+      "detail": "This is not a valid regular expression: /(/g: Unterminated group"
+    },
+    {
+      "status": "PASS",
+      "label": "HTML/script in input is rendered as text only (no elements, no dialogs)"
+    },
+    {
+      "status": "PASS",
+      "label": "copy, result download and acknowledged map download work without requests",
+      "detail": "Result copied to the clipboard (1.0 KB)."
+    },
+    {
+      "status": "PASS",
+      "label": "nothing written to localStorage, sessionStorage, IndexedDB, cookies or the URL",
+      "detail": "{\"ls\":0,\"ss\":0,\"cookie\":\"\",\"href\":\"http://127.0.0.1:18090/tools/log-anonymizer/\"}"
+    },
+    {
+      "status": "PASS",
+      "label": "30 MB file processed in the worker without freezing the page",
+      "detail": "30.0 MB in 14.6 s; longest main-thread gap 305 ms; progress updates seen 135; 323,671 lines processed in 13"
+    },
+    {
+      "status": "PASS",
+      "label": "input text is never sent: no HTTP requests while processing, toggling, copying, exporting and clearing",
+      "detail": "only blob: downloads; 0 non-HTTP or probe entries"
+    },
+    {
+      "status": "PASS",
+      "label": "no console errors during interaction"
+    },
+    {
+      "status": "PASS",
+      "label": "cancel restarts the worker; only its static same-origin scripts are re-requested, no input data",
+      "detail": "2 asset requests"
+    },
+    {
+      "status": "PASS",
+      "label": "keyboard: Tab reaches textarea, file picker, buttons, all categories, label mode and Anonymize with a visible focus ring",
+      "detail": "23 tab stops"
+    },
+    {
+      "status": "PASS",
+      "label": "keyboard: Enter on \"Load sample log\", Ctrl+Enter in the text box runs the tool"
+    },
+    {
+      "status": "PASS",
+      "label": "every visible control has an accessible name; text contrast ≥ 4.5:1 (WCAG AA)",
+      "detail": "min 7.59:1 over 20 styles"
+    },
+    {
+      "status": "PASS",
+      "label": "360px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360 ≤ 360"
+    },
+    {
+      "status": "PASS",
+      "label": "390px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 390 ≤ 390"
+    },
+    {
+      "status": "PASS",
+      "label": "768px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 768 ≤ 768"
+    },
+    {
+      "status": "PASS",
+      "label": "without JavaScript: explanatory notice, How it works / Privacy / Limitations still visible, no dead controls"
+    }
+  ],
+  "requestsAfterLoad": [
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794585702",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794585702",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/log-anonymizer/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794585702",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794585702",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/log-anonymizer/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794585702",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794585702",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/log-anonymizer/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794585702",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794585702",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/log-anonymizer/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=1794585702&ev=1794585702",
+      "type": "Script",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js?ver=1794585702",
+      "type": "Other",
+      "session": "worker"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/log-anonymizer/",
+      "type": "Document",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
+      "type": "Stylesheet",
+      "session": "page"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other",
+      "session": "page"
+    }
+  ],
+  "consoleErrors": []
+}

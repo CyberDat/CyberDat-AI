@@ -1,0 +1,18 @@
+PASS [firefox]: page loads under strict CSP with nonce; app.js executed; only first-party requests — 8 requests
+PASS [firefox]: Web Worker starts from the same origin under worker-src 'self'; its network APIs are disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [firefox]: CSP connect-src blocks fetch from the page — blocked: NetworkError when attempting to fetch resource.
+PASS [firefox]: no console errors or CSP violations while loading
+PASS [firefox]: sample anonymized, highlighted preview rendered
+PASS [firefox]: markup in input stays text (no elements, no dialogs)
+PASS [firefox]: result and acknowledged map downloads work (blob:, no HTTP)
+PASS [firefox]: nothing stored in localStorage, sessionStorage, IndexedDB, cookies or the URL
+PASS [firefox]: large input: the WebKit speed note is not shown (firefox)
+PASS [firefox]: 30 MB file processed in the worker; page stays responsive — 16.4 s, longest main-thread gap 211 ms
+PASS [firefox]: Cancel restarts the worker; only its two static scripts may be re-requested — worker.js
+PASS [firefox]: input text never sent: no HTTP requests while processing, downloading or clearing; no console errors
+PASS [firefox]: 360 px viewport: no horizontal overflow — 360 ≤ 360
+PASS [firefox]: keyboard: Tab reaches every control up to "Anonymize log"; Enter activates it — 22 stops
+FAIL [webkit]: browserType.launch: 
+firefox 132.0: 14 checks passed
+webkit : 0 checks passed, FAILED
+Evidence: /home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/deploy/tools-release-1/claims-evidence/log-anonymizer-xbrowser

@@ -1,0 +1,350 @@
+{
+  "url": "http://127.0.0.1:18090/tools/mcp-security-checker/",
+  "browser": "chrome-sandbox-tests",
+  "at": "2026-11-13T17:40:52.213Z",
+  "results": [
+    {
+      "status": "PASS",
+      "label": "page load: first-party only; worker and engine load from this site",
+      "detail": "10 requests"
+    },
+    {
+      "status": "PASS",
+      "label": "CSP connect-src blocks scripts on the page from reaching npm or any host",
+      "detail": "blocked: Failed to fetch"
+    },
+    {
+      "status": "PASS",
+      "label": "no console errors during page load"
+    },
+    {
+      "status": "PASS",
+      "label": "network APIs are disabled inside the worker",
+      "detail": "fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked"
+    },
+    {
+      "status": "PASS",
+      "label": "example checked: high verdict, findings in six groups with location, line and suggested fix; the fake token is masked; no links created",
+      "detail": "high, high, high, medium, medium, medium, info"
+    },
+    {
+      "status": "PASS",
+      "label": "secrets masked: no full value in the results or the JSON report, which holds findings and summaries only",
+      "detail": "9 secret findings"
+    },
+    {
+      "status": "PASS",
+      "label": "HTML, scripts and javascript: URLs in configurations are shown as text only: no elements, no links, no dialogs"
+    },
+    {
+      "status": "PASS",
+      "label": "invalid JSON: clear message with line and column",
+      "detail": "Invalid JSON at line 2, column 3: property names must use double quotes (\"), not single qu"
+    },
+    {
+      "status": "PASS",
+      "label": "policy schema errors are listed clearly",
+      "detail": "The policy has errors: • Unknown setting (name omitted) (line 1). Did you mean \"allowedHosts\"? • \"maxServers\" "
+    },
+    {
+      "status": "PASS",
+      "label": "policy check: example policy finds violations with rule, location and fix",
+      "detail": "Checked 6 servers and 3 tools against 15 policy settings (allowedCommands, deniedCommands, allowedPa"
+    },
+    {
+      "status": "PASS",
+      "label": "policy download returns exactly the policy text; empty policy explained; nothing written to storage, cookies or the URL"
+    },
+    {
+      "status": "PASS",
+      "label": "4.8 MB tool list checked in the worker without network requests",
+      "detail": "1.7 s; Checked 1 separate tool list with 9,008 tools in 1.6 s: 0 high, 0 medium, 2 low, 0 info."
+    },
+    {
+      "status": "PASS",
+      "label": "input text is never sent: no HTTP requests after page load while checking, exporting, downloading the policy and clearing; no console errors"
+    },
+    {
+      "status": "PASS",
+      "label": "Cancel restarts the worker; only its static same-origin scripts are re-requested",
+      "detail": "worker.js, engine.js"
+    },
+    {
+      "status": "PASS",
+      "label": "keyboard: Tab order text box → file → buttons → mode → Check with visible focus; arrow keys switch mode; Ctrl+Enter runs",
+      "detail": "TEXTAREA:textarea > INPUT:file > BUTTON:button > BUTTON:button > INPUT:radio > RUN"
+    },
+    {
+      "status": "PASS",
+      "label": "every control has an accessible name; text contrast ≥ 4.5:1",
+      "detail": "min 7.59:1 over 27 styles"
+    },
+    {
+      "status": "PASS",
+      "label": "360px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 360"
+    },
+    {
+      "status": "PASS",
+      "label": "390px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 390"
+    },
+    {
+      "status": "PASS",
+      "label": "768px viewport: no horizontal page overflow, touch targets ≥ 44px",
+      "detail": "scrollWidth 768"
+    },
+    {
+      "status": "PASS",
+      "label": "without JavaScript: notice shown; How it works, Privacy, Limitations and Sources still visible"
+    }
+  ],
+  "requestsAfterLoad": [
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/worker.js?ver=1794585704&ev=1794591253",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js?ver=1794591253",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/mcp-security-checker/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/mcp-checker.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/app.js",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/worker.js?ver=1794585704&ev=1794591253",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js?ver=1794591253",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/mcp-security-checker/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/mcp-checker.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/app.js",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/worker.js?ver=1794585704&ev=1794591253",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js?ver=1794591253",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/mcp-security-checker/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/mcp-checker.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/app.js",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/worker.js?ver=1794585704&ev=1794591253",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js?ver=1794591253",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/mcp-security-checker/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/mcp-checker.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/app.js",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/worker.js?ver=1794585704&ev=1794591253",
+      "type": "Script"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js?ver=1794591253",
+      "type": "Other"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/tools/mcp-security-checker/",
+      "type": "Document"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tokens.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/main.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/tools-common.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/wp-content/themes/cyberdat/assets/css/mcp-checker.css",
+      "type": "Stylesheet"
+    },
+    {
+      "phase": "cancel",
+      "url": "http://127.0.0.1:18090/favicon.ico",
+      "type": "Other"
+    }
+  ],
+  "consoleErrors": []
+}

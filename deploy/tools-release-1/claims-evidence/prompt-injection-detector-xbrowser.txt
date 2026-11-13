@@ -1,0 +1,40 @@
+PASS [firefox]: page load: first-party resources only — 8 requests (worker script fetches are not always reported by this browser driver)
+PASS [firefox]: same-origin Web Worker started before any input; its network APIs are disabled — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS [firefox]: CSP connect-src blocks fetch from the page — blocked: NetworkError when attempting to fetch resource.
+PASS [firefox]: no console errors during load
+PASS [firefox]: example analyzed: all seven rule groups reported, highlights and before/after diff rendered — 18 findings, 9 highlights, 8 removals
+PASS [firefox]: HTML and script in the input (also Base64-encoded) are shown as text only, no dialogs
+PASS [firefox]: sanitized copy and JSON report downloads are generated locally
+PASS [firefox]: nothing written to storage, cookies or the URL
+PASS [firefox]: 10.5 MB file: large-input warning shown, analyzed without network requests — 10.5 MB in 31.0 s (88,022 findings (46,045 high, 33,229 medium, 8,748 low))
+PASS [firefox]: Cancel re-requests only the two static worker scripts — 1 requests
+PASS [firefox]: input text is never sent: no HTTP requests during analysis, downloads and clearing; no console errors
+PASS [firefox]: 360px: no horizontal overflow, touch targets ≥ 44px — scrollWidth 360
+PASS [firefox]: keyboard: options reachable with Tab; Ctrl+Enter runs the analysis — BUTTON:button > BUTTON:button > INPUT:checkbox > INPUT:checkbox > INPUT:radio > RUN
+FAIL: browserType.launch: 
+╔══════════════════════════════════════════════════════╗
+║ Host system is missing dependencies to run browsers. ║
+║ Missing libraries:                                   ║
+║     libicudata.so.66                                 ║
+║     libicui18n.so.66                                 ║
+║     libicuuc.so.66                                   ║
+║     libwoff2dec.so.1.0.2                             ║
+║     libevent-2.1.so.7                                ║
+║     libopus.so.0                                     ║
+║     libwebpdemux.so.2                                ║
+║     libharfbuzz-icu.so.0                             ║
+║     libjpeg.so.8                                     ║
+║     libwebpmux.so.3                                  ║
+║     libwebp.so.6                                     ║
+║     libenchant-2.so.2                                ║
+║     libsecret-1.so.0                                 ║
+║     libhyphen.so.0                                   ║
+║     libEGL.so.1                                      ║
+║     libGLX.so.0                                      ║
+║     libgudev-1.0.so.0                                ║
+║     libffi.so.7                                      ║
+║     libevdev.so.2                                    ║
+║     libjson-glib-1.0.so.0                            ║
+║     libGLESv2.so.2                                   ║
+║     libx264.so                                       ║
+╚══════════════════════════════════════════════════════╝

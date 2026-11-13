@@ -1,96 +1,111 @@
-# Tools Release 1 — Safe Deployment Preparation
+# Tools Release 1 — D5/D6/D7 Final Release Preparation
 
-**Current D15 result: PASS for the approved11+11 scope.** Applied2026-11-13T16:41:51Z
-after verified private backup of22 deployment scripts. No Tools theme installation,
-legacy execution, WordPress bootstrap, SQL write or timer change. Theme95 and
-protected43 hashes preserved; counts/checkpoints/backoff identical across maintenance.
-New read-only installer preflight passed after adoption. Details/tests/backup and
-remaining out-of-scope paths: [D15-REPORT.md](D15-REPORT.md),
-[machine proof](d15-acceptance.json). D1 remains NOT authorized; D5/D6/D7 remain open.
+**Final verdict: PARTIAL. Installation under D1 is NOT authorized or performed.**
+Branch `feat/tools-release-1-license-claims`, starting803da063. Final source/theme
+revision `a5611f225ad1ff9858f84103036b73cc7c38568c`; evidence/control/documentation commit follows it on this branch.
+No main merge or repository settings change.
 
-The preparation snapshot below describes commit731c9cd before D15. Its references
-to interlocks not yet applied and no staging backup are historical, superseded by
-this D15 result. Installed Research/Content plugin trees still match0ef03e9.
+## Decisions
 
-Verdict: **PARTIAL for the next staging deployment**. Authorized preparation is
-complete; installation is neither authorized nor performed. No staging/production
-write, WordPress bootstrap, live SQL operation, sync or publication was run.
+| Decision | Result | Evidence/limit |
+|---|---|---|
+| D5 | PASS within the stated technical scope | False universal secret-concealment claims removed;9 new privacy checks +24 MCP engine checks pass; unknown free-form secret remains deliberately demonstrated/disclosed |
+| D6 | PARTIAL | OptionA implemented: GPL notices/complete source delivery/rebuild/anonymous access pass; legal combined-work/theme scope remains UNVERIFIED |
+| D7 | PASS | Repository remains public;8 source/license/archive URLs HTTP200 without auth/cookies, archive/notices SHA verified; no settings changed |
 
-## Source and artifact
+## Changes
 
-Branch `feat/tools-release-1-safe-deployment` starts from Research acceptance
-`0ef03e9cb0d8821546983c84fc6998e85cf03f2e`, not the older Research snapshot in Tools.
-It imports the exact123-file theme tree from Tools cd7df0c/eb9de8d. Research and
-Content plugin trees remain byte-identical to0ef03e9;11 original deployment
-scripts are unchanged. Compatibility changes are prepared patch files only.
+File groups and purposes: [CHANGES-D567.md](CHANGES-D567.md).
 
-The deterministic payload contains only cyberdat/ theme files (123 regular,
-no links, plugins, SQL or configs). Four modifications +28 additions over95 base.
-Full manifest covers both95 and123 files, SHA256/size/mode, exact directory sets.
+MCP engine1.0.1 suppresses known token formats and additional structural credential
+values (env/header/option/query/fragment), avoids arbitrary input in parser/policy
+errors, redacts policy report warnings and preserves rule/severity metadata. UI,
+comments, proposed editorial content and tests disclose best effort; policy downloads
+are explicitly verbatim/unredacted. No public server/API or remote code execution.
 
-- theme.tar.gz SHA256:
-  `7fc33bba8128e0a78aadeb83b772b02d4bcadcb8be0d42dbc6f0075d5daeec90`
-- package.json SHA256:
-  `8c57f78592d332ead7acd34aad8166fdf5284e251b1f77a1d9268aac8d9f5013`
-- Prepared archive location:
-  `/home/cyberdat/cyberdat-deploy/tools-release-1-safe-package/theme.tar.gz`
-- No staging backup created. Future authorized backup path:
-  `/var/backups/cyberdat-staging/tools-release-1-<UTC>/`.
+All four Tools/hub/privacy copies distinguish tool behavior from browser extensions,
+session restore/clipboard/downloads and secure erasure. Existing safety limitations
+remain: no universal anonymization, no injection-safety guarantee, LotL matches are
+not proof of malice, MCP does not audit remote server implementation. Details and
+file-level scope: [CLAIMS-AUDIT.md](CLAIMS-AUDIT.md), [COPY-REVIEW.md](COPY-REVIEW.md).
 
-## Implemented controls
+LotL's four JS files, specific CSS/PHP and generator have GPLv3/date/copyright/
+no-warranty notices. Complete original upstream LICENSE and MITRE NOTICE preserved
+byte-for-byte.251 preferred-source files include248 original YAML with author/
+acknowledgement fields, NOTICE, LICENSE, README. All source hashes match the pinned
+upstream2056cb7; generator reproduces shipped data byte-for-byte and rejects altered
+input. Source archive SHA256 fa823d580bcbac5eb8ccd3eaa191ca34943a745985d5812f01f669a68794c8a6.
+UI links to license/notices/full theme source/preferred YAML archive; anonymous
+HTTP proof is [source-availability.json](source-availability.json). Theme shared
+GPLv2-or-later retained; independent agents/tools not blanket-relicensed. Legal
+scope uncertainty is explicit: [LICENSES.md](LICENSES.md). GPL provisions consulted
+are [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) and the
+[GNU FAQ](https://www.gnu.org/licenses/gpl-faq.en.html).
 
-- Real RENAME_EXCHANGE; no absent-theme interval/two-mv fallback. Private retained
-  theme plus SHA-verified original archive and durable intent journal/recovery.
-- Mandatory42-file theme PHP lint; every target file/length/SHA256, unexpected
-  files/directories, symlinks,0644/0755 modes and live ownership checked.
-- Staging-only fixed paths, read-only SQL identity and InnoDB preflight, independent
-  PHP identity/capability gate, package-bound expiring owner authorization.
-- Existing WP-CLI sandbox/HOME/config/cwd; private root-owned helpers under the
-  allowed staging directory, with Research/Content bootstrap skipped. No public API.
-- Selective page/meta/revision recovery before the theme switch. Unknown editor
-  changes/ID conflicts stop rollback. No full SQL restore or queue/checkpoint change.
-- Installed-catalogue route policy: published tool200 + exact renderer + HTML
-  marker; planned and unpublished404. Includes old alias/backlog routes explicitly.
-- Prepared11 legacy interlocks, checked before executable legacy code. They share
-  the release lock to avoid overlap and refuse if Tools is present. NOT applied.
-  New installer refuses until adoption. Arbitrary root bypass is not prevented.
+## Actually executed tests
 
-## Actually executed checks
+| Check | Actual result |
+|---|---|
+| Safe deployment/rollback sandbox, final new archive |46/46 PASS,0 errors/failures/skips; real atomic exchange/lock/lint/fault injection, fake JSON pages |
+| D15 isolated guard AST |10/10 PASS; exact11+11 prefixes rechecked before executable bodies; no legacy body run |
+| LotL GPL/source |7/7 PASS:251 source hashes,248 original YAML, verbatim notices, exact offline rebuild, tamper refusal, license scope disclosure |
+| MCP |24 engine PASS,9 new privacy PASS;52/52 main corpus,15/15 holdout,7/7 dependent;51 PHP PASS |
+| LotL |20 engine PASS, corpus guards PASS,9/9 dependent,47 PHP PASS |
+| Injection |4 corpus PASS,42 PHP PASS; engine stops at pre-existing performance guard FAIL |
+| Log Anonymizer |41 PHP PASS; engine stops at pre-existing performance guard FAIL |
+| Chromium local browser |78 checks PASS: Log21/Injection21/LotL16/MCP20; storage/network/export/XSS/keyboard/responsive/contrast/no-JS |
+| Firefox |Log14/LotL10/Injection13 completed; MCP10 then Ctrl+Enter wait timed out, FAIL/UNRESOLVED |
+| WebKit |UNVERIFIED: launch blocked by missing host libraries; no system package/service installed |
+| Manifest/catalog/hub |125-file SHA256/lengths/modes/no links exact;36 catalog/27 tools PHP checks and JS filters PASS |
+| Token-shaped strings |18-rule scanner/self-test PASS over496 existing tracked text files; synthetic values constructed at test time, not literal real tokens |
 
-Latest evidence: [46-test report](evidence-2026-11-13-sealed/tests.json),
-[complete output](evidence-2026-11-13-sealed/unittest.txt).
+Engine timing failures occurred before current changes and again on final code:
+Log pathological ab: input12561ms vs4000ms (baseline11650ms); Injection zero-width
+input4234.8ms vs4000ms (baseline4058.9ms). Unchanged engine bytes/thresholds; not
+relabeled PASS. These require investigation/reliable passing verification before
+READY. Full engine suites stop at the failed guard, so later engine checks are not
+claimed. Browser large-file worker tests did complete independently.
 
-- **46/46 PASS,0 failures/errors/skips**; approximately1–3 seconds per suite.
-- Full real123-file package installation and rollback to95 in a private temporary
-  tree. Page storage is an explicit JSON fake; not a live SQL restoration claim.
-- Seven install failure stages, both caught exceptions and simulated process death;
-  three rollback crash points and recovery; edits/backup tampering/drift refusal.
--100 actual Linux atomic exchanges with concurrent path-existence observer:
-  no missing active directory. Real lock contention, bad mode/symlink rejection.
-- Real malformed-PHP test blocks before exchange; all42 actual theme PHP files
-  and3 control PHP files linted with PHP8.4.
-- Archive reproducibility, hostile tar members/counts/modes/paths, wrong permissions,
-  wrong identity/authorization, correct CLI construction and route policy tested.
-- All11 generated legacy-patch candidates compiled without applying them.
-- Read-only end snapshot [preserved-staging.json](preserved-staging.json): all95
-  deployed theme SHA256 values unchanged; all43 protected plugin/unit/launcher
-  fingerprints match. No production access.
+All browser work used a standalone PHP renderer/loopback fixture, no WordPress or
+SQL.33 local screenshots in claims-evidence/*-browser-verified/. Initial fixture
+failures (missing theme tokens CSS, relative-link test resolution), old diagnostic
+text assertion and public NOTICE newline normalization were corrected and rerun;
+earlier failed logs are retained. MCP Firefox timeout and WebKit failures remain.
 
-Earlier failed43-test evidence is retained honestly. It exposed private Git-export
-root permissions in the test fixture; the fixture now emulates verified live modes.
-Later45-test runs passed; final46-test evidence covers the added release lock.
+Evidence: [final46-test report](evidence-d567-final/tests.json),
+[interlock tests](evidence-d567-interlocks/tests.json),
+[engine/PHP results](claims-evidence/tools-tests-final.json),
+[privacy tests](claims-evidence/mcp-release-privacy.sealed.txt),
+[browser results](claims-evidence/browser-summary-final.json),
+[Cross-browser attempts](claims-evidence/xbrowser-summary-final.json).
 
-## Remaining blockers and UNVERIFIED
+## Final package and preservation
 
-- D1 installation approval still absent. D3 preservation of Research0ef03e9 decided.
-- D15 legacy interlocks need separately authorized adoption in repository/prepared
-  copies. Existing Research0.8.3 rollback hash guard remains unchanged and will
-  refuse the Tools tree; no original acceptance/baseline was weakened.
-- D6/D7 before installing served LotL JS/data; D2/D4/D5/D9/D11 for page/SEO work;
-  D8 for four-tool hub visibility; D14 for independent product acceptance.
-- Actual WordPress selective SQL restoration, FPM/OPcache behavior, staging HTTP
-  renderer/CSP and real browser acceptance remain **UNVERIFIED**. No fixtures or
-  temporary tables were created in staging. See DECISIONS.md for precise scope.
+- Source commit `a5611f225ad1ff9858f84103036b73cc7c38568c`, theme tree `e7f385e56de29a6eeb1fbcfe3b3107dfd96dbaf8`.
+- Only125 theme files; base95 retained,4 modifications/30 additions, no deletions.
+- All42 theme PHP files +3 controls lint PASS; all file/directory modes/links/file
+  sets/hashes checked. Existing atomic deployment/selective rollback retained.
+- Archive: `/home/cyberdat/cyberdat-deploy/tools-release-1-d567-package/theme.tar.gz`.
+- SHA256 `783eec70b43bb7149c0fa0c122aadb23699cbf11534bd2070404849a6c1507ed`.
+- package.json SHA256 `d49674a6abaa41821d402469a21fcd0fb31a99eba485980ea228d0cee4643cbf`.
+- Full manifest updated. Previous7fc33b... and intermediate33975f... artifacts
+  superseded; old hashes/authorizations must not be reused.
+- Read-only live hashing: installed95-file theme exact +43 Research/Content/unit/
+  launcher fingerprints match: [preserved proof](preserved-staging-d567.json).
+  No WordPress bootstrap, SQL access/write, sync, page/status/timer/config change,
+  production operation, real rollback or new service.
+- No live change means no new staging backup. Existing D15 backup retained:
+  `/var/backups/cyberdat-staging/tools-d15-20261113T164151Z`.
 
-No next stage starts automatically. Commit identity is supplied by branch history
-and the final owner report (not embedded self-referentially into this file).
+## Remaining D1 gates
+
+D1 owner installation approval remains absent. D6 legal scope is unresolved;
+two engine timing guards/MCP Firefox failure/WebKit coverage and independent D14
+acceptance prevent READY. D2/D4/D8/D9/D11 page/hub/SEO decisions remain explicit;
+no publication implied. Actual WordPress selective restore/FPM/OPcache/HTTP/CSP/
+Research-Dashboard-Pulse acceptance follows a future separately authorized install.
+D15 still covers only11+11 known paths;22 historical out-of-scope copies remain
+unsafe to invoke/restore. Arbitrary sudo bypass is not prevented.
+
+Next owner step: review D6 scope and the retained test failures; authorize only
+that follow-up if desired. This report does not request or assume D1. Work stops.

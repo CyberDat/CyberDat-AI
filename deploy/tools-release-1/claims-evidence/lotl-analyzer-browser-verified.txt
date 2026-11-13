@@ -1,0 +1,18 @@
+PASS: page load: first-party only; worker, engine and the bundled LOLBAS data load from this site, nothing from GitHub — 11 requests
+PASS: CSP connect-src blocks scripts on the page from reaching GitHub or any host — blocked: Failed to fetch
+PASS: no console errors during page load
+PASS: network APIs are disabled inside the worker — fetch:blocked,XMLHttpRequest:blocked,WebSocket:blocked,importScripts:blocked
+PASS: examples analyzed: 8 commands, documented LOLBAS functions with ATT&CK ids from LOLBAS, heuristics labeled separately, encoded PowerShell decoded; data links are plain https links — high, high, high, high, high, low, info, info; 76 links
+PASS: HTML, scripts and javascript: URLs in commands are shown as text only: no elements, no non-https links, no dialogs
+PASS: JSON report generated locally; nothing written to storage, cookies or the URL
+PASS: 4.9 MB file analyzed in the worker without network requests — 2.7 s, longest main-thread gap 1075 ms (incl. rendering 300 cards); 20,000 commands analyzed in 1.2 s: 5,000 high, 3,500 medium, 1,500 low, 6,500 info only, 3,500 without any match. 62,880
+PASS: input text is never sent: no HTTP requests after page load while analyzing, exporting and clearing; no console errors
+PASS: Cancel restarts the worker; only its static same-origin scripts are re-requested — worker.js, lolbas-data.js, engine.js
+PASS: keyboard: Tab order text box → file → buttons → Analyze with visible focus; Ctrl+Enter runs — TEXTAREA:textarea > INPUT:file > BUTTON:button > BUTTON:button > RUN
+PASS: every control and link has an accessible name; text contrast ≥ 4.5:1 — min 7.59:1 over 31 styles
+PASS: 360px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 360
+PASS: 390px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 390
+PASS: 768px viewport: no horizontal page overflow, touch targets ≥ 44px — scrollWidth 768
+PASS: without JavaScript: notice shown; How it works, Data source and license, Privacy, Limitations still visible
+
+16 browser checks passed. Evidence: /home/cyberdat/cyberdat-deploy/tools-release-1-license-claims-work/deploy/tools-release-1/claims-evidence/lotl-analyzer-browser-verified

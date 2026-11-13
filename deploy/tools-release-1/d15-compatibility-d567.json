@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-13T20:24:50.128999+00:00",
+  "repository_scripts": 11,
+  "installed_copies": 11,
+  "guard_before_executable_body": true,
+  "guard_marker_in_new_theme": true,
+  "file_count_independent": true,
+  "legacy_execution": false,
+  "writes_to_entrypoints": false,
+  "pass": true
+}

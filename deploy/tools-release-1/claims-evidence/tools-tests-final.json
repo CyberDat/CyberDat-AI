@@ -1,0 +1,102 @@
+[
+  {
+    "test": "tests/log-anonymizer-engine.test.cjs",
+    "exit": 1,
+    "seconds": 18.31,
+    "log": "deploy/tools-release-1/claims-evidence/log-anonymizer-engine.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/prompt-injection-detector-engine.test.cjs",
+    "exit": 1,
+    "seconds": 18.42,
+    "log": "deploy/tools-release-1/claims-evidence/prompt-injection-detector-engine.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/prompt-injection-detector-corpus.test.cjs",
+    "exit": 0,
+    "seconds": 0.62,
+    "log": "deploy/tools-release-1/claims-evidence/prompt-injection-detector-corpus.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/lotl-analyzer-engine.test.cjs",
+    "exit": 0,
+    "seconds": 1.96,
+    "log": "deploy/tools-release-1/claims-evidence/lotl-analyzer-engine.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/lotl-analyzer-corpus.test.cjs",
+    "exit": 0,
+    "seconds": 0.17,
+    "log": "deploy/tools-release-1/claims-evidence/lotl-analyzer-corpus.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/lotl-analyzer-dependent.test.cjs",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/lotl-analyzer-dependent.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/mcp-checker-engine.test.cjs",
+    "exit": 0,
+    "seconds": 3.45,
+    "log": "deploy/tools-release-1/claims-evidence/mcp-checker-engine.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/mcp-checker-corpus.test.cjs",
+    "exit": 0,
+    "seconds": 0.27,
+    "log": "deploy/tools-release-1/claims-evidence/mcp-checker-corpus.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/mcp-checker-dependent.test.cjs",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/mcp-checker-dependent.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/mcp-release-privacy.test.cjs",
+    "exit": 0,
+    "seconds": 0.17,
+    "log": "deploy/tools-release-1/claims-evidence/mcp-release-privacy.test.cjs.final.txt"
+  },
+  {
+    "test": "tests/log-anonymizer.test.php",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/log-anonymizer.test.php.final.txt"
+  },
+  {
+    "test": "tests/prompt-injection-detector.test.php",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/prompt-injection-detector.test.php.final.txt"
+  },
+  {
+    "test": "tests/lotl-analyzer.test.php",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/lotl-analyzer.test.php.final.txt"
+  },
+  {
+    "test": "tests/mcp-checker.test.php",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/mcp-checker.test.php.final.txt"
+  },
+  {
+    "test": "tests/tools.test.php",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/tools.test.php.final.txt"
+  },
+  {
+    "test": "tests/tools-catalog.test.php",
+    "exit": 0,
+    "seconds": 0.12,
+    "log": "deploy/tools-release-1/claims-evidence/tools-catalog.test.php.final.txt"
+  },
+  {
+    "test": "lotl-source-release",
+    "exit": 0
+  }
+]

@@ -1,0 +1,11 @@
+ok   dp-unc-public-ip: medium (expected >= medium)
+ok   dp-unc-webdav: high (expected >= medium)
+ok   dp-unc-fqdn: high (expected >= medium)
+ok   dp-unc-internal-plus-url: high (expected >= high)
+ok   dp-unc-internal-awl: high (expected >= high)
+ok   db-unc-fileserver: medium (expected <= medium)
+ok   db-unc-corp: medium (expected <= medium)
+ok   db-unc-private-ip: medium (expected <= medium)
+ok   db-unc-local-domain: low (expected <= medium)
+dependent examples (LotL: internal UNC file shares without other signals must not be high; external UNC stays flagged (medium or higher); internal share plus another signal stays high): 9/9 as expected
+PASS: dependent LotL examples

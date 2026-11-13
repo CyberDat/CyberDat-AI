@@ -1,0 +1,29 @@
+main corpus: detected 52/52 (100.0%), most specific rule 52/52 (100.0%); legit with medium+ 0/40 (0.0%), with low+ 1/40 (2.5%)
+held-out set: detected 15/15 (100.0%), most specific rule 15/15 (100.0%); legit with medium+ 0/15 (0.0%), with low+ 0/15 (0.0%)
+PASS: parser: clear messages with line and column for common JSON mistakes
+PASS: parser: JSONC comments and trailing commas accepted and reported
+PASS: parser: several documents, duplicate keys with both lines, __proto__ cannot pollute
+PASS: parser: nesting limit and escapes
+PASS: formats: mcpServers, servers, mcp.servers, context_servers (old and new), arrays, single server, tool lists
+PASS: formats: unrecognized input and command strings with spaces are explained
+PASS: findings carry server, location with line, severity, explanation and fix
+PASS: rule catalogue: every rule has a group, title, explanation and fix, and is exercised by the corpus
+PASS: ATT&CK or external rule ids are not used; texts are English
+PASS: internal and local servers do not produce noise
+PASS: high severity needs an explicit risk or a combination
+PASS: secret references and placeholders are not reported as secrets
+PASS: recognized fixture credentials are masked: findings, summaries, notes and the serialized result never contain the value
+PASS: mask() shows at most four leading characters and the length
+PASS: policy: the example policy is valid and app.js ships the same example
+PASS: policy: invalid schemas give clear messages
+PASS: policy: empty policy checks nothing; conflicting rules are explained, denied wins
+PASS: policy: every setting produces precise violations
+PASS: policy: compliant configuration has no violations
+PASS: glob matcher: wildcards, case-insensitive, linear on pathological patterns
+PASS: ReDoS guard: pathological inputs finish quickly in every analyzed field
+  (5 MB tool list: 9024 tools in 1653 ms)
+PASS: large input: ~5 MB tool list and 500 servers are checked within limits
+PASS: static contract: no network, storage, eval or HTML injection APIs; text output only; no look-behind regexes
+PASS: the page example analyzes to high-risk findings across several groups
+
+24 engine checks passed.

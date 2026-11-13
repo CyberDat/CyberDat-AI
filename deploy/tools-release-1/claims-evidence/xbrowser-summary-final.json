@@ -1,0 +1,18 @@
+[
+  {
+    "test": "mcp-checker",
+    "exit": 1
+  },
+  {
+    "test": "lotl-analyzer",
+    "exit": 1
+  },
+  {
+    "test": "log-anonymizer",
+    "exit": 1
+  },
+  {
+    "test": "prompt-injection-detector",
+    "exit": 1
+  }
+]
