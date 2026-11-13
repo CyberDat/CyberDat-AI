@@ -59,6 +59,6 @@ check('worker errors/results/progress do not log or echo opaque diagnostic fixtu
 check('UI/export copy scopes redaction and warns about verbatim policy downloads', () => {
  const php=fs.readFileSync(path.resolve(DIR,'../../../template-parts/tools/mcp-security-checker.php'),'utf8');
  assert.ok(!/Secret values are never (?:shown|displayed)/.test(php));assert.match(php,/Masking is best effort/);assert.match(php,/without redaction/);
- const app=fs.readFileSync(path.join(DIR,'app.js'),'utf8');assert.match(app,/Policy downloaded without redaction/);assert.ok(!/console\.(?:log|error|warn)\(/.test(app));
+ const app=fs.readFileSync(path.join(DIR,'app.js'),'utf8');assert.match(app,/Policy downloaded without redaction/);assert.ok(!/contain only masked secret values/.test(app));assert.ok(!/console\.(?:log|error|warn)\(/.test(app));
 });
 console.log(checks+' MCP release privacy checks passed.');

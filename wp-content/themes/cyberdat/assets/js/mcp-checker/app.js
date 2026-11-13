@@ -6,7 +6,8 @@
  *    never as HTML, never executed; URLs from the input are never opened, requested or turned into links;
  *  - no network, storage, cookie or URL-bar APIs; the policy is kept only in this tab, or saved by the
  *    user with "Download policy";
- *  - results and the JSON report contain only masked secret values and never the full configuration.
+ *  - results/report omit the full configuration and mask recognized values on a best-effort basis.
+ *    Unrecognized secrets may remain in names/excerpts; review exports. Policy downloads are verbatim.
  */
 (function () {
 	'use strict';

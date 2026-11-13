@@ -89,7 +89,7 @@ async function runBrowser(name) {
 		const ui = await page.$eval('[data-mcp-results]', e => e.textContent);
 		for (const v of SECRETS) { assert.ok(!exported.includes(v) && !ui.includes(v), 'secret leaked: ' + v.slice(0, 4)); }
 		assert.ok(JSON.parse(exported).findings.filter(f => f.group === 'secrets').length >= 4);
-		pass('secrets never appear in full in the results or the downloaded report');
+		pass('recognized synthetic fixture credentials are masked in results and the downloaded report');
 
 		await page.fill('[data-mcp-input]', JSON.stringify({ mcpServers: { '<img src=x onerror=alert(1)>': { url: 'javascript:alert(2)', tools: [{ name: '<svg onload=alert(3)>', description: '<script>alert(4)</script><IMPORTANT>x</IMPORTANT>' }] } } }));
 		await run();
