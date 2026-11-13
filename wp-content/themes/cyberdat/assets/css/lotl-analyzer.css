@@ -1,3 +1,4 @@
+/* Copyright (C) 2026 CyberDat contributors; SPDX-License-Identifier: GPL-3.0-only. Modified 2026-11-13: GPL notices/source delivery. No warranty; see assets/js/lotl-analyzer/LICENSE-LOLBAS.txt. */
 /* LotL / LOLBAS Command Analyzer — additions to the shared .cd-la workspace (tools-common.css). */
 .cd-lotl-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
 .cd-lotl-verdict--high { border-inline-start-color: #ff8fa3; }

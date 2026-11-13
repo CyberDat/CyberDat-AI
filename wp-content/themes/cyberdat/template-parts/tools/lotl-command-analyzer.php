@@ -1,4 +1,5 @@
 <?php
+/* Copyright (C) 2026 CyberDat contributors; SPDX-License-Identifier: GPL-3.0-only. Modified 2026-11-13: GPL notices/source delivery. No warranty; see assets/js/lotl-analyzer/LICENSE-LOLBAS.txt. */
 /**
  * LotL / LOLBAS Command Analyzer — interactive workspace markup.
  * Static, server-rendered UI only. Command lines are analyzed in the browser by
@@ -14,7 +15,7 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 	<p class="cd-la-callout cd-la-callout--error" data-lotl-unsupported hidden><?php esc_html_e( 'Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.', 'cyberdat' ); ?></p>
 
 	<div class="cd-la-app" data-lotl-app hidden>
-		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Commands are analyzed in this browser tab as plain text. The text you enter is never sent anywhere — not to CyberDat, not to analytics, not to GitHub — it is never executed, and it is not stored.', 'cyberdat' ); ?></p>
+		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Commands are analyzed in this browser tab as plain text. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to GitHub — it is never executed, and this tool does not write it to persistent browser storage.', 'cyberdat' ); ?></p>
 		<p class="cd-la-callout cd-la-callout--warning" role="note"><strong><?php esc_html_e( 'A match is not a verdict.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Most binaries listed in LOLBAS are legitimate Windows components used every day. A match only means the command resembles a documented abuse technique; no match does not mean the command is safe.', 'cyberdat' ); ?></p>
 
 		<section class="cd-la-panel" aria-labelledby="cd-lotl-step-input">
@@ -79,17 +80,18 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 			<h2 id="cd-lotl-source-title"><?php esc_html_e( 'Data source and license', 'cyberdat' ); ?></h2>
 			<ul>
 				<li><?php esc_html_e( 'Windows binary data comes from the LOLBAS Project (Living Off The Land Binaries, Scripts and Libraries), maintained by its contributors:', 'cyberdat' ); ?> <a href="https://github.com/LOLBAS-Project/LOLBAS" rel="noopener noreferrer">github.com/LOLBAS-Project/LOLBAS</a>. <?php printf( esc_html__( 'Snapshot of commit %1$s from %2$s.', 'cyberdat' ), esc_html( $cyberdat_lotl_commit ), esc_html( $cyberdat_lotl['data']['date'] ) ); ?></li>
-				<li><?php esc_html_e( 'The LOLBAS data is licensed under the GNU General Public License v3.0. This page uses a modified version: converted from YAML to JSON with a subset of fields (author, acknowledgement and resource links omitted).', 'cyberdat' ); ?> <a href="<?php echo esc_url( $cyberdat_lotl['license_url'] ); ?>"><?php esc_html_e( 'License text (GPL-3.0)', 'cyberdat' ); ?></a>. <?php esc_html_e( 'The data file and the script that builds it are published in the CyberDat repository.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The LOLBAS data is licensed under the GNU General Public License v3.0. This page uses a modified version: converted from YAML to JSON with a subset of fields (author, acknowledgement and resource links omitted).', 'cyberdat' ); ?> <a href="<?php echo esc_url( $cyberdat_lotl['license_url'] ); ?>"><?php esc_html_e( 'License text (GPL-3.0)', 'cyberdat' ); ?></a>. <?php esc_html_e( 'The LotL app, engine, worker, modified data and tool-specific renderer/CSS are provided under GPL version 3, without warranty. You may redistribute and modify them under that license.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'MITRE ATT&CK® technique ids are shown as provided by LOLBAS. ATT&CK® is a registered trademark of The MITRE Corporation. “© 2021 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation.” (notice as reproduced in the LOLBAS NOTICE file)', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Links to LOLBAS pages and detection references are ordinary links; nothing is loaded from them automatically. Microsoft® Windows® is a registered trademark of Microsoft Corporation.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
-		<section aria-labelledby="cd-lotl-privacy">
+		<p><a href="<?php echo esc_url( $cyberdat_lotl['source_url'] ); ?>" rel="noopener noreferrer"><?php esc_html_e( 'Corresponding source: complete theme and LotL code', 'cyberdat' ); ?></a> · <a href="<?php echo esc_url( $cyberdat_lotl['upstream_source_url'] ); ?>" rel="noopener noreferrer"><?php esc_html_e( 'Pinned upstream YAML source archive', 'cyberdat' ); ?></a> · <a href="<?php echo esc_url( $cyberdat_lotl['notice_url'] ); ?>"><?php esc_html_e( 'Original LOLBAS and MITRE notices', 'cyberdat' ); ?></a></p>
+<section aria-labelledby="cd-lotl-privacy">
 			<h2 id="cd-lotl-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'The text you enter is never sent anywhere. The LOLBAS data is part of this page, so no request is made to GitHub or any other service, and the page’s Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The LOLBAS data is part of this page, so no request is made to GitHub or any other service, and the page’s Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Nothing is saved: input and results are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not persist data: input and results are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Commands are treated as data only: they are never executed, and they are displayed as plain text, never as HTML.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Browser extensions you have installed can read page content. Use a private window without extensions for sensitive incident data.', 'cyberdat' ); ?></li>
 			</ul>

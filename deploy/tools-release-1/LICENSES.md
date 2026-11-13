@@ -1,81 +1,51 @@
-# Лицензии и источники, release 1 (ждёт решения владельца)
+# Tools Release 1 — source and license delivery (D6 option A, D7 public)
 
-Для владельца. Это не юридическое заключение. Лицензии проверены по актуальным файлам источников: LOLBAS и GTFOBins 12.11.2026, спецификация MCP 12.11.2026.
+Owner chose GPL compliance with LOLBAS retained; no repository settings changed.
+This records technical delivery and the remaining legal uncertainty, not a legal opinion.
 
-## 1. Сводная таблица источников четырёх инструментов
+## Scope and preferred source
 
-| Инструмент | Источник | Как используется | Лицензия источника | Что встроено в сайт | Обязательства |
-|---|---|---|---|---|---|
-| Log Anonymizer | Собственные правила CyberDat | Регулярные выражения и проверки (Luhn, валидация IP) | — (код CyberDat) | Только код CyberDat | Нет внешних |
-| Log Anonymizer | Публично известные форматы ключей (префиксы AWS, GitHub, Slack и т. д.) | Форма строк для распознавания | Факты о формате; тексты не копировались | Нет | Нет |
-| Prompt Injection Detector | Собственные правила CyberDat | 7 групп правил, нормализация, декодирование | — | Только код CyberDat | Нет внешних |
-| LotL Analyzer | **LOLBAS Project**, коммит `2056cb7` (26.09.2026) | Изменённый снимок данных (248 записей, 490 команд) в `lolbas-data.js` | **GPL-3.0** | Да, данные отдаются браузеру | Копилефт, см. раздел 2 |
-| LotL Analyzer | MITRE ATT&CK (идентификаторы техник внутри данных LOLBAS) | Показ id, как они даны в LOLBAS | Условия MITRE (уведомление из NOTICE LOLBAS) | Только id | Уведомление MITRE на странице (сделано) |
-| LotL Analyzer | GTFOBins, коммит `acd5246` | **Не используется** | GPL-3.0 | Нет | Нет |
-| MCP Checker | Спецификация MCP (`06e9234`) | Только как справочный материал, упомянута по названию, текст не копировался | MIT → Apache-2.0 (переход); документация CC-BY-4.0 | Нет | Нет (текст не воспроизводится) |
-| MCP Checker | Имена пакетов из документации MCP | Короткий встроенный список для поиска похожих имён | Факты (имена пакетов) | 17 имён пакетов | Нет |
-| Все | Тема CyberDat | Код PHP, JS и CSS темы | Заголовок темы: «GPL v2 or later» | — | Совместима с GPL-3.0 |
-| Тесты (не на сайте) | Playwright 1.49.1, gitleaks 8.21.2 | Локальная проверка, не входят в репозиторий | Apache-2.0, MIT | Нет | Нет |
+LOLBAS upstream is pinned at `2056cb7662509dc998fc6ce79636aec4e6c0397f`.
+The modified browser snapshot contains248 entries/490 commands, generated from
+248 original YAML files. The complete preferred-form YAML (including original
+Author/Acknowledgement fields omitted from browser data), original LICENSE,
+NOTICE.md and README.md are in `deploy/tools-lotl-analyzer/upstream-source-2056cb7.tar.gz`.
+All251 files have SHA256 entries in upstream-source-manifest.json. Archive SHA256:
+`fa823d580bcbac5eb8ccd3eaa191ca34943a745985d5812f01f669a68794c8a6`.
 
-## 2. LOLBAS (GPL-3.0): три варианта
+CyberDat distributes LotL app.js, engine.js, worker.js, lolbas-data.js, its specific
+CSS/PHP renderer and data generator under GPL version3. Dated modification notices,
+copyright attribution and no-warranty notices are included. Full upstream GPL and
+MITRE notice are copied verbatim to LICENSE-LOLBAS.txt and NOTICE-LOLBAS.md. The
+UI links to those files, full theme source and the preferred YAML archive. SOURCE.md
+includes an offline dependency-free Node rebuild recipe. No private dependencies
+or access credentials are required. Tests actually reproduce shipped data byte-for-byte
+and reject a modified YAML input. See source-availability.json for anonymous HTTP
+verification of the public URLs after publishing the source commit.
 
-Что уже сделано по варианту A:
-- в заголовке файла данных указаны источник, коммит, лицензия и отметка «MODIFIED, converted by CyberDat on 2026-11-12»;
-- рядом лежит `LICENSE-LOLBAS.txt`, на странице есть блок «Data source and license»;
-- скрипт сборки лежит в репозитории.
+The existing shared WordPress theme license remains GPLv2-or-later, compatible
+with GPLv3. Independent Log Anonymizer, Prompt Injection Detector, MCP Checker,
+Research/Content agents and other site components are not automatically relicensed.
+All theme source is nevertheless delivered publicly, including shared dependencies.
 
-### A. Оставить как сделано: JS инструмента распространяется под GPL-3.0 с доступом к исходникам
+**UNVERIFIED:** legal characterization of the combined LotL/theme work and the
+boundary between one work and an aggregate has not received independent legal
+review. Technical source/notices checks do not establish legal certainty. D6 is
+PARTIAL pending that scope review; do not label it unconditionally closed.
 
-- **Обязательства.**
-  - Сохранять уведомления и текст GPL-3.0 (сделано).
-  - Помечать изменения с датой (сделано).
-  - Распространять совмещённую работу под GPL-3.0. Вероятно, это `engine.js`, `worker.js`, `app.js` и `lolbas-data.js`, так как данные и движок работают в одном воркере.
-  - Давать получателям доступ к соответствующему исходному коду. Сейчас его даёт публичный репозиторий.
-  - Не добавлять ограничений сверх GPL.
-- **Монетизация.** GPL-3.0 не запрещает коммерческое использование и платные услуги. Ограничение одно: эти файлы нельзя сделать закрытыми.
-- **Трудоёмкость:** низкая.
-  - Добавить заголовок с указанием GPL-3.0 в 4 JS-файла LotL.
-  - Поставить на странице ссылку на исходники.
-  - Решить вопрос с видимостью репозитория (см. риск).
-  - Примерно 1–2 часа работы агента и проверка владельцем.
-- **Риски.**
-  - Если репозиторий станет приватным, нужен другой способ дать исходники, например отдельный публичный репозиторий только с этими файлами.
-  - Нужен ответ юриста, распространяется ли GPL на остальную тему (PHP, общий CSS) или это отдельные произведения («aggregate»).
-  - Фраза «published in the CyberDat repository» на странице верна только при публичном репозитории (COPY-REVIEW, пометка 2).
+## Other tools and dependencies
 
-### B. Написать свои правила без копирования данных LOLBAS
+| Component | Actual use | Delivery |
+|---|---|---|
+| Log Anonymizer | CyberDat format rules/validation | No external dataset bundled |
+| Prompt Injection Detector | CyberDat heuristic rules/normalization | No model or external service |
+| LotL | Modified LOLBAS data and CyberDat logic | GPLv3, full preferred source/notices above |
+| MITRE ATT&CK references | IDs retained from LOLBAS | Original full upstream MITRE notice retained |
+| GTFOBins | Not used | No data bundled |
+| MCP Checker | MCP specification as reference; package names as identifiers | No specification text/library bundled |
+| Node/Playwright/browser test runtime | Private test-only downloads | Not part of theme archive or website |
 
-- **Обязательства.** Внешних нет, если правила созданы независимо (clean-room). Факты о поведении бинарников Windows авторским правом не охраняются, а текст, структура и подборка LOLBAS охраняются.
-- **Трудоёмкость:** высокая.
-  - Собственный список 60–100 самых злоупотребляемых бинарников с описаниями, сигнатурами флагов, функциями и подсказками.
-  - Соотнесение с ATT&CK CyberDat делает уже сам (с соблюдением условий MITRE) или отказывается от него.
-  - Новый корпус тестов.
-  - Оценка: 3–5 дней работы агента плюс проверка экспертом.
-- **Риски.**
-  - Покрытие ниже: сейчас 248 записей и 490 команд.
-  - Агент, видевший LOLBAS, не может гарантировать «чистую комнату». Если нужна юридическая чистота, правила должен писать человек или процесс без доступа к LOLBAS.
-  - Теряются ссылка на признанный источник и подсказки по детектированию.
-
-### C. Запросить у мейнтейнеров LOLBAS разрешение (исключение или другую лицензию)
-
-- **Обязательства:** по условиям ответа.
-- **Трудоёмкость:** низкая для нас (письмо или issue), срок непредсказуем.
-- **Риски.**
-  - У LOLBAS много авторов; мейнтейнеры могут не иметь права менять лицензию за всех.
-  - Возможен отказ или отсутствие ответа.
-  - До ответа всё равно действует вариант A.
-
-## 3. Вопрос юристу (на случай монетизации)
-
-> Мы публикуем на сайте cyberdat.eu бесплатный веб-инструмент. Он работает полностью в браузере пользователя: JavaScript-файлы отдаются браузеру и выполняются там. Один из файлов содержит изменённый (переведённый из YAML в JSON, сокращённый) снимок данных проекта LOLBAS, лицензированных под GNU GPL v3.0. Наш собственный JavaScript-код (движок анализа) загружает эти данные в том же Web Worker и использует их для анализа введённых пользователем команд. Остальная часть сайта — тема WordPress (PHP, CSS, другие JS-инструменты), которая с данными LOLBAS не взаимодействует.
->
-> 1. Является ли передача этих JS-файлов браузеру «conveying» в смысле GPL-3.0?
-> 2. Образуют ли наш движок и данные LOLBAS единое производное произведение, которое мы обязаны лицензировать под GPL-3.0? Распространяется ли это на остальные файлы темы и на сайт?
-> 3. Достаточно ли публичного репозитория на GitHub как способа предоставить «Corresponding Source»? Что делать, если репозиторий станет приватным?
-> 4. Можно ли монетизировать сайт (платные функции, реклама, платные отчёты) при сохранении этого инструмента под GPL-3.0? Какие ограничения возникают для других, закрытых инструментов на том же сайте?
-> 5. Достаточно ли наших уведомлений (заголовок файла с отметкой об изменениях и дате, текст лицензии рядом, блок на странице) и уведомления MITRE ATT&CK в формулировке из NOTICE проекта LOLBAS?
-> 6. Если мы напишем собственный набор правил по публичным сведениям о поведении бинарников Windows, при каких условиях он не будет считаться производным от LOLBAS?
-
-## 4. Связь с видимостью репозитория
-
-Репозиторий `CyberDat/CyberDat-AI` сейчас **публичный** (проверено 12.11.2026). Варианты A и B зависят от решения о видимости. Пока его нет, ничего не меняю.
+GPL provisions consulted: [GPLv3 sections4–6](https://www.gnu.org/licenses/gpl-3.0.html)
+and [GNU GPL FAQ on source and aggregation](https://www.gnu.org/licenses/gpl-faq.en.html).
+The public GitHub repository and the public source branch remain available under
+D7. A later visibility or source removal decision would require a new delivery review.

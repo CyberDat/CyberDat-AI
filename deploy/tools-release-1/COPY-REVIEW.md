@@ -8,7 +8,7 @@
 
 | # | Где | Фраза | В чём проблема | Предлагаемая замена | Важность |
 |---|---|---|---|---|---|
-| 1 | MCP: [MSC-T46], [MSC-T58], editorial how_it_works | “Secret values are never shown in full” / “never displayed or exported in full” | Маскируются только секреты, которые движок **распознал** (известный формат, секретное имя переменной, флаг или заголовок, пароль в URL). Нераспознанный секрет в аргументах может попасть в однострочную сводку сервера и в поле «Found:» (например, внутри `bash -c "…"`). | “Recognized secret values are masked: only their kind, the first characters and the length are shown. A secret in an unusual form can still appear in server summaries — remove credentials before pasting.” | **высокая**: обещание приватности |
+| 1 | MCP: [MSC-T46], [MSC-T58], editorial how_it_works | “Recognized credentials are masked on a best-effort basis; unknown secrets can remain” / “never displayed or exported in full” | Маскируются только секреты, которые движок **распознал** (известный формат, секретное имя переменной, флаг или заголовок, пароль в URL). Нераспознанный секрет в аргументах может попасть в однострочную сводку сервера и в поле «Found:» (например, внутри `bash -c "…"`). | “Recognized secret values are masked: only their kind, the first characters and the length are shown. A secret in an unusual form can still appear in server summaries — remove credentials before pasting.” | **высокая**: обещание приватности |
 | 2 | LotL: [LCA-T33] | “The data file and the script that builds it are published in the CyberDat repository.” | Верно, пока репозиторий публичный и код влит в публикуемую ветку. Если сделать репозиторий приватным, утверждение станет ложным, а вместе с ним нарушится условие GPL-3.0 о доступе к исходникам (см. LICENSES.md, вариант A). | Зависит от решения по лицензии и видимости репозитория. При варианте A: дать прямую ссылку на исходники или указать, как их получить. | **высокая**: лицензия |
 | 3 | LA: [LA-T52] | “No third parties: the page loads no external scripts, fonts or analytics.” | Проверено только на локальном WordPress. На staging и production страница рендерится темой и плагинами сайта (Rank Math и т. д.); внешние шрифты или аналитика сайта эту фразу нарушат. | Оставить, если Codex на staging подтвердит отсутствие сторонних запросов (шаг HANDOFF «Network»). Иначе: “The tool itself loads no external scripts…” | средняя: проверить на staging |
 | 4 | Все четыре: [LA-T2], [PID-T2], [LCA-T2], [MSC-T2] | “Try a current version of Edge, Chrome, Firefox or Safari.” | Настоящий Safari и iPhone не тестировались (только движок WebKit в Playwright на Windows). | Оставить после ручной проверки в Safari и на iPhone (шаг HANDOFF). | средняя |
@@ -18,7 +18,7 @@
 | 8 | LA: [LA-T46] | “the tool refuses to produce output if the number of lines would change” | Это проверка в движке, покрытая тестами структуры; формулировка верная. Отмечаю, потому что это сильное обещание: менять код без этой проверки нельзя. | Без изменений. | инфо |
 | 9 | LA: editorial summary | “Redact IP addresses, emails, usernames, hostnames …” | Имена людей и телефоны не распознаются (теперь первый пункт Limitations), однословные имена хостов пропускаются. Summary этого не говорит. | Можно добавить: “… Names of people and phone numbers are not detected.” | низкая |
 
-Не помечены, потому что подтверждены тестами во всех трёх браузерах: «The text you enter is never sent anywhere» (CSP `connect-src 'none'`, сетевые API в воркере отключены, ноль запросов при обработке), «Nothing is saved», вывод только текстом, перезапуск воркера при Cancel.
+Не помечены, потому что подтверждены тестами во всех трёх браузерах: «This tool does not transmit the text you enter» (CSP `connect-src 'none'`, сетевые API в воркере отключены, ноль запросов при обработке), «Nothing is saved», вывод только текстом, перезапуск воркера при Cancel.
 
 ---
 
@@ -31,7 +31,7 @@
 - [LA-T1] This tool needs JavaScript. Processing happens only in your browser, so nothing can run without it — and nothing is uploaded.
 - [LA-T2] Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.
 - [LA-T3] Local only.
-- [LA-T4] Your log is processed in this browser tab. The text you enter is never sent anywhere — not to CyberDat, not to analytics — and it is not stored.
+- [LA-T4] Your log is processed in this browser tab. This tool does not transmit the text you enter — not to CyberDat, not to analytics — and it is not stored.
 - [LA-T5] Review before sharing.
 - [LA-T6] Automated anonymization cannot guarantee that every secret or personal detail is removed. Check the result manually before you share it.
 
@@ -86,7 +86,7 @@
 - [LA-T48] Engine %1$s · rules %2$s
 
 ### Privacy
-- [LA-T49] The text you enter is never sent anywhere. The page has no server endpoint for your data, and its Content Security Policy blocks scripts on this page from opening network connections.
+- [LA-T49] This tool does not transmit the text you enter. The page has no server endpoint for your data, and its Content Security Policy blocks scripts on this page from opening network connections.
 - [LA-T50] If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its two static script files again from this site. Those requests contain no part of your input.
 - [LA-T51] Nothing is saved: input, results and settings are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab.
 - [LA-T52] No third parties: the page loads no external scripts, fonts or analytics.
@@ -136,7 +136,7 @@ Accepted password for alice from 203.0.113.7 port 52211
 ### faq
 
 ### Is my log uploaded to CyberDat?
-No. The text you enter is never sent anywhere: processing happens entirely in your browser, the page blocks network connections from its scripts with a Content Security Policy, and no input is stored in cookies, local storage or the URL.
+No. This tool does not transmit the text you enter: processing happens entirely in your browser, the page blocks network connections from its scripts with a Content Security Policy, and no input is stored in cookies, local storage or the URL.
 ### Why do I see requests in my browser's Network tab?
 Loading the page downloads its own files from cyberdat.eu, including the two scripts of the background worker. If you select Cancel, or processing times out, the worker is restarted and those two static script files are requested again. None of these requests contains any part of your input.
 ### Is the output guaranteed to be safe to share?
@@ -153,7 +153,7 @@ Only with the replacement map you download yourself. CyberDat never sees or keep
 - [PID-T1] This tool needs JavaScript. Analysis happens only in your browser, so nothing can run without it — and nothing is uploaded.
 - [PID-T2] Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.
 - [PID-T3] Local only.
-- [PID-T4] Your text is analyzed in this browser tab. The text you enter is never sent anywhere — not to CyberDat, not to analytics, not to any AI service — and it is not stored.
+- [PID-T4] Your text is analyzed in this browser tab. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any AI service — and it is not stored.
 - [PID-T5] No guarantee of safety.
 - [PID-T6] Automated analysis cannot detect every prompt injection: a reworded attack can pass every rule. A result without findings does not make a text safe, and neither the original nor the sanitized copy should be treated as trusted instructions.
 
@@ -217,7 +217,7 @@ Only with the replacement map you download yourself. CyberDat never sees or keep
 - [PID-T55] Engine %1$s · rules %2$s
 
 ### Privacy
-- [PID-T56] The text you enter is never sent anywhere. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections.
+- [PID-T56] This tool does not transmit the text you enter. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections.
 - [PID-T57] If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its two static script files again from this site. Those requests contain no part of your input.
 - [PID-T58] Nothing is saved: input, findings and settings are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab.
 - [PID-T59] The text is treated as data only: it is never executed, and it is displayed as plain text, never as HTML, so markup or scripts in it cannot run.
@@ -271,7 +271,7 @@ Find text addressed to an AI assistant, such as requests to forward the inbox or
 ### faq
 
 ### Is my text uploaded to CyberDat or to an AI service?
-No. The text you enter is never sent anywhere: analysis happens entirely in your browser, no AI model or external API is called, the page blocks network connections from its scripts with a Content Security Policy, and no input is stored in cookies, local storage or the URL.
+No. This tool does not transmit the text you enter: analysis happens entirely in your browser, no AI model or external API is called, the page blocks network connections from its scripts with a Content Security Policy, and no input is stored in cookies, local storage or the URL.
 ### Why do I see requests in my browser's Network tab?
 Loading the page downloads its own files from cyberdat.eu, including the two scripts of the background worker. If you select Cancel, or processing times out, the worker is restarted and those two static script files are requested again. None of these requests contains any part of your input.
 ### If no findings are reported, is the text safe?
@@ -288,7 +288,7 @@ No. It only analyzes text you provide. The example on the page is synthetic and 
 - [LCA-T1] This tool needs JavaScript. Analysis happens only in your browser, so nothing can run without it — and nothing is uploaded.
 - [LCA-T2] Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.
 - [LCA-T3] Local only.
-- [LCA-T4] Commands are analyzed in this browser tab as plain text. The text you enter is never sent anywhere — not to CyberDat, not to analytics, not to GitHub — it is never executed, and it is not stored.
+- [LCA-T4] Commands are analyzed in this browser tab as plain text. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to GitHub — it is never executed, and it is not stored.
 - [LCA-T5] A match is not a verdict.
 - [LCA-T6] Most binaries listed in LOLBAS are legitimate Windows components used every day. A match only means the command resembles a documented abuse technique; no match does not mean the command is safe.
 
@@ -330,7 +330,7 @@ No. It only analyzes text you provide. The example on the page is synthetic and 
 - [LCA-T35] Links to LOLBAS pages and detection references are ordinary links; nothing is loaded from them automatically. Microsoft® Windows® is a registered trademark of Microsoft Corporation.
 
 ### Privacy
-- [LCA-T36] The text you enter is never sent anywhere. The LOLBAS data is part of this page, so no request is made to GitHub or any other service, and the page’s Content Security Policy blocks scripts on this page from opening network connections.
+- [LCA-T36] This tool does not transmit the text you enter. The LOLBAS data is part of this page, so no request is made to GitHub or any other service, and the page’s Content Security Policy blocks scripts on this page from opening network connections.
 - [LCA-T37] If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.
 - [LCA-T38] Nothing is saved: input and results are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab.
 - [LCA-T39] Commands are treated as data only: they are never executed, and they are displayed as plain text, never as HTML.
@@ -380,7 +380,7 @@ certutil.exe -urlcache -split -f http://example.com/a.txt a.txt
 ### faq
 
 ### Is my command line sent to CyberDat or GitHub?
-No. The text you enter is never sent anywhere. The LOLBAS data is bundled with the page, the page blocks network connections from its scripts with a Content Security Policy, and nothing is stored.
+No. This tool does not transmit the text you enter. The LOLBAS data is bundled with the page, the page blocks network connections from its scripts with a Content Security Policy, and nothing is stored.
 ### Why do I see requests in my browser's Network tab?
 Loading the page downloads its own files from cyberdat.eu, including the worker scripts and the LOLBAS data file. If you select Cancel, the worker is restarted and these static files may be requested again. None of these requests contains any part of your input.
 ### Does a match mean the command is malicious?
@@ -397,7 +397,7 @@ No. It only explains command lines you paste. Nothing is executed and no command
 - [MSC-T1] This tool needs JavaScript. The check happens only in your browser, so nothing can run without it — and nothing is uploaded.
 - [MSC-T2] Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.
 - [MSC-T3] Local only.
-- [MSC-T4] The configuration is checked in this browser tab as text. The text you enter is never sent anywhere — not to CyberDat, not to analytics, not to any registry — servers are not started, and nothing is stored.
+- [MSC-T4] The configuration is checked in this browser tab as text. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any registry — servers are not started, and nothing is stored.
 - [MSC-T5] A review aid, not a guarantee.
 - [MSC-T6] Findings are based only on the text you paste. A finding is a reason to look closer, not proof of an attack, and no finding does not mean the configuration is safe.
 
@@ -443,7 +443,7 @@ No. It only explains command lines you paste. Nothing is executed and no command
 - [MSC-T43] Rule group
 - [MSC-T44] Findings
 - [MSC-T45] Servers and tool lists
-- [MSC-T46] Sorted by the highest severity. Secret values are never shown in full: only their kind, the first characters and the length.
+- [MSC-T46] Sorted by the highest severity. Recognized credentials are masked on a best-effort basis; unknown secrets can remain: only their kind, the first characters and the length.
 - [MSC-T47] Download results (JSON)
 - [MSC-T48] The report contains the findings and a one-line summary of each server, with secret values masked. It does not contain the full configuration. It is created in your browser and saved only where you choose.
 
@@ -456,10 +456,10 @@ No. It only explains command lines you paste. Nothing is executed and no command
 - [MSC-T54] Engine %1$s · rules %2$s
 
 ### Privacy
-- [MSC-T55] The text you enter is never sent anywhere. The page’s Content Security Policy blocks scripts on this page from opening network connections, and URLs found in your configuration are never opened or checked online.
+- [MSC-T55] This tool does not transmit the text you enter. The page’s Content Security Policy blocks scripts on this page from opening network connections, and URLs found in your configuration are never opened or checked online.
 - [MSC-T56] If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.
 - [MSC-T57] Nothing is saved: the configuration, your policy and the results are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab. The policy leaves the tab only if you download it.
-- [MSC-T58] Secret values are never displayed or exported in full. The JSON report contains findings and one-line server summaries with secrets masked, not the full configuration.
+- [MSC-T58] Masking is best effort, not a guarantee of secret removal. The JSON report contains findings and one-line server summaries with secrets masked, not the full configuration.
 - [MSC-T59] Browser extensions you have installed can read page content. Use a private window without extensions for configurations that contain real credentials — or remove the credentials first.
 
 ### Limitations
@@ -483,7 +483,7 @@ Paste an MCP client configuration or a server's tool list and get a list of risk
 ### how_it_works
 
 Model Context Protocol (MCP) servers give AI assistants and agents tools: file access, shell commands, browsers, databases, email. The configuration that connects them decides how much power they get, and the tool descriptions they report are read by the model as instructions. The checker reads the configuration as text in a background worker, recognizes the common client formats (mcpServers, servers, mcp.servers, context_servers) and tool lists, and applies CyberDat rules in eight groups.
-Every finding names the server, the location in the configuration with its line number, the severity, why it matters and what to change. High severity is reserved for very explicit risks or a combination of signals, such as automatic approval of a tool that runs commands. Secret values are never shown in full.
+Every finding names the server, the location in the configuration with its line number, the severity, why it matters and what to change. High severity is reserved for very explicit risks or a combination of signals, such as automatic approval of a tool that runs commands. Recognized credentials are masked on a best-effort basis; unknown secrets can remain.
 
 ### documentation
 
@@ -515,7 +515,7 @@ Load the example policy, adapt the allowed packages, hosts and paths, and check 
 ### faq
 
 ### Is my configuration sent to CyberDat or anyone else?
-No. The text you enter is never sent anywhere. The page blocks network connections from its scripts with a Content Security Policy, URLs in the configuration are never opened, and nothing is stored.
+No. This tool does not transmit the text you enter. The page blocks network connections from its scripts with a Content Security Policy, URLs in the configuration are never opened, and nothing is stored.
 ### Why do I see requests in my browser's Network tab?
 Loading the page downloads its own files from cyberdat.eu, including the worker scripts. If you select Cancel, the worker is restarted and these static files may be requested again. None of these requests contains any part of your input.
 ### No findings: is the configuration safe?

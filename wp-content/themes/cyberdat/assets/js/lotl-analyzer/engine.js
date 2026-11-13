@@ -1,4 +1,13 @@
 /*!
+ * CyberDat LotL / LOLBAS Command Analyzer.
+ * Copyright (C) 2026 CyberDat contributors.
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Modified 2026-11-13: explicit GPL notice and corresponding-source delivery.
+ * This program is free software: you may redistribute and modify it under
+ * GNU GPL version 3. It comes WITHOUT ANY WARRANTY, including MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See LICENSE-LOLBAS.txt and SOURCE.md.
+ */
+/*!
  * CyberDat LotL / LOLBAS Command Analyzer: static analysis engine.
  *
  * Pure and side-effect free: no DOM, storage or network APIs. Commands are treated as

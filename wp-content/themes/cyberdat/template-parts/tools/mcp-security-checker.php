@@ -13,7 +13,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 	<p class="cd-la-callout cd-la-callout--error" data-mcp-unsupported hidden><?php esc_html_e( 'Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.', 'cyberdat' ); ?></p>
 
 	<div class="cd-la-app" data-mcp-app hidden>
-		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'The configuration is checked in this browser tab as text. The text you enter is never sent anywhere — not to CyberDat, not to analytics, not to any registry — servers are not started, and nothing is stored.', 'cyberdat' ); ?></p>
+		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'The configuration is checked in this browser tab as text. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any registry — servers are not started, and this tool does not write it to persistent browser storage.', 'cyberdat' ); ?></p>
 		<p class="cd-la-callout cd-la-callout--warning" role="note"><strong><?php esc_html_e( 'A review aid, not a guarantee.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Findings are based only on the text you paste. A finding is a reason to look closer, not proof of an attack, and no finding does not mean the configuration is safe.', 'cyberdat' ); ?></p>
 
 		<section class="cd-la-panel" aria-labelledby="cd-mcp-step-input">
@@ -40,7 +40,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 			<div class="cd-mcp-policy" data-mcp-policy-panel hidden>
 				<label class="cd-la-label" for="cd-mcp-policy"><?php esc_html_e( 'Your policy (JSON)', 'cyberdat' ); ?></label>
 				<textarea id="cd-mcp-policy" class="cd-la-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-mcp-policy-help cd-mcp-policy-source" data-mcp-policy></textarea>
-				<p id="cd-mcp-policy-help" class="cd-la-help"><?php esc_html_e( 'The policy is kept only in this tab. Use “Download policy” to save it as a file; it is not stored anywhere else.', 'cyberdat' ); ?></p>
+				<p id="cd-mcp-policy-help" class="cd-la-help"><?php esc_html_e( 'The policy is kept only in this tab. “Download policy” saves the entered policy without redaction; review it for private values before sharing.', 'cyberdat' ); ?></p>
 				<div class="cd-la-row">
 					<label class="cd-la-file">
 						<span class="cd-la-button cd-la-button--secondary" aria-hidden="true"><?php esc_html_e( 'Load a policy file', 'cyberdat' ); ?></span>
@@ -63,7 +63,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 						<dt><code>allowedPaths</code>, <code>deniedPaths</code></dt><dd><?php esc_html_e( 'Directories. A path is allowed when it is inside an allowed directory; it violates a denied path when it is inside it or contains it. ~ also matches /home/<name>, /Users/<name> and C:\Users\<name>.', 'cyberdat' ); ?></dd>
 						<dt><code>allowedTransports</code></dt><dd><?php esc_html_e( 'Any of "stdio", "http", "sse".', 'cyberdat' ); ?></dd>
 						<dt><code>allowedEnv</code></dt><dd><?php esc_html_e( 'Names of environment variables servers may receive.', 'cyberdat' ); ?></dd>
-						<dt><code>forbidLiteralSecrets</code></dt><dd><?php esc_html_e( 'true: no credentials written directly in the configuration.', 'cyberdat' ); ?></dd>
+						<dt><code>forbidLiteralSecrets</code></dt><dd><?php esc_html_e( 'true: flag detected literal credentials. Detection is heuristic and can miss unknown secret formats.', 'cyberdat' ); ?></dd>
 						<dt><code>deniedTools</code></dt><dd><?php esc_html_e( 'Tool names that must not be offered (needs a tool list in the input).', 'cyberdat' ); ?></dd>
 						<dt><code>allowAutoApprove</code></dt><dd><?php esc_html_e( 'false: no automatic approval (autoApprove, alwaysAllow, trust).', 'cyberdat' ); ?></dd>
 						<dt><code>maxServers</code>, <code>maxToolsPerServer</code></dt><dd><?php esc_html_e( 'Upper limits, whole numbers.', 'cyberdat' ); ?></dd>
@@ -94,13 +94,13 @@ $cyberdat_mcp = cyberdat_mcp_config();
 				</table>
 			</div>
 			<h3 class="cd-la-subheading" id="cd-mcp-list-title"><?php esc_html_e( 'Servers and tool lists', 'cyberdat' ); ?></h3>
-			<p class="cd-la-help"><?php esc_html_e( 'Sorted by the highest severity. Secret values are never shown in full: only their kind, the first characters and the length.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'Sorted by the highest severity. Recognized credentials are masked. Unknown secrets can be missed and may remain in names or excerpts. Use redacted configurations and review results before sharing.', 'cyberdat' ); ?></p>
 			<ol class="cd-mcp-servers" aria-labelledby="cd-mcp-list-title" data-mcp-list></ol>
 			<p class="cd-la-help" data-mcp-more hidden></p>
 			<div class="cd-la-row">
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-mcp-report><?php esc_html_e( 'Download results (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The report contains the findings and a one-line summary of each server, with secret values masked. It does not contain the full configuration. It is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The report contains findings and one-line server summaries with best-effort masking of recognized credentials. Unrecognized secrets may remain. It does not contain the full configuration. It is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 
@@ -119,10 +119,10 @@ $cyberdat_mcp = cyberdat_mcp_config();
 		<section aria-labelledby="cd-mcp-privacy">
 			<h2 id="cd-mcp-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'The text you enter is never sent anywhere. The page’s Content Security Policy blocks scripts on this page from opening network connections, and URLs found in your configuration are never opened or checked online.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The page’s Content Security Policy blocks scripts on this page from opening network connections, and URLs found in your configuration are never opened or checked online.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Nothing is saved: the configuration, your policy and the results are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab. The policy leaves the tab only if you download it.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Secret values are never displayed or exported in full. The JSON report contains findings and one-line server summaries with secrets masked, not the full configuration.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not persist data: the configuration, your policy and the results are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure. The policy leaves the tab only if you download it.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Masking is best effort, not a guarantee of secret removal. The JSON report omits the full configuration but may retain unrecognized secrets in names or excerpts. Review every export before sharing.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Browser extensions you have installed can read page content. Use a private window without extensions for configurations that contain real credentials — or remove the credentials first.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>

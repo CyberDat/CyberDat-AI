@@ -1,9 +1,11 @@
 /*!
  * LOLBAS data snapshot for the CyberDat LotL / LOLBAS Command Analyzer.
+ * SPDX-License-Identifier: GPL-3.0-only. CyberDat modifications copyright (C) 2026 CyberDat contributors.
+ * WITHOUT ANY WARRANTY. Corresponding source and build instructions: SOURCE.md.
  * Source: LOLBAS Project, https://github.com/LOLBAS-Project/LOLBAS, commit 2056cb7662509dc998fc6ce79636aec4e6c0397f (2026-09-26T09:13:22+01:00).
  * Copyright (C) the LOLBAS Project contributors. Licensed under the GNU General Public License v3.0;
  * the full license text is in LICENSE-LOLBAS.txt next to this file. This is a MODIFIED version,
- * converted by CyberDat on 2026-11-12:
+ * converted by CyberDat on 2026-11-13:
  * Converted from YAML to JSON by deploy/tools-lotl-analyzer/update-lolbas-data.cjs. Only the fields Name, Description, Full_Path, Commands (Command, Description, Usecase, Category, Privileges, MitreID, OperatingSystem), Detection (IOC, Sigma, Elastic, Splunk, BlockRule, Analysis) are kept; Author, Acknowledgement, Resources and Code_Sample are omitted. A link to each entry page is added.
  * Generated file: do not edit by hand. Regenerate with deploy/tools-lotl-analyzer/update-lolbas-data.cjs.
  * MITRE ATT&CK(R) technique ids are as given by LOLBAS. ATT&CK(R) is a registered trademark of The MITRE Corporation.

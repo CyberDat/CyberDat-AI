@@ -1,0 +1,15 @@
+Nov 11 09:02:00 web-01 sshd[3120]: Accepted publickey for deploy from 203.0.113.12 port 51522 ssh2: ED25519 SHA256:uK3a9Jmrz9W5yHnV0kq2Lw8sU2m9vQ4kP1oQ8XyZt3M
+Nov 11 09:02:00 web-01 sshd[3120]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by deploy(uid=0)
+Nov 11 09:02:01 web-01 systemd-logind[612]: New session 42 of user deploy.
+Nov 11 09:02:05 web-01 sshd[3125]: Invalid user oracle from 198.51.100.77 port 40022
+Nov 11 09:02:05 web-01 sshd[3125]: Failed password for invalid user oracle from 198.51.100.77 port 40022 ssh2
+Nov 11 09:02:06 web-01 sshd[3125]: Connection closed by invalid user oracle 198.51.100.77 port 40022 [preauth]
+Nov 11 09:02:07 web-01 sshd[3126]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=198.51.100.78  user=root
+Nov 11 09:02:08 web-01 sshd[3126]: Disconnected from authenticating user root 198.51.100.78 port 40100 [preauth]
+Nov 11 09:02:09 web-01 sudo:    deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/systemctl reload nginx
+Nov 11 09:02:09 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1001)
+Nov 11 09:02:10 web-01 useradd[4001]: new user: name=heidi, UID=1002, GID=1002, home=/home/heidi, shell=/bin/bash, from=/dev/pts/1
+Nov 11 09:02:11 web-01 passwd[4002]: pam_unix(passwd:chauthtok): password changed for heidi
+Nov 11 09:02:12 web-01 sshd[1]: Server listening on 0.0.0.0 port 22.
+Nov 11 09:02:12 web-01 sshd[1]: Server listening on :: port 22.
+Nov 11 09:02:13 web-01 CRON[5000]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)

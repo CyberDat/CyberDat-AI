@@ -329,7 +329,7 @@
 	function downloadPolicy() {
 		if (!el.policy.value.trim()) { showError('The policy box is empty.'); return; }
 		download('mcp-policy.json', el.policy.value.replace(/\s*$/, '') + '\n', 'application/json');
-		setStatus('Policy downloaded. It is not stored anywhere else.');
+		setStatus('Policy downloaded without redaction. Review private values before sharing.');
 	}
 
 	function clearAll() {

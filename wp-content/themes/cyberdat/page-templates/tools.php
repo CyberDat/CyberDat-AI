@@ -23,7 +23,7 @@ while ( have_posts() ) :
             <h1><?php esc_html_e( 'CyberDat Security Tools', 'cyberdat' ); ?></h1>
             <p class="tools-catalog-subtitle"><?php esc_html_e( 'Free, privacy-focused utilities for cybersecurity professionals.', 'cyberdat' ); ?></p>
             <?php if ( $available ) : ?>
-                <p class="tools-catalog-notice"><?php esc_html_e( 'Available tools run entirely in your browser: the text you enter is never sent anywhere. Tools marked Coming soon are in development and do not accept input.', 'cyberdat' ); ?></p>
+                <p class="tools-catalog-notice"><?php esc_html_e( 'Available tools run entirely in your browser: the tool code does not transmit the text you enter. Tools marked Coming soon are in development and do not accept input.', 'cyberdat' ); ?></p>
             <?php else : ?>
                 <p class="tools-catalog-notice"><?php esc_html_e( 'The first release is in development. No tool is available yet, and no input is collected or processed here.', 'cyberdat' ); ?></p>
             <?php endif; ?>

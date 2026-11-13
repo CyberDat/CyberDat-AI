@@ -1,4 +1,5 @@
 <?php
+/* Copyright (C) 2026 CyberDat contributors; SPDX-License-Identifier: GPL-3.0-only. Modified 2026-11-13: GPL notices/source delivery. No warranty; see assets/js/lotl-analyzer/LICENSE-LOLBAS.txt. */
 /**
  * LotL / LOLBAS Command Analyzer (Tools release 1.1, tool 3).
  *
@@ -51,6 +52,9 @@ function cyberdat_lotl_config() {
 	return array(
 		'worker'         => add_query_arg( array( 'ver' => cyberdat_theme_asset_version( $worker ), 'ev' => cyberdat_theme_asset_version( $engine ), 'dv' => cyberdat_theme_asset_version( $data ) ), get_theme_file_uri( $worker ) ),
 		'license_url'    => get_theme_file_uri( '/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt' ),
+		'notice_url'     => get_theme_file_uri( '/assets/js/lotl-analyzer/NOTICE-LOLBAS.md' ),
+		'source_url'     => 'https://github.com/CyberDat/CyberDat-AI/tree/feat/tools-release-1-license-claims/wp-content/themes/cyberdat',
+		'upstream_source_url' => 'https://github.com/CyberDat/CyberDat-AI/raw/refs/heads/feat/tools-release-1-license-claims/deploy/tools-lotl-analyzer/upstream-source-2056cb7.tar.gz',
 		'engine_version' => CYBERDAT_LOTL_ENGINE,
 		'ruleset'        => CYBERDAT_LOTL_RULESET,
 		'data'           => cyberdat_lotl_data_version(),

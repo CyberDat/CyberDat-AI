@@ -13,7 +13,7 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 	<p class="cd-la-callout cd-la-callout--error" data-pi-unsupported hidden><?php esc_html_e( 'Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.', 'cyberdat' ); ?></p>
 
 	<div class="cd-la-app" data-pi-app hidden>
-		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Your text is analyzed in this browser tab. The text you enter is never sent anywhere — not to CyberDat, not to analytics, not to any AI service — and it is not stored.', 'cyberdat' ); ?></p>
+		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Your text is analyzed in this browser tab. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any AI service — and this tool does not write it to persistent browser storage.', 'cyberdat' ); ?></p>
 		<p class="cd-la-callout cd-la-callout--warning" role="note"><strong><?php esc_html_e( 'No guarantee of safety.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Automated analysis cannot detect every prompt injection: a reworded attack can pass every rule. A result without findings does not make a text safe, and neither the original nor the sanitized copy should be treated as trusted instructions.', 'cyberdat' ); ?></p>
 
 		<section class="cd-la-panel" aria-labelledby="cd-pi-step-input">
@@ -137,9 +137,9 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 		<section aria-labelledby="cd-pi-privacy">
 			<h2 id="cd-pi-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'The text you enter is never sent anywhere. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its two static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Nothing is saved: input, findings and settings are not written to cookies, local storage or the address bar, and they disappear when you close or reload the tab.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not persist data: input, findings and settings are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'The text is treated as data only: it is never executed, and it is displayed as plain text, never as HTML, so markup or scripts in it cannot run.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Browser extensions you have installed can read page content. Use a private window without extensions for confidential documents.', 'cyberdat' ); ?></li>
 			</ul>

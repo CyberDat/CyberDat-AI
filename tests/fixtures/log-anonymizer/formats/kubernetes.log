@@ -1,0 +1,5 @@
+I1111 09:04:00.123456    1234 kubelet.go:2412] "SyncLoop ADD" source="api" pods=["prod/api-7d9f8b6c5-x2k9p"]
+I1111 09:04:01.223456    1234 kuberuntime_manager.go:1012] "Created container" pod="prod/api-7d9f8b6c5-x2k9p" node="ip-10-0-1-23.ec2.internal" podIP="10.0.1.45" hostIP="10.0.1.23"
+E1111 09:04:02.323456    1234 pod_workers.go:1300] "Error syncing pod" err="failed to pull image \"registry.example.io/team/api:1.4.2\": unauthorized" pod="prod/api-7d9f8b6c5-x2k9p"
+2026-11-11T09:04:03.123456789Z stdout F {"level":"info","msg":"request","user":"kim","client_ip":"203.0.113.90","path":"/v1/orders"}
+2026-11-11T09:04:04.123456789Z stderr F level=error msg="db auth failed" dsn="postgres://api:Sup3rS3cret@pg.prod.svc.cluster.local:5432/orders"

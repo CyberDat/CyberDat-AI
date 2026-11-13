@@ -1,0 +1,31 @@
+203.0.113.10 - - [11/Nov/2026:09:00:01 +0100] "GET /login?next=/account HTTP/1.1" 200 5120 "https://www.example.com/" "Mozilla/5.0 (X11; Linux x86_64) Chrome/120.0.0.0"
+203.0.113.11 - alice [11/Nov/2026:09:00:02 +0100] "POST /api/v2/session?access_token={{SYNTH:ACCESS_TOKEN_QUERY}} HTTP/1.1" 401 89 "-" "curl/8.5.0"
+2026/11/11 09:00:03 [error] 2211#2211: *15 connect() failed (111: Connection refused) while connecting to upstream, client: 198.51.100.24, server: shop.example.com, request: "GET / HTTP/1.1", upstream: "http://10.0.4.12:8080/", host: "shop.example.com"
+Nov 11 09:00:04 web-01 sshd[3120]: Accepted publickey for deploy from 203.0.113.12 port 51522 ssh2: ED25519 SHA256:uK3a9Jmrz9W5yHnV0kq2Lw8sU2m9vQ4kP1oQ8XyZt3M
+Nov 11 09:00:05 web-01 sshd[3125]: Failed password for invalid user oracle from 198.51.100.77 port 40022 ssh2
+Nov 11 09:00:06 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/systemctl reload nginx
+{"ts":"2026-11-11T09:00:07Z","level":"error","host":"db01.corp.example.com","user":"bob.smith","email":"bob.smith@example.com","ip":"203.0.113.13","mac":"00:1A:2B:3C:4D:5E"}
+{"ts":"2026-11-11T09:00:08Z","level":"debug","aws_access_key_id":"{{SYNTH:AWS_ACCESS_KEY_ID}}","aws_secret_access_key":"{{SYNTH:AWS_SECRET_ACCESS_KEY}}","github":"{{SYNTH:GITHUB_PAT}}"}
+timestamp,src_ip,dst_ip,user,action,bytes
+2026-11-11T09:00:09Z,203.0.113.14,2001:db8:10::5,carol,allow,1024
+2026-11-11T09:00:10Z,198.51.100.30,2001:db8:10::6,dave,deny,0
+CEF:0|Vendor|Firewall|1.0|100|Blocked|5|src=203.0.113.15 dst=198.51.100.31 suser=erin dhost=fw02.example.net act=blocked
+<Event><System><Computer>WS-0042.corp.example.com</Computer></System><EventData><Data Name="TargetUserName">frank</Data><Data Name="IpAddress">203.0.113.16</Data><Data Name="WorkstationName">WS-0042</Data></EventData></Event>
+An account was successfully logged on.	Account Name:	grace	Account Domain:	CORP	Source Network Address:	203.0.113.17
+POST /checkout HTTP/1.1
+Host: pay.example.com
+Authorization: Bearer {{SYNTH:JWT}}
+Cookie: sessionid=7f3c9a1b2d4e6f80; csrftoken={{SYNTH:CSRF_TOKEN}}
+X-Api-Key: {{SYNTH:X_API_KEY}}
+card_number=4111 1111 1111 1111|exp=12/29|cvv=123|ssn=123-45-6789
+db.url=postgres://app_user:Pa55w0rd@pg.internal.example.com:5432/prod
+config: password="Winter2026!" api_key='k-123-456' client_secret: abcXYZ123
+{{SYNTH:PEM_BEGIN}} RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAzYxExampleKeyBodyForTestsOnly0123456789abcdef
+ZXhhbXBsZSBrZXkgYm9keSBmb3IgdGVzdHMgb25seSBub3QgYSByZWFsIGtleQ==
+-----END RSA PRIVATE KEY-----
+windows path C:\Users\ivan\AppData\Local\Temp\x.tmp and CORP\judy logged on
+2026-11-11T09:00:20Z k8s pod=api-7d9f8 node=ip-10-0-1-23 ns=prod msg="pulled image" registry=registry.example.io
+2026-11-11T09:00:21Z version 1.2.3.4 build=10.0.19045.1 trace_id=4bf92f3577b34da6a3ce929d0e0e4736 latency=10:20:30:40
+crlf line 203.0.113.18 user=kim
+crlf line 2 password=mallory

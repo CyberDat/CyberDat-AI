@@ -6,8 +6,9 @@
  *  - input is data: it is parsed by a small JSON/JSONC parser written for this tool, never evaluated,
  *    servers are never started, commands are never run and URLs are never requested;
  *  - no network, storage, DOM or eval APIs (runs in a Web Worker and in Node for tests);
- *  - secret values never leave the engine: findings, summaries and policy results carry only the
- *    kind of secret and a masked fragment (first characters and length);
+ *  - analysis/policy results mask recognized credentials and suppress common literal-value
+ *    surfaces. Redaction is best effort: unknown secrets in names/prose can remain. Parser and
+ *    policy-validation APIs are not secret sanitizers; do not serialize their raw parsed data.
  *  - every regular expression is linear or bounded, and every scanned text is length-capped.
  * Rules are CyberDat's own wording. Background reading (text references only): the Model Context
  * Protocol specification, sections "Security and Trust & Safety" and "Tools".
@@ -17,7 +18,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.0';
+	const VERSION = '1.0.1';
 	const RULESET_VERSION = '2026-11-13.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_POLICY_CHARS = 256 * 1024;
@@ -125,7 +126,7 @@
 			const word = (src.slice(i, i + 24).match(/^[A-Za-z_$][A-Za-z0-9_$]*/) || [''])[0];
 			if (word) {
 				const hint = { True: ' (use true)', False: ' (use false)', None: ' (use null)', undefined: ' (use null)', NaN: ' (not allowed in JSON)' }[word] || ' (text values must be in double quotes)';
-				fail('unexpected word "' + word + '"' + hint, i);
+				fail('unexpected word (value omitted)' + hint, i);
 			}
 			fail('unexpected character ' + describe(c), i);
 		}
@@ -147,7 +148,7 @@
 				const keyPos = i;
 				const key = str();
 				ws();
-				if (src[i] !== ':') { fail('":" expected after the property name "' + key.slice(0, 60) + '", found ' + describe(src[i]), i); }
+				if (src[i] !== ':') { fail('":" expected after a property name (name omitted)', i); }
 				i++;
 				path.push(key);
 				const v = value(depth + 1);
@@ -304,6 +305,29 @@
 		if (s.length < 8) { return '•••• (' + s.length + ' characters)'; }
 		const keep = Math.min(4, Math.floor(s.length / 5));
 		return s.slice(0, keep) + '…•••• (' + s.length + ' characters)';
+	}
+	const REDACTION_NOTICE = 'Redaction is best effort. Unrecognized secrets may remain in names or excerpts; review results before sharing. Policy downloads are not redacted.';
+	// Suppression does not classify these values as secrets or add security findings.
+	function rememberOutputValues(servers, input, remember) {
+		for (const t of findTokens(input)) { remember(t.value, t.type); }
+		for (const s of servers) {
+			for (const t of findTokens(s.name)) { remember(t.value, t.type); }
+			for (const values of [s.env || {}, s.headers || {}]) {
+				for (const v of Object.values(values)) { if (typeof v === 'string' && v.length >= 4) { remember(v, 'literal value'); } }
+			}
+			(s.args || []).forEach((arg, i, args) => {
+				const eq = arg.indexOf('=');
+				if (/^--?/.test(arg) && eq > 0) { remember(arg.slice(eq + 1), 'argument value'); }
+				else if (i > 0 && /^--?/.test(args[i - 1]) && !['-y', '--yes', '--verbose', '--quiet', '--debug', '--help', '--version'].includes(args[i - 1]) && !/^--?/.test(arg)) { remember(arg, 'argument value'); }
+			});
+			if (s.url) {
+				try {
+					const u = new URL(s.url);
+					for (const v of u.searchParams.values()) { remember(v, 'URL value'); remember(encodeURIComponent(v), 'URL value'); }
+					if (u.hash) { remember(u.hash.slice(1), 'URL fragment'); }
+				} catch (e) { /* Invalid URLs are reported separately; never fetched. */ }
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------ paths
@@ -609,6 +633,7 @@
 			}
 			return tokens.length > 0;
 		}
+		rememberOutputValues(servers, input, rememberSecret);
 
 		const total = servers.length;
 		servers.forEach((s, idx) => {
@@ -620,10 +645,10 @@
 		});
 		analyzeCombinations(servers, ctx, emit, parsed);
 
-		// Redact every remembered secret from every string that leaves the engine.
+		// Best-effort output redaction; fixed rule/group/severity identifiers are not user input.
 		const secrets = [...ctx.secrets.keys()].sort((a, b) => b.length - a.length);
 		const redact = str => { let o = String(str); for (const sv of secrets) { if (o.includes(sv)) { o = o.split(sv).join(mask(sv)); } } return o; };
-		const findings = ctx.findings.map(f => Object.fromEntries(Object.entries(f).map(([k, v]) => [k, typeof v === 'string' ? redact(v) : v])));
+		const findings = ctx.findings.map(f => Object.fromEntries(Object.entries(f).map(([k, v]) => [k, typeof v === 'string' && !['rule', 'group', 'severity', 'serverId', 'title'].includes(k) ? redact(v) : v])));
 		findings.sort((a, b) => RANK[b.severity] - RANK[a.severity] || a.line - b.line);
 		const bySeverity = { high: 0, medium: 0, low: 0, info: 0 };
 		const byGroup = {};
@@ -634,7 +659,7 @@
 		return {
 			engine: VERSION, ruleset: RULESET_VERSION, mode: 'security', level,
 			counts: { documents: parsed.docs.length, servers: servers.filter(s => s.kind === 'config').length, toolLists: servers.filter(s => s.kind === 'tools').length, tools: servers.reduce((n, s) => n + s.tools.length, 0), findings: findings.length, bySeverity, byGroup },
-			servers: serverSummaries, findings, notes: notes.map(redact)
+			servers: serverSummaries, findings, notes: notes.map(redact).concat(REDACTION_NOTICE)
 		};
 	}
 
@@ -1210,12 +1235,12 @@
 		const p = parsed.docs[0].value;
 		if (!isObj(p)) { return { policy: null, errors: ['The policy must be a JSON object such as {"deniedCommands": ["sudo"]}.'], warnings }; }
 		const lineOf = k => { const m = parsed.meta.get(p); return m && m.keys.get(k) ? ' (line ' + m.keys.get(k) + ')' : ''; };
-		for (const d of parsed.duplicates) { errors.push('The setting "' + d.key + '" appears twice (lines ' + d.firstLine + ' and ' + d.line + ').'); }
+		for (const d of parsed.duplicates) { errors.push('A setting (name omitted) appears twice (lines ' + d.firstLine + ' and ' + d.line + ').'); }
 		const out = {};
 		for (const k of Object.keys(p)) {
 			const type = POLICY_KEYS[k];
 			if (k.startsWith('$') || k.startsWith('_')) { continue; }
-			if (!type) { const s = suggest(k); errors.push('Unknown setting "' + cap(k, 60) + '"' + lineOf(k) + '.' + (s ? ' Did you mean "' + s + '"?' : ' See the example policy for the supported settings.')); continue; }
+			if (!type) { const s = suggest(k); errors.push('Unknown setting (name omitted)' + lineOf(k) + '.' + (s ? ' Did you mean "' + s + '"?' : ' See the example policy for the supported settings.')); continue; }
 			const v = p[k];
 			if (type === 'list') {
 				if (!Array.isArray(v) || v.some(x => typeof x !== 'string')) { errors.push('"' + k + '"' + lineOf(k) + ' must be a list of text values, for example ' + JSON.stringify(EXAMPLE_POLICY[k] || ['value']).slice(0, 80) + '.'); continue; }
@@ -1223,7 +1248,7 @@
 				const bad = v.find(x => !x.trim() || x.length > 200);
 				if (bad !== undefined) { errors.push('"' + k + '"' + lineOf(k) + ' contains an empty or longer than 200 characters entry.'); continue; }
 				if ((k === 'allowedPaths' || k === 'deniedPaths') && v.some(x => x.includes('*'))) { errors.push('"' + k + '"' + lineOf(k) + ': wildcards are not supported in paths. List directories; every path inside them matches.'); continue; }
-				if (k === 'allowedTransports') { const badT = v.find(x => !/^(?:stdio|http|sse)$/i.test(x)); if (badT) { errors.push('"allowedTransports"' + lineOf(k) + ' accepts "stdio", "http" and "sse"; "' + cap(badT, 40) + '" is not one of them.'); continue; } }
+				if (k === 'allowedTransports') { const badT = v.find(x => !/^(?:stdio|http|sse)$/i.test(x)); if (badT) { errors.push('"allowedTransports"' + lineOf(k) + ' accepts "stdio", "http" and "sse"; an unsupported value was omitted.'); continue; } }
 				out[k] = v.map(x => x.trim());
 			} else if (type === 'boolean') {
 				if (typeof v !== 'boolean') { errors.push('"' + k + '"' + lineOf(k) + ' must be true or false (without quotes).'); continue; }
@@ -1261,7 +1286,7 @@
 		if (v.errors.length) { const e = new Error(v.errors.join('\n')); e.code = 'POLICY_INVALID'; e.errors = v.errors; e.warnings = v.warnings; throw e; }
 		const policy = v.policy;
 		const sec = analyze(text, {}, hooks);
-		// Re-parse to get raw structures (analysis returns only masked data).
+		// Re-parse raw structures; analysis returns summaries with best-effort redaction.
 		const parsed = parseDocuments(String(text));
 		const notes = [];
 		const { servers } = normalize(parsed, notes);
@@ -1270,6 +1295,11 @@
 		const noop = () => null;
 		const emitCollect = (rule, severity, s, sub, evidence) => { collected.push({ rule, s, sub, evidence }); return { rule, severity }; };
 		const remember = (val, type) => { if (String(val).length >= 4) { ctx.secrets.set(String(val), type); } };
+		rememberOutputValues(servers, text, remember);
+		for (const token of findTokens(policyText)) { remember(token.value, token.type); }
+		for (const value of Object.values(policy).flat()) {
+			if (typeof value === 'string') { for (const token of findTokens(value)) { remember(token.value, token.type); } }
+		}
 		const secretFinding = (s, sub, value) => { const tk = findTokens(value); for (const x of tk) { remember(x.value, x.type); collected.push({ rule: 'MCP-SEC-002', s, sub, evidence: x.type + ': ' + mask(x.value) }); } return tk.length > 0; };
 		for (const s of servers) { analyzeServer(s, ctx, emitCollect, secretFinding, remember); for (const t of s.tools) { analyzeTool(s, t, ctx, noop, () => false); } }
 		const violations = [];
@@ -1324,9 +1354,9 @@
 		}
 		const secrets = [...ctx.secrets.keys()].sort((a, b) => b.length - a.length);
 		const redact = str => { let o = String(str); for (const sv of secrets) { if (o.includes(sv)) { o = o.split(sv).join(mask(sv)); } } return o; };
-		const clean = violations.map(x => Object.fromEntries(Object.entries(x).map(([k, val]) => [k, typeof val === 'string' ? redact(val) : val])));
+		const clean = violations.map(x => Object.fromEntries(Object.entries(x).map(([k, val]) => [k, typeof val === 'string' && !['rule', 'serverId'].includes(k) ? redact(val) : val])));
 		const rules = Object.keys(policy).filter(k => k !== 'description');
-		return { engine: VERSION, ruleset: RULESET_VERSION, mode: 'policy', rulesChecked: rules, warnings: v.warnings, violations: clean, counts: { servers: sec.counts.servers, toolLists: sec.counts.toolLists, tools: sec.counts.tools, violations: clean.length, securityFindings: sec.counts.findings }, servers: sec.servers, notes: sec.notes };
+		return { engine: VERSION, ruleset: RULESET_VERSION, mode: 'policy', rulesChecked: rules, warnings: v.warnings.map(redact), violations: clean, counts: { servers: sec.counts.servers, toolLists: sec.counts.toolLists, tools: sec.counts.tools, violations: clean.length, securityFindings: sec.counts.findings }, servers: sec.servers, notes: sec.notes };
 	}
 
 	return { VERSION, RULESET_VERSION, MAX_INPUT_CHARS, MAX_POLICY_CHARS, RULES: R, GROUPS, EXAMPLE_POLICY, KNOWN_PACKAGES, parseDocuments, analyze, validatePolicy, checkPolicy, globMatch, classifyPath, normPath, mask, findTokens };
