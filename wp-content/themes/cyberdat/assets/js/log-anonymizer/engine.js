@@ -22,8 +22,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.2';
-	const RULESET_VERSION = '2026-11-11.2';
+	const VERSION = '1.0.3';
+	const RULESET_VERSION = '2026-11-14.1';
 	const CHUNK_CHARS = 1 << 20;
 	const MAX_KEY_BLOCK = 65536;
 	const MAX_CUSTOM_RULES = 20;
@@ -41,6 +41,8 @@
 		{ id: 'secret', name: 'Passwords and secrets (key=value, cookies, URL passwords)', prefix: 'SECRET' },
 		{ id: 'privateKey', name: 'Private key blocks', prefix: 'PRIVATE_KEY' },
 		{ id: 'username', name: 'Usernames', prefix: 'USER' },
+		{ id: 'personName', name: 'Names in explicit person/contact fields', prefix: 'PERSON' },
+		{ id: 'phone', name: 'Telephone numbers in explicit contact fields', prefix: 'PHONE' },
 		{ id: 'host', name: 'Hostnames and domains', prefix: 'HOST' },
 		{ id: 'card', name: 'Payment card numbers (Luhn-checked)', prefix: 'CARD' },
 		{ id: 'ssn', name: 'US Social Security numbers', prefix: 'SSN' },
@@ -198,6 +200,8 @@
 		if ((KEY_EXCLUDED_SUFFIX.test(k) || KEY_EXCLUDED_PREFIX.test(k) || /tokens$/.test(k)) && !/(?:sessionid|sessid)$/.test(k)) { return null; }
 		const namesSecret = SECRET_KEY_NOT_VALUE.test(k) && !/(?:sessionid|sessid)$/.test(k);
 		if ((SECRET_KEY.test(k) && !namesSecret) || SECRET_KEY_EXACT.test(k)) { return 'secret'; }
+		if (/^(?:personname|fullname|contactname|customername|displayname)$/.test(k)) { return 'personName'; }
+		if (/^(?:(?:contact|customer|mobile|home|work)?(?:phone|telephone)(?:number)?|mobilenumber|tel)$/.test(k)) { return 'phone'; }
 		if (USER_KEY.test(k)) { return 'username'; }
 		if (HOST_KEY.test(k)) { return 'host'; }
 		return null;
@@ -499,6 +503,20 @@
 		if (!trimmed || isPlaceholder(trimmed)) { return; }
 		// sudo/env "PWD=/home/alice" is the working directory, not a password.
 		if (category === 'secret' && /^pwd$/i.test(key.replace(/[^A-Za-z]/g, '')) && /^(?:\/|~|[A-Za-z]:[\\\/])/.test(trimmed)) { return; }
+		if (category === 'personName') {
+			// Deliberately contextual: no inference of personal names from arbitrary prose.
+			if (trimmed.length <= 128 && /^[\p{L}\p{M}][\p{L}\p{M} .’'\-]{0,127}$/u.test(trimmed)) {
+				emit(start, start + trimmed.length, 'personName', 'PERSON', trimmed, trimmed);
+			}
+			return;
+		}
+		if (category === 'phone') {
+			const digits = trimmed.replace(/\D/g, '');
+			if (digits.length >= 7 && digits.length <= 15 && /^\+?[0-9(][0-9 () .\-]{5,48}$/.test(trimmed)) {
+				emit(start, start + trimmed.length, 'phone', 'PHONE', trimmed, digits);
+			}
+			return;
+		}
 		if (category === 'host') {
 			emitHostValue(emit, start, trimmed);
 			return;
@@ -510,6 +528,55 @@
 			emit(start, start + trimmed.length, 'secret', 'SECRET', trimmed, trimmed);
 		} else if (trimmed.length <= 128) {
 			emit(start, start + trimmed.length, 'username', 'USER', trimmed, trimmed);
+		}
+	}
+
+	/** Explicit contact fields with space-separated values; stop at the next field. */
+	function detectContacts(text, emit) {
+		const re = /(?<![A-Za-z0-9_.-])(["']?)((?:person|full|contact|customer|display)[_.-]?name|(?:(?:contact|customer|mobile|home|work)[_.-]?)?(?:phone|telephone)(?:[_.-]?number)?|mobile[_.-]?number|tel)\1[ \t]{0,8}[:=][ \t]{0,8}(?:"([^"\r\n]{1,160})"|'([^'\r\n]{1,160})'|([^\r\n,;]{1,160}?)(?=[ \t]+[A-Za-z_][A-Za-z0-9_.-]{0,63}[ \t]{0,8}[:=]|[\r\n,;]|$))/gmdi;
+		let m;
+		while ((m = re.exec(text)) !== null) {
+			const group = m[3] != null ? 3 : m[4] != null ? 4 : 5;
+			emitClassified(emit, m[2], m[group], m.indices[group][0]);
+		}
+	}
+
+	/** CEF custom string labels belong to their event and slot, not the next line. */
+	function detectCef(text, emit) {
+		const lines = /^.*CEF:\d{1,3}\|[^\r\n]*$/gm;
+		let line;
+		while ((line = lines.exec(text)) !== null) {
+			const cefStart = line[0].indexOf('CEF:');
+			let pipes = 0, start = -1;
+			for (let i = cefStart; i < line[0].length; i++) {
+				if (line[0][i] === '\\') { i++; continue; }
+				if (line[0][i] === '|' && ++pipes === 7) { start = i + 1; break; }
+			}
+			if (start < 0) { continue; }
+			const extension = line[0].slice(start), fields = [], keys = /(?:^|[ \t])([A-Za-z][A-Za-z0-9_]{0,63})=/g;
+			let m;
+			while ((m = keys.exec(extension)) !== null) {
+				// A backslash-escaped space is part of the preceding value.
+				let slashes = 0, at = m.index - 1;
+				while (at >= 0 && extension[at--] === '\\') { slashes++; }
+				if (slashes % 2) { continue; }
+				fields.push({ key: m[1], head: m.index, start: keys.lastIndex });
+			}
+			const sensitive = new Set();
+			for (let i = 0; i < fields.length; i++) {
+				const f = fields[i];
+				f.value = extension.slice(f.start, i + 1 < fields.length ? fields[i + 1].head : extension.length).trimEnd();
+				if (/^cs[1-6]Label$/i.test(f.key) && f.value.length <= 256) {
+					const label = f.value.replace(/\\([\\=|])/g, '$1').replace(/[^A-Za-z0-9]/g, '');
+					if (classifyKey(label) === 'secret' || /^(?:authorization|bearer|authentication)$/i.test(label)) { sensitive.add(f.key.slice(0, 3).toLowerCase()); }
+				}
+			}
+			for (const f of fields) {
+				if (sensitive.has(f.key.toLowerCase()) && f.value && !isPlaceholder(f.value)) {
+					const at = line.index + start + f.start;
+					emit(at, at + f.value.length, 'secret', 'SECRET', f.value, f.value);
+				}
+			}
 		}
 	}
 
@@ -796,6 +863,8 @@
 			['*', detectUrls],
 			['secret', detectCookies],
 			['*', detectKeyValues],
+			['*', detectContacts],
+			['secret', detectCef],
 			['*', detectCsv],
 			['card', (t, e) => detectSimple(RE.card, t, e, 'card', 'CARD', v => cardValid(v), v => v.replace(/\D/g, ''))],
 			['ssn', (t, e) => detectSimple(RE.ssn, t, e, 'ssn', 'SSN')],

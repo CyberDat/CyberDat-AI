@@ -7,7 +7,13 @@ const root=path.resolve(__dirname,'../wp-content/themes/cyberdat/assets/js');
 const la=require(root+'/log-anonymizer/engine.js'),pi=require(root+'/prompt-injection-detector/engine.js');
 let passed=0;const times=[];
 function check(name,fn){fn();passed++;console.log('PASS: '+name);}
-function digestResults(engine,method,items){const h=crypto.createHash('sha256');for(const s of items){const r=engine[method](s);delete r.engine;h.update(JSON.stringify(r)+'\n');}return h.digest('hex');}
+function digestResults(engine,method,items){const h=crypto.createHash('sha256');for(const s of items){const r=engine[method](s);delete r.engine;
+// Preserve the original frozen behavior hashes. Only new zero-valued category
+// schema fields and the declared ruleset release label are projected away;
+// output/findings/offsets/maps/counts/preview/sanitization remain byte-compared.
+if(method==='anonymize')for(const k of ['personName','phone']){assert.deepEqual(r.stats[k],{replacements:0,unique:0});delete r.stats[k];}
+if(method==='analyze'){assert.equal(r.ruleset,'2026-11-14.1');r.ruleset='2026-11-11.1';}
+h.update(JSON.stringify(r)+'\n');}return h.digest('hex');}
 const v=vectors();
 check('4006 log cases preserve the frozen pre-stabilization output, map, counts, warnings and preview',()=>{assert.equal(v.la.length,frozen.contracts.la.cases);assert.equal(digestResults(la,'anonymize',v.la),frozen.contracts.la.sha256);});
 check('245 Unicode/injection cases preserve findings, severity, offsets, counts, normalization and sanitized text',()=>{assert.equal(v.pi.length,frozen.contracts.pi.cases);assert.equal(digestResults(pi,'analyze',v.pi),frozen.contracts.pi.sha256);});

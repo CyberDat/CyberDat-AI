@@ -77,6 +77,7 @@
 	const state = {
 		source: { kind: 'text' },
 		fileName: '',
+		fileLoadId: 0,
 		worker: null,
 		jobId: 0,
 		running: false,
@@ -156,6 +157,7 @@
 	// ---------------------------------------------------------------- input
 
 	function setTextSource(note) {
+		state.fileLoadId++; // An edit/clear invalidates an outstanding small-file preview read.
 		state.source = { kind: 'text' };
 		el.source.textContent = note || '';
 	}
@@ -177,12 +179,17 @@
 			el.file.value = '';
 			return;
 		}
+		const loadId = ++state.fileLoadId;
 		state.fileName = file.name;
 		markStale();
+		state.source = { kind: 'file', file };
 		if (file.size <= INLINE_FILE_BYTES) {
 			file.text().then(text => {
+				if (loadId !== state.fileLoadId) { return; }
 				el.input.value = text;
-				setTextSource('Loaded “' + file.name + '” (' + formatBytes(file.size) + '). You can edit it before anonymizing.' + webkitNote(file.size));
+				// Preview textareas normalize CRLF. Process the original File until a real edit.
+				state.source = { kind: 'file', file };
+				el.source.textContent = ('Loaded “' + file.name + '” (' + formatBytes(file.size) + '). You can edit it before anonymizing.' + webkitNote(file.size));
 			}, () => showError('The file could not be read. Make sure it is a plain-text file.'));
 			return;
 		}

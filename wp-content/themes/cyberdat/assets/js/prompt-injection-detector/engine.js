@@ -30,8 +30,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.1';
-	const RULESET_VERSION = '2026-11-11.1';
+	const VERSION = '1.0.2';
+	const RULESET_VERSION = '2026-11-14.1';
 	const MAX_INPUT_CHARS = 20 * 1024 * 1024;
 	const MAX_FINDINGS = 2000;
 	const MAX_PER_RULE = 300;
@@ -260,7 +260,7 @@
 
 	const QUOTE_PAIRS = { '"': '"', '“': '”', '„': '“”', '«': '»', '‘': '’', '\'': '\'', '`': '`', '»': '«', '”': '”' };
 	const EXAMPLE_BEFORE_RE = /(?:e\.g\.|i\.e\.|for example|for instance|such as|like|phrases?|strings?|called|known as|zum Beispiel|z\.\s?B\.|beispielsweise|etwa|например|такие как|вроде|типа|наподобие)\s{0,3}[:,]?\s{0,3}["“„«‘'`]?\s{0,2}$/iu;
-	const NEGATION_BEFORE_RE = /(?:never|not|n't|don't|do not|must not|should not|avoid(?:ing)?|nicht|nie(?:mals)?|kein\p{L}*|не|никогда|нельзя)\s{1,3}(?:\p{L}+\s{1,3}){0,3}$/iu;
+	const NEGATION_BEFORE_RE = /(?:never|not|n't|don't|do not|must not|should not|avoid(?:ing)?|nicht|nie(?:mals)?|kein\p{L}*|не|никогда|нельзя|nunca|no)\s{1,3}(?:\p{L}+\s{1,3}){0,3}$/iu;
 
 	function lineBounds(text, start, end) {
 		const ls = text.lastIndexOf('\n', start - 1) + 1;
@@ -463,8 +463,57 @@
 			explain: 'Asks the model to decode, decrypt or reverse a string and then act on it. Encoding is used to get instructions past filters and human reviewers.',
 			re: rx(String.raw`${L}(?:decode|base64[- ]?decode|decipher|decrypt|unscramble|reverse|rot-?13|deobfuscate|dekodiere|entschlüssele|декодируй|расшифруй|переверни)(?:те)?${R}[^\n]{0,60}?${L}(?:and|then|und|dann|и|затем|потом)\s{1,3}(?:follow|execute|run|obey|do|perform|carry\s{1,3}out|act\s{1,3}on|apply|befolge|führe|выполни|следуй|сделай)${R}`) }
 	];
+	/** Additive bounded lexical families; original 33 text signatures remain intact. */
+	const TEXT_EXTENSIONS = [
+		{ id: 'PI-EXF-010', group: 'exfiltration', severity: 'high', sanitize: 'sentence', mention: true, negation: true,
+			title: 'Read a sensitive local file and transmit its contents',
+			explain: 'Combines a file-read directive, a credential or secret context and an outbound transfer in the same bounded clause. This catches an indirect instruction even when the destination precedes HTTP POST.',
+			re: rx(String.raw`\b(?:read|open|load|fetch)\b[^\n!?;]{0,768}`),
+			check(m) {
+				// Linear bounded checks avoid four adjacent wildcard gaps on near-misses.
+				const value = m[0], sensitive = /credentials?|secrets?|private[ _-]?keys?|\.env\b/i.exec(value.slice(0, 200));
+				if (!sensitive) { return null; }
+				const after = sensitive.index + sensitive[0].length;
+				const transfer = /\b(?:and|then)\s{1,3}(?:send|post|upload|transmit|forward|submit)\b/i.exec(value.slice(after, after + 200));
+				if (!transfer) { return null; }
+				const bodyAt = after + transfer.index + transfer[0].length;
+				const body = /\b(?:contents?|data|bytes|it)\b/i.exec(value.slice(bodyAt, bodyAt + 200));
+				if (!body) { return null; }
+				const destinationAt = bodyAt + body.index + body[0].length;
+				const destination = /https?:\/\/|\b(?:external\s{1,3})?(?:endpoint|webhook|server)\b/i.exec(value.slice(destinationAt, destinationAt + 200));
+				if (!destination) { return null; }
+				m[0] = value.slice(0, destinationAt + destination.index + destination[0].length);
+				return 'high';
+			} },
+		{ id: 'PI-OVR-040', group: 'override', severity: 'high', sanitize: 'sentence', mention: true, negation: true,
+			title: 'Untrusted text claims to replace governing instructions',
+			explain: 'A document or section claims current authority over the model or replaces its directives. Bounded lexical patterns detect these claims; they do not establish semantic understanding of every paraphrase.',
+			re: rx(String.raw`\b(?:this|the\s{1,3}(?:present|current))\s{1,3}(?:appendix|attachment|section|document|message|note)\s{1,3}(?:(?:is|becomes?)\s{1,3}(?:now\s{1,3})?(?:the|your)\s{1,3}(?:governing|controlling|overriding)\s{1,3}(?:policy|instructions?|directives?)|(?:now\s{1,3})?(?:replaces?|supersedes?|overrides?)\s{1,3}(?:your|all|the)\s{1,3}(?:(?:prior|earlier|previous|existing|system)\s{1,3})?(?:instructions?|directives?|rules?|policy))\b|\btreat\s{1,3}this\s{1,3}(?:section|document|message|appendix)\s{1,3}as\s{1,3}(?:the|your)\s{1,3}(?:controlling|governing|overriding)\s{1,3}(?:instructions?|policy)\b`) },
+		{ id: 'PI-EXT-004', group: 'extraction', severity: 'high', sanitize: 'sentence', mention: true, negation: true,
+			title: 'Request to reproduce confidential startup directions',
+			explain: 'Lexical variants of extracting hidden startup instructions, including transcribe, reproduce and boot directions. Ordinary requests to reproduce public setup guides are outside this pattern.',
+			re: rx(String.raw`\b(?:reproduce|transcribe|recite|restate|render|copy|repeat|print|display)\s{1,3}(?:(?:your|the)\s{1,3})?(?:confidential|hidden|internal|secret|private)\s{1,3}(?:startup|boot|initial|system)\s{1,3}(?:directions?|instructions?|directives?|prompt)\b`) },
+		{ id: 'PI-OVR-031', group: 'override', severity: 'high', sanitize: 'sentence', mention: true,
+			title: 'Spanish instruction override variants',
+			explain: 'Spanish imperative variants tell the reader to disregard previous instructions. The instruction-object requirement avoids treating unrelated changes to report figures as prompt override.',
+			re: rx(String.raw`${L}(?:no\s{1,3}(?:tengas?|tengan?)\s{1,3}en\s{1,3}cuenta|ignor(?:a|e|en|ad)|olvid(?:a|e|en|ad))\s{1,3}(?:todas?\s{1,3})?(?:las|los|tus|sus)\s{1,3}(?:instrucciones|indicaciones|reglas|directivas)\s{1,3}(?:anteriores|previas|iniciales|del\s{1,3}sistema)${R}`) },
+		{ id: 'PI-EXT-030', group: 'extraction', severity: 'high', sanitize: 'sentence', mention: true, negation: true,
+			title: 'Spanish request for internal instructions',
+			explain: 'Spanish requests to show internal, secret or system instructions are extraction signals. Quoted examples are downgraded and directly negated defensive guidance is skipped.',
+			re: rx(String.raw`${L}(?:muestra|muestre|muestren|revela|revele|revelen|enumera|enumere|repite|repita|imprime|imprima)\s{1,3}(?:íntegramente\s{1,3}|completamente\s{1,3})?(?:(?:tus|sus|las)\s{1,3})?(?:instrucciones|reglas|directivas)\s{1,3}(?:internas|secretas|ocultas|del\s{1,3}sistema)${R}`) },
+		{ id: 'PI-OVR-022', group: 'override', severity: 'high', sanitize: 'sentence', mention: true,
+			title: 'Russian invalidation of prior instructions',
+			explain: 'Explicitly invalidates prior instructions or the rules above in the current prompt. The bounded instruction context avoids treating arbitrary statements about changed real-world rules as an override.',
+			re: rx(String.raw`${L}(?:(?:правила\s{1,3}выше|(?:все\s{1,3})?(?:прежние|предыдущие|исходные)\s{1,3}(?:указания|инструкции|директивы))\s{1,3}(?:теперь\s{1,3})?(?:больше\s{1,3}не\s{1,3}действуют|недействительны))${R}`) },
+		{ id: 'PI-EXT-021', group: 'extraction', severity: 'high', sanitize: 'sentence', mention: true, negation: true,
+			title: 'Russian request for hidden or internal instructions',
+			explain: 'A direct Russian imperative to disclose explicitly hidden or internal instructions is a strong extraction signal even without a possessive pronoun. General requests for public instructions remain outside this pattern.',
+			re: rx(String.raw`${L}(?:покажи|раскрой|выведи|перечисли|воспроизведи|напиши|повтори)(?:те)?\s{1,3}(?:(?:свои|твои|ваши|мне|все)\s{1,3})?(?:скрытые|внутренние|секретные|конфиденциальные)\s{1,3}(?:инструкции|указания|директивы|правила)${R}`) }
+	];
+	const ACTIVE_TEXT_RULES = TEXT_RULES.concat(TEXT_EXTENSIONS);
+
 	const RULES_BY_ID = {};
-	for (const rule of TEXT_RULES) { RULES_BY_ID[rule.id] = rule; }
+	for (const rule of ACTIVE_TEXT_RULES) { RULES_BY_ID[rule.id] = rule; }
 
 	/** Rules evaluated by dedicated detectors (metadata for explanations and the rule list). */
 	const DETECTOR_RULES = [
@@ -482,11 +531,11 @@
 		{ id: 'PI-OBF-004', group: 'obfuscation', severity: 'high', sanitize: 'none', title: 'Injection phrase disguised with special characters', explain: 'An injection phrase was only recognized after removing invisible characters or normalizing styled, fullwidth or compatibility letters (Unicode NFKC).' }
 	];
 	for (const rule of DETECTOR_RULES) { RULES_BY_ID[rule.id] = rule; }
-	const ALL_RULES = TEXT_RULES.concat(DETECTOR_RULES);
+	const ALL_RULES = ACTIVE_TEXT_RULES.concat(DETECTOR_RULES);
 
 	/** Apply all text rules to a string. Returns raw hits with offsets relative to text. */
 	function scanText(text, base, hits, rules) {
-		for (const rule of rules || TEXT_RULES) {
+		for (const rule of rules || ACTIVE_TEXT_RULES) {
 			const re = rule.re;
 			re.lastIndex = 0;
 			let m;
@@ -500,6 +549,9 @@
 				}
 				const start = m.index;
 				const end = start + m[0].length;
+				// A narrow negated meta-address is evidence, not a directive. Do not
+				// suppress other matches later in the sentence/document.
+				if (rule.id === 'PI-OVR-006' && /\b(?:not|never)\s{1,3}(?:an?\s{1,3})?$/i.test(text.slice(Math.max(0, start - 24), start))) { continue; }
 				if (rule.negation && isNegated(text, start)) { continue; }
 				let mentioned = false;
 				if (rule.mention && isMention(text, start, end)) { mentioned = true; severity = 'low'; }
@@ -1344,6 +1396,6 @@
 		RULES: ALL_RULES.map(r => ({ id: r.id, group: r.group, severity: r.severity, title: r.title, explanation: r.explain })),
 		defaultOptions,
 		analyze,
-		_internal: { normalize, scanInvisible, scanText, findEncoded, deobfuscateLine, isMention, isNegated, visible, sentenceBounds, TEXT_RULES, decodeBase64, readable }
+		_internal: { normalize, scanInvisible, scanText, findEncoded, deobfuscateLine, isMention, isNegated, visible, sentenceBounds, TEXT_RULES, TEXT_EXTENSIONS, decodeBase64, readable }
 	};
 }));
