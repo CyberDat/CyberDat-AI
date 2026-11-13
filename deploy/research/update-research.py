@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+# CYBERDAT_TOOLS_RELEASE_1_LEGACY_INTERLOCK
+from pathlib import Path as _ToolsLegacyPath
+if (_ToolsLegacyPath('/var/www/cyberdat-staging/public/wp-content/themes/cyberdat') / 'inc/tool-security.php').exists():
+ raise SystemExit('BLOCKED: Tools Release 1 installed; legacy theme/SQL deploy or rollback requires a compatible package; do not bypass this interlock')
+import os as _tools_os, stat as _tools_stat, fcntl as _tools_fcntl
+_tools_release_fd = _tools_os.open('/run/lock/cyberdat-staging-tools-release-1.lock', _tools_os.O_RDWR | _tools_os.O_CREAT | _tools_os.O_NOFOLLOW, 0o600)
+_tools_lock_stat = _tools_os.fstat(_tools_release_fd)
+if not (_tools_stat.S_ISREG(_tools_lock_stat.st_mode) and _tools_lock_stat.st_uid == 0 and _tools_stat.S_IMODE(_tools_lock_stat.st_mode) == 0o600):
+ raise SystemExit('BLOCKED: unsafe Tools release lock')
+try:
+ _tools_fcntl.flock(_tools_release_fd, _tools_fcntl.LOCK_EX | _tools_fcntl.LOCK_NB)
+except BlockingIOError:
+ raise SystemExit('BLOCKED: Tools deployment or another legacy deployment is running')
+if (_ToolsLegacyPath('/var/www/cyberdat-staging/public/wp-content/themes/cyberdat') / 'inc/tool-security.php').exists():
+ raise SystemExit('BLOCKED: Tools installed while waiting for release lock')
 """Owner-run staging-only update. No original staging installer, DNS/TLS or production writes."""
 import argparse,base64,datetime,fcntl,getpass,hashlib,http.cookiejar,json,os,pathlib,pwd,shutil,subprocess,sys,tarfile,urllib.error,urllib.parse,urllib.request
 P=pathlib.Path;B=P(__file__).resolve().parent

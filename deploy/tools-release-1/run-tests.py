@@ -39,7 +39,9 @@ if __name__ == '__main__':
               'skipped': len(result.skipped), 'php_lint': php,
               'archive_sha256': hashlib.sha256((a.package / 'theme.tar.gz').read_bytes()).hexdigest(),
               'staging_deployment': False, 'wordpress_bootstrap': False, 'sql_execution': False,
-              'unverified': ['live FPM/OPcache and renderer HTTP', 'real WordPress selective SQL restore', 'legacy interlocks adoption', 'browser acceptance']}
+              'unverified': ['live FPM/OPcache and renderer HTTP', 'real WordPress selective SQL restore', 'browser acceptance']}
+    if json.loads((HERE / 'legacy-entrypoints.json').read_text()).get('status') != 'APPLIED_APPROVED_SCOPE':
+        report['unverified'].append('legacy interlocks adoption')
     report['pass'] = result.wasSuccessful() and not result.skipped and all(x['exit'] == 0 for x in php)
     (a.output / 'tests.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report))

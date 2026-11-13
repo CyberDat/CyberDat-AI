@@ -1,0 +1,22 @@
+{
+  "utc": "2026-11-13T16:46:56.081532+00:00",
+  "owners_modes_preserved": true,
+  "all22_after_sha256_match": true,
+  "release_lock_root0600": true,
+  "backup_root0700": true,
+  "dispatch": [
+    "Result=success",
+    "ExecMainStartTimestamp=Fri 2026-11-13 17:45:04 CET",
+    "ExecMainExitTimestamp=Fri 2026-11-13 17:45:07 CET",
+    "ExecMainStatus=0",
+    "ActiveState=inactive"
+  ],
+  "timers": {
+    "kev": "active",
+    "nvd": "active",
+    "cisa-advisories": "active",
+    "cert-eu": "active",
+    "msrc": "active",
+    "dispatch": "active"
+  }
+}

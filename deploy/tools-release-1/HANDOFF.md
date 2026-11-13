@@ -39,10 +39,10 @@ Latest46-test run adds release-lock concurrency/symlink protection and passed wi
 
 ## Future authorized deployment order
 
-1. Resolve DECISIONS. Adopt prepared legacy-interlocks.patch through a separate
-   owner-approved maintenance step. Cover repository entry points AND every
-   prepared copy in legacy-entrypoints.json. Patch is NOT applied today. Do not
-   change Research plugin/collectors/timers or rewrite original acceptance.
+1. Resolve DECISIONS. D15 is now adopted in the exact11 repository entry points
+   AND11 prepared copies in legacy-entrypoints.json. Do not reapply the patch or
+   overwrite these scripts with older copies. Backup and proofs: d15-acceptance.json.
+   Do not change Research plugin/collectors/timers or rewrite original acceptance.
 2. Recheck exact staging identity, base95, protected43 code/unit hashes and no
    concurrent deployment. Continuing Research SQL changes are expected.
 3. Deliver payload/package/checksums privately. Seal controls beneath
@@ -58,7 +58,8 @@ Latest46-test run adds release-lock concurrency/symlink protection and passed wi
    everything. LotL static JS/data is served with the theme: D6/D7 precede install.
 5. Run deploy-theme.py preflight with --package pointing to package.json. It uses
    READ ONLY SQL identity queries, InnoDB checks, full hashes and interlocks;
-   no WordPress bootstrap. It currently must refuse unpatched legacy entry points.
+   no WordPress bootstrap. After D15 this read-only preflight actually passed.
+   Any later entry-point drift must still refuse; do not bypass the guard.
 6. Separately authorized install creates private backup
    /var/backups/cyberdat-staging/tools-release-1-<UTC>/ before switching: theme
    archive/SHA256 and exact private page/meta/revision snapshots. No full SQL
@@ -112,3 +113,23 @@ Preparation tests PASS; next live deployment remains PARTIAL/blocked pending
 authorization and decisions. No staging backup/install created today. Real WordPress
 selective SQL restore, FPM/OPcache/renderer HTTP and browser acceptance are UNVERIFIED.
 Historical Tools engine/browser evidence is not new staging acceptance. Stop here.
+
+## D15 adoption (supersedes preparation-only interlock status)
+
+Owner-approved maintenance completed2026-11-13T16:41:51Z. Original22 scripts were
+backed up before changes to /var/backups/cyberdat-staging/tools-d15-20261113T164151Z;
+backup checksums verified. Only the exact pre-execution prefix was added; original
+bodies, owners and modes are preserved. A root0600 release lock coordinates future
+deployment procedures and is not a Research ingestion/scheduler lock.
+
+No legacy deployment/rollback was executed. Tests execute only extracted guard AST
+with sandbox theme/lock paths and an inert body sentinel. Static checker/new package
+preflight are the supported read-only paths. Old --verify commands may mutate
+scheduler/cache/fixture state, so were not run or exempted. Active Research uses
+run.sh to PHP WP-CLI and does not load the changed Python scripts; its support.py
+copy is outside this scope and unchanged. Historical snapshots outside the11+11
+manifest remain unguarded (d15-residual-paths.json); do not execute or restore them.
+
+The statement above about no staging backup applies to the earlier theme preparation;
+D15 now has its own scripts-only backup. Theme installation backup still does not
+exist. D1 remains forbidden; D5 and D6/D7 remain unresolved. See D15-REPORT.md.

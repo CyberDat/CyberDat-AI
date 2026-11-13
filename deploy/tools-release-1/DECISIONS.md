@@ -19,12 +19,22 @@ authorize installation; unrelated Research/Content approvals do not apply here.
 | D12 | Main merge not requested or performed | Not required for staging |
 | D13 | Existing test-secret alerts unchanged | Not a deployment blocker |
 | D14 | Independent5–10 samples/tool evaluation pending | Product acceptance PASS |
-| D15 | NEW: authorize adoption of prepared interlocks in all known legacy deploy entry points. Patch NOT applied to Research scripts or installed copies | Installer fails closed until adoption |
+| D15 | AUTHORIZED AND APPLIED: 11 repository entry points and their 11 manifest-listed prepared copies protected,2026-11-13T16:41:51Z; backup tools-d15-20261113T164151Z | Closed for this exact scope; no scope expansion |
 
 Before future install: valid root-owned controls/authorization, fresh backup and
 live preflight. Arbitrary root execution outside controlled entry points cannot
 be prevented by a userspace interlock. Old Research rollback hash guards remain
 unchanged and will refuse Tools drift; future Research rollback needs review.
+
+The22 historical source copies listed in d15-residual-paths.json were inspected
+but NOT modified: they are outside the approved manifest. Do not invoke them with
+sudo or restore them over guarded entry points. Collectors do not reference these
+Python entry points. Old legacy --verify modes are not an approved read-only route:
+some perform cache/fixture/scheduler operations. Use the new read-only preflight
+or static legacy_guard.py checker. Neither executes old code.
+
+D1 remains NOT approved. D6/D7 remain unresolved; D5's MCP promise of complete
+secret concealment is not accepted or fixed by D15. These are not waived for release.
 
 D8 changes or D6 optionB require a new artifact/hash/tests. Never modify approved
 bytes while keeping old hashes. Real WP selective restore/HTTP/browser acceptance

@@ -1,5 +1,17 @@
 # Tools Release 1 — Safe Deployment Preparation
 
+**Current D15 result: PASS for the approved11+11 scope.** Applied2026-11-13T16:41:51Z
+after verified private backup of22 deployment scripts. No Tools theme installation,
+legacy execution, WordPress bootstrap, SQL write or timer change. Theme95 and
+protected43 hashes preserved; counts/checkpoints/backoff identical across maintenance.
+New read-only installer preflight passed after adoption. Details/tests/backup and
+remaining out-of-scope paths: [D15-REPORT.md](D15-REPORT.md),
+[machine proof](d15-acceptance.json). D1 remains NOT authorized; D5/D6/D7 remain open.
+
+The preparation snapshot below describes commit731c9cd before D15. Its references
+to interlocks not yet applied and no staging backup are historical, superseded by
+this D15 result. Installed Research/Content plugin trees still match0ef03e9.
+
 Verdict: **PARTIAL for the next staging deployment**. Authorized preparation is
 complete; installation is neither authorized nor performed. No staging/production
 write, WordPress bootstrap, live SQL operation, sync or publication was run.

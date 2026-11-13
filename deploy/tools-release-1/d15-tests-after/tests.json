@@ -1,0 +1,10 @@
+{
+  "tests": 10,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "pass": true,
+  "scope": "interlock AST only; 22 candidates; no legacy body executed; temporary sandbox lock/theme paths",
+  "real_legacy_executed": false,
+  "wp_or_sql_executed": false
+}

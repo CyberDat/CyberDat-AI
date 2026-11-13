@@ -1,0 +1,116 @@
+{
+  "scope_not_expanded": true,
+  "unprotected_historical_sources": [
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/update-research.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/resume-research.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/finish-research.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/check-dashboard.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/deploy-dashboard.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/deploy-charts.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/research/deploy-threat-2.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/home-pulse/deploy-pulse.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/analytics-2.1/deploy-analytics.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/staging/update-tools-ui.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.3-work/deploy/staging/update-seo-0.7.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/update-research.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/resume-research.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/finish-research.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/check-dashboard.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/deploy-dashboard.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/deploy-charts.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/research/deploy-threat-2.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/home-pulse/deploy-pulse.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/analytics-2.1/deploy-analytics.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/staging/update-tools-ui.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    },
+    {
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-work/deploy/staging/update-seo-0.7.py",
+      "kind": "historical_source_snapshot_not_approved_entrypoint",
+      "modified": false
+    }
+  ],
+  "root_bypass": "Arbitrary root commands and restoration of old copies are outside entry-point protection."
+}

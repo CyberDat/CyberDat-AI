@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "backup": "/var/backups/cyberdat-staging/tools-d15-20261113T164151Z",
+  "backup_checksums_verified": true,
+  "completed_utc": "2026-11-13T16:41:51.587820+00:00",
+  "entrypoints": 11,
+  "prepared_copies": 11,
+  "theme95_unchanged": true,
+  "protected43_unchanged": true,
+  "six_timers_active": true,
+  "sql_read_only_before_equals_after": true,
+  "before_counts": {
+    "content_jobs": 1,
+    "content_versions": 1,
+    "nvd": 7567,
+    "posts": 61,
+    "queue": 10682
+  },
+  "after_counts": {
+    "content_jobs": 1,
+    "content_versions": 1,
+    "nvd": 7567,
+    "posts": 61,
+    "queue": 10682
+  },
+  "source_state_read_only": [
+    {
+      "checkpoint": 1794324106,
+      "key": "discovery_checkpoint:crossref",
+      "last_error": null,
+      "last_scheduled_success": null,
+      "last_success": null,
+      "next_due": null
+    },
+    {
+      "checkpoint": null,
+      "key": "health:crossref",
+      "last_error": "academic_window_capacity",
+      "last_scheduled_success": 1794536712,
+      "last_success": 1794536712,
+      "next_due": 1794618318
+    },
+    {
+      "checkpoint": null,
+      "key": "health:nvd",
+      "last_error": "nvd_dense_slice",
+      "last_scheduled_success": 1794511813,
+      "last_success": 1794511813,
+      "next_due": 1794596958
+    },
+    {
+      "checkpoint": 1794425717,
+      "key": "nvd_checkpoint",
+      "last_error": null,
+      "last_scheduled_success": null,
+      "last_success": null,
+      "next_due": null
+    }
+  ],
+  "sql_write": false,
+  "wordpress_bootstrap": false,
+  "legacy_execution": false,
+  "production_access": false,
+  "patched": [
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/update-research.py",
+    "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/update-research.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/resume-research.py",
+    "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/resume-research.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/finish-research.py",
+    "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/finish-research.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/check-dashboard.py",
+    "/home/cyberdat/cyberdat-deploy/dashboard-proof-prepared/check-dashboard.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/deploy-dashboard.py",
+    "/home/cyberdat/cyberdat-deploy/dashboard-1.0-prepared/deploy-dashboard.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/deploy-charts.py",
+    "/home/cyberdat/cyberdat-deploy/dashboard-1.1-prepared/deploy-charts.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/deploy-threat-2.py",
+    "/home/cyberdat/cyberdat-deploy/threat-2.0-prepared/deploy-threat-2.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/home-pulse/deploy-pulse.py",
+    "/home/cyberdat/cyberdat-deploy/home-pulse-2.0-prepared/deploy-pulse.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/analytics-2.1/deploy-analytics.py",
+    "/home/cyberdat/cyberdat-deploy/analytics-2.1-prepared/deploy-analytics.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/staging/update-tools-ui.py",
+    "/home/cyberdat/cyberdat-deploy/tools-ui-prepared/update-tools-ui.py",
+    "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/staging/update-seo-0.7.py",
+    "/home/cyberdat/cyberdat-deploy/seo-0.7-prepared/update-seo-0.7.py"
+  ]
+}

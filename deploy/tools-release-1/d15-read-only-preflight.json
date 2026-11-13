@@ -1,0 +1,7 @@
+{
+  "maintenance_preflight_before_apply": {"exit": 0, "entrypoints": 11, "files": 22, "writes": false},
+  "tools_installer_preflight_after_apply": {"exit": 0, "message": "PASS: read-only staging identity, pinned Research, full base theme and legacy interlocks"},
+  "wordpress_bootstrap": false,
+  "sql_write": false,
+  "legacy_execution": false
+}

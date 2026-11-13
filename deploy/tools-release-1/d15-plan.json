@@ -1,0 +1,205 @@
+{
+  "base_commit": "731c9cd1557c828520abce059eeced36f65d3141",
+  "guard_sha256": "9e50b8b5f4166a3827616cd34554b161e9dc67347e21a4b2cbe4193612095f0a",
+  "guard_module_sha256": "a4a620702178cf418bb9cf0922157b00a182dc484b4f4c9c9146c96f2d809d8d",
+  "targets": [
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/update-research.py",
+      "before": "da2c990c32c9645170d1b32c8378260a87b776371320fe1ee70b4a691d7c6236",
+      "after": "626ca741dd71fc1d6a0a2be59cc4929ee82add1cba59f9fa08269171918e1a37",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/update-research.py",
+      "before": "da2c990c32c9645170d1b32c8378260a87b776371320fe1ee70b4a691d7c6236",
+      "after": "626ca741dd71fc1d6a0a2be59cc4929ee82add1cba59f9fa08269171918e1a37",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/resume-research.py",
+      "before": "5b8d9f3dff5803003966c1685fe44cfe5d97c9576f249f1b9e18ac24155b5e53",
+      "after": "fa0e287cf1526376cb2c1b5cdfeac3b88e61030e632ee759191af6516546bdd2",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/resume-research.py",
+      "before": "5b8d9f3dff5803003966c1685fe44cfe5d97c9576f249f1b9e18ac24155b5e53",
+      "after": "fa0e287cf1526376cb2c1b5cdfeac3b88e61030e632ee759191af6516546bdd2",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/finish-research.py",
+      "before": "d59acba4c4589dbaee586130c4a2e5233ddfbcb7610662f8de7b59ae5c0808b2",
+      "after": "c4983ed96b2ca097d73807d324299da205c3b092ef7154dcb96928a866d9fce2",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/finish-research.py",
+      "before": "d59acba4c4589dbaee586130c4a2e5233ddfbcb7610662f8de7b59ae5c0808b2",
+      "after": "c4983ed96b2ca097d73807d324299da205c3b092ef7154dcb96928a866d9fce2",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/check-dashboard.py",
+      "before": "588c35278d55b245feb954fdce9781ebf8978b4cf9350a5479b3bb999e7d567d",
+      "after": "60ec9c1138b2bffe1c93b64f9d78cc415257b15c384c0dc15d5142c8f6917adb",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/dashboard-proof-prepared/check-dashboard.py",
+      "before": "588c35278d55b245feb954fdce9781ebf8978b4cf9350a5479b3bb999e7d567d",
+      "after": "60ec9c1138b2bffe1c93b64f9d78cc415257b15c384c0dc15d5142c8f6917adb",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/deploy-dashboard.py",
+      "before": "d22ead4fdae773c6f1f2824f617de7081f86a6588dcfed6c81ef9f80a13e68b5",
+      "after": "e7dfe69b9e6df6a1cdfa3519608d7e21ab4cb64f4421ccda0f361fc95357726e",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/dashboard-1.0-prepared/deploy-dashboard.py",
+      "before": "d22ead4fdae773c6f1f2824f617de7081f86a6588dcfed6c81ef9f80a13e68b5",
+      "after": "e7dfe69b9e6df6a1cdfa3519608d7e21ab4cb64f4421ccda0f361fc95357726e",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/deploy-charts.py",
+      "before": "75845764ffbe1251e87528f80266537c32af5c305ed9eeeec4c4e0c9a86429a4",
+      "after": "92ceee6dba3caedbb64b9d74516eca969d68de5bb03a834b5343a3098d9dafce",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/dashboard-1.1-prepared/deploy-charts.py",
+      "before": "75845764ffbe1251e87528f80266537c32af5c305ed9eeeec4c4e0c9a86429a4",
+      "after": "92ceee6dba3caedbb64b9d74516eca969d68de5bb03a834b5343a3098d9dafce",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/research/deploy-threat-2.py",
+      "before": "40f9a8336296d20fda25da08346d8e2f2892667255d2c1ffc7b223da2043b9c9",
+      "after": "d5ed166646faf9d77a2ece8b32129aca51ab5000a3ac4df1ead319fd402c6a19",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/threat-2.0-prepared/deploy-threat-2.py",
+      "before": "40f9a8336296d20fda25da08346d8e2f2892667255d2c1ffc7b223da2043b9c9",
+      "after": "d5ed166646faf9d77a2ece8b32129aca51ab5000a3ac4df1ead319fd402c6a19",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/home-pulse/deploy-pulse.py",
+      "before": "bc15500d86dc01495880f1d318b37818a996351a4ec48fc197213958f5442576",
+      "after": "f77a7327ee34125e0ea48238a9a80ce3b8eda10c13f95381de24e2e006d2cd99",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/home-pulse-2.0-prepared/deploy-pulse.py",
+      "before": "bc15500d86dc01495880f1d318b37818a996351a4ec48fc197213958f5442576",
+      "after": "f77a7327ee34125e0ea48238a9a80ce3b8eda10c13f95381de24e2e006d2cd99",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/analytics-2.1/deploy-analytics.py",
+      "before": "c43e25dbefad560a6819bba3a8d52fa4ddb3835e1e1c601676aaf7890ff2ed4d",
+      "after": "0e01712c1b6f163ab68af4315ec4084d963649445ef789d61de0c59718acb7e3",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/analytics-2.1-prepared/deploy-analytics.py",
+      "before": "c43e25dbefad560a6819bba3a8d52fa4ddb3835e1e1c601676aaf7890ff2ed4d",
+      "after": "0e01712c1b6f163ab68af4315ec4084d963649445ef789d61de0c59718acb7e3",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/staging/update-tools-ui.py",
+      "before": "b5443eaddd0c76e9171e5354c58b6518d2436bde794d4de5108f886585c094b6",
+      "after": "13a4e4d47e77d6c5bec5c27f91a11c7da814776b0ea174deddd590912006b0d7",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-ui-prepared/update-tools-ui.py",
+      "before": "b5443eaddd0c76e9171e5354c58b6518d2436bde794d4de5108f886585c094b6",
+      "after": "13a4e4d47e77d6c5bec5c27f91a11c7da814776b0ea174deddd590912006b0d7",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    },
+    {
+      "kind": "repository",
+      "path": "/home/cyberdat/cyberdat-deploy/tools-release-1-safe-work/deploy/staging/update-seo-0.7.py",
+      "before": "1713d7e7598f4bfcce90d7f73ae8efa2482f65c5a3cac8425348017a7af085a2",
+      "after": "e555501566d87215798e8872b75e7098dab647cca868080e575388488869b440",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 436
+    },
+    {
+      "kind": "prepared",
+      "path": "/home/cyberdat/cyberdat-deploy/seo-0.7-prepared/update-seo-0.7.py",
+      "before": "1713d7e7598f4bfcce90d7f73ae8efa2482f65c5a3cac8425348017a7af085a2",
+      "after": "e555501566d87215798e8872b75e7098dab647cca868080e575388488869b440",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": 384
+    }
+  ]
+}

@@ -2,12 +2,34 @@
 
 Last updated: 2026-11-13
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release 1 safe preparation — PARTIAL; no staging installation authorized. Installed Research0ef03e9/Content unchanged; Research recovery limits retained below.**
+Current stage: **Tools Release 1 D15 — PASS for11+11 legacy entry points; Tools installation still NOT authorized. Research0ef03e9/Content/theme95 unchanged; release decisions remain open.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release 1 safe deployment preparation — 2026-11-13
+## Tools Release 1 D15 adoption — 2026-11-13
+
+Owner authorized D15 only, starting731c9cd. Applied at16:41:51 UTC to exactly11
+repository deployment entry points and their11 manifest-listed prepared copies.
+Scripts-only private backup `/var/backups/cyberdat-staging/tools-d15-20261113T164151Z`
+created and verified before edits; original bodies/owners/modes retained. Guard is
+the previously prepared prefix, before legacy imports/actions; future Tools marker
+or busy deployment lock blocks execution. Collectors still invoke run.sh/PHP and
+do not import these Python entry points. Existing support.py is unchanged.
+
+Read-only proof: theme95/protected43 unchanged; all6 timers active; before/after SQL
+counts and recorded checkpoints/health/backoff equal. No legacy deploy/rollback,
+WordPress bootstrap, SQL writes, forced sync or theme installation occurred. The
+new installer read-only preflight passed after adoption. Exact tests, copy list and
+backup proof are in [D15 report](../deploy/tools-release-1/D15-REPORT.md).
+
+Scope was not expanded:22 historical source copies in research-0.8.3-work and
+seo-0.7-work remain unguarded and must not be executed/restored over protected paths.
+Arbitrary sudo commands are not constrained by a userspace interlock. D1 remains
+NOT authorized; D6/D7 license/source and D5's MCP complete-secret-concealment claim
+remain unresolved. No production/main merge. Stop after this D15 report.
+
+## Tools Release 1 safe deployment preparation — 2026-11-13 (history at731c9cd)
 
 Owner D3 preserves installed Research acceptance0ef03e9. D1 authorizes preparation,
 not installation. Branch `feat/tools-release-1-safe-deployment` starts from0ef03e9
