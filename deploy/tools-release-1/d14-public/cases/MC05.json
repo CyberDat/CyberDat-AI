@@ -1,0 +1,18 @@
+{
+  "id": "MC05",
+  "tool": "mcp",
+  "expected_human": "Найти известные provider credentials и не раскрыть их в UI/экспорте.",
+  "actual_human": "level=high; findings=3",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Оба синтетических значения скрыты; универсальная гарантия всех секретов не проверяется.",
+  "scenario": "Known provider credentials in env and option value",
+  "private_record_sha256": "06f2e6d0c243c0e7027ece0f18915392971abb0a2a2bc28b2ee1801b9d833c0b",
+  "resolved_input_sha256": "cc6454504e125e59d3f6c5cac8d2599f0d0f2ac70c72a931b8773c1366ac6014",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

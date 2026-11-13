@@ -1,0 +1,18 @@
+{
+  "id": "PI05",
+  "tool": "injection",
+  "expected_human": "Отметить fullwidth/невидимую обфускацию и удалить U+200B из sanitized-копии.",
+  "actual_human": "level=high; findings=6",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Нормализация работает для этого примера, не для всех Unicode-обходов.",
+  "scenario": "Fullwidth characters and invisible separators",
+  "private_record_sha256": "0983ee195d7a4bf3847e804f20098bf5c4fe49c48fad0ab8aa64caff32fd2477",
+  "resolved_input_sha256": "be282c970fb71f8d290045af542808df3733f76e37d0b94a7f9f16fb781de4e0",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 2,
+  "raw_details_retained_privately": true
+}

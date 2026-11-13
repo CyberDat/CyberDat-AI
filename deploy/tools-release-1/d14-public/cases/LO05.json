@@ -1,0 +1,18 @@
+{
+  "id": "LO05",
+  "tool": "lotl",
+  "expected_human": "Отметить remote scriptlet через regsvr32 как минимум medium.",
+  "actual_human": "level=high; commands=1; categories=AWL Bypass, Execute",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Совпадение не доказывает успешную атаку или злонамеренность оператора.",
+  "scenario": "Registration utility loads a remote scriptlet",
+  "private_record_sha256": "1fdc90200e25de642a3f976217af2cf8e438b057a4d9204c2b5289ba06daf4d4",
+  "resolved_input_sha256": "c69e99f0c0a90f31525b4d4d454d7c55d0e3b4dfca65d987c9f15b074431b623",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

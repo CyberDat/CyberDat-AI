@@ -1,0 +1,18 @@
+{
+  "id": "LA02",
+  "tool": "log",
+  "expected_human": "Скрыть учётную запись, email, IPv6 и hostname; сохранить тип события и код.",
+  "actual_human": "скрыто 4/4 заданных значений; контекст 2/2; CR=0, LF=0",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Произвольные дополнительные JSON-поля этим примером не проверены.",
+  "scenario": "Structured auth event with IPv6 and workstation",
+  "private_record_sha256": "d55cf4547f2c9634d3892d8ec5e01ce93fa157dd8b9a871611a5a9120aab3af9",
+  "resolved_input_sha256": "042cac2705d41290a2b2e46d4878d7d11d995b446182badc84fcbb022a7b1a89",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

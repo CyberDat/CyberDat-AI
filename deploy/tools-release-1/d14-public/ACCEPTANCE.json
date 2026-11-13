@@ -1,0 +1,95 @@
+{
+  "schema": "cyberdat-d14-acceptance/1",
+  "base_commit": "0b73a9f98d1da980051865cfa4896827074ab49e",
+  "case_sha256": "90af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d",
+  "expectations_changed": false,
+  "primary_browser": "141.0.7390.37",
+  "D14": "PARTIAL",
+  "metrics": {
+    "scored_cases": 40,
+    "pass": 32,
+    "fail": 8,
+    "false_positive_cases": [
+      "PI08"
+    ],
+    "complete_detection_misses": [
+      "PI04",
+      "PI06"
+    ],
+    "below_expected_attack_severity": [
+      "PI07"
+    ],
+    "incomplete_sanitization": [
+      "PI02"
+    ],
+    "sensitive_value_omission_cases": [
+      "LA05",
+      "LA06"
+    ],
+    "format_failures": [
+      "LA07"
+    ],
+    "critical_security_findings": [],
+    "high_product_sharing_or_trust_risks": [
+      "LA05",
+      "LA06",
+      "PI02",
+      "PI04",
+      "PI06",
+      "PI07"
+    ],
+    "unexpected_network_requests": 0,
+    "http_requests_after_input": 0,
+    "static_load_get_requests": 370,
+    "request_bodies": 0,
+    "local_blob_exports": 50,
+    "js_runtime_errors": 0,
+    "console_errors": 0,
+    "unexpected_csp_events": 0,
+    "persistent_web_storage_writes_observed": 0,
+    "active_input_execution_observed": false
+  },
+  "by_tool": {
+    "log": {
+      "pass": 7,
+      "fail": 3
+    },
+    "injection": {
+      "pass": 5,
+      "fail": 5
+    },
+    "lotl": {
+      "pass": 10,
+      "fail": 0
+    },
+    "mcp": {
+      "pass": 10,
+      "fail": 0
+    }
+  },
+  "corroborations": [
+    {
+      "browser": "firefox",
+      "version": "142.0.1",
+      "unscored_cases": 8,
+      "same_failed_predicates": true
+    },
+    {
+      "browser": "webkit",
+      "version": "26.0",
+      "unscored_cases": 8,
+      "same_failed_predicates": true
+    }
+  ],
+  "closed_staging_readiness": "PARTIAL; restricted manual evaluation only after separate D1 and D6 decisions; no installation authorized",
+  "public_release_readiness": "NOT_READY; D14 incomplete and D6 unresolved",
+  "D6": "PARTIAL; shared-theme combined-work/aggregate scope remains UNVERIFIED",
+  "D1": "NOT_AUTHORIZED",
+  "tool_code_changed": false,
+  "fixes_applied": false,
+  "new_package_built": false,
+  "existing_package_sha256": "9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b",
+  "scope": "isolated browser + pure PHP fixture, not real staging/WordPress acceptance",
+  "independence": "New synthetic product scenarios authored before execution, without reading/copying existing test fixtures. Expected outcomes are frozen; common security concepts necessarily overlap. Author previously worked on implementation; this is a separate product test set, not an external human audit.",
+  "publication": "Minimized summaries only; full synthetic fixtures/raw detailed evidence/harness withheld after automatic approval review rejected public-upload risk."
+}

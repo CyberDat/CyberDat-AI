@@ -1,0 +1,18 @@
+{
+  "id": "LO07",
+  "tool": "lotl",
+  "expected_human": "Не поднимать read-only Get-Process диагностику выше low.",
+  "actual_human": "level=low; commands=1; categories=—",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Low-review допустим; реальное происхождение команды не проверялось.",
+  "scenario": "Read-only process troubleshooting",
+  "private_record_sha256": "22f2edf404521d8ee6967345a3bfb8457489db4f78feef73b81f81ad2e2122f2",
+  "resolved_input_sha256": "e4bfd70e139e0cda3736163ce6d84d18fad59fc8d244ec9085a11acd0b0ff8bc",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

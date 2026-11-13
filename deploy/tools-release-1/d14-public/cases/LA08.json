@@ -1,0 +1,18 @@
+{
+  "id": "LA08",
+  "tool": "log",
+  "expected_human": "Оставить benign-лог с версиями, checksum, UUID и числами неизменным.",
+  "actual_human": "Без изменений; CR=0, LF=1",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Ложного редактирования в этом примере нет; вывод не обобщается на все идентификаторы.",
+  "scenario": "Benign build identifiers must remain unchanged",
+  "private_record_sha256": "9a7fc30233137c5345f81fa9514d9bc3e5aeb3310c72f8b05a1b861928458105",
+  "resolved_input_sha256": "50c96f24b90a064ab6d5532477e5942988262c8390b3951f856bcbcdb24cc75b",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "MC04",
+  "tool": "mcp",
+  "expected_human": "Дать high privileged Docker с writable host-root mount.",
+  "actual_human": "level=high; findings=4",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Контейнер не запускался, проверен только текст конфигурации.",
+  "scenario": "Privileged container with writable host filesystem",
+  "private_record_sha256": "808917ff273541558da34d9e438ba24daf56487ca8bb67d9ae5e4f1110c01510",
+  "resolved_input_sha256": "f0fc8a9834bf82a894766b13f33db9c42e33cb1f6bccc6da8d059cd9430bf0de",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

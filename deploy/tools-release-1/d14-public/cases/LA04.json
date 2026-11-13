@@ -1,0 +1,18 @@
+{
+  "id": "LA04",
+  "tool": "log",
+  "expected_human": "Скрыть синтетический provider token и JWT; сохранить версию компонента.",
+  "actual_human": "скрыто 2/2 заданных значений; контекст 1/1; CR=0, LF=3",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Проверены эти форматы и расположения, не все возможные секреты.",
+  "scenario": "Known service token and JWT in debug headers",
+  "private_record_sha256": "2752f5bcd291ec726a47b295f3f8af0e7198b4457da28451d8056a04dff38c47",
+  "resolved_input_sha256": "b89e9c8b65c30a3daac4e65929a1ce51957938d6f5c1ef94217423c37f421c99",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "LO01",
+  "tool": "lotl",
+  "expected_human": "Отметить certutil download исполняемого файла как минимум medium.",
+  "actual_human": "level=high; commands=1; categories=Download",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "High совпадение требует проверки контекста; команда не запускалась.",
+  "scenario": "Certificate utility downloads an executable",
+  "private_record_sha256": "95556b4a087d661ef9d93957045bdddca5e7a24d242ebb441790f4295657dcfc",
+  "resolved_input_sha256": "5c75b88365406bad5e3037e1bf3c4aa6c44b161d5f99907978d1b8d884fd3040",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "LO09",
+  "tool": "lotl",
+  "expected_human": "Не давать high внутреннему копированию документов по UNC.",
+  "actual_human": "level=low; commands=1; categories=—",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Low-сигнал есть; принадлежность NAS организации не проверялась.",
+  "scenario": "Internal document replication",
+  "private_record_sha256": "098fb194a4a524ed3feecac6a50d2dfe6ae684fbeb80f09d19752a6521631781",
+  "resolved_input_sha256": "80fbe8c56cd23de2d697aaf89f912cce5fdf37fe09a805df17d85d8a574518c2",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

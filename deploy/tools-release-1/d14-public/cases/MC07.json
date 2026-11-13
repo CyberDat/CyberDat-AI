@@ -1,0 +1,18 @@
+{
+  "id": "MC07",
+  "tool": "mcp",
+  "expected_human": "Отметить URL userinfo и скрыть пароль в исходной и percent-encoded форме.",
+  "actual_human": "level=medium; findings=2",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Medium, пароль не найден в UI/report. Проверена одна кодировка и один URI.",
+  "scenario": "Percent-encoded nonstandard password in URL userinfo",
+  "private_record_sha256": "1db7151e00ee327308293f47eee1bb8ffdb093ca751bd49bb6ae14aa36684269",
+  "resolved_input_sha256": "2bfb5a8161bcb06f54be515932aea9ad90e715c7ae5f498593edafe8c8db7974",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

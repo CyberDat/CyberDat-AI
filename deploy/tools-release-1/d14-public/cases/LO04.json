@@ -1,0 +1,18 @@
+{
+  "id": "LO04",
+  "tool": "lotl",
+  "expected_human": "Отметить encoded PowerShell и показать декодированный URL.",
+  "actual_human": "level=high; commands=1; categories=—; encoded URL показан",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Полезная нагрузка декодирована как текст, не выполнена.",
+  "scenario": "Encoded PowerShell download and execution",
+  "private_record_sha256": "43090da4a3a9f699278a7d8f069a409742da3101b532017fce25680312de3107",
+  "resolved_input_sha256": "06bdd4cc1c9662309ade7b257cab11e3e0a46c1aa260d9d95e59843683990f67",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

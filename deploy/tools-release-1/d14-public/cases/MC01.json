@@ -1,0 +1,18 @@
+{
+  "id": "MC01",
+  "tool": "mcp",
+  "expected_human": "Не давать medium/high ограниченной локальной конфигурации.",
+  "actual_human": "level=none; findings=0",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "None означает отсутствие найденных сигналов, а не аудит или доказательство безопасности server code.",
+  "scenario": "Bounded local read-only inventory server",
+  "private_record_sha256": "16d7f2828da6b4bc69a734e5236a5b344d7a343ca056bd38cf27825975bfe099",
+  "resolved_input_sha256": "8c86338ebdcfe6cd64bbb706e768a02872e6d664ab13cb17d3b359ae32ca549f",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

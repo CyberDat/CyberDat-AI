@@ -2,12 +2,45 @@
 
 Last updated: 2026-11-13
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release1 Final Test Stabilization — technical PASS, overall PARTIAL (D6 legal scope/D1 approval pending). No staging installation authorized or performed.**
+Current stage: **Tools Release1 D14 — PARTIAL: 32 PASS / 8 FAIL from 40 new product cases. No product fixes, staging installation or publication authorized/performed.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release1 Final Test Stabilization —2026-11-13
+## Tools Release1 D14 Independent Product Acceptance —2026-11-13
+
+Base0b73a9f, same feature branch.40 newly authored synthetic product cases (10/tool)
+with expectations frozen before execution; SHA256
+90af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d.
+D14 **PARTIAL: 32 PASS / 8 FAIL**: Log 7/3, Injection 5/5, LotL 10/0, MCP 10/0.
+This is a separate new case set, not an external independent human audit.
+
+Log: full name/phone and indirect CEF credential coverage gaps; small-file UI load
+converts CRLF→LF although the engine preserves the original CRLF. Injection:
+English paraphrase/Spanish complete misses, Russian attack only low, incomplete
+sanitation of a high indirect attack, medium FP on benign report meta-text.8 failing
+cases reproduced in Firefox/WebKit with the same predicates;16 unscored repetitions.
+MCP known/opaque/URL-userinfo/invalid-JSON/report-policy cases passed the new inputs;
+LotL new suspicious/benign/encoded examples passed. No universal guarantees implied.
+
+40 primary actual UI/export/network cases in isolated Chromium:370 static GETs,
+0 HTTP after input,0 unexpected network/CSP/JS/console events,0 persistent web-storage
+writes or active input execution;50 local blob exports. No critical automatic
+leak/execution observed. HIGH product sharing/trust risks remain; sanitized text
+and anonymized output require human review. No fixes, expectation/rule/threshold or
+product-code changes. All 125 theme files/package unchanged; archive SHA256 remains
+9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b.
+
+Closed staging readiness PARTIAL, further restricted manual evaluation conditional
+on separate D6/D1 decisions. Public release NOT READY; D14 not closed. D6 legal scope
+UNVERIFIED, D1 NOT authorized; page/hub/SEO decisions remain separate. No staging,
+production, WordPress/SQL/systemd/agents access/change, publication, rollback or main
+merge; no new staging backup because no live change. Earlier technical regression
+PASS does not waive these product failures. [Current report](../deploy/tools-release-1/REPORT.md),
+[40-case matrices and evidence](../deploy/tools-release-1/d14-public/README.md).
+Stop after reporting; repairs require a separate task.
+
+## Tools Release1 Final Test Stabilization —2026-11-13 (history at0b73a9f)
 
 Task baseae48da0, same branch feat/tools-release-1-license-claims. Theme/source
 commit `54d43356fec8ca22f8d99c26fc5c28d5964c4d08`. Log1.0.2 avoids repeated unrelated-key value parsing;

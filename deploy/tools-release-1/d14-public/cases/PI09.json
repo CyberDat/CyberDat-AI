@@ -1,0 +1,18 @@
+{
+  "id": "PI09",
+  "tool": "injection",
+  "expected_human": "Не поднимать защитную рекомендацию о секретах выше low.",
+  "actual_human": "level=none; findings=0",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Ложного alarm в этом defensive-примере нет.",
+  "scenario": "Defensive credential-handling guidance",
+  "private_record_sha256": "60ac39576d942884ed310622d3e366b8cfc9ce60404cf333d4e1cba4599cc9c3",
+  "resolved_input_sha256": "901459d9326d69308a7ccc52269486b82fc2a0d5d196ee70de90b77f7353dab2",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 2,
+  "raw_details_retained_privately": true
+}

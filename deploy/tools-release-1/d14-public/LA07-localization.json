@@ -1,0 +1,29 @@
+{
+  "case": "LA07",
+  "input_sha256": "d8503704d9a9c25dfa8be49760e28ee15c40140a0f336c761e0f093c20adf590",
+  "frozen_original": {
+    "CR": 6,
+    "LF": 6
+  },
+  "file_text": {
+    "CR": 6,
+    "LF": 6
+  },
+  "textarea_value": {
+    "CR": 0,
+    "LF": 6
+  },
+  "direct_engine_output": {
+    "CR": 6,
+    "LF": 6
+  },
+  "unscored": true,
+  "source_code": {
+    "file": "assets/js/log-anonymizer/app.js",
+    "function": "loadFile",
+    "lines": [
+      182,
+      185
+    ]
+  }
+}

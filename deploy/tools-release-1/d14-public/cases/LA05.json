@@ -1,0 +1,18 @@
+{
+  "id": "LA05",
+  "tool": "log",
+  "expected_human": "Убрать ФИО и телефон из support-лога.",
+  "actual_human": "скрыто 0/2 заданных значений; контекст 2/2; CR=0, LF=1",
+  "status": "FAIL",
+  "risk_if_used_for_real_data": "HIGH",
+  "limitations_and_risks": "ФИО и телефон остались. Пробел покрытия желаемого PII-сценария, а не доказательство сетевой утечки. Перед передачей результата нужна ручная редакция.",
+  "scenario": "Unicode full name and telephone in a support note",
+  "private_record_sha256": "9c6c6be8a3a5af3e0318d2c3ef40cb6b1f8ed39e0c31e915e4be7ac62d331783",
+  "resolved_input_sha256": "375ff4c1d08a2f20526ca98925f1c79f7c04408e9831918b25fa8cb2456471d2",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "LO08",
+  "tool": "lotl",
+  "expected_human": "Не давать high локальной backup-задаче; medium-review допустим.",
+  "actual_human": "level=info; commands=1; categories=—",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Планировщик dual-use; существование/безопасность backup.exe не проверялись.",
+  "scenario": "Administrator schedules a local backup task",
+  "private_record_sha256": "3f543fe92c4efca197d472df44cdd666146b0eaaf6e0d9cda15d889b31d6f0eb",
+  "resolved_input_sha256": "5f758f4b408449e0e3379b077986fe34ca4d91a192c65449d1d6424b9cdc8a12",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

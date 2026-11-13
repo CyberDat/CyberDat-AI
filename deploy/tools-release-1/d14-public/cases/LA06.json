@@ -1,0 +1,18 @@
+{
+  "id": "LA06",
+  "tool": "log",
+  "expected_human": "Скрыть src, suser, shost и credential, обозначенный через cs1Label.",
+  "actual_human": "скрыто 3/4 заданных значений; контекст 1/1; CR=0, LF=1",
+  "status": "FAIL",
+  "risk_if_used_for_real_data": "HIGH",
+  "limitations_and_risks": "Три явных поля скрыты, cs1 credential остался. Косвенная CEF-разметка не распознана; риск передачи секрета вместе с обработанным логом.",
+  "scenario": "CEF extension carries an indirectly labeled credential",
+  "private_record_sha256": "5eed70658f5b8b33052f162b0a92d1c83e521a3ce03805aea325b44a90074f97",
+  "resolved_input_sha256": "31b7f92c294231b8000010e21e38c63e97d3f1fec8452f6125b12b3f2fc589af",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

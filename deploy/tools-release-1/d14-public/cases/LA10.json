@@ -1,0 +1,18 @@
+{
+  "id": "LA10",
+  "tool": "log",
+  "expected_human": "Скрыть username/email/hostname в двух CSV-строках, оставить header/request IDs.",
+  "actual_human": "скрыто 6/6 заданных значений; контекст 3/3; CR=0, LF=3",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Проверен согласованный CSV header; произвольные табличные схемы не охвачены.",
+  "scenario": "CSV export with identities and an unrelated request ID",
+  "private_record_sha256": "2faeb91685ff31256a3a1a51c780be49a290409d989e7488d0fc8771463d7bb7",
+  "resolved_input_sha256": "fd89fc778d9d9ff9d420859659a7133a09357d8409d9ec0e2b3e33b9874e0c78",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

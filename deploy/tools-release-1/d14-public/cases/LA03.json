@@ -1,0 +1,18 @@
+{
+  "id": "LA03",
+  "tool": "log",
+  "expected_human": "Скрыть пользователя/пароль/хост PostgreSQL URL; сохранить SQLSTATE и request ID.",
+  "actual_human": "скрыто 3/3 заданных значений; контекст 2/2; CR=0, LF=1",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Проверен один вид DSN; другие схемы и кодировки не гарантированы.",
+  "scenario": "Database URL in an application exception",
+  "private_record_sha256": "47bda20ef861e87292bf01c164a9a52d441ab518bdf7705c9f8467e7297bd14b",
+  "resolved_input_sha256": "6c61e5bb926f2a0e6ebcfe2ed37c3a927c7bfe133a8f4cb1787917717f639822",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

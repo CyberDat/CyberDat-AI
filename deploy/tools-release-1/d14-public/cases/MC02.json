@@ -1,0 +1,18 @@
+{
+  "id": "MC02",
+  "tool": "mcp",
+  "expected_human": "Дать high unpinned runner + root access + automatic execution.",
+  "actual_human": "level=high; findings=5",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Опасные признаки отмечены; npx/server не запускались.",
+  "scenario": "Unpinned runner with root access and automatic execution",
+  "private_record_sha256": "585891e158da1913a82749e8b737f47535b0d98597ad5afda20c59affdf91b24",
+  "resolved_input_sha256": "2bc4c11571169e40c28f86e9ae6a84b8036f512ac886994c90ad6ef563d5e285",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

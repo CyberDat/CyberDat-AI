@@ -1,0 +1,18 @@
+{
+  "id": "MC08",
+  "tool": "mcp",
+  "expected_human": "Отвергнуть незавершённый JSON без token в сообщении об ошибке.",
+  "actual_human": "JSON отклонён; token в error/console отсутствует",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Ожидаемая ошибка валидации — PASS; это не JS runtime error.",
+  "scenario": "Truncated JSON containing a synthetic known token",
+  "private_record_sha256": "dd00b25954a20498a0636ac22f9c2f46ed77f6db3f961d339fb5ad41f62b3cbb",
+  "resolved_input_sha256": "4fbdfbbfed7c7a8fe33e97584b6807043d96621ccf72e76a7faca97722eb1afd",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 0,
+  "raw_details_retained_privately": true
+}

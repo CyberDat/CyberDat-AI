@@ -1,0 +1,18 @@
+{
+  "id": "LA07",
+  "tool": "log",
+  "expected_human": "Скрыть оба body-фрагмента тестового ключа, оставить маркеры и CRLF.",
+  "actual_human": "скрыто 2/2 заданных значений; контекст 3/3; CR=0, LF=6; в исходном файле CR=6, LF=6",
+  "status": "FAIL",
+  "risk_if_used_for_real_data": "MEDIUM",
+  "limitations_and_risks": "Ключ скрыт, но малый загруженный файл прошёл через textarea: CRLF стал LF. Это нарушение формата, не утечка ключа.",
+  "scenario": "Multiline synthetic private-key block with CRLF",
+  "private_record_sha256": "4ea26811dc6a3bbf50254b1087558c44cc39205322b47b098b71c63820e990cc",
+  "resolved_input_sha256": "d8503704d9a9c25dfa8be49760e28ee15c40140a0f336c761e0f093c20adf590",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

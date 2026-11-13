@@ -1,0 +1,18 @@
+{
+  "id": "MC09",
+  "tool": "mcp",
+  "expected_human": "Показать policy violations, скрыть opaque value в report, выгрузить policy дословно с предупреждением.",
+  "actual_human": "policy violations=2; report redaction / verbatim policy / warning — PASS",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Две violations; report и policy экспортируются различно. Policy без редактирования по контракту; тестовая policy сама не содержала секретов.",
+  "scenario": "Policy violation and distinct report/policy exports",
+  "private_record_sha256": "371e391fec4ba3b7ad6644d65077a94596eb40cd3fe9eed68ba001dfc024b36b",
+  "resolved_input_sha256": "fbb07ed9e9203eb5d55c8a73521471e0a0508223c443effbc87ae7d1c368c4de",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 2,
+  "raw_details_retained_privately": true
+}

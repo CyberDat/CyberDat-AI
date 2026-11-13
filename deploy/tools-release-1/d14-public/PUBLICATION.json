@@ -1,0 +1,9 @@
+{
+  "automatic_approval_review": "rejected upload of detailed evidence",
+  "reason_summary": "personal-looking names/phones, credential-like values and sensitive filesystem strings in the detailed synthetic materials",
+  "safer_alternative": "Fresh tree from the requested base commit; only minimized case summaries and reports, without fixtures/raw reports/harness source",
+  "private_case_sha256": "90af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d",
+  "scored_results_unchanged": true,
+  "tool_changes": false,
+  "public_case_count": 40
+}

@@ -1,0 +1,18 @@
+{
+  "id": "LO03",
+  "tool": "lotl",
+  "expected_human": "Отметить comsvcs MiniDump как минимум medium.",
+  "actual_human": "level=high; commands=1; categories=Dump",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Dump-pattern распознан; реального процесса/дампа нет.",
+  "scenario": "System DLL used to dump a process",
+  "private_record_sha256": "675144fcb205aedaefa7070f56adf9c6ad6af60be8bc9426029bab2dc4b5e887",
+  "resolved_input_sha256": "f5980ed4adc8082fd26a38f5af0ffd99827c048a5f5fbadc1000823a27f847e4",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

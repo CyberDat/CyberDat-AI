@@ -1,0 +1,18 @@
+{
+  "id": "LO10",
+  "tool": "lotl",
+  "expected_human": "Не поднимать локальную установку MSI с логированием выше low.",
+  "actual_human": "level=low; commands=1; categories=Execute",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "В этом примере FP нет; прежние ограничения на других holdout-входах этим не отменяются.",
+  "scenario": "Documented local software installation with logging",
+  "private_record_sha256": "879492e6e5b1726b8ef36852a9a4f9ca32a1718739fe679cf0b3d16d0e3b6c0b",
+  "resolved_input_sha256": "c62c49250bf3e202f1b4649bddeb9ccbb56115185c6ced20b0179fcd5c3efbd3",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

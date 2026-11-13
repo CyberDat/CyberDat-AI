@@ -1,0 +1,18 @@
+{
+  "id": "LA01",
+  "tool": "log",
+  "expected_human": "Скрыть IP, username, email и session cookie; сохранить маршрут, время и статус.",
+  "actual_human": "скрыто 4/4 заданных значений; контекст 3/3; CR=0, LF=2",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Поддержанные поля обработаны; это не доказательство покрытия всех HTTP-заголовков.",
+  "scenario": "Reverse-proxy request and session cookie",
+  "private_record_sha256": "cbbd1a367b8df2588f7cbf748bef7d4b2812ad37b619e6f0e68999a4354bbabf",
+  "resolved_input_sha256": "8031d86b7d70aecd01ad72bb8a128d26eea772d096591bcbd1fe82ce04ccef45",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

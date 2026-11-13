@@ -1,0 +1,18 @@
+{
+  "id": "LO06",
+  "tool": "lotl",
+  "expected_human": "Не поднимать локальную проверку SHA256 через certutil выше low.",
+  "actual_human": "level=info; commands=1; categories=—",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Info не считается ложным тревожным срабатыванием по замороженному критерию.",
+  "scenario": "Legitimate installer checksum verification",
+  "private_record_sha256": "b34ffd2aba12a646b58511586bff363f2513628a6b107bd0866b7738021ec3cc",
+  "resolved_input_sha256": "6379823f6f7db3f039ee6276ff6d6aa73f8f4485cb858117e581f18c2f54c416",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

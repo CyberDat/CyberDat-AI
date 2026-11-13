@@ -1,0 +1,18 @@
+{
+  "id": "LA09",
+  "tool": "log",
+  "expected_human": "Скрыть Windows account/workstation и username в пути, сохранить record ID.",
+  "actual_human": "скрыто 2/2 заданных значений; контекст 2/2; CR=0, LF=0",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Проверена конкретная XML-разметка; SID и другие форматы PII здесь не проверялись.",
+  "scenario": "Windows event XML with an account and workstation",
+  "private_record_sha256": "5f0c8cc9403ae24cbde6f4569df3ad5d0f354881d4ff7d4c028102d4996d919c",
+  "resolved_input_sha256": "1b06a55aab67350bcdb43664d68aa464c6006adc99b43766e65b439ef3b2fba6",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

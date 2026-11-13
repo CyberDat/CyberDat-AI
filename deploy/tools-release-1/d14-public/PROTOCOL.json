@@ -1,0 +1,18 @@
+{
+  "frozen_cases_sha256": "90af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d",
+  "authored_utc": "2026-11-13T22:16:37.377931+00:00",
+  "first_scored_case_evidence_write_utc": "2026-11-13T22:22:30.972164+00:00",
+  "last_scored_case_evidence_write_utc": "2026-11-13T22:23:33.576735+00:00",
+  "primary_harness_snapshot_sha256": "6f1f0a569ddcf046d506902ceb18ddc41ffb98d06738727c2a15bbb60056301e",
+  "expected_outcomes_changed": false,
+  "scored_cases": 40,
+  "unscored_repeats": 16,
+  "unscored_localizations": 1,
+  "primary_uses_ui_exports_only": true,
+  "localization_also_calls_unchanged_log_engine": true,
+  "artifact_substitution_applied_after_predicate_evaluation": true,
+  "real_credentials_used": false,
+  "product_fixes": false,
+  "full_fixtures_and_raw_artifacts_published": false,
+  "public_representation_changed_results": false
+}

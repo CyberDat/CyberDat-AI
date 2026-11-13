@@ -1,6 +1,11 @@
-# Tools Release1 — stabilized preparation package
+# Tools Release1 — D14 product acceptance and unchanged package
 
-**PARTIAL. D1 installation is NOT authorized. Stop after preparation.**
+**D14 PARTIAL: 32/40 PASS,8 FAIL. Public release NOT READY. D1 installation is NOT authorized.**
+
+Current product evidence: [d14-public/README.md](d14-public/README.md) and d14-public/ACCEPTANCE.json.
+Log7/10, Injection5/10, LotL10/10, MCP10/10. Failures are preserved; no fixes applied.
+Closed staging remains conditional on separate D1/D6 decisions and explicit manual
+evaluation limits. Prior regression PASS does not close D14. The package below is unchanged.
 Branch feat/tools-release-1-license-claims; this stabilization starts atae48da0.
 Technical suites PASS; D6 remains PARTIAL. Installed Research
 must remain0ef03e9cb0d8821546983c84fc6998e85cf03f2e. D15 is already applied in its
@@ -42,7 +47,7 @@ YAML/notice/license are in assets/js/lotl-analyzer/SOURCE.md and LICENSES.md.
 ## Future separately authorized installation order
 
 1. Resolve DECISIONS.md: D6 legal scope review, D1 install approval and independent
-   D14 product acceptance; page/SEO decisions separately. Current
+   D14 product acceptance failures/limits; page/SEO decisions separately. Current
    D5 PASS does not waive independent D14 acceptance or permit page publication.
 2. Recheck staging identity and exact base95/protected43 hashes, D15 prefixes and
    shared release lock. Natural Research SQL activity is expected; never reset it.
@@ -94,6 +99,7 @@ globally or treat fixture checks as installed WordPress acceptance.
 D6 legal characterization UNVERIFIED; D7 public source8/8 anonymous HTTP checks
 pass in the new anonymous source-access verification. Current Chromium78/Firefox48/
 WebKit48 fixture checks PASS; original4000ms guards and6 new regressions PASS.
+Current D14 has 8 product failures despite these historical regression passes.
 Physical Safari/iOS and legal combined-work classification remain UNVERIFIED.
 Actual WordPress selective SQL recovery/FPM/header/renderer acceptance is UNVERIFIED
 because installation is forbidden. D8 hub visibility and D2/D4/D9/D11/D14 remain

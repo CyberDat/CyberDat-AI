@@ -1,6 +1,6 @@
-# Tools Release1 — decisions after Final Test Stabilization
+# Tools Release1 — decisions after D14 Independent Product Acceptance
 
-Preparation branch: feat/tools-release-1-license-claims, task baseae48da0.
+Preparation branch: feat/tools-release-1-license-claims, D14 task base0b73a9f.
 Owner instructions supersede earlier alternatives; no installation authorization.
 
 | ID | Current status | Consequence |
@@ -16,7 +16,7 @@ Owner instructions supersede earlier alternatives; no installation authorization
 | D8 | Hub release1.1 still lists3 tools; MCP1.2 direct URL implementation present | Claim that all4 are discoverable on hub is not accepted |
 | D9 | Reuse of ID51/stale Rank Math description, old ID53 and removed backlog drafts not decided | Page/meta/SEO work |
 | D11 | SEO publication/sitemap policy pending; protected legacy entry points do not approve SEO actions | SEO acceptance/publication |
-| D14 | Independent5–10 samples/tool evaluation pending; technical performance and browser failures now resolved | Product release/READY |
+| D14 | PARTIAL:40 new frozen examples,32 PASS / 8 FAIL; no fixes. Log7/10, Injection5/10, LotL10/10, MCP10/10 | Public release NOT READY; further closed manual evaluation requires D1/D6 and explicit limits |
 | D10/D12/D13 | Naming unchanged; main merge not requested; historical scanner alerts not waived | No unrelated changes |
 
 Technical stabilization PASS:61 Log/33 Injection/20 LotL/24 MCP engine checks,
@@ -31,7 +31,10 @@ paths/hashes in GPL-BOUNDARY.md/gpl-boundary.json. Full source/notices delivery 
 rebuild pass, but the shared-theme combined-work/aggregate legal question is not
 settled by those technical checks. Do not declare full compliance or automatic
 relicensing of Research/Content/SEO/other tools. D7 remains public, no settings change.
-No critical technical FAIL remains in this stage. D1 still NOT authorized.
+The earlier stabilization had no critical technical FAIL. New D14 product acceptance
+has 8 functional/coverage/format failures and remains PARTIAL. No critical automatic
+network leak or active input execution observed; HIGH sharing/trust risks remain.
+[D14 evidence](d14-public/README.md). D1 still NOT authorized.
 
 The22 historical source copies in d15-residual-paths.json remain outside approved
 scope and unguarded. Never execute with sudo or restore them over guarded entry

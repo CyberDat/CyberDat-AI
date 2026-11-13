@@ -1,0 +1,18 @@
+{
+  "id": "MC03",
+  "tool": "mcp",
+  "expected_human": "Отметить credential-bearing HTTP и скрыть token в UI/JSON report.",
+  "actual_human": "level=high; findings=5",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "Token скрыт; реальное соединение не выполнялось.",
+  "scenario": "Credential-bearing remote server over cleartext HTTP",
+  "private_record_sha256": "93bc527141d90b815d4b07a223527fc4d8b70bf1143278c7d24295357b7ef647",
+  "resolved_input_sha256": "c1ac5c9422248eebdff3831b2933fdb0700615d6452b97a188cac21c031af119",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}

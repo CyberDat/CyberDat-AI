@@ -1,0 +1,18 @@
+{
+  "id": "MC10",
+  "tool": "mcp",
+  "expected_human": "Дать минимум medium poisoned description; HTML должен остаться текстом.",
+  "actual_human": "level=high; findings=3",
+  "status": "PASS",
+  "risk_if_used_for_real_data": "NO_ADDITIONAL_FAILURE_OBSERVED_IN_THIS_CASE",
+  "limitations_and_risks": "High, input HTML не исполнялся, внешнее изображение не загружалось; все poisoning-атаки этим не охвачены.",
+  "scenario": "Poisoned tool description and inert HTML payload",
+  "private_record_sha256": "278f86f5f8df1f614365c93cca9b1dfcd0d69731bc3da3f00c4875db3c0d5609",
+  "resolved_input_sha256": "ee7ac8ed866bf45feff3ff343a0a3401ee747e7f496ccf1cb644452c0050f024",
+  "unexpected_network_attempts": 0,
+  "runtime_errors": 0,
+  "console_errors": 0,
+  "input_executed": false,
+  "export_count": 1,
+  "raw_details_retained_privately": true
+}
