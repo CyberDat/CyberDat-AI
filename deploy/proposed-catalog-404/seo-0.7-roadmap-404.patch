@@ -1,0 +1,27 @@
+diff --git a/deploy/staging/update-seo-0.7.py b/deploy/staging/update-seo-0.7.py
+index 1f0a29a..64920f6 100644
+--- a/deploy/staging/update-seo-0.7.py
++++ b/deploy/staging/update-seo-0.7.py
+@@ -160,10 +160,11 @@ def main():
+             need(tags.canonical<=1 and tags.descriptions<=1 and tags.ogtitles<=1 and tags.jsonld<=1,'Duplicate SEO output: '+path)
+             if path in ['/','/tools/']:need(tags.noindex,'Rank Math robots missing')
+         print('PASS: authenticated '+path+' HTTP 200; anonymous 401; noindex')
+-    for tool in roadmap:
++    unfinished=[tool for tool in roadmap if tool.get('status')!='available']
++    for tool in unfinished:
+         need(http(tool['url'],basic)[0]==404,'Unfinished tool should return 404')
+     need(http('/cyberdat-seo-check-nonexistent/',basic)[0]==404,'Missing route should return 404')
+-    print('PASS: all 10 unfinished tools and nonexistent URL return real 404')
++    print('PASS: all '+str(len(unfinished))+' unfinished tools and nonexistent URL return real 404')
+     for path in ['/wp-config.php','/.env','/wp-cron.php','/xmlrpc.php','/wp-content/uploads/forbidden.php']:
+         need(http(path,basic)[0]==403,'Protected path unexpectedly accessible')
+     # CookieJar module is aliased below because the request helper is named http.
+@@ -183,7 +184,7 @@ def main():
+             import xml.etree.ElementTree as ET
+             xml=ET.fromstring(body)
+             need(xml.tag.rsplit('}',1)[-1] in ('sitemapindex','urlset'),'Invalid sitemap XML')
+-            need(not any(t['url'].encode() in body for t in roadmap),'Unfinished tool leaked into sitemap')
++            need(not any(t['url'].encode() in body for t in unfinished),'Unfinished tool leaked into sitemap')
+         print('PASS: protected '+path+' authenticated HTTP '+str(status))
+     need(before==fingerprint(),'Protected production/staging configuration changed')
+     with urllib.request.urlopen('https://cyberdat.eu/',timeout=45) as prod:need(prod.status==200,'Production HTTPS failed')

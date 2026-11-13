@@ -148,7 +148,8 @@ def main():
   code,headers,body=fetch(path,basic);need(code==200 and 'noindex' in headers.get('X-Robots-Tag',''),'Staging HTTP/noindex failure')
   if path=='/':need(b'data-research-status' in body and b'Indexed CVEs:' in body,'Dashboard is not using unified provider')
  print('PASS: dashboard, Tools, archives, login, REST 200 with auth; anonymous 401; noindex')
- for item in json.loads((B/'theme/inc/tools-catalog.json').read_text()):need(fetch(item['url'],basic)[0]==404,'Unfinished tool route changed')
+ for item in json.loads((B/'theme/inc/tools-catalog.json').read_text()):
+  if item.get('status')!='available':need(fetch(item['url'],basic)[0]==404,'Unfinished tool route changed')
  jar=http.cookiejar.CookieJar();opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar),Redirect());fetch('/wp-login.php',basic,opener)
  form=urllib.parse.urlencode({'log':'cyberdat_staging_admin','pwd':admin,'wp-submit':'Log In','redirect_to':HOST+'/wp-admin/','testcookie':'1'}).encode();fetch('/wp-login.php',basic,opener,form)
  need(any(c.name.startswith('wordpress_logged_in_') for c in jar),'Existing administrator login failed')

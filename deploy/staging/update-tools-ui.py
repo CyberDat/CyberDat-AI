@@ -138,7 +138,8 @@ def main():
   need(get(path)[0]==401,'Anonymous access bypass')
   need(get(path,password)[0]==200,'Authenticated page failure')
  print('PASS: homepage/Tools/login 200 after auth, anonymous 401; existing mobile toggle retained')
- for tool in json.loads((B/'theme/inc/tools-catalog.json').read_text()):need(get(tool['url'],password)[0]==404,'Unfinished tool route must stay 404')
+ for tool in json.loads((B/'theme/inc/tools-catalog.json').read_text()):
+  if tool.get('status')!='available':need(get(tool['url'],password)[0]==404,'Unfinished tool route must stay 404')
  for asset in ['assets/css/tools.css','assets/js/tools-filter.js']:
   need(get('/wp-content/themes/cyberdat/'+asset,password)[0]==200,'Asset request failed')
  need(before==state() and guards==fingerprints(),'Database options/draft state or protected config changed')
