@@ -29,7 +29,7 @@ async function runBrowser(name) {
 	const results = [];
 	const pass = (label, detail) => { results.push({ label, detail }); console.log(`PASS [${name}]: ${label}${detail ? ' — ' + detail : ''}`); };
 	const browser = await playwright[name].launch();
-	const context = await browser.newContext({ acceptDownloads: true, viewport: { width: 1280, height: 900 } });
+	const context = await browser.newContext(Object.assign({ acceptDownloads: true, viewport: { width: 1280, height: 900 } }, require('./lib/basic-auth.cjs').playwrightOptions()));
 	const requests = [];
 	const consoleErrors = [];
 	let phase = 'load';

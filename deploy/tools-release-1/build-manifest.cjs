@@ -13,7 +13,8 @@ const path = require('node:path');
 const BASE = 'c3f9a5e7172f83006f3b078705a9d89e709619f8';
 const THEME = 'wp-content/themes/cyberdat/';
 const sh = c => cp.execSync(c, { maxBuffer: 1 << 28 });
-const commit = sh('git rev-parse ' + (process.argv[2] || 'HEAD')).toString().trim();
+const CHECK = process.argv.includes('--check');
+const commit = sh('git rev-parse ' + (process.argv.slice(2).find(x => !x.startsWith('--')) || 'HEAD')).toString().trim();
 const sha = buf => crypto.createHash('sha256').update(buf).digest('hex');
 const rows = sh('git diff --name-status ' + BASE + ' ' + commit + ' -- ' + THEME).toString().trim().split('\n').map(l => l.split('\t')).sort((a, b) => a[1].localeCompare(b[1]));
 const files = {};
@@ -45,5 +46,11 @@ const manifest = {
 	file_count: Object.keys(files).length,
 	files
 };
+if (CHECK) {
+	const current = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8'));
+	const same = JSON.stringify(current.files) === JSON.stringify(manifest.files);
+	console.log(same ? 'PASS: manifest.json matches the theme files at ' + commit.slice(0, 12) : 'FAIL: manifest.json is out of date for ' + commit.slice(0, 12) + '; rebuild it');
+	process.exit(same ? 0 : 1);
+}
 fs.writeFileSync(path.join(__dirname, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log('manifest: ' + manifest.file_count + ' files at ' + commit.slice(0, 12) + ' (' + Object.values(files).filter(f => f.status === 'modified').length + ' modified, ' + Object.values(files).filter(f => f.status === 'added').length + ' added)');

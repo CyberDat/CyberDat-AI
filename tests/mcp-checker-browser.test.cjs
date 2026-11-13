@@ -101,6 +101,7 @@ async function launch() {
 		}
 	});
 	for (const d of ['Page', 'Runtime', 'Network', 'Log', 'DOM']) { await send(d + '.enable'); }
+	if (await require('./lib/basic-auth.cjs').enableCdp(cdp, s)) { console.log('Basic Auth: credentials from CYBERDAT_BASIC_AUTH_FILE'); }
 	await send('Target.setAutoAttach', { autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
 	await cdp.send('Browser.setDownloadBehavior', { behavior: 'deny' }).catch(() => {});
 	const evaluate = async (expression, awaitPromise = true) => {
