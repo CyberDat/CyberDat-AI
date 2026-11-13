@@ -1,0 +1,11 @@
+{
+  "origin": "https://staging.cyberdat.eu",
+  "research_commit": "0ef03e9cb0d8821546983c84fc6998e85cf03f2e",
+  "artifact_sha256": "REPLACE_AFTER_OWNER_INSTALL_APPROVAL",
+  "package_sha256": "REPLACE_AFTER_OWNER_INSTALL_APPROVAL",
+  "expires_epoch": 0,
+  "install_approved": false,
+  "legacy_interlocks_approved": false,
+  "decisions": {"D2": false, "D4": false, "D5": false, "D6": false, "D7": false, "D9": false, "D11": false},
+  "page_approvals": {"draft": [], "reviewed": [], "publish": []}
+}

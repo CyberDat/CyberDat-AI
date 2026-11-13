@@ -1,0 +1,56 @@
+/* MCP Security & Policy Checker — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-mcp-error { white-space: pre-line; }
+.cd-mcp-modes { display: grid; gap: .5rem; margin: 1rem 0 0; padding: .75rem 1rem; border: 1px solid var(--cd-border); border-radius: .5rem; }
+.cd-mcp-modes legend { padding: 0 .35rem; }
+.cd-mcp-mode { display: flex; align-items: flex-start; gap: .6rem; min-height: 44px; padding: .35rem 0; cursor: pointer; line-height: 1.45; }
+.cd-mcp-mode input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; margin: .15rem 0 0; accent-color: var(--cd-accent); }
+.cd-mcp-mode input:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-mcp-policy { margin-top: 1rem; }
+.cd-mcp-schema { margin-top: .5rem; font-size: .9rem; }
+.cd-mcp-schema summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; }
+.cd-mcp-schema summary:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-mcp-dl { display: grid; gap: .25rem .75rem; margin: .5rem 0; }
+.cd-mcp-dl dt { margin-top: .4rem; font-weight: 600; overflow-wrap: anywhere; }
+.cd-mcp-dl dd { margin: 0; color: var(--cd-muted); }
+.cd-mcp-dl code { font: .8125rem/1.5 var(--cd-mono); }
+
+.cd-mcp-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-mcp-verdict--high { border-inline-start-color: #ff8fa3; }
+.cd-mcp-verdict--high strong { color: #ffb3c0; }
+.cd-mcp-verdict--medium { border-inline-start-color: var(--cd-warning); }
+.cd-mcp-verdict--medium strong { color: var(--cd-warning); }
+.cd-mcp-verdict--low, .cd-mcp-verdict--info, .cd-mcp-verdict--none { border-inline-start-color: var(--cd-secondary); }
+.cd-mcp-warnings, .cd-mcp-notes { margin: .5rem 0; padding-inline-start: 1.2rem; font-size: .9rem; }
+.cd-mcp-warnings li { color: var(--cd-warning); }
+.cd-mcp-notes li { color: var(--cd-muted); }
+
+.cd-mcp-servers { display: grid; gap: 1rem; margin: .5rem 0 1rem; padding: 0; list-style: none; }
+.cd-mcp-server { min-width: 0; padding: .9rem 1rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; }
+.cd-mcp-server--high { border-inline-start-color: #ff8fa3; }
+.cd-mcp-server--medium { border-inline-start-color: var(--cd-warning); }
+.cd-mcp-server--low, .cd-mcp-server--info { border-inline-start-color: var(--cd-secondary); }
+.cd-mcp-server > p { margin: .45rem 0 0; }
+.cd-mcp-server__name { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .6rem; margin: 0; font-size: 1rem; overflow-wrap: anywhere; }
+.cd-mcp-server__summary { display: block; margin-top: .5rem; padding: .5rem .65rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-radius: .4rem; color: var(--cd-text); }
+.cd-mcp-code { font: .8125rem/1.6 var(--cd-mono); white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.cd-mcp-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-mcp-label { font-weight: 600; }
+.cd-mcp-findings { display: grid; gap: .5rem; margin: .75rem 0 0; padding: 0; list-style: none; }
+.cd-mcp-finding { padding: .6rem .75rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-inline-start-width: 3px; border-radius: .4rem; font-size: .9rem; }
+.cd-mcp-finding--high { border-inline-start-color: #ff8fa3; }
+.cd-mcp-finding--medium { border-inline-start-color: var(--cd-warning); }
+.cd-mcp-finding--low, .cd-mcp-finding--info { border-inline-start-color: var(--cd-secondary); }
+.cd-mcp-finding p { margin: .3rem 0 0; overflow-wrap: anywhere; }
+.cd-mcp-finding__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 !important; }
+.cd-mcp-evidence code { color: var(--cd-text); }
+
+.cd-mcp-sev { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.cd-mcp-sev--high { background: #4f1f2a; color: #ffd0d9; }
+.cd-mcp-sev--medium, .cd-mcp-sev--policy { background: #4a3a14; color: #ffe2a6; }
+.cd-mcp-sev--low, .cd-mcp-sev--info { background: #173a52; color: #cfe8ff; }
+
+@media (max-width: 30rem) {
+	.cd-mcp-server { padding: .75rem; }
+	.cd-mcp-modes { padding: .6rem .75rem; }
+}
+@media (forced-colors: active) { .cd-mcp-sev { forced-color-adjust: none; outline: 1px solid CanvasText; } }

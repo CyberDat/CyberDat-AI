@@ -1,0 +1,50 @@
+test_actual_123_file_package_install_and_rollback (safe_tests.ReleaseTests.test_actual_123_file_package_install_and_rollback) ... ok
+test_archive_build_is_reproducible (safe_tests.ReleaseTests.test_archive_build_is_reproducible) ... ok
+test_archive_checksum_failure_before_backup (safe_tests.ReleaseTests.test_archive_checksum_failure_before_backup) ... ok
+test_atomic_exchange_failure_keeps_base (safe_tests.ReleaseTests.test_atomic_exchange_failure_keeps_base) ... ok
+test_backup_tampering_blocks_rollback (safe_tests.ReleaseTests.test_backup_tampering_blocks_rollback) ... ok
+test_crash_after_active (safe_tests.ReleaseTests.test_crash_after_active) ... ok
+test_crash_after_backup (safe_tests.ReleaseTests.test_crash_after_backup) ... ok
+test_crash_after_exchange (safe_tests.ReleaseTests.test_crash_after_exchange) ... ok
+test_crash_after_extract (safe_tests.ReleaseTests.test_crash_after_extract) ... ok
+test_crash_after_lint (safe_tests.ReleaseTests.test_crash_after_lint) ... ok
+test_crash_after_verify (safe_tests.ReleaseTests.test_crash_after_verify) ... ok
+test_crash_before_exchange (safe_tests.ReleaseTests.test_crash_before_exchange) ... ok
+test_failure_after_active (safe_tests.ReleaseTests.test_failure_after_active) ... ok
+test_failure_after_backup (safe_tests.ReleaseTests.test_failure_after_backup) ... ok
+test_failure_after_exchange (safe_tests.ReleaseTests.test_failure_after_exchange) ... ok
+test_failure_after_extract (safe_tests.ReleaseTests.test_failure_after_extract) ... ok
+test_failure_after_lint (safe_tests.ReleaseTests.test_failure_after_lint) ... ok
+test_failure_after_verify (safe_tests.ReleaseTests.test_failure_after_verify) ... ok
+test_failure_before_exchange (safe_tests.ReleaseTests.test_failure_before_exchange) ... ok
+test_group_writable_file_rejected (safe_tests.ReleaseTests.test_group_writable_file_rejected) ... ok
+test_install_authorization_requires_exact_package_and_future_approval (safe_tests.ReleaseTests.test_install_authorization_requires_exact_package_and_future_approval) ... ok
+test_install_rollback_restores_pages_before_theme (safe_tests.ReleaseTests.test_install_rollback_restores_pages_before_theme) ... ok
+test_journal_permissions_block_rollback (safe_tests.ReleaseTests.test_journal_permissions_block_rollback) ... ok
+test_legacy_interlock_aborts_before_old_code (safe_tests.ReleaseTests.test_legacy_interlock_aborts_before_old_code) ... ok
+test_legacy_interlock_adoption_is_required (safe_tests.ReleaseTests.test_legacy_interlock_adoption_is_required) ... ok
+test_live_path_never_absent_during_repeated_real_exchanges (safe_tests.ReleaseTests.test_live_path_never_absent_during_repeated_real_exchanges) ... ok
+test_mandatory_real_php_lint_blocks_syntax_error (safe_tests.ReleaseTests.test_mandatory_real_php_lint_blocks_syntax_error) ... ok
+test_php_staging_contract_positive_and_each_wrong_field (safe_tests.ReleaseTests.test_php_staging_contract_positive_and_each_wrong_field) ... ok
+test_prepared_cli_context_has_same_sandbox_and_private_helpers (safe_tests.ReleaseTests.test_prepared_cli_context_has_same_sandbox_and_private_helpers) ... ok
+test_private_directory_rejected_as_live_theme (safe_tests.ReleaseTests.test_private_directory_rejected_as_live_theme) ... ok
+test_protected_drift_blocks_rollback (safe_tests.ReleaseTests.test_protected_drift_blocks_rollback) ... ok
+test_reapply_refused (safe_tests.ReleaseTests.test_reapply_refused) ... ok
+test_rollback_crash_after_pages_restore (safe_tests.ReleaseTests.test_rollback_crash_after_pages_restore) ... ok
+test_rollback_crash_after_rollback_exchange (safe_tests.ReleaseTests.test_rollback_crash_after_rollback_exchange) ... ok
+test_rollback_crash_before_pages_restore (safe_tests.ReleaseTests.test_rollback_crash_before_pages_restore) ... ok
+test_route_policy_all_four_published_and_planned (safe_tests.ReleaseTests.test_route_policy_all_four_published_and_planned) ... ok
+test_route_policy_available_but_unpublished_requires_404 (safe_tests.ReleaseTests.test_route_policy_available_but_unpublished_requires_404) ... ok
+test_route_policy_planned_200_is_failure (safe_tests.ReleaseTests.test_route_policy_planned_200_is_failure) ... ok
+test_symlink_rejected (safe_tests.ReleaseTests.test_symlink_rejected) ... ok
+test_tar_link_traversal_and_duplicate_rejected (safe_tests.ReleaseTests.test_tar_link_traversal_and_duplicate_rejected) ... ok
+test_tar_valid_count_with_hostile_member_rejected_before_extract (safe_tests.ReleaseTests.test_tar_valid_count_with_hostile_member_rejected_before_extract) ... ok
+test_unexpected_empty_directory_rejected (safe_tests.ReleaseTests.test_unexpected_empty_directory_rejected) ... ok
+test_unexpected_file_rejected (safe_tests.ReleaseTests.test_unexpected_file_rejected) ... ok
+test_unknown_editor_edits_block_without_switching_theme (safe_tests.ReleaseTests.test_unknown_editor_edits_block_without_switching_theme) ... ok
+test_wrong_identity_blocks_before_writes (safe_tests.ReleaseTests.test_wrong_identity_blocks_before_writes) ... ok
+
+----------------------------------------------------------------------
+Ran 45 tests in 2.974s
+
+OK

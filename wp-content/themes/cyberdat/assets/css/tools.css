@@ -36,3 +36,14 @@
 .tools-card-release { margin: 0; padding-top: 1rem; border-top: 1px solid var(--cd-border); color: var(--cd-muted); font: .6875rem var(--cd-mono); }
 @media (min-width: 42rem) { .tools-roadmap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 70rem) { .tools-roadmap-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Release 1.1 catalogue: available vs coming soon (status is also spelled out in text). */
+.tools-roadmap-card { position: relative; }
+.tools-roadmap-card:not(.is-available) .tools-status { color: var(--cd-muted); background: var(--cd-surface); border-color: var(--cd-border); }
+.tools-roadmap-card.is-available { border-top-color: var(--cd-accent); }
+.tools-card-link { color: inherit; text-decoration: none; }
+.tools-card-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.tools-card-link:hover { color: var(--cd-accent); }
+.tools-card-link:focus-visible { outline: none; }
+.tools-roadmap-card:focus-within { outline: 2px solid var(--cd-accent); outline-offset: 4px; }
+.tools-catalog-more { margin: 1.5rem 0 0; color: var(--cd-muted); font: .8125rem var(--cd-mono); }

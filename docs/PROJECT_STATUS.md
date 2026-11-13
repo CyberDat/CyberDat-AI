@@ -2,10 +2,39 @@
 
 Last updated: 2026-11-13
 Repository: CyberDat/CyberDat-AI
-Current stage: **Research Agent 0.8.3 — PARTIAL; staging fixes/tests complete, final scheduled recovery UNVERIFIED. Content Stage 1.1 retained.**
+Current stage: **Tools Release 1 safe preparation — PARTIAL; no staging installation authorized. Installed Research0ef03e9/Content unchanged; Research recovery limits retained below.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
+
+## Tools Release 1 safe deployment preparation — 2026-11-13
+
+Owner D3 preserves installed Research acceptance0ef03e9. D1 authorizes preparation,
+not installation. Branch `feat/tools-release-1-safe-deployment` starts from0ef03e9
+and imports only the exact Tools theme from cd7df0c/eb9de8d:123 files,4 modified
+and28 added over verified95-file staging base. Research/Content code stays at the
+Research acceptance tree; no merge into main, staging writes or production access.
+
+Prepared deterministic theme-only archive, full95/123 SHA256/mode/file-set manifests,
+mandatory PHP lint, RENAME_EXCHANGE with private retained theme and journal/recovery,
+staging identity/capability/expiring authorization gates, existing WP-CLI sandbox,
+and selective page/meta/revision rollback before theme restoration. No full SQL
+restore, collector/timer changes or page publication. Independent route policy
+requires HTTP200 plus renderer/HTML marker for published tools; planned and
+unpublished routes stay404, including old alias/backlog URLs.
+
+Prepared11 legacy pre-execution interlocks and a shared deployment lock; these are
+patch artifacts, NOT applied to Research deployment scripts or installed copies.
+New installer refuses until adoption. Arbitrary root execution outside controlled
+entry points cannot be prevented. Existing Research0.8.3 rollback hash guards
+remain immutable and will refuse the Tools tree pending a separate rollback review.
+
+Offline/sandbox acceptance and limitations are in
+[Tools report](../deploy/tools-release-1/REPORT.md). Real WordPress selective SQL
+restore, FPM/OPcache/HTTP/browser acceptance and legacy-interlock adoption remain
+UNVERIFIED. Pending installation approval plus D2/D4-D9/D11/D14/D15 remain explicit
+in DECISIONS.md; no decision was invented. No staging backup was made because
+no live change occurred. Work stops after preparation; no automatic next stage.
 
 ## Research 0.8.3 acceptance — 2026-11-13 15:13:44 UTC
 

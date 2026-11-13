@@ -1,0 +1,78 @@
+/* Shared CyberDat tool workspace (.cd-la-* components): panels, buttons, callouts, tables, info blocks.
+ * Used by every tool page. Moved unchanged from log-anonymizer.css; class names kept for compatibility. */
+.cd-la { display: grid; gap: 1.25rem; font-size: 1rem; }
+.cd-la-app { display: grid; gap: 1.25rem; min-width: 0; }
+.cd-la h2 { margin: 0 0 .75rem; font-size: clamp(1.15rem, 2.4vw, 1.4rem); }
+.cd-la-subheading { margin: 1.5rem 0 .5rem; font-size: 1.05rem; }
+.cd-la-step { display: flex; align-items: center; gap: .65rem; }
+.cd-la-step > span { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 2rem; height: 2rem; border-radius: 50%; background: #132d29; border: 1px solid #285648; color: var(--cd-accent); font: 600 .9rem var(--cd-mono); }
+.cd-la-step:focus { outline: none; }
+.cd-la-step:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 4px; }
+.cd-la-panel { min-width: 0; padding: clamp(1rem, 2.5vw, 1.5rem); background: var(--cd-raised); border: 1px solid var(--cd-border); border-radius: var(--cd-radius); }
+.cd-la-label { display: block; margin-bottom: .35rem; font-weight: 600; }
+.cd-la-help, .cd-la-source, .cd-la-meta { margin: .5rem 0 0; color: var(--cd-muted); font-size: .875rem; line-height: 1.6; }
+.cd-la-source:empty { display: none; }
+.cd-la-meta { font-family: var(--cd-mono); font-size: .75rem; }
+.cd-la-input { display: block; width: 100%; min-height: 14rem; resize: vertical; font: .8125rem/1.55 var(--cd-mono); white-space: pre; overflow-wrap: normal; overflow-x: auto; tab-size: 4; border-color: var(--cd-muted); }
+.cd-la-input.is-dragover { border-color: var(--cd-accent); box-shadow: 0 0 0 2px var(--cd-accent); }
+.cd-la-text[aria-invalid="true"], .cd-la-input[aria-invalid="true"] { border-color: #ff8f8f; }
+
+.cd-la-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: 1rem; }
+.cd-la-row--compact { margin-top: .75rem; }
+.cd-la-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .5rem 1rem; border-radius: .4rem; font-size: .9rem; font-weight: 650; line-height: 1.2; text-align: center; cursor: pointer; }
+.cd-la-button--primary { background: var(--cd-accent); border: 1px solid var(--cd-accent); color: var(--cd-bg); }
+.cd-la-button--secondary { background: var(--cd-surface); border: 1px solid var(--cd-accent); color: var(--cd-accent); }
+.cd-la-button--ghost { background: transparent; border: 1px solid var(--cd-border); color: var(--cd-text); }
+.cd-la-button:hover:not(:disabled) { filter: brightness(1.12); }
+.cd-la-button:disabled { cursor: not-allowed; opacity: .55; }
+
+/* Native file input stays focusable and operable; the visible label mirrors it. */
+.cd-la-file { position: relative; display: inline-flex; }
+.cd-la-file__input { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; padding: 0; opacity: 0; cursor: pointer; }
+.cd-la-file:focus-within .cd-la-button { outline: 2px solid var(--cd-accent); outline-offset: 4px; }
+
+.cd-la-fieldset { min-width: 0; margin: 0 0 1.25rem; padding: 0; border: 0; }
+.cd-la-fieldset legend { padding: 0; margin-bottom: .6rem; font-weight: 600; }
+.cd-la-checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: .25rem 1rem; }
+.cd-la-check { display: flex; align-items: flex-start; gap: .6rem; min-height: 44px; padding-block: .55rem; line-height: 1.45; cursor: pointer; }
+.cd-la-check input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; min-height: 0; margin: .15rem 0 0; padding: 0; accent-color: var(--cd-accent); }
+.cd-la-check--standalone { margin-top: .25rem; }
+.cd-la-check--standalone + .cd-la-help { margin-bottom: 1.5rem; }
+.cd-la-example { display: block; margin-top: .15rem; color: var(--cd-muted); font: .75rem var(--cd-mono); overflow-wrap: anywhere; }
+
+.cd-la-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.cd-la-progress { flex: 1 1 10rem; height: .6rem; accent-color: var(--cd-accent); }
+.cd-la-status { min-height: 1.5em; margin: 0; color: var(--cd-text); font-size: .9rem; }
+
+.cd-la-callout { margin: 0; padding: .8rem 1rem; border-radius: .5rem; border: 1px solid var(--cd-border); border-inline-start-width: 3px; background: var(--cd-surface); font-size: .9rem; line-height: 1.6; }
+.cd-la-callout--privacy { border-inline-start-color: var(--cd-accent); }
+.cd-la-callout--warning { border-inline-start-color: var(--cd-warning); }
+.cd-la-callout--warning strong { color: var(--cd-warning); }
+.cd-la-callout--error { border-color: #7a3434; border-inline-start-color: #ff8f8f; background: #2a1517; color: #ffd6d6; }
+
+.cd-la-summary { margin: 0 0 .75rem; }
+.cd-la-notes { margin: 0 0 1rem; padding-inline-start: 1.2rem; color: var(--cd-warning); font-size: .875rem; }
+.cd-la-table-wrap { overflow-x: auto; }
+.cd-la-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.cd-la-table caption { margin-bottom: .5rem; color: var(--cd-muted); text-align: start; font-size: .8125rem; }
+.cd-la-table th, .cd-la-table td { padding: .5rem .65rem; border: 1px solid var(--cd-border); text-align: start; font-weight: 400; overflow-wrap: normal; word-break: normal; }
+.cd-la-table th { white-space: nowrap; }
+.cd-la-table thead th { color: var(--cd-muted); font-weight: 600; }
+.cd-la-table td { font-family: var(--cd-mono); white-space: nowrap; }
+
+.cd-la-preview { max-height: 28rem; margin: .5rem 0 0; padding: 1rem; overflow: auto; background: var(--cd-bg); border: 1px solid var(--cd-border); border-radius: .5rem; color: var(--cd-text); font: .8125rem/1.6 var(--cd-mono); white-space: pre; overflow-wrap: normal; tab-size: 4; }
+
+.cd-la-info { display: grid; gap: 0 2rem; padding-top: .5rem; }
+.cd-la-info section { margin-block: 1rem 0; }
+.cd-la-info ol, .cd-la-info ul { margin: 0; padding-inline-start: 1.25rem; color: var(--cd-text); font-size: .9375rem; line-height: 1.7; }
+.cd-la-info li + li { margin-top: .4rem; }
+
+.cd-la-offscreen { position: fixed; top: 0; left: -10000px; width: 1px; height: 1px; opacity: 0; }
+
+@media (max-width: 30rem) {
+	.cd-la-panel { padding: .85rem .75rem; }
+	.cd-la-table th, .cd-la-table td { padding: .45rem .5rem; }
+	.cd-la-row .cd-la-button, .cd-la-row .cd-la-file, .cd-la-actions .cd-la-button { flex: 1 1 100%; }
+	.cd-la-file .cd-la-button { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .cd-la * { transition: none !important; } }

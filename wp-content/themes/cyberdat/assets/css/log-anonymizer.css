@@ -1,0 +1,25 @@
+/* Privacy Shield Log Anonymizer: tool-specific styles only. Shared components live in tools-common.css. */
+.cd-la-text { width: 100%; font-family: var(--cd-mono); font-size: .875rem; }
+.cd-la-rules { display: grid; gap: .75rem; margin: .75rem 0 1rem; padding: 0; list-style: none; }
+.cd-la-rules:empty { display: none; }
+.cd-la-rule { display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem .9rem; align-items: end; padding: .9rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-radius: .5rem; }
+.cd-la-rule__field { min-width: 0; }
+.cd-la-field-error { margin: .35rem 0 0; color: #ffb4b4; font-size: .8125rem; }
+@media (min-width: 40rem) {
+	.cd-la-rule { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+	.cd-la-rule__case { grid-column: 1; }
+	.cd-la-rule [data-la-remove-rule] { grid-column: 2; justify-self: end; }
+}
+.cd-la-swatch { display: inline-block; width: .75rem; height: .75rem; margin-inline-end: .5rem; border-radius: 2px; vertical-align: -.05em; }
+.cd-la-mark { padding: 0 .15em; border-radius: 3px; color: var(--cd-text); background: #1d4a40; box-shadow: inset 0 -2px 0 var(--cd-accent); }
+.cd-la-mark--ipv4, .cd-la-mark--ipv6, .cd-la-mark--mac, .cd-la-mark--host { background: #173a52; box-shadow: inset 0 -2px 0 var(--cd-secondary); }
+.cd-la-mark--email, .cd-la-mark--username, .cd-la-mark--card, .cd-la-mark--ssn { background: #4a3a14; box-shadow: inset 0 -2px 0 var(--cd-warning); }
+.cd-la-mark--secret, .cd-la-mark--apiKey, .cd-la-mark--jwt, .cd-la-mark--auth, .cd-la-mark--privateKey { background: #4f1f2a; box-shadow: inset 0 -2px 0 #ff8fa3; }
+.cd-la-mark--custom { background: #33264f; box-shadow: inset 0 -2px 0 #c7a6ff; }
+.cd-la-swatch.cd-la-mark--ipv4, .cd-la-swatch.cd-la-mark--ipv6, .cd-la-swatch.cd-la-mark--mac, .cd-la-swatch.cd-la-mark--host { background: var(--cd-secondary); }
+.cd-la-swatch.cd-la-mark--email, .cd-la-swatch.cd-la-mark--username, .cd-la-swatch.cd-la-mark--card, .cd-la-swatch.cd-la-mark--ssn { background: var(--cd-warning); }
+.cd-la-swatch.cd-la-mark--secret, .cd-la-swatch.cd-la-mark--apiKey, .cd-la-swatch.cd-la-mark--jwt, .cd-la-swatch.cd-la-mark--auth, .cd-la-swatch.cd-la-mark--privateKey { background: #ff8fa3; }
+.cd-la-swatch.cd-la-mark--custom { background: #c7a6ff; }
+.cd-la-map { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--cd-border); }
+.cd-la-map .cd-la-callout { margin-bottom: .5rem; }
+@media (forced-colors: active) { .cd-la-mark { forced-color-adjust: none; outline: 1px solid CanvasText; } }

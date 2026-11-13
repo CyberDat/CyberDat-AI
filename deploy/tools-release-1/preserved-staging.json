@@ -1,0 +1,9 @@
+{
+  "utc": "2026-11-13T16:21:27.093038+00:00",
+  "scope": "read-only file hashing only; no WordPress bootstrap, SQL, timer or HTTP operation",
+  "live_theme95_sha256_match": true,
+  "protected43_match": true,
+  "drift_paths": [],
+  "staging_writes": false,
+  "production_access": false
+}

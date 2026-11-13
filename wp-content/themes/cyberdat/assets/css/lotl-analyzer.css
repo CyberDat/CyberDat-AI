@@ -1,0 +1,54 @@
+/* LotL / LOLBAS Command Analyzer — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-lotl-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-lotl-verdict--high { border-inline-start-color: #ff8fa3; }
+.cd-lotl-verdict--high strong { color: #ffb3c0; }
+.cd-lotl-verdict--medium { border-inline-start-color: var(--cd-warning); }
+.cd-lotl-verdict--medium strong { color: var(--cd-warning); }
+.cd-lotl-verdict--low, .cd-lotl-verdict--info, .cd-lotl-verdict--none { border-inline-start-color: var(--cd-secondary); }
+
+.cd-lotl-commands { display: grid; gap: 1rem; margin: .5rem 0 1rem; padding: 0; list-style: none; }
+.cd-lotl-command { min-width: 0; padding: .9rem 1rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; }
+.cd-lotl-command--high { border-inline-start-color: #ff8fa3; }
+.cd-lotl-command--medium { border-inline-start-color: var(--cd-warning); }
+.cd-lotl-command--low, .cd-lotl-command--info { border-inline-start-color: var(--cd-secondary); }
+.cd-lotl-command p { margin: .45rem 0 0; }
+.cd-lotl-command__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 0 .5rem !important; font-size: .875rem; }
+.cd-lotl-code { font: .8125rem/1.6 var(--cd-mono); white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.cd-lotl-command__text { display: block; padding: .5rem .65rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-radius: .4rem; color: var(--cd-text); }
+.cd-lotl-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-lotl-detail { font-size: .875rem; overflow-wrap: anywhere; }
+.cd-lotl-desc { font-size: .9rem; }
+
+.cd-lotl-binary, .cd-lotl-decoded { margin-top: .9rem; padding-top: .75rem; border-top: 1px solid var(--cd-border); }
+.cd-lotl-binary__name { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0; font-size: 1rem; }
+.cd-lotl-functions { font-size: .875rem; }
+.cd-lotl-fn { font-family: var(--cd-mono); font-size: .8125rem; }
+.cd-lotl-matches { display: grid; gap: .5rem; margin: .4rem 0 0; padding: 0; list-style: none; }
+.cd-lotl-match { padding: .6rem .75rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-radius: .4rem; font-size: .9rem; }
+.cd-lotl-match p { margin: .3rem 0 0; overflow-wrap: anywhere; }
+.cd-lotl-match__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 !important; }
+.cd-lotl-hints { margin-top: .6rem; font-size: .875rem; }
+.cd-lotl-hints summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; }
+.cd-lotl-hints summary:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-lotl-hints ul { margin: .25rem 0 .5rem; padding-inline-start: 1.2rem; }
+.cd-lotl-refs a, .cd-lotl-entry a { overflow-wrap: anywhere; }
+.cd-lotl-pre { max-height: 14rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.cd-lotl-heuristics { display: grid; gap: .5rem; margin: .9rem 0 0; padding: 0; list-style: none; }
+.cd-lotl-heuristic { padding: .6rem .75rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-radius: .4rem; }
+.cd-lotl-heuristic p { margin: .3rem 0 0; }
+.cd-lotl-heuristic__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 !important; }
+
+.cd-lotl-sev { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.cd-lotl-sev--high { background: #4f1f2a; color: #ffd0d9; }
+.cd-lotl-sev--medium { background: #4a3a14; color: #ffe2a6; }
+.cd-lotl-sev--low, .cd-lotl-sev--info { background: #173a52; color: #cfe8ff; }
+.cd-lotl-sev--none { background: var(--cd-raised); color: var(--cd-text); border: 1px solid var(--cd-border); }
+.cd-lotl-tag { display: inline-block; padding: .05rem .45rem; border-radius: .3rem; font-size: .7rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; border: 1px solid var(--cd-border); }
+.cd-lotl-tag--lolbas { color: #cfe8ff; background: #10283a; }
+.cd-lotl-tag--heuristic { color: #e6dcff; background: #2a2142; }
+
+@media (max-width: 30rem) {
+	.cd-lotl-command { padding: .75rem; }
+}
+@media (forced-colors: active) { .cd-lotl-sev, .cd-lotl-tag { forced-color-adjust: none; outline: 1px solid CanvasText; } }

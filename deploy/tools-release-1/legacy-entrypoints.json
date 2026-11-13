@@ -1,0 +1,30 @@
+{
+  "status": "NOT_APPLIED",
+  "repository_scripts": [
+    "deploy/research/update-research.py",
+    "deploy/research/resume-research.py",
+    "deploy/research/finish-research.py",
+    "deploy/research/check-dashboard.py",
+    "deploy/research/deploy-dashboard.py",
+    "deploy/research/deploy-charts.py",
+    "deploy/research/deploy-threat-2.py",
+    "deploy/home-pulse/deploy-pulse.py",
+    "deploy/analytics-2.1/deploy-analytics.py",
+    "deploy/staging/update-tools-ui.py",
+    "deploy/staging/update-seo-0.7.py"
+  ],
+  "installed_paths": [
+    "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/update-research.py",
+    "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/resume-research.py",
+    "/home/cyberdat/cyberdat-deploy/research-0.8.1-prepared/finish-research.py",
+    "/home/cyberdat/cyberdat-deploy/dashboard-proof-prepared/check-dashboard.py",
+    "/home/cyberdat/cyberdat-deploy/dashboard-1.0-prepared/deploy-dashboard.py",
+    "/home/cyberdat/cyberdat-deploy/dashboard-1.1-prepared/deploy-charts.py",
+    "/home/cyberdat/cyberdat-deploy/threat-2.0-prepared/deploy-threat-2.py",
+    "/home/cyberdat/cyberdat-deploy/home-pulse-2.0-prepared/deploy-pulse.py",
+    "/home/cyberdat/cyberdat-deploy/analytics-2.1-prepared/deploy-analytics.py",
+    "/home/cyberdat/cyberdat-deploy/tools-ui-prepared/update-tools-ui.py",
+    "/home/cyberdat/cyberdat-deploy/seo-0.7-prepared/update-seo-0.7.py"
+  ],
+  "root_cannot_be_constrained": "Arbitrary root execution outside the controlled deployment process is not prevented by a userspace interlock."
+}

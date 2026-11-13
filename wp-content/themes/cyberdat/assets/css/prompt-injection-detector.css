@@ -1,0 +1,63 @@
+/* Indirect Prompt Injection Sanitizer & Detector — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-pi-options-help { margin: -.25rem 0 1rem; }
+.cd-pi-large { margin-top: 1rem; }
+
+.cd-pi-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-pi-verdict--high { border-inline-start-color: #ff8fa3; }
+.cd-pi-verdict--high strong { color: #ffb3c0; }
+.cd-pi-verdict--medium { border-inline-start-color: var(--cd-warning); }
+.cd-pi-verdict--medium strong { color: var(--cd-warning); }
+.cd-pi-verdict--low, .cd-pi-verdict--none { border-inline-start-color: var(--cd-secondary); }
+
+.cd-pi-table td, .cd-pi-decoded td { font-family: var(--cd-mono); }
+.cd-pi-count--high { color: #ffb3c0; font-weight: 700; }
+.cd-pi-count--medium { color: var(--cd-warning); font-weight: 700; }
+.cd-pi-count--low { color: var(--cd-text); font-weight: 700; }
+.cd-pi-decoded td { white-space: normal; }
+.cd-pi-decoded-text code { overflow-wrap: anywhere; white-space: pre-wrap; font-size: .8125rem; }
+.cd-pi-flag { margin-inline-start: .5rem; }
+
+.cd-pi-findings { display: grid; gap: .75rem; margin: .5rem 0 0; padding: 0; list-style: none; }
+.cd-pi-finding { min-width: 0; padding: .85rem 1rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; }
+.cd-pi-finding--high { border-inline-start-color: #ff8fa3; }
+.cd-pi-finding--medium { border-inline-start-color: var(--cd-warning); }
+.cd-pi-finding--low { border-inline-start-color: var(--cd-secondary); }
+.cd-pi-finding p { margin: 0; }
+.cd-pi-finding p + p { margin-top: .45rem; }
+.cd-pi-finding__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; font-size: .875rem; }
+.cd-pi-finding__title { font-weight: 650; }
+.cd-pi-finding__detail { color: var(--cd-text); font-size: .875rem; overflow-wrap: anywhere; }
+.cd-pi-finding__why, .cd-pi-pos, .cd-pi-group { color: var(--cd-muted); font-size: .875rem; line-height: 1.6; }
+.cd-pi-rule { font: .8125rem var(--cd-mono); color: var(--cd-text); }
+.cd-pi-sev { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.cd-pi-sev--high { background: #4f1f2a; color: #ffd0d9; }
+.cd-pi-sev--medium { background: #4a3a14; color: #ffe2a6; }
+.cd-pi-sev--low { background: #173a52; color: #cfe8ff; }
+.cd-pi-excerpt code { display: block; padding: .5rem .65rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-radius: .4rem; font: .8125rem/1.6 var(--cd-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cd-pi-show { min-height: 44px; margin-top: .6rem; }
+
+.cd-pi-mark { padding: 0 .1em; border-radius: 3px; color: var(--cd-text); }
+.cd-pi-mark--high { background: #4f1f2a; box-shadow: inset 0 -2px 0 #ff8fa3; }
+.cd-pi-mark--medium { background: #4a3a14; box-shadow: inset 0 -2px 0 var(--cd-warning); }
+.cd-pi-mark--low { background: #173a52; box-shadow: inset 0 -2px 0 var(--cd-secondary); }
+.cd-pi-mark:focus { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+
+.cd-pi-norm { margin: .5rem 0 1rem; padding-inline-start: 1.2rem; font-size: .9rem; line-height: 1.6; }
+.cd-pi-norm li + li { margin-top: .3rem; }
+.cd-pi-preview, .cd-pi-diff { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.cd-pi-change { border-radius: 3px; }
+.cd-pi-del { color: #ffd0d9; background: #3d1820; text-decoration: line-through; text-decoration-thickness: 1px; }
+.cd-pi-ins { color: #d4f5e6; background: #12382c; text-decoration: underline; text-underline-offset: 2px; }
+.cd-pi-sign { display: inline-block; padding-inline: .15em; font-weight: 700; text-decoration: none; }
+
+.cd-pi-groups-list { margin: .4rem 0 0; padding-inline-start: 1.1rem; }
+
+@media (max-width: 30rem) {
+	.cd-pi-finding { padding: .75rem; }
+	.cd-pi-show { width: 100%; }
+}
+@media (forced-colors: active) {
+	.cd-pi-mark, .cd-pi-sev { forced-color-adjust: none; outline: 1px solid CanvasText; }
+	.cd-pi-del, .cd-pi-ins { forced-color-adjust: auto; }
+}
