@@ -13,9 +13,12 @@ FILES={'deploy-theme.py','safe_theme.py','legacy_guard.py','route_policy.py','st
 SLUGS=['log-anonymizer','prompt-injection-detector','lotl-command-analyzer','mcp-security-checker']
 def build_package(parent_dir,commit,git_file,out):
  need(not out.exists(),'fresh output required')
- need(digest(parent_dir/'theme.tar.gz')==live.INTEGRATION_PARENT_ARCHIVE and digest(parent_dir/'package.json')==live.INTEGRATION_PARENT_PACKAGE,'parent artifact mismatch')
+ canonical=digest(parent_dir/'theme.tar.gz')==live.CANONICAL_PARENT_ARCHIVE
+ parent_archive=live.CANONICAL_PARENT_ARCHIVE if canonical else live.INTEGRATION_PARENT_ARCHIVE
+ parent_package=live.CANONICAL_PARENT_PACKAGE if canonical else live.INTEGRATION_PARENT_PACKAGE
+ need(digest(parent_dir/'theme.tar.gz')==parent_archive and digest(parent_dir/'package.json')==parent_package,'parent artifact mismatch')
  parent=json.loads((parent_dir/'package.json').read_text());theme=HERE.parent.parent/'wp-content/themes/cyberdat';target=manifest(theme)
- spec={**parent,'revision':live.INTEGRATION_REVISION,'parent_archive_sha256':live.INTEGRATION_PARENT_ARCHIVE,'base':parent['target'],'target':target,'theme_commit':commit}
+ spec={**parent,'revision':live.CANONICAL_REVISION if canonical else live.INTEGRATION_REVISION,'parent_archive_sha256':parent_archive,'base':parent['target'],'target':target,'theme_commit':commit}
  need(live.approved_release(spec,parent),'unapproved theme delta')
  git=json.loads(git_file.read_text());expected={x['path'].split('wp-content/themes/cyberdat/',1)[1]:x['sha'] for x in git['tree'] if x['type']=='blob' and x['path'].startswith('wp-content/themes/cyberdat/')}
  need(set(expected)==set(target),'theme Git file-set mismatch')
@@ -30,11 +33,12 @@ def build_controls(approval,package,authorization,out):
  for n,h in pins['files'].items():
   p=HERE/n;need(p.is_file() and not p.is_symlink(),'unsafe source');b=p.read_bytes();need(hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==h,'unreviewed control: '+n)
   if p.suffix=='.py':compile(b,str(p),'exec')
- need(digest(package/'parent-package.json')==live.INTEGRATION_PARENT_PACKAGE,'parent package mismatch')
+ spec=json.loads((package/'package.json').read_text());canonical=spec.get('revision')==live.CANONICAL_REVISION
+ need(digest(package/'parent-package.json')==(live.CANONICAL_PARENT_PACKAGE if canonical else live.INTEGRATION_PARENT_PACKAGE),'parent package mismatch')
  spec=json.loads((package/'package.json').read_text());parent=json.loads((package/'parent-package.json').read_text());need(live.approved_release(spec,parent),'unapproved delta');need(digest(package/'theme.tar.gz')==spec['archive_sha256'],'archive changed')
  a=json.loads(authorization.read_text());need(a['origin']==live.ORIGIN and a['research_commit']==live.RESEARCH and a['artifact_sha256']==spec['archive_sha256'] and a['package_sha256']==digest(package/'package.json'),'authorization mismatch')
  need(a['install_approved'] is True and a['legacy_interlocks_approved'] is True and all(a['decisions'].get(x) is True for x in ['D2','D4','D5','D6','D7','D8','D9','D11']),'owner decisions missing')
- need(time.time()<a['expires_epoch']<=time.time()+86400 and a['page_approvals']=={m:SLUGS for m in ['draft','reviewed','publish']},'expiry/page scope mismatch')
+ need(time.time()<a['expires_epoch']<=time.time()+86400 and a['page_approvals']=={m:([] if canonical else SLUGS) for m in ['draft','reviewed','publish']},'expiry/page scope mismatch')
  out.mkdir(mode=0o700);payload={n:(HERE/n).read_bytes() for n in FILES};payload.update({n:(package/n).read_bytes() for n in ['theme.tar.gz','package.json','parent-package.json']});payload['authorization.json']=authorization.read_bytes()
  for n,b in payload.items():(out/n).write_bytes(b);(out/n).chmod(0o640)
  registry={n:digest(out/n) for n in sorted(payload)};save(out/'controls-sha256.json',registry);(out/'controls-sha256.json').chmod(0o640)

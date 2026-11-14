@@ -79,6 +79,9 @@ HUB_REVISION = 'tools-hub-catalog-10-filter-counter/1'
 INTEGRATION_REVISION = 'tools-wordpress-editorial-seo/1'
 INTEGRATION_PARENT_ARCHIVE = '90992a0476df96ef622187ede08bb40638a6024441b13cdbe279008b0912d799'
 INTEGRATION_PARENT_PACKAGE = 'da9a1a4b1847da4633f8d24287946e066510d8734b4c5642c7b32b12028731a5'
+CANONICAL_REVISION = 'tools-staging-rank-math-canonical/1'
+CANONICAL_PARENT_ARCHIVE = 'd7bc61591c833dbfcebb9d4fa02cf06b99dd8ba241c2fa1095763aa1e82e8edc'
+CANONICAL_PARENT_PACKAGE = '98008bd5f9ee98f24da4a56ccf80b47f3b56c37330998005f6cc28bddc4f39fd'
 
 
 def approved_release(spec, parent=None):
@@ -86,6 +89,13 @@ def approved_release(spec, parent=None):
         return False
     if len(spec.get('base', {})) == 95 and 'revision' not in spec:
         return True
+    if spec.get('revision') == CANONICAL_REVISION and parent:
+        before, after = spec.get('base', {}), spec.get('target', {})
+        return (parent.get('archive_sha256') == CANONICAL_PARENT_ARCHIVE
+                and spec.get('parent_archive_sha256') == CANONICAL_PARENT_ARCHIVE
+                and before == parent.get('target') and len(before) == 125
+                and set(before) == set(after)
+                and [n for n in before if before[n] != after[n]] == ['inc/tools.php'])
     if spec.get('revision') == INTEGRATION_REVISION and parent:
         before, after = spec.get('base', {}), spec.get('target', {})
         return (parent.get('archive_sha256') == INTEGRATION_PARENT_ARCHIVE
@@ -106,10 +116,10 @@ def approved_release(spec, parent=None):
 def guard(spec):
     sql_read_identity()
     parent = None
-    if spec.get('revision') in (HUB_REVISION, INTEGRATION_REVISION):
+    if spec.get('revision') in (HUB_REVISION, INTEGRATION_REVISION, CANONICAL_REVISION):
         p = HERE / 'parent-package.json'
         private_root_file(p)
-        need(digest(p) == (INTEGRATION_PARENT_PACKAGE if spec.get('revision') == INTEGRATION_REVISION else PARENT_PACKAGE), 'revision parent package SHA256 mismatch')
+        need(digest(p) == ({HUB_REVISION: PARENT_PACKAGE, INTEGRATION_REVISION: INTEGRATION_PARENT_PACKAGE, CANONICAL_REVISION: CANONICAL_PARENT_PACKAGE}[spec['revision']]), 'revision parent package SHA256 mismatch')
         parent = json.loads(p.read_text())
     need(approved_release(spec, parent), 'wrong pinned release or unapproved hotfix delta')
     protections = json.loads((HERE / 'protected-files.json').read_text())

@@ -224,3 +224,19 @@ function cyberdat_planned_tools() {
     }
     return $catalog;
 }
+
+/** Closed-staging Tools need reviewable canonicals without changing robots policy.
+ * Reuse Rank Math's sole generator only when robots() removed its normal hook.
+ */
+function cyberdat_tools_staging_canonical() {
+	$id = get_queried_object_id();
+	$post = get_post( $id );
+	if ( 'staging' !== wp_get_environment_type() || ! is_singular( 'page' ) || ! $post || 'publish' !== $post->post_status
+		|| ! in_array( $post->post_name, array( 'log-anonymizer', 'prompt-injection-detector', 'lotl-command-analyzer', 'mcp-security-checker' ), true )
+		|| ! cyberdat_tool_ready( $id ) || ! function_exists( 'rank_math' ) ) { return; }
+	$head = rank_math()->head ?? null;
+	if ( $head instanceof \RankMath\Frontend\Head && false === has_action( 'rank_math/head', array( $head, 'canonical' ) ) ) {
+		$head->canonical();
+	}
+}
+add_action( 'rank_math/head', 'cyberdat_tools_staging_canonical', 19 );
