@@ -1,0 +1,31 @@
+{
+  "_note": "DEPENDENT examples, written on 2026-11-14 after the read-only probe found ASCII-only user name classes (sudoUser, sshUser[5], sshUser[6], domainUser). They protect the fix and are not an independent evaluation. Invented names only. NAME is replaced by each name; a case passes when no name (and no partial remainder of it) survives and the line count is unchanged.",
+  "fixed": [
+    { "id": "sudo", "rule": "sudoUser", "text": "Nov 14 10:00:00 web-01 sudo:    NAME : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/bin/ls", "names": ["andrej", "андрей", "jörg", "Ölaf"] },
+    { "id": "sudo-pid", "rule": "sudoUser", "text": "Nov 14 10:00:01 db-02 sudo[4412]: NAME : 3 incorrect password attempts ; TTY=pts/1 ; USER=root", "names": ["olga", "ольга", "müller"] },
+    { "id": "pam-by", "rule": "sshUser[5]", "text": "pam_unix(su:session): session opened for user root(uid=0) by NAME(uid=1000)", "names": ["olga", "ольга", "jürgen"] },
+    { "id": "of-user", "rule": "sshUser[6]", "text": "systemd-logind[512]: Removed session 3 of user NAME.", "names": ["olga", "ольга", "jörg", "Ägidius"] },
+    { "id": "of-user-eol", "rule": "sshUser[6]", "text": "systemd[1]: Stopped User Manager for UID 1000 of user NAME", "names": ["petr", "пётр", "björn"] },
+    { "id": "domain", "rule": "domainUser", "text": "Logon succeeded for CORP\\NAME on host", "names": ["joerg", "jörg", "иван", "Ömer"] },
+    { "id": "domain-double", "rule": "domainUser", "text": "Access denied: CORP\\\\NAME (insufficient rights)", "names": ["anna", "аня", "zoë"] }
+  ],
+  "control": [
+    { "id": "sshd-accepted", "text": "Accepted password for NAME from 203.0.113.5 port 22 ssh2", "names": ["ivan", "иван", "jürgen"] },
+    { "id": "sshd-invalid", "text": "Invalid user NAME from 203.0.113.9 port 4022", "names": ["dmitri", "дмитрий"] },
+    { "id": "kv-user", "text": "level=info user=NAME action=login", "names": ["olga", "Ольга", "Jürgen"] },
+    { "id": "json-user", "text": "{\"user\":\"NAME\",\"event\":\"login\"}", "names": ["petr", "Пётр"] },
+    { "id": "home", "text": "open /home/NAME/report.txt failed", "names": ["andrej", "андрей"] },
+    { "id": "win-profile", "text": "C:\\Users\\NAME\\Documents\\notes.txt", "names": ["joerg", "Jörg"] },
+    { "id": "for-user-uid", "text": "pam_unix(sshd:session): session opened for user NAME(uid=1000) by (uid=0)", "names": ["olga", "ольга"] },
+    { "id": "email", "text": "mail from NAME@example.com rejected", "names": ["juergen", "jürgen"] }
+  ],
+  "added": [
+    { "id": "benutzer-key", "rule": "USER_KEY benutzer", "text": "Benutzer=NAME Aktion=Anmeldung", "names": ["mueller", "müller", "Jörg"] },
+    { "id": "benutzername-key", "rule": "USER_KEY benutzername", "text": "ereignis=login benutzername=NAME status=ok", "names": ["schmidt", "schröder"] }
+  ],
+  "negative": [
+    { "id": "benutzerhandbuch", "text": "Benutzerhandbuch geöffnet, Seite 12", "keep": ["Benutzerhandbuch", "geöffnet"] },
+    { "id": "of-user-prose", "text": "Die Rechte of user groups werden geprüft.", "keep": ["Die Rechte", "werden geprüft"] },
+    { "id": "sudo-prose", "text": "Использовать sudo: только по согласованию", "keep": ["Использовать", "только по согласованию"] }
+  ]
+}
