@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / 'wp-content/themes/cyberdat/assets'
-SLUGS = ['log-anonymizer', 'prompt-injection-detector', 'lotl-command-analyzer', 'mcp-security-checker']
+SLUGS = ['log-anonymizer', 'prompt-injection-detector', 'lotl-command-analyzer', 'mcp-security-checker', 'agent-leak-inspector']
 PAGES = {}
 for slug in SLUGS:
     r = subprocess.run(['/usr/bin/php8.4', str(ROOT / 'tests/tools-sandbox-render.php'), slug], capture_output=True, text=True)

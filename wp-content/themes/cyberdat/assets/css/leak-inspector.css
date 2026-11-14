@@ -1,0 +1,47 @@
+/* System Prompt & Agent Leak Inspector — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-lki-modes { display: grid; gap: .5rem; margin: 0 0 1rem; padding: .75rem 1rem; border: 1px solid var(--cd-border); border-radius: .5rem; }
+.cd-lki-modes legend { padding: 0 .35rem; }
+.cd-lki-mode { display: flex; align-items: flex-start; gap: .6rem; min-height: 44px; padding: .35rem 0; cursor: pointer; line-height: 1.45; }
+.cd-lki-mode input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; margin: .15rem 0 0; accent-color: var(--cd-accent); }
+.cd-lki-mode input:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-lki-leak { margin-top: 1rem; }
+.cd-lki-number { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .5rem; min-height: 44px; font-size: .9rem; }
+.cd-lki-number input { width: 5.5rem; min-height: 44px; padding: .4rem .6rem; background: var(--cd-bg); color: var(--cd-text); border: 1px solid var(--cd-border); border-radius: .4rem; font: inherit; }
+.cd-lki-number input:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+
+.cd-lki-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-lki-verdict--high { border-inline-start-color: #ff8fa3; }
+.cd-lki-verdict--high strong { color: #ffb3c0; }
+.cd-lki-verdict--medium { border-inline-start-color: var(--cd-warning); }
+.cd-lki-verdict--medium strong { color: var(--cd-warning); }
+.cd-lki-verdict--low, .cd-lki-verdict--info, .cd-lki-verdict--none { border-inline-start-color: var(--cd-secondary); }
+
+.cd-lki-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .75rem; margin: .75rem 0; }
+.cd-lki-metric { display: grid; gap: .15rem; padding: .7rem .85rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-radius: .5rem; }
+.cd-lki-metric__value { font-size: 1.4rem; font-weight: 700; color: var(--cd-text); }
+.cd-lki-metric__label { font-size: .875rem; }
+.cd-lki-notes { margin: .5rem 0; padding-inline-start: 1.2rem; font-size: .9rem; color: var(--cd-muted); }
+
+.cd-lki-findings { display: grid; gap: .6rem; margin: .5rem 0 1rem; padding: 0; list-style: none; }
+.cd-lki-finding { min-width: 0; padding: .75rem .9rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-inline-start-width: 4px; border-radius: .5rem; font-size: .9rem; }
+.cd-lki-finding--high { border-inline-start-color: #ff8fa3; }
+.cd-lki-finding--medium { border-inline-start-color: var(--cd-warning); }
+.cd-lki-finding--low, .cd-lki-finding--info { border-inline-start-color: var(--cd-secondary); }
+.cd-lki-finding p { margin: .3rem 0 0; overflow-wrap: anywhere; }
+.cd-lki-finding__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 !important; }
+.cd-lki-code { font: .8125rem/1.6 var(--cd-mono); white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; color: var(--cd-text); }
+.cd-lki-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-lki-label { font-weight: 600; }
+.cd-lki-decoded { display: grid; gap: .4rem; margin: .5rem 0 1rem; padding-inline-start: 1.2rem; font-size: .9rem; }
+.cd-lki-decoded li { overflow-wrap: anywhere; }
+
+.cd-lki-sev { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.cd-lki-sev--high { background: #4f1f2a; color: #ffd0d9; }
+.cd-lki-sev--medium { background: #4a3a14; color: #ffe2a6; }
+.cd-lki-sev--low, .cd-lki-sev--info { background: #173a52; color: #cfe8ff; }
+
+@media (max-width: 30rem) {
+	.cd-lki-finding { padding: .65rem .7rem; }
+	.cd-lki-modes { padding: .6rem .75rem; }
+}
+@media (forced-colors: active) { .cd-lki-sev { forced-color-adjust: none; outline: 1px solid CanvasText; } }
