@@ -119,7 +119,7 @@ $cyberdat_lki = cyberdat_lki_config();
 				<li><?php esc_html_e( 'The prompt audit relies on wording and formats. Unusual secrets, internal names that look ordinary and sensitive rules phrased indirectly can be missed; ordinary text can occasionally match.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Rules cover English, German and Russian. Other languages are checked only for formats such as keys, addresses, phone numbers and encodings.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Decoding covers Base64, hex and URL encoding up to two layers. Other encodings, compression, images and files referenced by the text are not analyzed.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Large inputs are compared within time and size limits; when a limit is reached the results are marked as partial.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Large inputs are checked within limits: the prompt audit rules read the first 200,000 characters, and the leak check compares up to 150,000 prompt words with up to 600,000 response words within about 15 seconds. When a limit is reached, the results say so and are partial.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
 		<section aria-labelledby="cd-lki-sources">
