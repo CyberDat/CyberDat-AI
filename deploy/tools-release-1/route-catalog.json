@@ -56,7 +56,7 @@
     "status": "planned",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Planned heuristic review of system prompts and agent boundaries.",
+    "description": "Local review of system prompts and agent setups for secrets, internal details and weak protections, plus a leak check of responses against your prompt.",
     "icon_path": "M10 4a6 6 0 1 0 0 12a6 6 0 0 0 0-12Z M14.5 14.5 20 20"
   },
   {
