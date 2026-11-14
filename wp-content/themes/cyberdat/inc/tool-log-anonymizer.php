@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_LOG_ANONYMIZER_SLUG = 'log-anonymizer';
 const CYBERDAT_LOG_ANONYMIZER_ENGINE = '1.0.3';
-const CYBERDAT_LOG_ANONYMIZER_RULESET = '2026-11-14.1';
+const CYBERDAT_LOG_ANONYMIZER_RULESET = '2026-11-14.2';
 
 /** True only for the tool page that is a direct child of the published-or-draft /tools/ hub. */
 function cyberdat_log_anonymizer_is_page( $post_id ) {

@@ -23,7 +23,7 @@
 	'use strict';
 
 	const VERSION = '1.0.3';
-	const RULESET_VERSION = '2026-11-14.1';
+	const RULESET_VERSION = '2026-11-14.2';
 	const CHUNK_CHARS = 1 << 20;
 	const MAX_KEY_BLOCK = 65536;
 	const MAX_CUSTOM_RULES = 20;
@@ -191,7 +191,7 @@
 	const KEY_EXCLUDED_PREFIX = /^(?:max|min|num|total|count)/;
 	// "secret_name", "token_id", "api_key_arn" name a secret; they do not contain one.
 	const SECRET_KEY_NOT_VALUE = /(?:name|names|id|ids|arn|ref|label|alias|description|desc|owner)$/;
-	const USER_KEY = /(?:user|username|usr|uname|login|loginname|logonname|account|accountname|acct|owner|principal|samaccountname|upn|userprincipalname|actor|requester|initiator)$/;
+	const USER_KEY = /(?:user|username|usr|uname|login|loginname|logonname|account|accountname|acct|owner|principal|samaccountname|upn|userprincipalname|actor|requester|initiator|benutzer|benutzername)$/;
 	const HOST_KEY = /(?:host|hostname|servername|computer|computername|machinename|nodename|workstation|workstationname|devicename|dvchost|shost|dhost|fqdn|domainname|vhost|sni)$/;
 
 	function classifyKey(key) {
@@ -258,8 +258,9 @@
 			/\bConnection (?:closed|reset) by (?:authenticating|invalid) user ([^\s()\[\];,'"]{1,64}) /gd,
 			/\bfor user ([^\s()\[\];,'"]{1,64})(?=\(|[ \t]+by\b|[ \t]*$|[ \t]*[;,.])/gmd,
 			/\bDisconnected from (?:authenticating |invalid )?user ([^\s()\[\];,'"]{1,64}) /gd,
-			/\bby ([A-Za-z0-9._-]{1,64})\(uid=\d{1,10}\)/gd,
-			/\bof user ([A-Za-z0-9_][A-Za-z0-9._-]{0,63}?)\.?(?=[ \t]|$)/gmd,
+			// User names may contain any letters (Cyrillic, umlauts): Unicode classes with the u flag.
+			/\bby ([\p{L}\p{N}._-]{1,64})\(uid=\d{1,10}\)/gdu,
+			/\bof user ([\p{L}\p{N}_][\p{L}\p{N}._-]{0,63}?)\.?(?=[ \t]|$)/gmdu,
 			/\bnew (?:user|group): name=([^,\s]{1,64})/gd,
 			/\bpassword changed for ([^\s()\[\];,'"]{1,64})/gd,
 			// Apache httpd auth modules: "user bob not found", "user bob: authentication failure".
@@ -272,9 +273,9 @@
 			/\barn:aws[a-z-]{0,12}:(?:iam|sts)::\d{12}:(?:user|federated-user)\/(?:[^\s"',\/]{1,128}\/){0,8}([^\s"',\/]{1,128})/gd,
 			/\barn:aws[a-z-]{0,12}:sts::\d{12}:assumed-role\/[^\s"',\/]{1,128}\/([^\s"',]{1,128})/gd
 		],
-		sudoUser: /\bsudo(?:\[\d{1,10}\])?:[ \t]{1,16}([A-Za-z0-9._-]{1,64})[ \t]{1,4}:/gd,
+		sudoUser: /\bsudo(?:\[\d{1,10}\])?:[ \t]{1,16}([\p{L}\p{N}._-]{1,64})[ \t]{1,4}:/gdu,
 		homePath: /(?:\/home\/|\/Users\/|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|\/)Users(?:\\\\|\\|\/))([^\s\/\\:*?"'<>|,;]{1,64})/gid,
-		domainUser: /(?<![A-Za-z0-9_\\\/:.-])([A-Z][A-Z0-9-]{1,14})\\{1,2}([A-Za-z0-9][A-Za-z0-9._-]{0,63})(?![A-Za-z0-9_\\])/gd,
+		domainUser: /(?<![A-Za-z0-9_\\\/:.-])([A-Z][A-Z0-9-]{1,14})\\{1,2}([\p{L}\p{N}][\p{L}\p{N}._-]{0,63})(?![\p{L}\p{N}_\\])/gdu,
 		syslogHost: /^(?:<\d{1,3}>\d{0,2} ?)?(?:[A-Z][a-z]{2} [ 0-3]\d \d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:?\d{2})?) ([A-Za-z0-9][A-Za-z0-9._-]{0,253}) (?=[A-Za-z0-9_.\/-]{1,64}(?:\[\d{1,10}\])?(?::| - ))/gmd,
 		fqdn: /(?<![A-Za-z0-9_@.-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,126}[A-Za-z]{2,63}\.?(?![A-Za-z0-9_-]|\.[A-Za-z0-9])/g
 	};

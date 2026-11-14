@@ -134,6 +134,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 				<li><?php esc_html_e( 'Tool descriptions and annotations come from the server and may be untrusted. A tool list you paste shows what the server reported at that moment; servers can change their tools later.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Look-alike package detection compares names with a short built-in list of well-known MCP packages. It does not contact npm, PyPI, container registries or MCP registries.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Description poisoning is recognized by wording, markup and hidden characters. Reworded or novel injections can be missed, and legitimate descriptions can occasionally match.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The description-poisoning wording rules are English only. Instructions written in German, Russian or other languages are not recognized by wording; hidden characters and markup are still detected in any language.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Secret detection relies on variable names and known credential formats. Unusual secrets can be missed, and an ordinary value in a variable called “password” is reported as a secret.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>

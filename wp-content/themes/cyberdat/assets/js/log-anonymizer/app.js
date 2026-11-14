@@ -53,6 +53,15 @@
 		map: $('[data-la-map]')
 	};
 
+	// The analysis engine uses regular-expression look-behind (Safari 16.4+, current Edge, Chrome and Firefox).
+	// Without it the worker would fail silently, so the page says so instead of doing nothing.
+	let lookbehindSupported = false;
+	try { lookbehindSupported = new RegExp('(?<![a])b').test('cb'); } catch (e) { lookbehindSupported = false; }
+	if (!lookbehindSupported) {
+		el.unsupported.textContent = 'Browser not supported: this browser lacks a regular-expression feature (look-behind) that the tool needs. Use a current version of Edge, Chrome or Firefox, or Safari 16.4 or later. Nothing was sent anywhere.';
+		el.unsupported.hidden = false;
+		return;
+	}
 	if (typeof Worker !== 'function' || typeof Blob !== 'function' || !window.URL || typeof URL.createObjectURL !== 'function') {
 		el.unsupported.hidden = false;
 		return;
