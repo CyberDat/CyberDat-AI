@@ -73,10 +73,35 @@ def authorize(path, spec, package_path):
     return a
 
 
+PARENT_ARCHIVE = '5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b'
+PARENT_PACKAGE = '3ec45c9198efad34c5a107a58144032bf31a0d32832e2c6dfefba7600516a65e'
+HUB_REVISION = 'tools-hub-catalog-10-filter-counter/1'
+
+
+def approved_release(spec, parent=None):
+    if spec.get('research_commit') != RESEARCH or len(spec.get('target', {})) != 125:
+        return False
+    if len(spec.get('base', {})) == 95 and 'revision' not in spec:
+        return True
+    if spec.get('revision') != HUB_REVISION or not parent:
+        return False
+    before, after = spec.get('base', {}), spec.get('target', {})
+    return (parent.get('archive_sha256') == PARENT_ARCHIVE
+            and spec.get('parent_archive_sha256') == PARENT_ARCHIVE
+            and before == parent.get('target') and len(before) == 125
+            and set(before) == set(after)
+            and [n for n in before if before[n] != after[n]] == ['page-templates/tools.php'])
+
+
 def guard(spec):
     sql_read_identity()
-    need(spec['research_commit'] == RESEARCH and len(spec['base']) == 95 and len(spec['target']) == 125,
-         'wrong pinned release')
+    parent = None
+    if spec.get('revision') == HUB_REVISION:
+        p = HERE / 'parent-package.json'
+        private_root_file(p)
+        need(digest(p) == PARENT_PACKAGE, 'hotfix parent package SHA256 mismatch')
+        parent = json.loads(p.read_text())
+    need(approved_release(spec, parent), 'wrong pinned release or unapproved hotfix delta')
     protections = json.loads((HERE / 'protected-files.json').read_text())
     for name, sha in protections['files'].items():
         p = Path(name)
