@@ -8,7 +8,9 @@ if(fs.existsSync(output))throw Error('Evidence already exists');fs.mkdirSync(out
 (async()=>{const opts={headless:true};if(browserName==='webkit')opts.executablePath=process.env.CYBERDAT_WEBKIT_EXECUTABLE;const browser=await pw[browserName].launch(opts);const rows=[];try{
  for(const scenario of ['CRLF','LF','mixed','CR','inline-boundary','large-file','edit','read-race']){
   const context=await browser.newContext({acceptDownloads:true});const page=await context.newPage();let phase='load';const unexpected=[],errors=[];
-  context.on('request',r=>{const u=new URL(r.url());if(u.origin!==origin||r.method()!=='GET'||r.postData()||(phase!=='load'&&!u.pathname.startsWith('/wp-content/themes/cyberdat/assets/')))unexpected.push({phase,type:r.resourceType()});});
+  // WebKit exposes a local blob download as an XHR request event. A same-origin
+  // blob GET without a body is a required local export, not external transport.
+  context.on('request',r=>{const u=new URL(r.url());const localBlob=r.url().startsWith('blob:'+origin+'/')&&r.method()==='GET'&&!r.postData();if(localBlob)return;if(u.origin!==origin||r.method()!=='GET'||r.postData()||(phase!=='load'&&!u.pathname.startsWith('/wp-content/themes/cyberdat/assets/')))unexpected.push({phase,type:r.resourceType()});});
   await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());page.on('pageerror',()=>errors.push('runtime'));
   await page.goto(origin+'/tools/log-anonymizer/');phase='input';
   let text=scenario==='CRLF'?'first public line\r\nsecond public line\r\n':scenario==='CR'?'first public line\rsecond public line\r':scenario==='mixed'?'one\r\ntwo\nthree\rfour\r\n':'one public line\ntwo public lines\n';

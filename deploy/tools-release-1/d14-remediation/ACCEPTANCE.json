@@ -1,0 +1,186 @@
+{
+  "schema": "cyberdat-d14-remediation/1",
+  "date_europe_berlin": "2026-11-14",
+  "base_commit": "afa0b56fd0db2fe277e4e006231353cf27b89d35",
+  "theme_source_commit": "f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3",
+  "theme_tree": "0324800d705f74da563d371c0f60acde56873dee",
+  "D14": "PASS",
+  "release_readiness": "PARTIAL",
+  "D6": "PARTIAL; legal combined-work/aggregate scope UNVERIFIED",
+  "D1": "NOT_AUTHORIZED",
+  "original_case_count": 40,
+  "original_case_pass": 40,
+  "original_case_fail": 0,
+  "original_expectations_changed": false,
+  "original_case_sha256": "90af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d",
+  "holdout_count": 32,
+  "holdout_pass": 32,
+  "holdout_sha256": "a131afb49d5db4a3b3165143ab1b47af5e90b543a82a67878deffa7817415cbd",
+  "engine_checks": {
+    "log": 61,
+    "injection": 33,
+    "lotl": 20,
+    "mcp": 24
+  },
+  "node_php_privacy_corpus_source_suites": 19,
+  "all_suites_exit_zero": true,
+  "privacy_checks": 9,
+  "frozen_compatibility_vectors": {
+    "log": 4006,
+    "injection": 245,
+    "hashes_unchanged": true,
+    "projection": "Assert new contact-category counts are zero, then omit only those fields; assert current release ruleset, then restore its former metadata label for original frozen hash. No output/finding/offset/count/map/sanitization expectations changed."
+  },
+  "original_33_rule_integrity": {
+    "original_text_rules": 33,
+    "patterns_flags_metadata_and_check_function_source_identical": true,
+    "new_text_rules": [
+      "PI-EXF-010",
+      "PI-OVR-040",
+      "PI-EXT-004",
+      "PI-OVR-031",
+      "PI-EXT-030",
+      "PI-OVR-022",
+      "PI-EXT-021"
+    ],
+    "scanner_context_changes": [
+      "PI-OVR-006 narrow negated meta-address suppression",
+      "Spanish direct negation prefixes no/nunca for negation-enabled rules"
+    ],
+    "fingerprint_including_check_functions": "d261111182d765c9e8203e06388171992c053fb8bbd79b6e2fb26e430fab17e4"
+  },
+  "existing_browser_checks": 174,
+  "file_input_browser_checks": 24,
+  "file_cases": [
+    "CRLF",
+    "LF",
+    "mixed",
+    "CR",
+    "inline-boundary",
+    "large-file",
+    "edit",
+    "read-race"
+  ],
+  "D14_browser_runs": [
+    {
+      "browser": "chromium",
+      "pass": 40,
+      "fail": 0
+    },
+    {
+      "browser": "firefox",
+      "pass": 40,
+      "fail": 0
+    },
+    {
+      "browser": "webkit",
+      "pass": 40,
+      "fail": 0
+    }
+  ],
+  "performance": {
+    "original_limit_ms": 4000,
+    "fresh_process_repeats": [
+      {
+        "tool": "log-anonymizer",
+        "attempt": 1,
+        "ms": 474.079916,
+        "output_length": 786432,
+        "pass_guard": true
+      },
+      {
+        "tool": "log-anonymizer",
+        "attempt": 2,
+        "ms": 521.5821450000001,
+        "output_length": 786432,
+        "pass_guard": true
+      },
+      {
+        "tool": "log-anonymizer",
+        "attempt": 3,
+        "ms": 530.665039,
+        "output_length": 786432,
+        "pass_guard": true
+      },
+      {
+        "tool": "prompt-injection-detector",
+        "attempt": 1,
+        "ms": 2669.1520060000003,
+        "output_length": 500000,
+        "pass_guard": true
+      },
+      {
+        "tool": "prompt-injection-detector",
+        "attempt": 2,
+        "ms": 2756.89487,
+        "output_length": 500000,
+        "pass_guard": true
+      },
+      {
+        "tool": "prompt-injection-detector",
+        "attempt": 3,
+        "ms": 2629.851023,
+        "output_length": 500000,
+        "pass_guard": true
+      }
+    ],
+    "new_pathological_inputs": [
+      {
+        "tool": "log",
+        "chars": 720000,
+        "ms": 2939.051891
+      },
+      {
+        "tool": "log",
+        "chars": 750000,
+        "ms": 310.6417980000001
+      },
+      {
+        "tool": "injection",
+        "chars": 825000,
+        "ms": 696.7637790000003
+      },
+      {
+        "tool": "injection",
+        "chars": 945000,
+        "ms": 718.3435509999999
+      },
+      {
+        "tool": "injection",
+        "chars": 656000,
+        "ms": 745.2208769999997
+      }
+    ]
+  },
+  "security_observation": {
+    "cases": 120,
+    "exports": 150,
+    "request_events": 1061,
+    "http_after_input": 0,
+    "request_bodies": 0,
+    "unexpected_network_attempts": 0,
+    "runtime_errors": 0,
+    "console_errors": 0,
+    "csp_events": 0
+  },
+  "archive_sha256": "5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b",
+  "package_json_sha256": "3ec45c9198efad34c5a107a58144032bf31a0d32832e2c6dfefba7600516a65e",
+  "package_files": 125,
+  "php_theme_lint": 42,
+  "deployment_tests": 46,
+  "interlock_tests": 10,
+  "archive_exact_set_modes_and_no_links_verified": true,
+  "raw_inputs_reports_screenshots_published": false,
+  "staging_or_production_access": false,
+  "wordpress_or_sql_operations": false,
+  "systemd_changes": false,
+  "legacy_body_executed": false,
+  "original_rule_positive_coverage": {
+    "rules": 33,
+    "pass_count": 33,
+    "existing_corpus_covered": 32,
+    "additional_after_implementation": 1
+  },
+  "additional_file_test_harness_correction": "Same-origin bodyless blob GET is a local export; initial WebKit classification FAIL retained privately, all 24 byte/network criteria rerun.",
+  "package_reproducible_second_build": true
+}

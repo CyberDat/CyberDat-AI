@@ -1,13 +1,23 @@
 # CyberDat — Project Status (source of truth)
 
-Last updated: 2026-11-13
+Last updated: 2026-11-14
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release1 D14 — PARTIAL: 32 PASS / 8 FAIL from 40 new product cases. No product fixes, staging installation or publication authorized/performed.**
+Current stage: **Tools Release 1 D14 Remediation — PASS for bounded acceptance; release PARTIAL (D6 unresolved, D1 installation NOT authorized).**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release1 D14 Independent Product Acceptance —2026-11-13
+## Tools Release 1 D14 Remediation — 2026-11-14
+
+Base afa0b56, same feature branch. All eight confirmed defects repaired: contextual name/telephone fields, event-local CEF labels, original-file provenance/CRLF and stale preview races; seven bounded Injection lexical families plus a narrow negated meta-address correction. All 33 original text signatures/check functions unchanged. Log 1.0.3, Injection 1.0.2, rulesets 2026-11-14.1.
+
+D14 PASS: original 40-case expectations/hash unchanged, 40/40 in Chromium/Firefox/WebKit; 32 controls frozen before implementation also PASS. All 19 engine/PHP/privacy/corpus/source/controller suites, 61/33/20/24 engine checks, 9 privacy and 6 stabilization checks PASS. Frozen 4006/245 compatibility hashes remain unchanged under explicit version/new-zero-schema projection only. 174 existing browser +24 file provenance/line-ending checks PASS. Original 4000 ms thresholds unchanged; three-repeat worst 530.67/2756.89 ms, new contact near-miss 2939.05 ms. No unexpected network/input execution/diagnostic leak in the checked cases; no universal safety guarantee.
+
+Six theme files changed; LotL/MCP/GPL notices and agents unchanged. Theme source `f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3`, tree `0324800d705f74da563d371c0f60acde56873dee`. Reproducible theme-only125-file package, archive SHA256 `5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b`; 42 PHP lint, exact hashes/set/modes/no links, 46 deployment and 10 D15 interlock tests PASS. Safe installation/rollback mechanisms unchanged; no real deployment/rollback or legacy bodies executed.
+
+Private fixtures/raw reports/screenshots remain local; only minimized outcomes published. Source upload initially rejected by automatic review, then approved after SHA verification proved existing example literals were already public and changed lines added no such data. No staging/production/WordPress/SQL/systemd/Research/Content/SEO changes, settings change or main merge. Local backup only. D6 remains PARTIAL (legal combined-work/theme boundary UNVERIFIED); D1 installation and page/hub/SEO decisions require separate owner action. [Current report](../deploy/tools-release-1/REPORT.md), [acceptance](../deploy/tools-release-1/d14-remediation/README.md). Work stops after report.
+
+## Tools Release1 D14 Independent Product Acceptance —2026-11-13 (history at afa0b56)
 
 Base0b73a9f, same feature branch.40 newly authored synthetic product cases (10/tool)
 with expectations frozen before execution; SHA256

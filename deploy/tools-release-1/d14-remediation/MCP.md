@@ -1,0 +1,16 @@
+# D14 remediation — MCP
+
+10/10 original cases PASS in each of Chromium, Firefox and WebKit. Original expectations unchanged.
+
+| ID | Scenario | Original expected | Actual | Result | Limits |
+|---|---|---|---|---|---|
+| MC01 | Bounded local read-only inventory server | Не давать medium/high ограниченной локальной конфигурации. | level=none; all original detection/export/sanitization predicates PASS. | PASS | None означает отсутствие найденных сигналов, а не аудит или доказательство безопасности server code. |
+| MC02 | Unpinned runner with root access and automatic execution | Дать high unpinned runner + root access + automatic execution. | level=high; all original detection/export/sanitization predicates PASS. | PASS | Опасные признаки отмечены; npx/server не запускались. |
+| MC03 | Credential-bearing remote server over cleartext HTTP | Отметить credential-bearing HTTP и скрыть token в UI/JSON report. | level=high; all original detection/export/sanitization predicates PASS. | PASS | Token скрыт; реальное соединение не выполнялось. |
+| MC04 | Privileged container with writable host filesystem | Дать high privileged Docker с writable host-root mount. | level=high; all original detection/export/sanitization predicates PASS. | PASS | Контейнер не запускался, проверен только текст конфигурации. |
+| MC05 | Known provider credentials in env and option value | Найти известные provider credentials и не раскрыть их в UI/экспорте. | level=high; all original detection/export/sanitization predicates PASS. | PASS | Оба синтетических значения скрыты; универсальная гарантия всех секретов не проверяется. |
+| MC06 | Opaque custom tenant proof with an unfamiliar field name | Скрыть opaque env/option value и показать best-effort предупреждение. | level=info; all original detection/export/sanitization predicates PASS. | PASS | Значение подавлено структурно; secret-finding не обязателен и не появился. Другие места/форматы могут быть пропущены. |
+| MC07 | Percent-encoded nonstandard password in URL userinfo | Отметить URL userinfo и скрыть пароль в исходной и percent-encoded форме. | level=medium; all original detection/export/sanitization predicates PASS. | PASS | Medium, пароль не найден в UI/report. Проверена одна кодировка и один URI. |
+| MC08 | Truncated JSON containing a synthetic known token | Отвергнуть незавершённый JSON без token в сообщении об ошибке. | Invalid JSON rejected; required error/diagnostic non-disclosure checks PASS. | PASS | Ожидаемая ошибка валидации — PASS; это не JS runtime error. |
+| MC09 | Policy violation and distinct report/policy exports | Показать policy violations, скрыть opaque value в report, выгрузить policy дословно с предупреждением. | level=None; all original detection/export/sanitization predicates PASS. | PASS | Две violations; report и policy экспортируются различно. Policy без редактирования по контракту; тестовая policy сама не содержала секретов. |
+| MC10 | Poisoned tool description and inert HTML payload | Дать минимум medium poisoned description; HTML должен остаться текстом. | level=high; all original detection/export/sanitization predicates PASS. | PASS | High, input HTML не исполнялся, внешнее изображение не загружалось; все poisoning-атаки этим не охвачены. |

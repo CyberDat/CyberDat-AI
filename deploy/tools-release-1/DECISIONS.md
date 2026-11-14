@@ -1,6 +1,6 @@
-# Tools Release1 — decisions after D14 Independent Product Acceptance
+# Tools Release1 — decisions after D14 Remediation
 
-Preparation branch: feat/tools-release-1-license-claims, D14 task base0b73a9f.
+Preparation branch: feat/tools-release-1-license-claims, D14 remediation base afa0b56.
 Owner instructions supersede earlier alternatives; no installation authorization.
 
 | ID | Current status | Consequence |
@@ -16,10 +16,10 @@ Owner instructions supersede earlier alternatives; no installation authorization
 | D8 | Hub release1.1 still lists3 tools; MCP1.2 direct URL implementation present | Claim that all4 are discoverable on hub is not accepted |
 | D9 | Reuse of ID51/stale Rank Math description, old ID53 and removed backlog drafts not decided | Page/meta/SEO work |
 | D11 | SEO publication/sitemap policy pending; protected legacy entry points do not approve SEO actions | SEO acceptance/publication |
-| D14 | PARTIAL:40 new frozen examples,32 PASS / 8 FAIL; no fixes. Log7/10, Injection5/10, LotL10/10, MCP10/10 | Public release NOT READY; further closed manual evaluation requires D1/D6 and explicit limits |
+| D14 | PASS: 40 original cases per browser and 32 new controls; 174 existing +24 new browser checks | Bounded acceptance closed; D1/D6 and page/SEO decisions remain separate |
 | D10/D12/D13 | Naming unchanged; main merge not requested; historical scanner alerts not waived | No unrelated changes |
 
-Technical stabilization PASS:61 Log/33 Injection/20 LotL/24 MCP engine checks,
+Historical technical stabilization PASS:61 Log/33 Injection/20 LotL/24 MCP engine checks,
 9 privacy +6 new regressions,4006/245 frozen-result equivalence cases,174 browser
 checks on Chromium/Firefox/WebKit,46 deployment tests and10 interlock tests.
 Original4000ms limits/signatures unchanged;3-repeat worst times434.61/2393.13ms.
@@ -31,10 +31,7 @@ paths/hashes in GPL-BOUNDARY.md/gpl-boundary.json. Full source/notices delivery 
 rebuild pass, but the shared-theme combined-work/aggregate legal question is not
 settled by those technical checks. Do not declare full compliance or automatic
 relicensing of Research/Content/SEO/other tools. D7 remains public, no settings change.
-The earlier stabilization had no critical technical FAIL. New D14 product acceptance
-has 8 functional/coverage/format failures and remains PARTIAL. No critical automatic
-network leak or active input execution observed; HIGH sharing/trust risks remain.
-[D14 evidence](d14-public/README.md). D1 still NOT authorized.
+D14 remediation fixes all eight original product failures; the original expected outcomes are unchanged. The 33 original signatures are intact; seven bounded families are additive. No universal detection or sanitation guarantee. All required tests PASS, but D6 legal scope remains PARTIAL and D1 is NOT authorized. [Current evidence](d14-remediation/README.md); [historical acceptance](d14-public/README.md).
 
 The22 historical source copies in d15-residual-paths.json remain outside approved
 scope and unguarded. Never execute with sudo or restore them over guarded entry
@@ -46,3 +43,7 @@ No decision authorizes automatic publication. Any later D1 must bind exact new
 archive/package hashes, fresh staging identity/base/protected checks, controls and
 expiry. authorization.example.json remains fail-closed. Existing Research rollback
 hash guards remain unchanged and will refuse Tools theme drift.
+
+2026-11-14 artifact update: source f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3, archive SHA256 5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b. Exact new hashes supersede previous packages. No staging changes or publication.
+
+Current remediation measurements and acceptance supersede historical timings: see d14-remediation/ACCEPTANCE.json. Original detection/sanitization limits, unknown-secret limitations and possible misses on long/compound/paraphrased inputs remain; D14 PASS is bounded to the tested criteria.

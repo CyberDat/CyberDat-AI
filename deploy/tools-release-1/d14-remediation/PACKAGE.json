@@ -1,0 +1,16 @@
+{
+  "theme_files": 125,
+  "theme_drift_since_final_browser_start": false,
+  "archive_sha256": "5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b",
+  "exact_archive_file_set": true,
+  "all_archive_file_modes": "0644",
+  "all_archive_directory_modes": "0755",
+  "symlinks_or_nonregular_members": 0,
+  "theme_only": true,
+  "theme_source_commit": "f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3",
+  "theme_git_tree": "0324800d705f74da563d371c0f60acde56873dee",
+  "staging_access": false,
+  "wordpress_bootstrap": false,
+  "sql_access": false,
+  "systemd_changes": false
+}

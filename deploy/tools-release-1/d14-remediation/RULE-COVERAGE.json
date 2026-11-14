@@ -1,0 +1,305 @@
+{
+  "rules_checked": 33,
+  "rules_with_positive_matches": 33,
+  "positive_behavior_matches_original": true,
+  "existing_attack_corpus_covers": 32,
+  "one_additional_exf_009_positive_authored_after_implementation": true,
+  "additional_case_is_not_counted_as_an_independent_holdout": true,
+  "cases": [
+    {
+      "rule": "PI-ROLE-001",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-01",
+        "role-07"
+      ]
+    },
+    {
+      "rule": "PI-ROLE-002",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-02",
+        "role-03"
+      ]
+    },
+    {
+      "rule": "PI-ROLE-003",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-03",
+        "role-04"
+      ]
+    },
+    {
+      "rule": "PI-ROLE-004",
+      "positive_cases": 4,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-05",
+        "role-06",
+        "role-08",
+        "role-09"
+      ]
+    },
+    {
+      "rule": "PI-ROLE-005",
+      "positive_cases": 3,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-04",
+        "role-06",
+        "role-10"
+      ]
+    },
+    {
+      "rule": "PI-ROLE-006",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-12"
+      ]
+    },
+    {
+      "rule": "PI-ROLE-007",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "role-06",
+        "role-08"
+      ]
+    },
+    {
+      "rule": "PI-OVR-001",
+      "positive_cases": 4,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-01",
+        "override-02",
+        "hidden-02",
+        "hidden-04"
+      ]
+    },
+    {
+      "rule": "PI-OVR-002",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-03"
+      ]
+    },
+    {
+      "rule": "PI-OVR-003",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-03"
+      ]
+    },
+    {
+      "rule": "PI-OVR-004",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-04",
+        "override-13"
+      ]
+    },
+    {
+      "rule": "PI-OVR-005",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-06"
+      ]
+    },
+    {
+      "rule": "PI-OVR-006",
+      "positive_cases": 4,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-05",
+        "override-13",
+        "hidden-02",
+        "hidden-07"
+      ]
+    },
+    {
+      "rule": "PI-OVR-010",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-07"
+      ]
+    },
+    {
+      "rule": "PI-OVR-011",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-08"
+      ]
+    },
+    {
+      "rule": "PI-OVR-020",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-09"
+      ]
+    },
+    {
+      "rule": "PI-OVR-021",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-10"
+      ]
+    },
+    {
+      "rule": "PI-OVR-030",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "override-11",
+        "override-12"
+      ]
+    },
+    {
+      "rule": "PI-EXF-001",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-01"
+      ]
+    },
+    {
+      "rule": "PI-EXF-002",
+      "positive_cases": 3,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-01",
+        "exfil-07",
+        "exfil-08"
+      ]
+    },
+    {
+      "rule": "PI-EXF-003",
+      "positive_cases": 3,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-02",
+        "exfil-03",
+        "exfil-06"
+      ]
+    },
+    {
+      "rule": "PI-EXF-004",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-03",
+        "exfil-10"
+      ]
+    },
+    {
+      "rule": "PI-EXF-005",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-06"
+      ]
+    },
+    {
+      "rule": "PI-EXF-006",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-09"
+      ]
+    },
+    {
+      "rule": "PI-EXF-007",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-04"
+      ]
+    },
+    {
+      "rule": "PI-EXF-008",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-05",
+        "exfil-11"
+      ]
+    },
+    {
+      "rule": "PI-EXF-009",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "added-EXF-009-positive-after-implementation"
+      ]
+    },
+    {
+      "rule": "PI-EXT-001",
+      "positive_cases": 6,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "exfil-10",
+        "hidden-10",
+        "extraction-01",
+        "extraction-03",
+        "extraction-05",
+        "extraction-08"
+      ]
+    },
+    {
+      "rule": "PI-EXT-002",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "extraction-02"
+      ]
+    },
+    {
+      "rule": "PI-EXT-003",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "extraction-04",
+        "extraction-09"
+      ]
+    },
+    {
+      "rule": "PI-EXT-010",
+      "positive_cases": 1,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "extraction-06"
+      ]
+    },
+    {
+      "rule": "PI-EXT-020",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "extraction-07",
+        "extraction-10"
+      ]
+    },
+    {
+      "rule": "PI-ENC-002",
+      "positive_cases": 2,
+      "behavior_identical": true,
+      "fixture_ids": [
+        "encoded-05",
+        "encoded-11"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "new_test": "d14-file-input-browser",
+  "initial_result": "WebKit failed the new request-classification predicate",
+  "download_bytes_equal": true,
+  "CR": 2,
+  "LF": 2,
+  "request_protocol": "blob:",
+  "same_origin": true,
+  "method": "GET",
+  "body_bytes": 0,
+  "correction": "Recognize only bodyless same-origin blob GET as required local download; continue failing external HTTP, bodies, runtime errors and byte mismatches.",
+  "D14_frozen_inputs_or_expected_outcomes_changed": false,
+  "product_or_package_changed_for_this_correction": false,
+  "full_rerun_required": 24
+}

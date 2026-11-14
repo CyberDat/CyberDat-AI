@@ -1,0 +1,532 @@
+[
+  {
+    "id": "HL01",
+    "tool": "log",
+    "scenario": "structured Unicode name",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "4a78822faed0e56c94cdbdc182139a2f4a5006a9b0d47684cab7255c0177794b",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL02",
+    "tool": "log",
+    "scenario": "JSON full-name field",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "8c087a4e9b49c8ecec4ca1e7b9ef789641c9e00f7f1e1248c9db338c96db96a5",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL03",
+    "tool": "log",
+    "scenario": "unquoted contact name",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "a602ae5afe6bae86f5ad482f4614aa1ec15057f515a9074cafc3386e67e9833f",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL04",
+    "tool": "log",
+    "scenario": "phone field international",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "71c55fb5d1d34cb245ca2d1a3c3907f52ba4cf5d01d1142942807ac3faee6cd6",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL05",
+    "tool": "log",
+    "scenario": "local phone field",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "761fed9d25e464f745607a06048c6769db1138a96384c18897c97750683761e5",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL06",
+    "tool": "log",
+    "scenario": "CEF reverse order",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "dd20a8e5be426c4b15d95d835032e5a05d5d7750e5e8f049d191a8098295859a",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL07",
+    "tool": "log",
+    "scenario": "CEF escaped spaces",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "eaed0fbbe7a36b8a3cee996150c0477c58b6648b2d5e4f44f4b119f1e3353568",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL08",
+    "tool": "log",
+    "scenario": "CEF harmless label",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "e42d11b6690f7d33a8d29eb9be39339b92a12ca24f53aa227430887aa0527707",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL09",
+    "tool": "log",
+    "scenario": "CEF no cross-event label",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "a9db95269640c0a9acf0380ca312b06fb8213ce60f6f360965032827adde48ff",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL10",
+    "tool": "log",
+    "scenario": "benign phone counters",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "97a22eb3625b62499354ab45f62fd76bf6c99638370cfa50bb624cbb23104e60",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL11",
+    "tool": "log",
+    "scenario": "benign generic name",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "6eb85a715571ab18bfc90dc8a5576887c1fcb03571c1adb70e21cc351fc88345",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL12",
+    "tool": "log",
+    "scenario": "name text not inferred",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "09ddeeea76a1145727e0f034ba3d1b4f5addc022187cfdd4d51961593c25e6f5",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL13",
+    "tool": "log",
+    "scenario": "phone invalid ID",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "aefc3ea35c1692c149a9bd37f1962ca0ce3511126822450abbebb09b9375f498",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL14",
+    "tool": "log",
+    "scenario": "category-independent XML",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 2,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "27b967be3edd99aadb47dbe15f536b964568d50ee6630930a1a7820fac405be7",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL15",
+    "tool": "log",
+    "scenario": "name hyphen apostrophe",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 1,
+    "actual_level": null,
+    "checks": [
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "bf2bda29c2e137a5e74fc7f5b15877537360677625d0f44923e15f9d83da9a02",
+    "raw_input_published": false
+  },
+  {
+    "id": "HL16",
+    "tool": "log",
+    "scenario": "CEF label is not the value",
+    "expected_min_severity": null,
+    "expected_max_severity": null,
+    "expected_redactions": 1,
+    "expected_context_checks": 2,
+    "actual_level": null,
+    "checks": [
+      true,
+      true,
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "19f7df213d06a4e86393793611bfc626e937363e7f4bcf4e46b90c8d61eb9cae",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP01",
+    "tool": "injection",
+    "scenario": "English replacement claim",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "03e935208d0cddf630e9c25bdfaf08da9200fb0f3c0214e6bca989126bae3f1d",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP02",
+    "tool": "injection",
+    "scenario": "English extraction paraphrase",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "305a02a4ceb62c52793aa6df7e32e8f5f7b89ec22cbbbb0520b2ea86202cec41",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP03",
+    "tool": "injection",
+    "scenario": "Spanish imperative variant",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "58139fc84dc9766142a5dfb97e2173204c559def876bf3781dd4da1e439262f9",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP04",
+    "tool": "injection",
+    "scenario": "Spanish negative-override variant",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "d3adcb4919bf708bfa5b872048782e5f3b330c3030cf22ba1ffb5614dd2428fc",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP05",
+    "tool": "injection",
+    "scenario": "Russian invalidation variant",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "e4aa1849e6090b5b740fa5139d3feea2cd3531e19d64ef716f53f8759f4ecb45",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP06",
+    "tool": "injection",
+    "scenario": "Russian hidden extraction",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "d5216cce582d04280b298261e3a9ab0953c814c289bbe665165565f84ea430ff",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP07",
+    "tool": "injection",
+    "scenario": "read and transmit pattern",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "1475008502054545ae68c8b84251342fa60744ad3173d08d73252d56bb8a33a6",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP08",
+    "tool": "injection",
+    "scenario": "read then transmit variant",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "1eb0407945af40e1bdb77afb667fce3f3918a0073dac17d91e01d62bf62431c9",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP09",
+    "tool": "injection",
+    "scenario": "negated AI address",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "none",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "4fbb6db779bec21e43b3b3a6aaf3e9e513ff5f5d6a046efe99973d39fc06f9d9",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP10",
+    "tool": "injection",
+    "scenario": "negation cannot silence next attack",
+    "expected_min_severity": "medium",
+    "expected_max_severity": null,
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "high",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "463dc152d079582c2da93c74ba0aae9975cfe2a677d233677b3aa0b735fcf3c7",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP11",
+    "tool": "injection",
+    "scenario": "quoted Spanish defensive report",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "low",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "0b887ac20fb4cd7f5649ed4f4b27ceef244f00d072d4d62dad92b0a34d0b1eab",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP12",
+    "tool": "injection",
+    "scenario": "legitimate Spanish",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "none",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "0a634721f6f2ee485ec87ce8367a5bb7264cb74257ee10aa9d9f985a653da0d1",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP13",
+    "tool": "injection",
+    "scenario": "legitimate Russian",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "none",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "71f23569ed7e04e6bd8f8302abba30413517040eaa81504b8109694cc1243a85",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP14",
+    "tool": "injection",
+    "scenario": "legitimate policy reference",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "none",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "7f93b6362b59f2dbfc9fb915aa3bf8ee0aa50fc2150800e86cd64a104f625f06",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP15",
+    "tool": "injection",
+    "scenario": "defensive negated transfer",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "none",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "87e028bb3f1879d32215c25bb2d86be0f3b5230be9e6732e2939b75a98e0500e",
+    "raw_input_published": false
+  },
+  {
+    "id": "HP16",
+    "tool": "injection",
+    "scenario": "quoted extraction evidence",
+    "expected_min_severity": null,
+    "expected_max_severity": "low",
+    "expected_redactions": 0,
+    "expected_context_checks": 0,
+    "actual_level": "low",
+    "checks": [
+      true
+    ],
+    "status": "PASS",
+    "input_sha256": "dc99442f84bf65d6e6c090baf04818aff8c4c387a79b2cd79f888731a9a6678d",
+    "raw_input_published": false
+  }
+]

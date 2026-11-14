@@ -1,30 +1,23 @@
-# Tools Release1 — D14 product acceptance and unchanged package
+# Tools Release 1 — D14 Remediation handoff, 2026-11-14
 
-**D14 PARTIAL: 32/40 PASS,8 FAIL. Public release NOT READY. D1 installation is NOT authorized.**
+**D14 PASS: 40/40 original cases in each of three browsers, 32/32 new controls, all additional regression checks PASS. Release remains PARTIAL: D6 legal scope UNVERIFIED, D1 installation NOT authorized.**
 
-Current product evidence: [d14-public/README.md](d14-public/README.md) and d14-public/ACCEPTANCE.json.
-Log7/10, Injection5/10, LotL10/10, MCP10/10. Failures are preserved; no fixes applied.
-Closed staging remains conditional on separate D1/D6 decisions and explicit manual
-evaluation limits. Prior regression PASS does not close D14. The package below is unchanged.
-Branch feat/tools-release-1-license-claims; this stabilization starts atae48da0.
-Technical suites PASS; D6 remains PARTIAL. Installed Research
-must remain0ef03e9cb0d8821546983c84fc6998e85cf03f2e. D15 is already applied in its
-approved11+11 scope; do not reinstall it or restore old unguarded copies.
+[Current report](REPORT.md), [acceptance](d14-remediation/ACCEPTANCE.json). Original expectations unchanged. Six theme files repaired; LotL/MCP and all agents unchanged. Preparation base afa0b56; branch feat/tools-release-1-license-claims. Installed Research must remain 0ef03e9cb0d8821546983c84fc6998e85cf03f2e. Existing D15 approved 11+11 protection is not reinstalled or expanded.
 
 ## Exact delivery
 
-- Final source revision: `54d43356fec8ca22f8d99c26fc5c28d5964c4d08`.
-- Theme Git tree: `09bdf8b38031bb7b8059678d8c8d759b0d445de8`.
-- Archive: `/home/cyberdat/cyberdat-deploy/tools-release-1-stabilized-package/theme.tar.gz`.
-- Archive SHA256: `9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b`.
-- package.json SHA256: `590ffd091e8225776a661bd1a3a7e526dae8430f1445467e803dae8f4f2463b5`.
+- Final source revision: `f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3`.
+- Theme Git tree: `0324800d705f74da563d371c0f60acde56873dee`.
+- Archive: `/home/cyberdat/cyberdat-deploy/tools-release-1-d14-remediation-package/theme.tar.gz`.
+- Archive SHA256: `5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b`.
+- package.json SHA256: `3ec45c9198efad34c5a107a58144032bf31a0d32832e2c6dfefba7600516a65e`.
 - Complete manifest.json: base95/target125 regular files, all SHA256/length/mode
   entries.125 = original123 plus complete upstream NOTICE and SOURCE.md.34-file
   delta over95:4 modifications/30 additions, no deletions.
 - Archive contains onlycyberdat/ theme files. No plugins, SQL, deployment helpers,
   configs, Research/Content code, launchers or timers. Never deploy repository root.
 - Files0644/directories0755, no symlinks, no unexpected file/directory allowed.
-- Original7fc33b..., intermediate33975f... and prior D5/D6/D7 artifact783eec... are SUPERSEDED.
+- Prior stabilized archive9fae3b... and original7fc33b..., intermediate33975f... and prior D5/D6/D7 artifact783eec... are SUPERSEDED.
   Never reuse their hashes/authorization for this archive.
 
 ## Reproduce in isolated workspace
@@ -33,7 +26,7 @@ Use the final branch head (including the updated controls), an isolated exact95-
 and fresh private output paths. Do not point these commands at installed WordPress.
 
 ```bash
-python3 -I -B deploy/tools-release-1/build-package.py --base-theme "$BASE_THEME" --output "$PRIVATE_OUTPUT/package" --source-commit 54d43356fec8ca22f8d99c26fc5c28d5964c4d08
+python3 -I -B deploy/tools-release-1/build-package.py --base-theme "$BASE_THEME" --output "$PRIVATE_OUTPUT/package" --source-commit f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3
 python3 -I -B deploy/tools-release-1/run-tests.py --base-theme "$BASE_THEME" --package "$PRIVATE_OUTPUT/package" --output "$PRIVATE_OUTPUT/evidence"
 ```
 
@@ -46,8 +39,7 @@ YAML/notice/license are in assets/js/lotl-analyzer/SOURCE.md and LICENSES.md.
 
 ## Future separately authorized installation order
 
-1. Resolve DECISIONS.md: D6 legal scope review, D1 install approval and independent
-   D14 product acceptance failures/limits; page/SEO decisions separately. Current
+1. Resolve DECISIONS.md: D6 legal scope review, D1 install approval and D14 residual limitations; page/SEO decisions separately. Current
    D5 PASS does not waive independent D14 acceptance or permit page publication.
 2. Recheck staging identity and exact base95/protected43 hashes, D15 prefixes and
    shared release lock. Natural Research SQL activity is expected; never reset it.
@@ -89,7 +81,7 @@ atomically exchange the theme and verify original95. No full SQL rollback or
 Research checkpoint rewind. Existing Research rollback scripts refuse Tools drift;
 future use requires review. Keep backups/failed slots, never blindly reapply.
 
-Current detailed results: REPORT.md and stabilization-acceptance.json. The8-file
+Current detailed results: REPORT.md and d14-remediation/ACCEPTANCE.json; stabilization-acceptance.json is historical. The8-file
 GPL scope and14 shared dependencies are documented in GPL-BOUNDARY.md. Isolated
 browser setup is in ISOLATED-BROWSER-TESTS.md. Do not install test dependencies
 globally or treat fixture checks as installed WordPress acceptance.
@@ -99,10 +91,10 @@ globally or treat fixture checks as installed WordPress acceptance.
 D6 legal characterization UNVERIFIED; D7 public source8/8 anonymous HTTP checks
 pass in the new anonymous source-access verification. Current Chromium78/Firefox48/
 WebKit48 fixture checks PASS; original4000ms guards and6 new regressions PASS.
-Current D14 has 8 product failures despite these historical regression passes.
+D14 remediation now passes the 40 original cases and 32 new controls; 174 existing browser checks and 24 new file-input checks also pass. Residual heuristic limits remain explicit.
 Physical Safari/iOS and legal combined-work classification remain UNVERIFIED.
 Actual WordPress selective SQL recovery/FPM/header/renderer acceptance is UNVERIFIED
-because installation is forbidden. D8 hub visibility and D2/D4/D9/D11/D14 remain
+because installation is forbidden. D8 hub visibility and D2/D4/D9/D11 remain
 explicit. Historical22 out-of-scope unsafe copies must not be run/restored.
 
 No staging backup required or created today: no deployed files changed. Previous

@@ -1,73 +1,45 @@
-# Tools Release1 — D14 Independent Product Acceptance
+# Tools Release 1 — D14 Remediation, 2026-11-14
 
-**D14 PARTIAL: 32 PASS / 8 FAIL across40 new frozen product examples.**
-Base0b73a9f98d1da980051865cfa4896827074ab49e; branch
-feat/tools-release-1-license-claims. No product code, rules, thresholds or old
-expectations changed. Full method,40 per-case expected/actual/risks and evidence:
-[d14-public/README.md](d14-public/README.md), [machine acceptance](d14-public/ACCEPTANCE.json).
+**D14 PASS: all 40 original criteria and additional checks passed. Release readiness remains PARTIAL: D6 unresolved; D1 installation is NOT authorized.**
 
-| Tool | PASS | FAIL | Findings |
-|---|---:|---:|---|
-|Log Anonymizer |7 |3 |Full name/phone and indirect CEF credential remain; small-file upload changes CRLF→LF |
-|Prompt Injection Detector |5 |5 |Paraphrase/Spanish misses; Russian attack only low; incomplete indirect-attack sanitation; benign report medium FP |
-|LotL Analyzer |10 |0 |New suspicious/benign/encoded examples pass; bounded set, prior limitations remain |
-|MCP Checker |10 |0 |Known/opaque/userinfo secrets, invalid JSON, policy/report export and inert poisoned HTML pass their specific expectations |
+Base `afa0b56fd0db2fe277e4e006231353cf27b89d35`, branch `feat/tools-release-1-license-claims`. [Detailed minimized acceptance](d14-remediation/README.md), [machine results](d14-remediation/ACCEPTANCE.json). Original independent acceptance remains historical at base commit; its eight failures were retained and repaired, not redefined.
 
-Per-case matrices: [Log](d14-public/LOG.md), [Injection](d14-public/INJECTION.md),
-[LotL](d14-public/LOTL.md), [MCP](d14-public/MCP.md). The full inputs remain private; public 40-case matrices contain minimized semantic
-expected/actual/risks and original evidence hashes. Inputs/expectations frozen before first run,
-SHA25690af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d.
-The set is newly authored separately from old fixtures; the author has worked on
-the implementation, so this is not an externally independent human audit.
+| Defect | Result | Repair and observed behavior |
+|---|---|---|
+| LA05 | PASS | Explicit person/contact name and telephone fields, Unicode name validation and bounded phone formats; dedicated independently toggleable categories. Original required values now masked. |
+| LA06 | PASS | CEF custom-string cs1–cs6 labels resolved to their matching value within one event, including reverse order and escaped content; other fields preserved. |
+| LA07 | PASS | Small-file textarea is a preview; the worker retains the original File until a real edit. CRLF preserved; stale async preview reads cannot replace newer input. Large-file path unchanged. |
+| PI02 | PASS | New bounded read-sensitive-file/transfer-contents family removes the dangerous instruction in the original sanitized output. Output remains explicitly Still untrusted. |
+| PI04 | PASS | Bounded authority-replacement and confidential-startup-instruction extraction families detect the original paraphrase. No general semantic-understanding claim. |
+| PI06 | PASS | Spanish disregard-prior-instructions and internal-instruction extraction families detect the original attack and new variants. |
+| PI07 | PASS | Russian prior-instruction invalidation and explicitly hidden/internal instruction extraction families raise the original scenario to High. Existing low findings are retained. |
+| PI08 | PASS | Narrow PI-OVR-006 negated meta-address handling removes the benign Medium FP; later independent attacks are still detected. Quoted evidence remains context-sensitive. |
 
-## Failure interpretation
+Original matrices: [Log 10/10](d14-remediation/LOG.md), [Injection 10/10](d14-remediation/INJECTION.md), [LotL 10/10](d14-remediation/LOTL.md), [MCP 10/10](d14-remediation/MCP.md). Each 40-case set passed unchanged in Chromium, Firefox and WebKit (120 repeated UI executions, not 120 independent examples). Frozen original SHA256 `90af74dd5a38336d05b93366bc719be15a04b1c97fcde41b6ac236a38635399d` unchanged. 32 new controls frozen before code changes also PASS; raw fixtures stay private, [minimized holdouts](d14-remediation/HOLDOUTS.json).
 
-- LA05: person_name and contact_phone untouched; desired PII coverage gap.
-- LA06: IP/user/host masked, cs1 credential identified via cs1Label left intact;
-  indirect-field coverage gap. These are HIGH sharing risks if real inputs are shared
-  without review, not observed network exfiltration or a universal-detection promise.
-- LA07: synthetic key body masked. File.text has6 CR/6 LF, textarea has0 CR/6 LF,
-  direct engine preserves6/6. The unchanged app.js loadFile lines182–185 copies small
-  files through textarea. [Unscored localization](d14-public/LA07-localization.json).
-- PI02: high PI-OVR-005 concealment finding, but the read-credentials + HTTP POST
-  instruction remains in sanitized text. High detection is not successful sanitation.
-- PI04/PI06: zero findings on English paraphrase/Spanish attack, full FN cases.
-- PI07: two low PI-EXT-020 findings and partial removal, not a complete miss;
-  fails the predeclared minimum medium, important for threshold-based triage.
-- PI08: medium PI-OVR-006 on the benign negated phrase not an instruction to the
-  assistant. The quoted attack itself is low.1 FP case in this new set.
+## Regression evidence
 
-All 8 failures reproduced with identical failed predicates in Firefox142 and WebKit26;
-16 repetitions are confirmation, not additional scored examples. No fixes applied.
+- All 19 Node/PHP/privacy/corpus/source/controller suites exit 0. Engine checks: Log 61, Injection 33, LotL 20, MCP 24; 9 privacy and 6 stabilization checks PASS.
+- All 33 original Injection text patterns, flags, descriptors and check-function source unchanged. Seven additive bounded lexical families plus narrow negated-address/Spanish direct-negation context changes: [exact rule inventory](d14-remediation/RULES.json). No signatures removed or thresholds lowered. Positive behavior verified for all 33: 32 from the existing attack corpus plus one after-implementation EXF-009 positive, not counted as a holdout. [Coverage](d14-remediation/RULE-COVERAGE.json).
+- Frozen 4006 Log / 245 Injection behavior hashes still match. Projection only asserts and omits new zero-valued schema categories and normalizes the version label to its historical value for hash comparison. Output, map, warnings, findings, offsets, counts, preview and sanitization expectations remain unchanged; frozen hashes were not rewritten. Metadata/rendered-category/privacy-text assertions were updated for the actual new release, not to loosen detection outcomes.
+- 174 existing UI checks + 24 new file-input checks PASS across Chromium/Firefox/WebKit. File tests cover CRLF/LF/mixed/lone-CR, 1 MiB boundary, large input, editing and delayed read races. An initial new WebKit file-test FAIL was localized to classifying a bodyless same-origin blob GET as network XHR; bytes were already exact. The classification was corrected and all 24 criteria rerun unchanged; no product/package edit. Physical Safari/iOS and installed WordPress/FPM remain UNVERIFIED.
+- Original 4000 ms guards unchanged and PASS. Three fresh-process worst measurements: Log 530.67 ms, Injection 2756.89 ms. New near-match stress inputs also PASS; repeated contact keys 2939.05 ms. Existing large multi-MB limits remain separate.
+- No unexpected network attempts, request bodies, runtime/console/CSP errors or active input execution in the 120 repeated original-case runs; local blob exports only. Specific known/opaque MCP masking criteria pass. This does not guarantee universal masking, sanitation or whole-browser privacy; export limitations remain explicit.
 
-## Security/privacy observation
+## Changed implementation
 
-Actual UI/worker/export tests in Chromium141, fresh contexts and an isolated PHP
-fixture, not staging/WordPress.370 expected static GETs;0 requests after input,
-0 bodies/unexpected network attempts,0 JS/console/CSP errors,0 observed web-storage
-writes or active HTML/script execution.50 real exports were local blobs. No known
-synthetic credential was found in MCP report/error/console outside the input field.
-No critical automatic exfiltration/execution was observed. HIGH product sharing/
-trust risks above remain. See the bounded-scope/export warnings in d14-public/README.md.
+Only six theme files: Log engine/app/PHP metadata/limitation markup and Injection engine/PHP metadata. Log 1.0.3, Injection 1.0.2, rulesets 2026-11-14.1. Existing test changes are limited to actual metadata/category counts/scoped limitation text and the explicit compatibility projection above; two new runners require private fixtures or use non-sensitive line-ending text. LotL/MCP implementation, all eight declared GPL files and notices/source archive are unchanged. No new dependencies or services.
 
-## Readiness and remaining decisions
+## Package and boundaries
 
-Closed staging: **PARTIAL**, further restricted manual testing only after separate
-D1 authorization and D6 decision; no deployment is authorized now. Public release:
-**NOT READY**, D14 not closed with 8 FAIL. D6 legal combined-work/aggregate scope
-remains UNVERIFIED; D2/D4/D8/D9/D11 page/hub/SEO decisions remain separate. There is
-no new GPL compliance declaration or automatic relicensing.
+Theme source commit `f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3`, tree `0324800d705f74da563d371c0f60acde56873dee`. Reproducible theme-only package at `/home/cyberdat/cyberdat-deploy/tools-release-1-d14-remediation-package/`.
 
-Tool theme125 and existing archive remain unchanged. Archive SHA256:
-9fae3b45f8edbb49e5ea31314183f0dc7909457e1b7b63cb745a9678531ad46b.
-No package rebuild, staging/theme/pages/Research/Content/SEO/SQL/systemd/production
-access/change, real rollback or main merge. No new staging backup because no live
-change. Existing stabilization46/10/174 PASS are previous-stage evidence; these new
-product failures are not waived by them. Prior report is retained at base commit0b73.
+- Archive SHA256: `5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b`.
+- package.json SHA256: `3ec45c9198efad34c5a107a58144032bf31a0d32832e2c6dfefba7600516a65e`.
+- 125 target / 95 base files, 34 deltas (4 modified / 30 added over Research acceptance); no deletions. All file hashes/set/modes verified, no links/nonregular members; files 0644, directories 0755.
+- Mandatory 42 theme PHP lint + 46/46 deployment and 10/10 interlock tests PASS. Real Linux atomic exchange tested only in sandbox; no real legacy body, deployment or rollback executed.
+- Atomic switch, staged identity checks, selective page/meta-before-theme rollback and D15 mechanisms unchanged. Earlier package hashes are superseded and cannot authorize this artifact.
 
-Potential repairs require a separate owner instruction. Work stops after this report.
+D6 remains PARTIAL: eight declared GPL source files unchanged, notices and corresponding sources retained; shared-theme combined-work/aggregate legal scope UNVERIFIED. No automatic relicensing. D1 remains NOT authorized; page/hub/SEO decisions D2/D4/D8/D9/D11 are separate. No staging/theme/page, Research/Content/SEO, SQL/checkpoint/backoff, systemd, production, repository-settings or main change.
 
-Detailed-evidence publication was rejected by automatic approval review because
-of personal-looking/credential-like/sensitive-path strings. Only minimized public
-summaries are committed; full synthetic definitions, raw private downloads and
-harness remain local. Test expectations and32/8 results unchanged.
+Private definitions/results/screenshots were not published. Automatic review initially rejected full-source egress because of pre-existing public examples. A SHA-verified public-base comparison established no new credential/person/private-target literals in the changed lines; reviewed retry approved. Only minimized acceptance evidence is committed. Local pre-edit backup retained; no staging backup because no deployed change. Scope limits are in the detailed report. Stop after report; installation requires a separate owner instruction.

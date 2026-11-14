@@ -764,880 +764,1005 @@
   "target": [
     {
       "path": "wp-content/themes/cyberdat/404.php",
-      "sha": "99567fda039d9efd3d144fd96e85c645a488a7bb",
       "mode": "100644",
       "type": "blob",
-      "size": 572
+      "sha": "99567fda039d9efd3d144fd96e85c645a488a7bb",
+      "size": 572,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/99567fda039d9efd3d144fd96e85c645a488a7bb"
     },
     {
       "path": "wp-content/themes/cyberdat/README.md",
-      "sha": "e51b6786f118fc2eeaf379dc0e0eef7279acbed3",
       "mode": "100644",
       "type": "blob",
-      "size": 4077
+      "sha": "e51b6786f118fc2eeaf379dc0e0eef7279acbed3",
+      "size": 4077,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e51b6786f118fc2eeaf379dc0e0eef7279acbed3"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/README.md",
-      "sha": "e4d90bbb4703d46ed66e7d3d03b8afbb12e176e0",
       "mode": "100644",
       "type": "blob",
-      "size": 1677
+      "sha": "e4d90bbb4703d46ed66e7d3d03b8afbb12e176e0",
+      "size": 1677,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e4d90bbb4703d46ed66e7d3d03b8afbb12e176e0"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg",
-      "sha": "c52f19e3145f263c28b9f79adb9617597148b2d8",
       "mode": "100644",
       "type": "blob",
-      "size": 7544
+      "sha": "c52f19e3145f263c28b9f79adb9617597148b2d8",
+      "size": 7544,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c52f19e3145f263c28b9f79adb9617597148b2d8"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/favicon-16.png",
-      "sha": "8379fe692bf70ea754d13c13949fdbc926484ea9",
       "mode": "100644",
       "type": "blob",
-      "size": 844
+      "sha": "8379fe692bf70ea754d13c13949fdbc926484ea9",
+      "size": 844,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/8379fe692bf70ea754d13c13949fdbc926484ea9"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/favicon-32.png",
-      "sha": "5cb02c1a1e78af5f0f87f5b4e7a4e1e9ee659674",
       "mode": "100644",
       "type": "blob",
-      "size": 2025
+      "sha": "5cb02c1a1e78af5f0f87f5b4e7a4e1e9ee659674",
+      "size": 2025,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/5cb02c1a1e78af5f0f87f5b4e7a4e1e9ee659674"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/favicon-48.png",
-      "sha": "0dc6d78199ef4b0296c7e07546de02c9634442c4",
       "mode": "100644",
       "type": "blob",
-      "size": 3608
+      "sha": "0dc6d78199ef4b0296c7e07546de02c9634442c4",
+      "size": 3608,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/0dc6d78199ef4b0296c7e07546de02c9634442c4"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/favicon.ico",
-      "sha": "d1bf772dfded8eec55c5dc40b9a1fa1985f0730c",
       "mode": "100644",
       "type": "blob",
-      "size": 6531
+      "sha": "d1bf772dfded8eec55c5dc40b9a1fa1985f0730c",
+      "size": 6531,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d1bf772dfded8eec55c5dc40b9a1fa1985f0730c"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/favicon.svg",
-      "sha": "c700ef6c171c43d53f3ac4a0249d16e62ca7d23e",
       "mode": "100644",
       "type": "blob",
-      "size": 2763
+      "sha": "c700ef6c171c43d53f3ac4a0249d16e62ca7d23e",
+      "size": 2763,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c700ef6c171c43d53f3ac4a0249d16e62ca7d23e"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/branding/3b/security-report.json",
-      "sha": "992d96142cd36c012a43e12a67be1009f54a1820",
       "mode": "100644",
       "type": "blob",
-      "size": 1113
+      "sha": "992d96142cd36c012a43e12a67be1009f54a1820",
+      "size": 1113,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/992d96142cd36c012a43e12a67be1009f54a1820"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/editor.css",
-      "sha": "b6af80faf93af7244d07958dfa47391450bde9bb",
       "mode": "100644",
       "type": "blob",
-      "size": 946
+      "sha": "b6af80faf93af7244d07958dfa47391450bde9bb",
+      "size": 946,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/b6af80faf93af7244d07958dfa47391450bde9bb"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/home-prototype.css",
-      "sha": "e763838201399b1ad3feb55e50b9888b6648d59e",
       "mode": "100644",
       "type": "blob",
-      "size": 14599
+      "sha": "e763838201399b1ad3feb55e50b9888b6648d59e",
+      "size": 14599,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e763838201399b1ad3feb55e50b9888b6648d59e"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/log-anonymizer.css",
-      "sha": "a41e161bd6c34ab9e4502ea377c8b19b95a0661e",
       "mode": "100644",
       "type": "blob",
-      "size": 2529
+      "sha": "a41e161bd6c34ab9e4502ea377c8b19b95a0661e",
+      "size": 2529,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/a41e161bd6c34ab9e4502ea377c8b19b95a0661e"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/lotl-analyzer.css",
-      "sha": "83d9302d4a0b2f097c6135c848cd988395ffdfd1",
       "mode": "100644",
       "type": "blob",
-      "size": 4728
+      "sha": "83d9302d4a0b2f097c6135c848cd988395ffdfd1",
+      "size": 4728,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/83d9302d4a0b2f097c6135c848cd988395ffdfd1"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/main.css",
-      "sha": "56a677658b1a1bc4ddfe061b6fdd4f906f3c3dd2",
       "mode": "100644",
       "type": "blob",
-      "size": 8708
+      "sha": "56a677658b1a1bc4ddfe061b6fdd4f906f3c3dd2",
+      "size": 8708,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/56a677658b1a1bc4ddfe061b6fdd4f906f3c3dd2"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/mcp-checker.css",
-      "sha": "faaf101a9cb07a0e374cda3c5d6bca7877c6527c",
       "mode": "100644",
       "type": "blob",
-      "size": 4477
+      "sha": "faaf101a9cb07a0e374cda3c5d6bca7877c6527c",
+      "size": 4477,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/faaf101a9cb07a0e374cda3c5d6bca7877c6527c"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/prompt-injection-detector.css",
-      "sha": "f0876de29526a94aa890eeb6a5126d89f8248c7f",
       "mode": "100644",
       "type": "blob",
-      "size": 4160
+      "sha": "f0876de29526a94aa890eeb6a5126d89f8248c7f",
+      "size": 4160,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/f0876de29526a94aa890eeb6a5126d89f8248c7f"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/threat-analytics.css",
-      "sha": "c1c634d309ec4da3710acc46b8869fd1036b0fc3",
       "mode": "100644",
       "type": "blob",
-      "size": 2623
+      "sha": "c1c634d309ec4da3710acc46b8869fd1036b0fc3",
+      "size": 2623,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c1c634d309ec4da3710acc46b8869fd1036b0fc3"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/threat-dashboard.css",
-      "sha": "c031ee2ea4edc90418954b5eae5612c44636e191",
       "mode": "100644",
       "type": "blob",
-      "size": 9158
+      "sha": "c031ee2ea4edc90418954b5eae5612c44636e191",
+      "size": 9158,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c031ee2ea4edc90418954b5eae5612c44636e191"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/threat-geo.css",
-      "sha": "2b609281825ee36d79b12101b5b6f0c3e48e70b3",
       "mode": "100644",
       "type": "blob",
-      "size": 3021
+      "sha": "2b609281825ee36d79b12101b5b6f0c3e48e70b3",
+      "size": 3021,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/2b609281825ee36d79b12101b5b6f0c3e48e70b3"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/threat-pulse.css",
-      "sha": "13a4169ec5ead127602127187900f1a1dd9c77a9",
       "mode": "100644",
       "type": "blob",
-      "size": 5682
+      "sha": "13a4169ec5ead127602127187900f1a1dd9c77a9",
+      "size": 5682,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/13a4169ec5ead127602127187900f1a1dd9c77a9"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/tokens.css",
-      "sha": "3aa898b504c2dc59b152058bad10a3ed96fe71e8",
       "mode": "100644",
       "type": "blob",
-      "size": 1167
+      "sha": "3aa898b504c2dc59b152058bad10a3ed96fe71e8",
+      "size": 1167,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/3aa898b504c2dc59b152058bad10a3ed96fe71e8"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/tools-common.css",
-      "sha": "edc4b65958c55734283b932ad461150534aeee8b",
       "mode": "100644",
       "type": "blob",
-      "size": 6425
+      "sha": "edc4b65958c55734283b932ad461150534aeee8b",
+      "size": 6425,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/edc4b65958c55734283b932ad461150534aeee8b"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/css/tools.css",
-      "sha": "fb9e2819f6d3f55f164e659b0493c02b9d900d1d",
       "mode": "100644",
       "type": "blob",
-      "size": 4993
+      "sha": "fb9e2819f6d3f55f164e659b0493c02b9d900d1d",
+      "size": 4993,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/fb9e2819f6d3f55f164e659b0493c02b9d900d1d"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/agent-network.svg",
-      "sha": "d294f26213f781f8a5179f0615474402dee200ef",
       "mode": "100644",
       "type": "blob",
-      "size": 2565
+      "sha": "d294f26213f781f8a5179f0615474402dee200ef",
+      "size": 2565,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d294f26213f781f8a5179f0615474402dee200ef"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/editorial-fallback.svg",
-      "sha": "b457e86e2831ff3c73e06157189c296d7a07bb7c",
       "mode": "100644",
       "type": "blob",
-      "size": 472
+      "sha": "b457e86e2831ff3c73e06157189c296d7a07bb7c",
+      "size": 472,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/b457e86e2831ff3c73e06157189c296d7a07bb7c"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/boundary-192.webp",
-      "sha": "c5ce3cc659f49d243afefe1f56cc7590b7f9f05b",
       "mode": "100644",
       "type": "blob",
-      "size": 4356
+      "sha": "c5ce3cc659f49d243afefe1f56cc7590b7f9f05b",
+      "size": 4356,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c5ce3cc659f49d243afefe1f56cc7590b7f9f05b"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/boundary-320.webp",
-      "sha": "f9110290ac60213bc02ce9ebbdb05d76dc4b272f",
       "mode": "100644",
       "type": "blob",
-      "size": 11406
+      "sha": "f9110290ac60213bc02ce9ebbdb05d76dc4b272f",
+      "size": 11406,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/f9110290ac60213bc02ce9ebbdb05d76dc4b272f"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/boundary-640.webp",
-      "sha": "09113386cb59bfe1134352c993bd0776b36cb8e0",
       "mode": "100644",
       "type": "blob",
-      "size": 34950
+      "sha": "09113386cb59bfe1134352c993bd0776b36cb8e0",
+      "size": 34950,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/09113386cb59bfe1134352c993bd0776b36cb8e0"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/detection-192.webp",
-      "sha": "ab3f88549137103e68e7a87316f32a2e2cb3b9e2",
       "mode": "100644",
       "type": "blob",
-      "size": 5134
+      "sha": "ab3f88549137103e68e7a87316f32a2e2cb3b9e2",
+      "size": 5134,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/ab3f88549137103e68e7a87316f32a2e2cb3b9e2"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/detection-320.webp",
-      "sha": "6f88c60c574ebe39e356b1367c6ffe879740de99",
       "mode": "100644",
       "type": "blob",
-      "size": 14730
+      "sha": "6f88c60c574ebe39e356b1367c6ffe879740de99",
+      "size": 14730,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/6f88c60c574ebe39e356b1367c6ffe879740de99"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/detection-640.webp",
-      "sha": "da6a8fd5a82b69e70d04208727d918a482b2b415",
       "mode": "100644",
       "type": "blob",
-      "size": 42462
+      "sha": "da6a8fd5a82b69e70d04208727d918a482b2b415",
+      "size": 42462,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/da6a8fd5a82b69e70d04208727d918a482b2b415"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/foundations-192.webp",
-      "sha": "6485f695ec0d989b558fd26c5ce5db296261eb24",
       "mode": "100644",
       "type": "blob",
-      "size": 3906
+      "sha": "6485f695ec0d989b558fd26c5ce5db296261eb24",
+      "size": 3906,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/6485f695ec0d989b558fd26c5ce5db296261eb24"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/foundations-320.webp",
-      "sha": "69251ea54fa46e379968d026bf39ff7eed346367",
       "mode": "100644",
       "type": "blob",
-      "size": 9894
+      "sha": "69251ea54fa46e379968d026bf39ff7eed346367",
+      "size": 9894,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/69251ea54fa46e379968d026bf39ff7eed346367"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/foundations-640.webp",
-      "sha": "d251a7c83b703eb78bed7bed5578bc504e6d01f6",
       "mode": "100644",
       "type": "blob",
-      "size": 27958
+      "sha": "d251a7c83b703eb78bed7bed5578bc504e6d01f6",
+      "size": 27958,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d251a7c83b703eb78bed7bed5578bc504e6d01f6"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/hero-1280.webp",
-      "sha": "a343aa6a4d269fce3f3aeb2c0889325513ea7ec1",
       "mode": "100644",
       "type": "blob",
-      "size": 137042
+      "sha": "a343aa6a4d269fce3f3aeb2c0889325513ea7ec1",
+      "size": 137042,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/a343aa6a4d269fce3f3aeb2c0889325513ea7ec1"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/hero-192.webp",
-      "sha": "c7e273cbe5eb00b542d4ae38b4a231c29a87a5fb",
       "mode": "100644",
       "type": "blob",
-      "size": 5770
+      "sha": "c7e273cbe5eb00b542d4ae38b4a231c29a87a5fb",
+      "size": 5770,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c7e273cbe5eb00b542d4ae38b4a231c29a87a5fb"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/hero-320.webp",
-      "sha": "f1769cdbd147b20070ccbf3c69532fccf52575bc",
       "mode": "100644",
       "type": "blob",
-      "size": 15966
+      "sha": "f1769cdbd147b20070ccbf3c69532fccf52575bc",
+      "size": 15966,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/f1769cdbd147b20070ccbf3c69532fccf52575bc"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/hero-640.webp",
-      "sha": "085ffcd088af44d83fa74550ef23eac9535ed42e",
       "mode": "100644",
       "type": "blob",
-      "size": 48550
+      "sha": "085ffcd088af44d83fa74550ef23eac9535ed42e",
+      "size": 48550,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/085ffcd088af44d83fa74550ef23eac9535ed42e"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/identity-192.webp",
-      "sha": "8eef01eedcdcfbe35c9b2f4801ed10bc03c08f2c",
       "mode": "100644",
       "type": "blob",
-      "size": 3978
+      "sha": "8eef01eedcdcfbe35c9b2f4801ed10bc03c08f2c",
+      "size": 3978,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/8eef01eedcdcfbe35c9b2f4801ed10bc03c08f2c"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/identity-320.webp",
-      "sha": "2c5692d13d2d12dbfc1dd52535168c184ccffec3",
       "mode": "100644",
       "type": "blob",
-      "size": 10490
+      "sha": "2c5692d13d2d12dbfc1dd52535168c184ccffec3",
+      "size": 10490,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/2c5692d13d2d12dbfc1dd52535168c184ccffec3"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/identity-640.webp",
-      "sha": "4a0d1125691561e3791b7b764af6c17b0ea8fbe7",
       "mode": "100644",
       "type": "blob",
-      "size": 29908
+      "sha": "4a0d1125691561e3791b7b764af6c17b0ea8fbe7",
+      "size": 29908,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/4a0d1125691561e3791b7b764af6c17b0ea8fbe7"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/intelligence-192.webp",
-      "sha": "b33b77c73fa5887a3171f5a986a3e6adda8cee6c",
       "mode": "100644",
       "type": "blob",
-      "size": 5336
+      "sha": "b33b77c73fa5887a3171f5a986a3e6adda8cee6c",
+      "size": 5336,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/b33b77c73fa5887a3171f5a986a3e6adda8cee6c"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/intelligence-320.webp",
-      "sha": "5a8cf76a39e13193010d7f95f2742e645bf42375",
       "mode": "100644",
       "type": "blob",
-      "size": 15166
+      "sha": "5a8cf76a39e13193010d7f95f2742e645bf42375",
+      "size": 15166,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/5a8cf76a39e13193010d7f95f2742e645bf42375"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/intelligence-640.webp",
-      "sha": "7611bc3bfd5d89a46c7fd5965e7a98a25923745a",
       "mode": "100644",
       "type": "blob",
-      "size": 44758
+      "sha": "7611bc3bfd5d89a46c7fd5965e7a98a25923745a",
+      "size": 44758,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/7611bc3bfd5d89a46c7fd5965e7a98a25923745a"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/learning-192.webp",
-      "sha": "587bddc80b76f83b06f28c2fd2ec2752ab3b10d5",
       "mode": "100644",
       "type": "blob",
-      "size": 5160
+      "sha": "587bddc80b76f83b06f28c2fd2ec2752ab3b10d5",
+      "size": 5160,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/587bddc80b76f83b06f28c2fd2ec2752ab3b10d5"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/learning-320.webp",
-      "sha": "c951ba0df6d70c91a44cd1bc4513753caf964af8",
       "mode": "100644",
       "type": "blob",
-      "size": 14092
+      "sha": "c951ba0df6d70c91a44cd1bc4513753caf964af8",
+      "size": 14092,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c951ba0df6d70c91a44cd1bc4513753caf964af8"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/learning-640.webp",
-      "sha": "6cfc992297cd8d0282d288ae20a1e382cd288eb3",
       "mode": "100644",
       "type": "blob",
-      "size": 42948
+      "sha": "6cfc992297cd8d0282d288ae20a1e382cd288eb3",
+      "size": 42948,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/6cfc992297cd8d0282d288ae20a1e382cd288eb3"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/model-192.webp",
-      "sha": "02157d2adb8c0158800cadd5dfe4fdb47b560677",
       "mode": "100644",
       "type": "blob",
-      "size": 4288
+      "sha": "02157d2adb8c0158800cadd5dfe4fdb47b560677",
+      "size": 4288,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/02157d2adb8c0158800cadd5dfe4fdb47b560677"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/model-320.webp",
-      "sha": "28d543e6088591440def9562daef7be6588a4438",
       "mode": "100644",
       "type": "blob",
-      "size": 11396
+      "sha": "28d543e6088591440def9562daef7be6588a4438",
+      "size": 11396,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/28d543e6088591440def9562daef7be6588a4438"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/model-640.webp",
-      "sha": "79f5489e1492d0cb986862a8f13137af7c78859b",
       "mode": "100644",
       "type": "blob",
-      "size": 35518
+      "sha": "79f5489e1492d0cb986862a8f13137af7c78859b",
+      "size": 35518,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/79f5489e1492d0cb986862a8f13137af7c78859b"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/network-192.webp",
-      "sha": "999af05dee51197c1bf0c3dd11aae9595886366b",
       "mode": "100644",
       "type": "blob",
-      "size": 6188
+      "sha": "999af05dee51197c1bf0c3dd11aae9595886366b",
+      "size": 6188,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/999af05dee51197c1bf0c3dd11aae9595886366b"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/network-320.webp",
-      "sha": "5d9e5ebc3ae74b52ffa9044207cf850994efb937",
       "mode": "100644",
       "type": "blob",
-      "size": 17912
+      "sha": "5d9e5ebc3ae74b52ffa9044207cf850994efb937",
+      "size": 17912,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/5d9e5ebc3ae74b52ffa9044207cf850994efb937"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/network-640.webp",
-      "sha": "48930695406c43498e14d9695a35162c305eb533",
       "mode": "100644",
       "type": "blob",
-      "size": 57358
+      "sha": "48930695406c43498e14d9695a35162c305eb533",
+      "size": 57358,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/48930695406c43498e14d9695a35162c305eb533"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/redteam-192.webp",
-      "sha": "62a1d2d653e440c7a9aa5c3721efe8e48a0ee098",
       "mode": "100644",
       "type": "blob",
-      "size": 5482
+      "sha": "62a1d2d653e440c7a9aa5c3721efe8e48a0ee098",
+      "size": 5482,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/62a1d2d653e440c7a9aa5c3721efe8e48a0ee098"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/redteam-320.webp",
-      "sha": "e3a9875b681954a472ecceef7ee6395d18121470",
       "mode": "100644",
       "type": "blob",
-      "size": 14396
+      "sha": "e3a9875b681954a472ecceef7ee6395d18121470",
+      "size": 14396,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e3a9875b681954a472ecceef7ee6395d18121470"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/images/premium/redteam-640.webp",
-      "sha": "0f4d1520abf69ce68aaa37c01e5b0295af172528",
       "mode": "100644",
       "type": "blob",
-      "size": 40794
+      "sha": "0f4d1520abf69ce68aaa37c01e5b0295af172528",
+      "size": 40794,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/0f4d1520abf69ce68aaa37c01e5b0295af172528"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/intelligence-charts.js",
-      "sha": "c651990625630ffb73bc0a253c6123109fbcccc9",
       "mode": "100644",
       "type": "blob",
-      "size": 4229
+      "sha": "c651990625630ffb73bc0a253c6123109fbcccc9",
+      "size": 4229,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c651990625630ffb73bc0a253c6123109fbcccc9"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js",
-      "sha": "dddb6212c28277bbfff913a879c0afe3c31ff0b7",
       "mode": "100644",
       "type": "blob",
-      "size": 23228
+      "sha": "15232834374729b0cefaafa1cdfdb66b4cf583ef",
+      "size": 23603,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/15232834374729b0cefaafa1cdfdb66b4cf583ef"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js",
-      "sha": "e468c7feaf698e09b534a77f540420bc9c6c19cc",
       "mode": "100644",
       "type": "blob",
-      "size": 43723
+      "sha": "b35f887efa1ac5851f257dd5dc81d35356cc2b7e",
+      "size": 47177,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/b35f887efa1ac5851f257dd5dc81d35356cc2b7e"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js",
-      "sha": "d0d88ebb57d3056f183fb3e073885c56f33695ec",
       "mode": "100644",
       "type": "blob",
-      "size": 3758
+      "sha": "d0d88ebb57d3056f183fb3e073885c56f33695ec",
+      "size": 3758,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d0d88ebb57d3056f183fb3e073885c56f33695ec"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/LICENSE-LOLBAS.txt",
-      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
       "mode": "100644",
       "type": "blob",
-      "size": 35149
+      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "size": 35149,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/NOTICE-LOLBAS.md",
-      "sha": "d9e446d06f9e290abd7e8b37374823750a06a7dc",
       "mode": "100644",
       "type": "blob",
-      "size": 9172
+      "sha": "d9e446d06f9e290abd7e8b37374823750a06a7dc",
+      "size": 9172,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d9e446d06f9e290abd7e8b37374823750a06a7dc"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/SOURCE.md",
-      "sha": "81677388695658568087b87ad938bd97aba05354",
       "mode": "100644",
       "type": "blob",
-      "size": 3389
+      "sha": "81677388695658568087b87ad938bd97aba05354",
+      "size": 3389,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/81677388695658568087b87ad938bd97aba05354"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/app.js",
-      "sha": "ea9d9cc47e6498ba488f36d85d28ceac55c282e0",
       "mode": "100644",
       "type": "blob",
-      "size": 17965
+      "sha": "ea9d9cc47e6498ba488f36d85d28ceac55c282e0",
+      "size": 17965,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/ea9d9cc47e6498ba488f36d85d28ceac55c282e0"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/engine.js",
-      "sha": "494c345fc5d9b235ab2befbdf926e9667a174952",
       "mode": "100644",
       "type": "blob",
-      "size": 30538
+      "sha": "494c345fc5d9b235ab2befbdf926e9667a174952",
+      "size": 30538,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/494c345fc5d9b235ab2befbdf926e9667a174952"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/lolbas-data.js",
-      "sha": "048a689ed66d30117904e1e443f726045423a35a",
       "mode": "100644",
       "type": "blob",
-      "size": 387900
+      "sha": "048a689ed66d30117904e1e443f726045423a35a",
+      "size": 387900,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/048a689ed66d30117904e1e443f726045423a35a"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/lotl-analyzer/worker.js",
-      "sha": "6d006afac14570452699b6c6303299388223f923",
       "mode": "100644",
       "type": "blob",
-      "size": 3759
+      "sha": "6d006afac14570452699b6c6303299388223f923",
+      "size": 3759,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/6d006afac14570452699b6c6303299388223f923"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/mcp-checker/app.js",
-      "sha": "9df2e7a3410aa80046a060f9154914d69900c0b4",
       "mode": "100644",
       "type": "blob",
-      "size": 22399
+      "sha": "9df2e7a3410aa80046a060f9154914d69900c0b4",
+      "size": 22399,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/9df2e7a3410aa80046a060f9154914d69900c0b4"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/mcp-checker/engine.js",
-      "sha": "dddd95b6b021a10bc217ec4ecbc7f3c8d43beaef",
       "mode": "100644",
       "type": "blob",
-      "size": 109902
+      "sha": "dddd95b6b021a10bc217ec4ecbc7f3c8d43beaef",
+      "size": 109902,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/dddd95b6b021a10bc217ec4ecbc7f3c8d43beaef"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/mcp-checker/worker.js",
-      "sha": "864370508632939708e78282a1324543a63f8600",
       "mode": "100644",
       "type": "blob",
-      "size": 3302
+      "sha": "864370508632939708e78282a1324543a63f8600",
+      "size": 3302,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/864370508632939708e78282a1324543a63f8600"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/navigation.js",
-      "sha": "eace932486343fe5e778c59004729809bd0c30d7",
       "mode": "100644",
       "type": "blob",
-      "size": 1735
+      "sha": "eace932486343fe5e778c59004729809bd0c30d7",
+      "size": 1735,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/eace932486343fe5e778c59004729809bd0c30d7"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/prompt-injection-detector/app.js",
-      "sha": "c121ed811f96ee325e9cdc27c6e530eb9847f3b0",
       "mode": "100644",
       "type": "blob",
-      "size": 25022
+      "sha": "c121ed811f96ee325e9cdc27c6e530eb9847f3b0",
+      "size": 25022,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c121ed811f96ee325e9cdc27c6e530eb9847f3b0"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/prompt-injection-detector/engine.js",
-      "sha": "21fbd4114a67046e2aaebb3de8cf37804d846146",
       "mode": "100644",
       "type": "blob",
-      "size": 82196
+      "sha": "cef2e73c3dfacd9e03ce1ff90f60ad7348481961",
+      "size": 88655,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/cef2e73c3dfacd9e03ce1ff90f60ad7348481961"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/prompt-injection-detector/worker.js",
-      "sha": "7f9d90c9f536863b0949d8b7efb2d68617ca734a",
       "mode": "100644",
       "type": "blob",
-      "size": 3750
+      "sha": "7f9d90c9f536863b0949d8b7efb2d68617ca734a",
+      "size": 3750,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/7f9d90c9f536863b0949d8b7efb2d68617ca734a"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/threat-analytics.js",
-      "sha": "853ce035bd41fea51f27b7356b9b0ae2fdc0cd53",
       "mode": "100644",
       "type": "blob",
-      "size": 9060
+      "sha": "853ce035bd41fea51f27b7356b9b0ae2fdc0cd53",
+      "size": 9060,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/853ce035bd41fea51f27b7356b9b0ae2fdc0cd53"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/threat-geo.js",
-      "sha": "85128ee72864522af3e701f4d6c78340bef24a21",
       "mode": "100644",
       "type": "blob",
-      "size": 8441
+      "sha": "85128ee72864522af3e701f4d6c78340bef24a21",
+      "size": 8441,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/85128ee72864522af3e701f4d6c78340bef24a21"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/threat-pulse.js",
-      "sha": "592c6f1285209fc42964a021a915ef5df49aa969",
       "mode": "100644",
       "type": "blob",
-      "size": 6911
+      "sha": "592c6f1285209fc42964a021a915ef5df49aa969",
+      "size": 6911,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/592c6f1285209fc42964a021a915ef5df49aa969"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/js/tools-filter.js",
-      "sha": "fdf352ab8be4e4c6a4a94abeef58b56652da8595",
       "mode": "100644",
       "type": "blob",
-      "size": 1144
+      "sha": "fdf352ab8be4e4c6a4a94abeef58b56652da8595",
+      "size": 1144,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/fdf352ab8be4e4c6a4a94abeef58b56652da8595"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/maps/NOTICE.md",
-      "sha": "5521df787a4a124ca996dddec41efe099ee10274",
       "mode": "100644",
       "type": "blob",
-      "size": 451
+      "sha": "5521df787a4a124ca996dddec41efe099ee10274",
+      "size": 451,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/5521df787a4a124ca996dddec41efe099ee10274"
     },
     {
       "path": "wp-content/themes/cyberdat/assets/maps/world-land.svg",
-      "sha": "d14d840e2c25e82288385078d8a8fd9b5e8d0380",
       "mode": "100644",
       "type": "blob",
-      "size": 72149
+      "sha": "d14d840e2c25e82288385078d8a8fd9b5e8d0380",
+      "size": 72149,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d14d840e2c25e82288385078d8a8fd9b5e8d0380"
     },
     {
       "path": "wp-content/themes/cyberdat/footer.php",
-      "sha": "51f500aa620754b77f3bdf3dc4f23e00624377a6",
       "mode": "100644",
       "type": "blob",
-      "size": 1116
+      "sha": "51f500aa620754b77f3bdf3dc4f23e00624377a6",
+      "size": 1116,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/51f500aa620754b77f3bdf3dc4f23e00624377a6"
     },
     {
       "path": "wp-content/themes/cyberdat/front-page.php",
-      "sha": "82ff5bfb275472fdd9a9b877447b3d1850b1835f",
       "mode": "100644",
       "type": "blob",
-      "size": 1746
+      "sha": "82ff5bfb275472fdd9a9b877447b3d1850b1835f",
+      "size": 1746,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/82ff5bfb275472fdd9a9b877447b3d1850b1835f"
     },
     {
       "path": "wp-content/themes/cyberdat/functions.php",
-      "sha": "5f9ed82393320d12999182612ae724e45acfd71f",
       "mode": "100644",
       "type": "blob",
-      "size": 915
+      "sha": "5f9ed82393320d12999182612ae724e45acfd71f",
+      "size": 915,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/5f9ed82393320d12999182612ae724e45acfd71f"
     },
     {
       "path": "wp-content/themes/cyberdat/header.php",
-      "sha": "a62972e432b2ab314adb1244187d48fd528013ea",
       "mode": "100644",
       "type": "blob",
-      "size": 1570
+      "sha": "a62972e432b2ab314adb1244187d48fd528013ea",
+      "size": 1570,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/a62972e432b2ab314adb1244187d48fd528013ea"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/assets.php",
-      "sha": "172d408e7a2796fb4a2f48ded432282f1cd15638",
       "mode": "100644",
       "type": "blob",
-      "size": 3886
+      "sha": "172d408e7a2796fb4a2f48ded432282f1cd15638",
+      "size": 3886,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/172d408e7a2796fb4a2f48ded432282f1cd15638"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/editorial-lead.php",
-      "sha": "992e7feb432dcc955a37fa75faf799ec32f10b65",
       "mode": "100644",
       "type": "blob",
-      "size": 5144
+      "sha": "992e7feb432dcc955a37fa75faf799ec32f10b65",
+      "size": 5144,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/992e7feb432dcc955a37fa75faf799ec32f10b65"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/home-prototype.php",
-      "sha": "521a3ef2299ee064aaf513740de529dc894c1ea9",
       "mode": "100644",
       "type": "blob",
-      "size": 2744
+      "sha": "521a3ef2299ee064aaf513740de529dc894c1ea9",
+      "size": 2744,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/521a3ef2299ee064aaf513740de529dc894c1ea9"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/intelligence-charts.php",
-      "sha": "e41921a3aeab3350d6157e09d5d484c843ebdf80",
       "mode": "100644",
       "type": "blob",
-      "size": 5348
+      "sha": "e41921a3aeab3350d6157e09d5d484c843ebdf80",
+      "size": 5348,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e41921a3aeab3350d6157e09d5d484c843ebdf80"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/kev-data.php",
-      "sha": "81f804140606af4969131a9a3f9d62c35d50392b",
       "mode": "100644",
       "type": "blob",
-      "size": 10241
+      "sha": "81f804140606af4969131a9a3f9d62c35d50392b",
+      "size": 10241,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/81f804140606af4969131a9a3f9d62c35d50392b"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/navigation.php",
-      "sha": "62b4f361e5a5d2d9effb6861a9c8e3d12c38843d",
       "mode": "100644",
       "type": "blob",
-      "size": 2585
+      "sha": "62b4f361e5a5d2d9effb6861a9c8e3d12c38843d",
+      "size": 2585,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/62b4f361e5a5d2d9effb6861a9c8e3d12c38843d"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/nvd-data.php",
-      "sha": "ee97bbffeee01b9028da575c6cf535b05ddbe253",
       "mode": "100644",
       "type": "blob",
-      "size": 13154
+      "sha": "ee97bbffeee01b9028da575c6cf535b05ddbe253",
+      "size": 13154,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/ee97bbffeee01b9028da575c6cf535b05ddbe253"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/preview-guard.php",
-      "sha": "fb81af8216b2f08e71da1cad3edb285ac849ff00",
       "mode": "100644",
       "type": "blob",
-      "size": 1415
+      "sha": "fb81af8216b2f08e71da1cad3edb285ac849ff00",
+      "size": 1415,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/fb81af8216b2f08e71da1cad3edb285ac849ff00"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/setup.php",
-      "sha": "c8908f5d46c79040fd064360ec5f21828189d61c",
       "mode": "100644",
       "type": "blob",
-      "size": 1114
+      "sha": "c8908f5d46c79040fd064360ec5f21828189d61c",
+      "size": 1114,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c8908f5d46c79040fd064360ec5f21828189d61c"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/threat-intelligence.php",
-      "sha": "a56da15f124a9a38e1b12c47fef2679c33155326",
       "mode": "100644",
       "type": "blob",
-      "size": 1097
+      "sha": "a56da15f124a9a38e1b12c47fef2679c33155326",
+      "size": 1097,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/a56da15f124a9a38e1b12c47fef2679c33155326"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/threat-pulse.php",
-      "sha": "8c770709fc42ce83bb5fbc14e4cc61505a3bd04a",
       "mode": "100644",
       "type": "blob",
-      "size": 3880
+      "sha": "8c770709fc42ce83bb5fbc14e4cc61505a3bd04a",
+      "size": 3880,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/8c770709fc42ce83bb5fbc14e4cc61505a3bd04a"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-log-anonymizer.php",
-      "sha": "7578a0e1217373c4eb26d4e52bd46d19767419b7",
       "mode": "100644",
       "type": "blob",
-      "size": 4868
+      "sha": "18bcdfdd4db8309c1896a7fbabb42bf6eb0ba1e8",
+      "size": 5244,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/18bcdfdd4db8309c1896a7fbabb42bf6eb0ba1e8"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-lotl-analyzer.php",
-      "sha": "90422ff49eda0846168a6740f497eba4d97479b6",
       "mode": "100644",
       "type": "blob",
-      "size": 4148
+      "sha": "90422ff49eda0846168a6740f497eba4d97479b6",
+      "size": 4148,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/90422ff49eda0846168a6740f497eba4d97479b6"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-mcp-checker.php",
-      "sha": "d68a2bcb30ef912b866be392c537f8a1b41e9e2e",
       "mode": "100644",
       "type": "blob",
-      "size": 2616
+      "sha": "d68a2bcb30ef912b866be392c537f8a1b41e9e2e",
+      "size": 2616,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d68a2bcb30ef912b866be392c537f8a1b41e9e2e"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-prompt-injection-detector.php",
-      "sha": "89b7974f77bab40e47b978dde812d65cdadea1ab",
       "mode": "100644",
       "type": "blob",
-      "size": 4456
+      "sha": "c146de0a9afab51467991fc83574b45d9b3ff128",
+      "size": 4456,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/c146de0a9afab51467991fc83574b45d9b3ff128"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tool-security.php",
-      "sha": "7d12fa0c83aebf4356a42cba2d111f363e0f87fb",
       "mode": "100644",
       "type": "blob",
-      "size": 3102
+      "sha": "7d12fa0c83aebf4356a42cba2d111f363e0f87fb",
+      "size": 3102,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/7d12fa0c83aebf4356a42cba2d111f363e0f87fb"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tools-catalog.json",
-      "sha": "96dc5be841c98d764c3ef90e3fc25ace71640d0c",
       "mode": "100644",
       "type": "blob",
-      "size": 4657
+      "sha": "96dc5be841c98d764c3ef90e3fc25ace71640d0c",
+      "size": 4657,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/96dc5be841c98d764c3ef90e3fc25ace71640d0c"
     },
     {
       "path": "wp-content/themes/cyberdat/inc/tools.php",
-      "sha": "e79030c1a8568ca45ea713788e8f5a08784ff839",
       "mode": "100644",
       "type": "blob",
-      "size": 11549
+      "sha": "e79030c1a8568ca45ea713788e8f5a08784ff839",
+      "size": 11549,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e79030c1a8568ca45ea713788e8f5a08784ff839"
     },
     {
       "path": "wp-content/themes/cyberdat/index.php",
-      "sha": "e0f42bc5561710c5464e8dfaabb9c8d44f41f20b",
       "mode": "100644",
       "type": "blob",
-      "size": 1612
+      "sha": "e0f42bc5561710c5464e8dfaabb9c8d44f41f20b",
+      "size": 1612,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e0f42bc5561710c5464e8dfaabb9c8d44f41f20b"
     },
     {
       "path": "wp-content/themes/cyberdat/page-templates/threat-intelligence.php",
-      "sha": "967fac7a836cd253dc697a425c60fb1d58ab694c",
       "mode": "100644",
       "type": "blob",
-      "size": 901
+      "sha": "967fac7a836cd253dc697a425c60fb1d58ab694c",
+      "size": 901,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/967fac7a836cd253dc697a425c60fb1d58ab694c"
     },
     {
       "path": "wp-content/themes/cyberdat/page-templates/tool.php",
-      "sha": "799fff4f825d6a64c7e7674bb8c2d8728372c2de",
       "mode": "100644",
       "type": "blob",
-      "size": 1920
+      "sha": "799fff4f825d6a64c7e7674bb8c2d8728372c2de",
+      "size": 1920,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/799fff4f825d6a64c7e7674bb8c2d8728372c2de"
     },
     {
       "path": "wp-content/themes/cyberdat/page-templates/tools.php",
-      "sha": "e9e4661b4e8b805606ceff783f7a6d08f3d0c8e5",
       "mode": "100644",
       "type": "blob",
-      "size": 3626
+      "sha": "e9e4661b4e8b805606ceff783f7a6d08f3d0c8e5",
+      "size": 3626,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e9e4661b4e8b805606ceff783f7a6d08f3d0c8e5"
     },
     {
       "path": "wp-content/themes/cyberdat/searchform.php",
-      "sha": "1563b6ce7582c78a03479bd5638d5e2642e24d3d",
       "mode": "100644",
       "type": "blob",
-      "size": 682
+      "sha": "1563b6ce7582c78a03479bd5638d5e2642e24d3d",
+      "size": 682,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/1563b6ce7582c78a03479bd5638d5e2642e24d3d"
     },
     {
       "path": "wp-content/themes/cyberdat/style.css",
-      "sha": "61180b0ff768a03e1d1bc6a104e743bc69741c3e",
       "mode": "100644",
       "type": "blob",
-      "size": 454
+      "sha": "61180b0ff768a03e1d1bc6a104e743bc69741c3e",
+      "size": 454,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/61180b0ff768a03e1d1bc6a104e743bc69741c3e"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/content-singular.php",
-      "sha": "e79a175054f4d0659b2e30849630d530c34d7157",
       "mode": "100644",
       "type": "blob",
-      "size": 638
+      "sha": "e79a175054f4d0659b2e30849630d530c34d7157",
+      "size": 638,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e79a175054f4d0659b2e30849630d530c34d7157"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/content.php",
-      "sha": "b1cf1cae8f365c681390b79c2a96f172c82dae92",
       "mode": "100644",
       "type": "blob",
-      "size": 536
+      "sha": "b1cf1cae8f365c681390b79c2a96f172c82dae92",
+      "size": 536,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/b1cf1cae8f365c681390b79c2a96f172c82dae92"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/editorial-card.php",
-      "sha": "bccdcd285e1a2334d0e5be0c68793971c0da5902",
       "mode": "100644",
       "type": "blob",
-      "size": 1410
+      "sha": "bccdcd285e1a2334d0e5be0c68793971c0da5902",
+      "size": 1410,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/bccdcd285e1a2334d0e5be0c68793971c0da5902"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/intelligence-charts.php",
-      "sha": "6664d10bff66e6fc148d2207f77eb3e9a0d77f30",
       "mode": "100644",
       "type": "blob",
-      "size": 8753
+      "sha": "6664d10bff66e6fc148d2207f77eb3e9a0d77f30",
+      "size": 8753,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/6664d10bff66e6fc148d2207f77eb3e9a0d77f30"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/intelligence.php",
-      "sha": "d8cc7089b4085cee7d4830fc4d6b66fa9339ba9c",
       "mode": "100644",
       "type": "blob",
-      "size": 7169
+      "sha": "d8cc7089b4085cee7d4830fc4d6b66fa9339ba9c",
+      "size": 7169,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/d8cc7089b4085cee7d4830fc4d6b66fa9339ba9c"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/lead.php",
-      "sha": "36f112b5ada3d2002466303a0127d13f9c39399c",
       "mode": "100644",
       "type": "blob",
-      "size": 3498
+      "sha": "36f112b5ada3d2002466303a0127d13f9c39399c",
+      "size": 3498,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/36f112b5ada3d2002466303a0127d13f9c39399c"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/nvd-cell.php",
-      "sha": "da4fd3a0bff1a09013cd4b737e806aacc905f8be",
       "mode": "100644",
       "type": "blob",
-      "size": 1510
+      "sha": "da4fd3a0bff1a09013cd4b737e806aacc905f8be",
+      "size": 1510,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/da4fd3a0bff1a09013cd4b737e806aacc905f8be"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/nvd-severity.php",
-      "sha": "e77460d3dd4b804177131e97637d425b73eb559d",
       "mode": "100644",
       "type": "blob",
-      "size": 2795
+      "sha": "e77460d3dd4b804177131e97637d425b73eb559d",
+      "size": 2795,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e77460d3dd4b804177131e97637d425b73eb559d"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/threat-dashboard.php",
-      "sha": "db8e78843c25bd190bee1618b6e1ea8dc8265cb1",
       "mode": "100644",
       "type": "blob",
-      "size": 12665
+      "sha": "db8e78843c25bd190bee1618b6e1ea8dc8265cb1",
+      "size": 12665,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/db8e78843c25bd190bee1618b6e1ea8dc8265cb1"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/home/threat-pulse.php",
-      "sha": "a495902aa67fe1b3fa4e7f37b056901a5b67ed35",
       "mode": "100644",
       "type": "blob",
-      "size": 7469
+      "sha": "a495902aa67fe1b3fa4e7f37b056901a5b67ed35",
+      "size": 7469,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/a495902aa67fe1b3fa4e7f37b056901a5b67ed35"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/threat-map.php",
-      "sha": "687e9077e6378194c261a8d66d98a7ef4a06d9a2",
       "mode": "100644",
       "type": "blob",
-      "size": 4289
+      "sha": "687e9077e6378194c261a8d66d98a7ef4a06d9a2",
+      "size": 4289,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/687e9077e6378194c261a8d66d98a7ef4a06d9a2"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/tools/log-anonymizer.php",
-      "sha": "35c7bfc1eb853a216890b8acfdde74f3bad1eb72",
       "mode": "100644",
       "type": "blob",
-      "size": 15046
+      "sha": "1846d2abd2d1b569478a277176163e513a17e11e",
+      "size": 15037,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/1846d2abd2d1b569478a277176163e513a17e11e"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/tools/lotl-command-analyzer.php",
-      "sha": "a6f2661520c0015395450af7dadbbfd12363443b",
       "mode": "100644",
       "type": "blob",
-      "size": 13260
+      "sha": "a6f2661520c0015395450af7dadbbfd12363443b",
+      "size": 13260,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/a6f2661520c0015395450af7dadbbfd12363443b"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/tools/mcp-security-checker.php",
-      "sha": "76d006b383c1fff244afcf40a3ff4c8ac1b4a1e3",
       "mode": "100644",
       "type": "blob",
-      "size": 16950
+      "sha": "76d006b383c1fff244afcf40a3ff4c8ac1b4a1e3",
+      "size": 16950,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/76d006b383c1fff244afcf40a3ff4c8ac1b4a1e3"
     },
     {
       "path": "wp-content/themes/cyberdat/template-parts/tools/prompt-injection-detector.php",
-      "sha": "b159e0ccfee855724040be7e064dfd71449e3661",
       "mode": "100644",
       "type": "blob",
-      "size": 16595
+      "sha": "b159e0ccfee855724040be7e064dfd71449e3661",
+      "size": 16595,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/b159e0ccfee855724040be7e064dfd71449e3661"
     },
     {
       "path": "wp-content/themes/cyberdat/theme.json",
-      "sha": "309715078bd70f04676bf2774a861732299a40fe",
       "mode": "100644",
       "type": "blob",
-      "size": 4899
+      "sha": "309715078bd70f04676bf2774a861732299a40fe",
+      "size": 4899,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/309715078bd70f04676bf2774a861732299a40fe"
     }
   ],
-  "target_tree_sha1": "09bdf8b38031bb7b8059678d8c8d759b0d445de8",
+  "target_tree_sha1": "0324800d705f74da563d371c0f60acde56873dee",
   "target_description": "Tools final test stabilization fromae48da0, theme125; Research0ef03e9 retained"
 }

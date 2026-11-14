@@ -1,0 +1,18 @@
+{
+  "original_text_rules": 33,
+  "patterns_flags_metadata_and_check_function_source_identical": true,
+  "new_text_rules": [
+    "PI-EXF-010",
+    "PI-OVR-040",
+    "PI-EXT-004",
+    "PI-OVR-031",
+    "PI-EXT-030",
+    "PI-OVR-022",
+    "PI-EXT-021"
+  ],
+  "scanner_context_changes": [
+    "PI-OVR-006 narrow negated meta-address suppression",
+    "Spanish direct negation prefixes no/nunca for negation-enabled rules"
+  ],
+  "fingerprint_including_check_functions": "d261111182d765c9e8203e06388171992c053fb8bbd79b6e2fb26e430fab17e4"
+}
