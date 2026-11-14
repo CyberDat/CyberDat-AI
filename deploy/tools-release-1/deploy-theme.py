@@ -83,9 +83,33 @@ CANONICAL_REVISION = 'tools-staging-rank-math-canonical/1'
 CANONICAL_PARENT_ARCHIVE = 'd7bc61591c833dbfcebb9d4fa02cf06b99dd8ba241c2fa1095763aa1e82e8edc'
 CANONICAL_PARENT_PACKAGE = '98008bd5f9ee98f24da4a56ccf80b47f3b56c37330998005f6cc28bddc4f39fd'
 
+DESIGN_REVISION = 'tools-hub-cyber-glass/1'
+DESIGN_PARENT_ARCHIVE = 'a9ec1e5f556e69344f6828b15c2e65ebea3ba1d05aa37e4714fb19cc69ea485f'
+DESIGN_PARENT_PACKAGE = '29ac38e26eeb13e84769fed791585957e7aad49bb7fc8ae7d678792e3aeceeb2'
+DESIGN_SOURCE_COMMIT = '7eb9928c0449dc035c3e45aae1436a6c1878cdc5'
+DESIGN_ADDED = {'assets/css/tools-hub.css'} | {
+    'assets/images/tools-hub/' + n + '.svg' for n in [
+        'hero', 'log-anonymizer', 'prompt-injection-detector', 'lotl-command-analyzer',
+        'mcp-security-checker', 'agent-leak-inspector', 'ai-model-bom',
+        'mitre-atlas-mapper', 'prompt-injection-test-bench', 'yara-sigma-validator',
+        'container-hardening-audit']}
+DESIGN_MODIFIED = {'page-templates/tools.php', 'assets/js/tools-filter.js'}
+
+
 
 def approved_release(spec, parent=None):
-    if spec.get('research_commit') != RESEARCH or len(spec.get('target', {})) != 125:
+    if spec.get('research_commit') != RESEARCH:
+        return False
+    if spec.get('revision') == DESIGN_REVISION and parent:
+        before, after = spec.get('base', {}), spec.get('target', {})
+        return (parent.get('archive_sha256') == DESIGN_PARENT_ARCHIVE
+                and spec.get('parent_archive_sha256') == DESIGN_PARENT_ARCHIVE
+                and spec.get('theme_commit') == DESIGN_SOURCE_COMMIT
+                and before == parent.get('target') and len(before) == 125 and len(after) == 137
+                and not (set(before) - set(after))
+                and set(after) - set(before) == DESIGN_ADDED
+                and {n for n in before if before[n] != after[n]} == DESIGN_MODIFIED)
+    if len(spec.get('target', {})) != 125:
         return False
     if len(spec.get('base', {})) == 95 and 'revision' not in spec:
         return True
@@ -116,10 +140,10 @@ def approved_release(spec, parent=None):
 def guard(spec):
     sql_read_identity()
     parent = None
-    if spec.get('revision') in (HUB_REVISION, INTEGRATION_REVISION, CANONICAL_REVISION):
+    if spec.get('revision') in (HUB_REVISION, INTEGRATION_REVISION, CANONICAL_REVISION, DESIGN_REVISION):
         p = HERE / 'parent-package.json'
         private_root_file(p)
-        need(digest(p) == ({HUB_REVISION: PARENT_PACKAGE, INTEGRATION_REVISION: INTEGRATION_PARENT_PACKAGE, CANONICAL_REVISION: CANONICAL_PARENT_PACKAGE}[spec['revision']]), 'revision parent package SHA256 mismatch')
+        need(digest(p) == ({HUB_REVISION: PARENT_PACKAGE, INTEGRATION_REVISION: INTEGRATION_PARENT_PACKAGE, CANONICAL_REVISION: CANONICAL_PARENT_PACKAGE, DESIGN_REVISION: DESIGN_PARENT_PACKAGE}[spec['revision']]), 'revision parent package SHA256 mismatch')
         parent = json.loads(p.read_text())
     need(approved_release(spec, parent), 'wrong pinned release or unapproved hotfix delta')
     protections = json.loads((HERE / 'protected-files.json').read_text())
