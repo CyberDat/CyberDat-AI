@@ -13,7 +13,7 @@ The latest owner instruction authorizes only the pinned closed-staging D1 instal
 | D15 | PASS, previously APPLIED_APPROVED_SCOPE:11 repository +11 prepared entry points | Current static checks and10 isolated interlock tests pass; no reapplication today |
 | D2 | Corrected catalog/manifests/200-renderer vs404 policy prepared; adoption by old SEO publication checks pending | Page publication/checks |
 | D4 | Four canonical slugs still require explicit page-action confirmation; old lolbas-analyzer alias stays404 | Creating/changing pages |
-| D8 | Hub release1.1 still lists3 tools; MCP1.2 direct URL implementation present | Claim that all4 are discoverable on hub is not accepted |
+| D8 | OWNER APPROVED: restore the full ten-card catalogue, category filters and counter; retain all four implementations | Narrow Hub-template revision only; native tool page publication remains separate |
 | D9 | Reuse of ID51/stale Rank Math description, old ID53 and removed backlog drafts not decided | Page/meta/SEO work |
 | D11 | SEO publication/sitemap policy pending; protected legacy entry points do not approve SEO actions | SEO acceptance/publication |
 | D14 | PASS: 40 original cases per browser and 32 new controls; 174 existing +24 new browser checks | Bounded acceptance closed; D1/D6 and page/SEO decisions remain separate |
@@ -59,3 +59,7 @@ D1 authorizes only the prepared closed-staging 125-file theme archive SHA256 `5c
 ## Reviewed controls source repair
 
 Approved installer provenance: ae48da0 changed target123 to125 for added notices; the registry stayed old. build-controls.py regenerates the full registry from reviewed Git blobs and exact reviewed deltas, with package binding and unchanged identity/authorization gates. Canonical-slug lookup fixes the tested WP-CLI local-include snapshot warning (6ec9ff0); warnings are not suppressed. Controls build checks8/8 and deployment sandbox checks46/46 pass; full D14 not rerun. Runtime paths, backup inventory, route state and health are owner-private and omitted here. D6 optionA and UNVERIFIED legal boundary remain; no publication authorization.
+
+## Approved Tools Hub revision
+
+The owner approved restoring the prior full catalogue UI without altering other theme files or publishing tool pages. The reviewed derivative changes only page-templates/tools.php within the 125-file theme. Guarded upgrade is bound to the exact D1 parent, rejects extra file changes, and retains identity/protected-runtime/authorization/D15 checks. Source c72aa9e32b63ef6e6e57ff6702ed09e1c922b097; archive SHA25690992a0476df96ef622187ede08bb40638a6024441b13cdbe279008b0912d799. Targeted catalogue/filter, eight revision-contract,46 sandbox and browser UI checks pass. Private runtime inventory and backup data remain withheld.

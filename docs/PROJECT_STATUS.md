@@ -2,7 +2,15 @@
 
 Last updated: 2026-11-14
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release 1 controls consistency repair verified; D6 option A retained. Runtime deployment evidence is owner-private.**
+Current stage: **Tools Hub hotfix verified: ten-card catalogue, category filters and counter restored; single-template theme revision.**
+
+## Tools Hub restoration — 2026-11-14
+
+Owner approved restoring the former full catalogue with filters and counter while preserving all four Tools implementations. The regression was a release1.1-only template selection plus removed filter/count markup; the ten-entry JSON catalogue and filter JavaScript were intact. The prior verified D1 backup template supplied the restored layout; readiness/link gating remains in place.
+
+New theme-only revision:125 files, exactly one changed path (`page-templates/tools.php`). Source c72aa9e32b63ef6e6e57ff6702ed09e1c922b097; archive SHA256 `90992a0476df96ef622187ede08bb40638a6024441b13cdbe279008b0912d799`. The guarded 125-to-125 contract binds the exact D1 parent and permits only this template delta; identity/protected-file/authorization/D15/atomic-exchange protections remain mandatory. No page-publication authorization or agent changes.
+
+Targeted PHP catalogue/readiness and filter tests pass;8 narrow contract tests,46 deployment sandbox checks and42 theme PHP lint pass. Browser UI verification at320/768/1440/1920 confirms10 cards,6 filter buttons,24 category/count checks, keyboard/touch reset and no horizontal overflow or JS/console errors. No full D14 rerun. Runtime inventory, backups, page snapshots and protected-state receipts are owner-private. [Minimized acceptance](../deploy/tools-release-1/hub-hotfix-acceptance.json). Work stops after the requested result.
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.

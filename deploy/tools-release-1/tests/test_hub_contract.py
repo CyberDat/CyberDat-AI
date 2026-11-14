@@ -3,7 +3,7 @@ from pathlib import Path
 D=Path(__file__).resolve().parents[1];sys.path.insert(0,str(D));s=importlib.util.spec_from_file_location('live',D/'deploy-theme.py');live=importlib.util.module_from_spec(s);s.loader.exec_module(live)
 class Contract(unittest.TestCase):
  def setUp(self):
-  self.parent=json.loads((D/'manifest.json').read_text());self.spec={**self.parent,'base':copy.deepcopy(self.parent['target']),'target':copy.deepcopy(self.parent['target']),'revision':live.HUB_REVISION,'parent_archive_sha256':live.PARENT_ARCHIVE};self.spec['target']['page-templates/tools.php']['sha256']='a'*64
+  self.parent=json.loads((D/'parent-tools-release-1.json').read_text());self.spec={**self.parent,'base':copy.deepcopy(self.parent['target']),'target':copy.deepcopy(self.parent['target']),'revision':live.HUB_REVISION,'parent_archive_sha256':live.PARENT_ARCHIVE};self.spec['target']['page-templates/tools.php']['sha256']='a'*64
  def test_original(self):self.assertTrue(live.approved_release(self.parent))
  def test_exact_template_delta(self):self.assertTrue(live.approved_release(self.spec,self.parent))
  def test_requires_parent(self):self.assertFalse(live.approved_release(self.spec))

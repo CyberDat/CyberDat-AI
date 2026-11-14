@@ -1,0 +1,17 @@
+{
+  "schema": "cyberdat-hub-controls-approval/1",
+  "source_commit": "c72aa9e32b63ef6e6e57ff6702ed09e1c922b097",
+  "revision": "tools-hub-catalog-10-filter-counter/1",
+  "parent_archive_sha256": "5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b",
+  "files": {
+    "deploy-theme.py": "5d6740d712480968dd171bd57611ee5ed51ad101",
+    "legacy-entrypoints.json": "404431032d935d8ab0af5b2e76cb3a5a18799e72",
+    "legacy_guard.py": "49403c5cb7bee6580c6b7fee077969aca6b322de",
+    "protected-files.json": "37980b0a97148f661142e320f0bd5f04def7093a",
+    "route_policy.py": "18308fb7d71dcf2ca726b8732905a10f27f7a7ae",
+    "safe_theme.py": "b28b98779d3f46f1aff4ba2f51ebf7d42324e887",
+    "staging-contract.php": "814eca46277a579da34f2f8eca05950018e38105",
+    "tool-pages.php": "07a8ba86bffc21a42ad84ec23b55068064f589be",
+    "wp-state.php": "c6309a2dc31ccdde8753b746f1848a154222467d"
+  }
+}
