@@ -1,0 +1,36 @@
+{
+  "schema": "cyberdat-controls-source-approval/1",
+  "reviewed_source_commit": "6ec9ff010414e3bcf3992a45bb5104cdc2571670",
+  "reviewed_installer_change_commit": "ae48da0e635b45a5e1fefdda54bb95eed2b2cd61",
+  "reviewed_snapshot_fix_commit": "6ec9ff010414e3bcf3992a45bb5104cdc2571670",
+  "reviewed_change": "Installer target 123-to-125 plus tested canonical-slugs local-scope snapshot fix; guards unchanged",
+  "files": {
+    "deploy-theme.py": {
+      "git_blob_sha1": "27848287d42104a2c3a9b5b59830516e62946b12"
+    },
+    "legacy-entrypoints.json": {
+      "git_blob_sha1": "404431032d935d8ab0af5b2e76cb3a5a18799e72"
+    },
+    "legacy_guard.py": {
+      "git_blob_sha1": "49403c5cb7bee6580c6b7fee077969aca6b322de"
+    },
+    "protected-files.json": {
+      "git_blob_sha1": "37980b0a97148f661142e320f0bd5f04def7093a"
+    },
+    "route_policy.py": {
+      "git_blob_sha1": "18308fb7d71dcf2ca726b8732905a10f27f7a7ae"
+    },
+    "safe_theme.py": {
+      "git_blob_sha1": "b28b98779d3f46f1aff4ba2f51ebf7d42324e887"
+    },
+    "staging-contract.php": {
+      "git_blob_sha1": "814eca46277a579da34f2f8eca05950018e38105"
+    },
+    "tool-pages.php": {
+      "git_blob_sha1": "07a8ba86bffc21a42ad84ec23b55068064f589be"
+    },
+    "wp-state.php": {
+      "git_blob_sha1": "c6309a2dc31ccdde8753b746f1848a154222467d"
+    }
+  }
+}

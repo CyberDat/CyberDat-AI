@@ -2,12 +2,18 @@
 
 Last updated: 2026-11-14
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release 1 D1 closed-staging installation AUTHORIZED but BLOCKED before deployed changes by a helper checksum mismatch. D6 option A owner-approved; shared-theme legal boundary UNVERIFIED.**
+Current stage: **Tools Release 1 controls consistency repair verified; D6 option A retained. Runtime deployment evidence is owner-private.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release 1 D6 decision and D1 execution attempt — 2026-11-14
+## Tools controls consistency repair — 2026-11-14
+
+Reviewed history confirms the approved installer changed only its target file count from123 to125 in ae48da0. The old controls registry was not rebuilt. A complete Git-pinned controls builder now regenerates the registry and verifies every helper, exact reviewed deltas, package binding and private authorization; no manual checksum substitution or disabled guard.
+
+WP-CLI eval-file local scope also required a canonical-slugs function inside snapshot/restore; the regression reproduced the warning before the fix and passes afterward (source6ec9ff0). Controls-only build/tamper/reproducibility checks8/8 and deployment sandbox checks46/46 pass. Full D14 was not repeated; theme archive bytes remain unchanged. Runtime paths, backups, route inventory and operational health are deliberately withheld from this public document and retained privately for the owner. No page publication authorized.
+
+## Tools Release 1 D6 decision and D1 execution attempt — 2026-11-14 (historical source state at3a95b54)
 
 Owner authorized the exact 125-file theme-only package for closed staging: archive SHA256 `5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b`. D6 option A is explicitly recorded: LotL remains GPLv3, corresponding sources public, LICENSE/NOTICE preserved; legal shared-theme/combined-work boundary remains UNVERIFIED. No production, agent/SEO, timers/checkpoints/backoff, new-page publication or full SQL rollback approval.
 

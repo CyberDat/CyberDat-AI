@@ -1,0 +1,12 @@
+{
+  "tool-pages.php": "5e43ea578cb1d2bed6d8ee15662e41a954e66996c9f55dca6996abac5fea12d3",
+  "legacy_guard.py": "a4a620702178cf418bb9cf0922157b00a182dc484b4f4c9c9146c96f2d809d8d",
+  "deploy-theme.py": "fdc7fa951640b950267b7540e9b08850ec2f778091dfa8b17ca99f873fac8bbf",
+  "safe_theme.py": "57c62e24dc45b7b92c868c03449537337978877a237310f23c0b3a0c704ccd22",
+  "wp-state.php": "2cd60838fcabb14d2efacf4e5226228f9e0355a87f975a880b0037f83477cbc3",
+  "legacy-entrypoints.json": "dfff07993dd724c3fdf5264de55a43af1ee21899102311c70cf8ee9ba52bd345",
+  "staging-contract.php": "be9aeab0af8315fb0b3d4a4566f9c1a5f74829d44ac32a9ffec7603b50a8d39d",
+  "protected-files.json": "86d69939716c4872ec3e79e72468cd2f02641fcdf43c79fd6eb67b62fb6f5db5",
+  "route_policy.py": "0f51bd4668e48a19a2964d343bf1bcadfec099e87134c78e095331c8bf8c2580",
+  "authorization.json": "07fc996f64a362bad18c5fa9ca02da34d2c22e06a16ecab7a0e207e7769b0848"
+}
