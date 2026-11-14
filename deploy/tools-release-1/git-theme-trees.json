@@ -1582,9 +1582,9 @@
       "path": "wp-content/themes/cyberdat/inc/tools.php",
       "mode": "100644",
       "type": "blob",
-      "sha": "e79030c1a8568ca45ea713788e8f5a08784ff839",
-      "size": 11549,
-      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e79030c1a8568ca45ea713788e8f5a08784ff839"
+      "sha": "be344f252733f1f71c31ecc8317275c2ad86180f",
+      "size": 12478,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/be344f252733f1f71c31ecc8317275c2ad86180f"
     },
     {
       "path": "wp-content/themes/cyberdat/index.php",
@@ -1606,9 +1606,9 @@
       "path": "wp-content/themes/cyberdat/page-templates/tool.php",
       "mode": "100644",
       "type": "blob",
-      "sha": "799fff4f825d6a64c7e7674bb8c2d8728372c2de",
-      "size": 1920,
-      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/799fff4f825d6a64c7e7674bb8c2d8728372c2de"
+      "sha": "e77b34b98b63445edadb71ce67393af7e529d11d",
+      "size": 2088,
+      "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/e77b34b98b63445edadb71ce67393af7e529d11d"
     },
     {
       "path": "wp-content/themes/cyberdat/page-templates/tools.php",
@@ -1763,6 +1763,6 @@
       "url": "https://api.github.com/repos/CyberDat/CyberDat-AI/git/blobs/309715078bd70f04676bf2774a861732299a40fe"
     }
   ],
-  "target_tree_sha1": "c7edafd9f5caa859d7f2f21fe3dee1e18e3065ce",
-  "target_description": "Tools final test stabilization fromae48da0, theme125; Research0ef03e9 retained"
+  "target_tree_sha1": "a9e135e5a68d9fddd416d17603b16a0e27396890",
+  "target_description": "WordPress editorial/SEO integration and Rank Math canonical; exact125 files; Research0ef03e9 retained"
 }

@@ -1,17 +1,17 @@
 {
-  "source_commit": "a5611f225ad1ff9858f84103036b73cc7c38568c",
-  "theme_git_tree": "e7f385e56de29a6eeb1fbcfe3b3107dfd96dbaf8",
+  "source_commit": "900eafab932fe20f926470cf38611585dd8de57d",
+  "theme_git_tree": "a9e135e5a68d9fddd416d17603b16a0e27396890",
   "all125_git_blobs_match": true,
   "protected_plugin_trees": [
     {
       "path": "wp-content/plugins/cyberdat-research",
       "git_tree": "8ca5d17924c60c0e83d82b65f829c28f5bc152f9",
-      "unchanged_since_803da063": true
+      "unchanged_during_tools_integration": true
     },
     {
       "path": "wp-content/plugins/cyberdat-content",
       "git_tree": "ddb0a2d153550f347e39d014651acb8be102278a",
-      "unchanged_since_803da063": true
+      "unchanged_during_tools_integration": true
     }
   ]
 }

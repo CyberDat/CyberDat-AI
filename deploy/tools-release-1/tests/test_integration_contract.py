@@ -15,4 +15,14 @@ class Integration(unittest.TestCase):
   d=json.loads((D/'editorial-integration.json').read_text());self.assertEqual(len(d),4);self.assertEqual(len({x['seo']['title'] for x in d.values()}),4);self.assertEqual(len({x['seo']['description'] for x in d.values()}),4)
   for p in d.values():
    self.assertEqual(len(p['questions']),4);self.assertNotIn('<h1',p['article']);self.assertNotIn('<script',p['article']);self.assertGreater(len(p['article']),3000)
+
+class Canonical(unittest.TestCase):
+ def setUp(self):
+  self.parent=json.loads((D/'canonical-parent.json').read_text());self.spec={**self.parent,'base':copy.deepcopy(self.parent['target']),'target':copy.deepcopy(self.parent['target']),'revision':m.CANONICAL_REVISION,'parent_archive_sha256':m.CANONICAL_PARENT_ARCHIVE};self.spec['target']['inc/tools.php']['sha256']='a'*64
+ def test_canonical_only(self):self.assertTrue(m.approved_release(self.spec,self.parent))
+ def test_refuse_template_change(self):self.spec['target']['page-templates/tool.php']['sha256']='b'*64;self.assertFalse(m.approved_release(self.spec,self.parent))
+ def test_refuse_wrong_parent(self):self.parent['archive_sha256']='b'*64;self.assertFalse(m.approved_release(self.spec,self.parent))
+ def test_refuse_unknown_file(self):self.spec['target']['unexpected.php']={'sha256':'a'*64};self.assertFalse(m.approved_release(self.spec,self.parent))
+ def test_refuse_research_change(self):self.spec['research_commit']='b'*40;self.assertFalse(m.approved_release(self.spec,self.parent))
+
 if __name__=='__main__':unittest.main(verbosity=2)

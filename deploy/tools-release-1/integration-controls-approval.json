@@ -1,0 +1,17 @@
+{
+  "schema": "cyberdat-integration-controls-approval/1",
+  "source_commit": "d1149810abc636cc3d0819e2baa74a8512b37d45",
+  "revision": "tools-wordpress-editorial-seo/1",
+  "files": {
+    "deploy-theme.py": "23c10c19d9bcf9759a8a7ead83b0ab37ada9959c",
+    "safe_theme.py": "b28b98779d3f46f1aff4ba2f51ebf7d42324e887",
+    "legacy_guard.py": "49403c5cb7bee6580c6b7fee077969aca6b322de",
+    "route_policy.py": "18308fb7d71dcf2ca726b8732905a10f27f7a7ae",
+    "staging-contract.php": "814eca46277a579da34f2f8eca05950018e38105",
+    "wp-state.php": "a7c51a3e934f4761008eacd435bda9af1e9a6fb7",
+    "tool-pages.php": "8f01f199b85d90b2661dfb21dd9ad88a974912be",
+    "protected-files.json": "37980b0a97148f661142e320f0bd5f04def7093a",
+    "legacy-entrypoints.json": "404431032d935d8ab0af5b2e76cb3a5a18799e72",
+    "editorial-integration.json": "3af2d5dfa019e1505c6d6302e84360e0ff8cd3a5"
+  }
+}

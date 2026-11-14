@@ -1,0 +1,255 @@
+{
+  "schema": "cyberdat-tools-wordpress-acceptance/1",
+  "status": "SUCCESS",
+  "scope": "Owner-authorized closed staging integration only; not production or public indexing approval",
+  "theme_source_commit": "900eafab932fe20f926470cf38611585dd8de57d",
+  "archive_sha256": "a9ec1e5f556e69344f6828b15c2e65ebea3ba1d05aa37e4714fb19cc69ea485f",
+  "package_sha256": "29ac38e26eeb13e84769fed791585957e7aad49bb7fc8ae7d678792e3aeceeb2",
+  "theme_files": 125,
+  "php_lint": 42,
+  "deployment_tests": {
+    "tests": 46,
+    "failures": 0,
+    "errors": 0
+  },
+  "interlock_tests": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0
+  },
+  "revision_contract_tests": 20,
+  "engines_changed": false,
+  "full_D14_repeated": false,
+  "canonical": {
+    "owner": "Rank Math",
+    "count_per_page": 1,
+    "noindex_nofollow_retained": true
+  },
+  "schema_types": [
+    "SoftwareApplication",
+    "FAQPage"
+  ],
+  "faq_questions_per_tool": 4,
+  "robots": "closed staging: Basic Auth and noindex/nofollow",
+  "wordpress_tools": [
+    {
+      "browser": "chromium",
+      "tool": "log-anonymizer",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 1224000,
+      "export": true,
+      "malformed_json": "not_applicable",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "chromium",
+      "tool": "prompt-injection-detector",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 1224000,
+      "export": true,
+      "malformed_json": "not_applicable",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "chromium",
+      "tool": "lotl-command-analyzer",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 82000,
+      "export": true,
+      "malformed_json": "not_applicable",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "chromium",
+      "tool": "mcp-security-checker",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 1048641,
+      "export": true,
+      "malformed_json": "PASS",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "firefox",
+      "tool": "log-anonymizer",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 1224000,
+      "export": true,
+      "malformed_json": "not_applicable",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "firefox",
+      "tool": "prompt-injection-detector",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 1224000,
+      "export": true,
+      "malformed_json": "not_applicable",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "firefox",
+      "tool": "lotl-command-analyzer",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 82000,
+      "export": true,
+      "malformed_json": "not_applicable",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    },
+    {
+      "browser": "firefox",
+      "tool": "mcp-security-checker",
+      "http": 200,
+      "seo": true,
+      "schema": true,
+      "visible_faq_matches": true,
+      "h1": 1,
+      "widths": [
+        320,
+        768,
+        1440,
+        1920
+      ],
+      "worker": true,
+      "keyboard": true,
+      "empty_input": true,
+      "large_input_bytes": 1048641,
+      "export": true,
+      "malformed_json": "PASS",
+      "network_after_input": 0,
+      "runtime_errors": 0,
+      "console_errors": 0
+    }
+  ],
+  "webkit": {
+    "status": "UNVERIFIED",
+    "reason": "Isolated WebKit cannot navigate HTTPS staging: TLS backend unavailable/internal navigation error; no system dependency or TLS-policy change"
+  },
+  "physical_mobile_device": "UNVERIFIED; viewport and touch emulation only",
+  "protected_runtime": "unchanged; owner-private receipt",
+  "unrelated_posts_and_metadata": "unchanged; owner-private receipt",
+  "backups": "verified selective backups retained owner-private",
+  "research": "read-only checked; existing health limitations retained privately; no collector/timer/checkpoint/backoff changes",
+  "production_operation": false,
+  "github_settings_changed": false,
+  "hub": {
+    "cards": 10,
+    "filter_buttons": 6,
+    "category_checks": 24,
+    "counter": true,
+    "widths": [
+      320,
+      768,
+      1440,
+      1920
+    ],
+    "keyboard_and_touch": true,
+    "runtime_errors": 0,
+    "console_errors": 0,
+    "canonical_links": 4
+  }
+}

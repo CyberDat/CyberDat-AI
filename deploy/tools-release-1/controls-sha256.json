@@ -1,12 +1,13 @@
 {
-  "deploy-theme.py": "a77cce7667c9d7bdf7b3de0fa9b89df3e1ce79429ce97e04364b3d8ab0e38220",
+  "deploy-theme.py": "b475eb447297ca44cd68da37a394885dd132f57ff050a31524d5a6b412b93fac",
+  "editorial-integration.json": "11e7f6d43373d114b5ca0a69442d37397f1ce687e7d7a6d30ac1a5eda07f48fc",
   "legacy-entrypoints.json": "dfff07993dd724c3fdf5264de55a43af1ee21899102311c70cf8ee9ba52bd345",
   "legacy_guard.py": "a4a620702178cf418bb9cf0922157b00a182dc484b4f4c9c9146c96f2d809d8d",
   "protected-files.json": "86d69939716c4872ec3e79e72468cd2f02641fcdf43c79fd6eb67b62fb6f5db5",
   "route_policy.py": "0f51bd4668e48a19a2964d343bf1bcadfec099e87134c78e095331c8bf8c2580",
   "safe_theme.py": "57c62e24dc45b7b92c868c03449537337978877a237310f23c0b3a0c704ccd22",
   "staging-contract.php": "be9aeab0af8315fb0b3d4a4566f9c1a5f74829d44ac32a9ffec7603b50a8d39d",
-  "tool-pages.php": "5e43ea578cb1d2bed6d8ee15662e41a954e66996c9f55dca6996abac5fea12d3",
-  "wp-state.php": "b657daf0d8b2bcb66550673e097ec41a90f4fc91b1df4c0c85462a7ab0e17e58",
+  "tool-pages.php": "ad3e65ec8f8ff2a189f49a3ae327af49aeb316dec8cd023b82fa1cc3238332a2",
+  "wp-state.php": "540ef131219491df14f7f348728b18ace969b740bd0c1487e56e23f47224ee4b",
   "authorization.json": "07fc996f64a362bad18c5fa9ca02da34d2c22e06a16ecab7a0e207e7769b0848"
 }
