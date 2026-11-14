@@ -23,7 +23,7 @@
 	'use strict';
 
 	const VERSION = '1.0.3';
-	const RULESET_VERSION = '2026-11-14.2';
+	const RULESET_VERSION = '2026-11-14.3';
 	const CHUNK_CHARS = 1 << 20;
 	const MAX_KEY_BLOCK = 65536;
 	const MAX_CUSTOM_RULES = 20;
@@ -259,8 +259,9 @@
 			/\bfor user ([^\s()\[\];,'"]{1,64})(?=\(|[ \t]+by\b|[ \t]*$|[ \t]*[;,.])/gmd,
 			/\bDisconnected from (?:authenticating |invalid )?user ([^\s()\[\];,'"]{1,64}) /gd,
 			// User names may contain any letters (Cyrillic, umlauts): Unicode classes with the u flag.
-			/\bby ([\p{L}\p{N}._-]{1,64})\(uid=\d{1,10}\)/gdu,
-			/\bof user ([\p{L}\p{N}_][\p{L}\p{N}._-]{0,63}?)\.?(?=[ \t]|$)/gmdu,
+			// \p{M} after the first character: decomposed (NFD) names such as "jo" + U+0308 + "rg".
+			/\bby ([\p{L}\p{N}._-][\p{L}\p{M}\p{N}._-]{0,63})\(uid=\d{1,10}\)/gdu,
+			/\bof user ([\p{L}\p{N}_][\p{L}\p{M}\p{N}._-]{0,63}?)\.?(?=[ \t]|$)/gmdu,
 			/\bnew (?:user|group): name=([^,\s]{1,64})/gd,
 			/\bpassword changed for ([^\s()\[\];,'"]{1,64})/gd,
 			// Apache httpd auth modules: "user bob not found", "user bob: authentication failure".
@@ -273,9 +274,9 @@
 			/\barn:aws[a-z-]{0,12}:(?:iam|sts)::\d{12}:(?:user|federated-user)\/(?:[^\s"',\/]{1,128}\/){0,8}([^\s"',\/]{1,128})/gd,
 			/\barn:aws[a-z-]{0,12}:sts::\d{12}:assumed-role\/[^\s"',\/]{1,128}\/([^\s"',]{1,128})/gd
 		],
-		sudoUser: /\bsudo(?:\[\d{1,10}\])?:[ \t]{1,16}([\p{L}\p{N}._-]{1,64})[ \t]{1,4}:/gdu,
+		sudoUser: /\bsudo(?:\[\d{1,10}\])?:[ \t]{1,16}([\p{L}\p{N}._-][\p{L}\p{M}\p{N}._-]{0,63})[ \t]{1,4}:/gdu,
 		homePath: /(?:\/home\/|\/Users\/|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|\/)Users(?:\\\\|\\|\/))([^\s\/\\:*?"'<>|,;]{1,64})/gid,
-		domainUser: /(?<![A-Za-z0-9_\\\/:.-])([A-Z][A-Z0-9-]{1,14})\\{1,2}([\p{L}\p{N}][\p{L}\p{N}._-]{0,63})(?![\p{L}\p{N}_\\])/gdu,
+		domainUser: /(?<![A-Za-z0-9_\\\/:.-])([A-Z][A-Z0-9-]{1,14})\\{1,2}([\p{L}\p{N}][\p{L}\p{M}\p{N}._-]{0,63})(?![\p{L}\p{M}\p{N}_\\])/gdu,
 		syslogHost: /^(?:<\d{1,3}>\d{0,2} ?)?(?:[A-Z][a-z]{2} [ 0-3]\d \d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:?\d{2})?) ([A-Za-z0-9][A-Za-z0-9._-]{0,253}) (?=[A-Za-z0-9_.\/-]{1,64}(?:\[\d{1,10}\])?(?::| - ))/gmd,
 		fqdn: /(?<![A-Za-z0-9_@.-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,126}[A-Za-z]{2,63}\.?(?![A-Za-z0-9_-]|\.[A-Za-z0-9])/g
 	};
