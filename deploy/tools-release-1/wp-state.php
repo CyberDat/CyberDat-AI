@@ -69,6 +69,7 @@ function cd_tools_restore( $before, $expected ) {
 }
 
 $mode = $args[0] ?? 'snapshot';
+if ( in_array( $mode, array( 'plan', 'draft', 'reviewed', 'publish' ), true ) ) { require __DIR__ . '/tool-pages.php'; return; }
 if ( 'snapshot' === $mode ) { echo wp_json_encode( cd_tools_snapshot(), JSON_THROW_ON_ERROR ); }
 elseif ( 'restore' === $mode ) {
 	$raw = stream_get_contents( STDIN, 2097153 );

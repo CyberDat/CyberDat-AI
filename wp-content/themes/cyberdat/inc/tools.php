@@ -73,7 +73,7 @@ add_action( 'add_meta_boxes', 'cyberdat_tool_metabox' );
 function cyberdat_tool_metabox_html( $post ) {
 	$data = cyberdat_tool_data( $post->ID );
 	wp_nonce_field( 'cyberdat_tool_save', 'cyberdat_tool_nonce' );
-	echo '<p>' . esc_html__( 'Used by the Tool template. Save content first; publication requires a reviewed implementation and all content sections. No renderer is shipped in 0.7.', 'cyberdat' ) . '</p>';
+	echo '<p>' . esc_html__( 'Used by the Tool template. Save content first; publication requires a reviewed implementation and all content sections. The installed renderer and saved editorial fields must pass readiness checks.', 'cyberdat' ) . '</p>';
 	$labels = array( 'summary' => __( 'Short description', 'cyberdat' ), 'how_it_works' => __( 'How It Works', 'cyberdat' ), 'documentation' => __( 'Technical Documentation', 'cyberdat' ), 'examples' => __( 'Examples & Use Cases', 'cyberdat' ), 'faq' => __( 'FAQ (visible HTML; use headings for questions)', 'cyberdat' ), 'github' => __( 'GitHub Source Code URL (optional)', 'cyberdat' ) );
 	foreach ( $labels as $key => $label ) {
 		echo '<p><label for="cyberdat-tool-' . esc_attr( $key ) . '">' . esc_html( $label ) . '</label><br><textarea class="widefat" rows="3" id="cyberdat-tool-' . esc_attr( $key ) . '" name="cyberdat_tool[' . esc_attr( $key ) . ']">' . esc_textarea( $data[ $key ] ) . '</textarea></p>';
@@ -190,7 +190,7 @@ function cyberdat_tools_breadcrumbs() {
 }
 
 function cyberdat_tool_related_links() {
-	echo '<nav class="cyberdat-tool-related" aria-label="' . esc_attr__( 'Related reading', 'cyberdat' ) . '"><h2>' . esc_html__( 'Related Tools & Reading', 'cyberdat' ) . '</h2><ul>';
+	echo '<nav class="cyberdat-tool-related" aria-label="' . esc_attr__( 'Related reading', 'cyberdat' ) . '"><h2>' . esc_html__( 'Related CyberDat Tools', 'cyberdat' ) . '</h2><ul>';
 	foreach ( array( 'guides' => __( 'Guides', 'cyberdat' ), 'learning' => __( 'Learning', 'cyberdat' ), 'analysis' => __( 'Analysis', 'cyberdat' ) ) as $slug => $label ) {
 		$term = get_term_by( 'slug', $slug, 'editorial_format' );
 		if ( $term ) {

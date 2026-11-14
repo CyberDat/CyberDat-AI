@@ -21,12 +21,15 @@ while ( have_posts() ) :
 			<?php endif; ?>
 		</section>
 		<?php
+		if ( '' !== trim( get_post_field( 'post_content', get_the_ID() ) ) ) : ?>
+			<div class="cyberdat-tool-editorial"><?php the_content(); ?></div>
+		<?php else :
 		$sections = array( 'how_it_works' => __( 'How It Works', 'cyberdat' ), 'documentation' => __( 'Technical Documentation', 'cyberdat' ), 'examples' => __( 'Examples & Use Cases', 'cyberdat' ), 'faq' => __( 'FAQ', 'cyberdat' ) );
 		foreach ( $sections as $key => $label ) :
 			if ( '' === trim( $data[ $key ] ) ) { continue; }
 			?>
 			<section class="prose" aria-labelledby="tool-<?php echo esc_attr( $key ); ?>"><h2 id="tool-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></h2><?php echo wp_kses_post( wpautop( $data[ $key ] ) ); ?></section>
-		<?php endforeach; ?>
+		<?php endforeach; endif; ?>
 		<?php if ( $data['github'] ) : ?>
 			<section><h2><?php esc_html_e( 'GitHub Source Code', 'cyberdat' ); ?></h2><a href="<?php echo esc_url( $data['github'] ); ?>" rel="noopener noreferrer"><?php esc_html_e( 'Review the source on GitHub', 'cyberdat' ); ?></a></section>
 		<?php endif; ?>
