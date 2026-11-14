@@ -8,6 +8,7 @@
   const cards = Array.from(catalog.querySelectorAll('[data-tool-category]'));
   if (!controls || !count || !cards.length) return;
   const buttons = Array.from(controls.querySelectorAll('[data-tools-filter]'));
+  const groups = Array.from(catalog.querySelectorAll('[data-tools-group]')).filter(group => group.hasAttribute?.('data-tools-group'));
   controls.hidden = false;
   controls.addEventListener('click', (event) => {
     const button = event.target.closest('[data-tools-filter]');
@@ -19,6 +20,7 @@
       card.hidden = category !== 'all' && card.dataset.toolCategory !== category;
       if (!card.hidden) visible += 1;
     });
+    groups.forEach(group => { group.hidden = !group.querySelector('[data-tool-category]:not([hidden])'); });
     count.textContent = `${visible} / ${cards.length} ${count.dataset.countLabel}`;
   });
 })();
