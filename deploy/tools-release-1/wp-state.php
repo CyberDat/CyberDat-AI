@@ -2,10 +2,14 @@
 /** Private selective page/meta snapshot and restore. Never loads a SQL dump. */
 require_once __DIR__ . '/staging-contract.php';
 cd_tools_assert_staging();
-$cd_slugs = array( 'log-anonymizer', 'prompt-injection-detector', 'lotl-command-analyzer', 'mcp-security-checker' );
+function cd_tools_slugs() {
+	return array( 'log-anonymizer', 'prompt-injection-detector', 'lotl-command-analyzer', 'mcp-security-checker' );
+}
+$cd_slugs = cd_tools_slugs();
 
 function cd_tools_snapshot( $locking = false ) {
-	global $wpdb, $cd_slugs;
+	global $wpdb;
+	$cd_slugs = cd_tools_slugs();
 	$hub = $wpdb->get_row( "SELECT * FROM {$wpdb->posts} WHERE post_type='page' AND post_name='tools' AND post_parent=0" . ( $locking ? ' FOR UPDATE' : '' ), ARRAY_A );
 	if ( ! $hub || 'publish' !== $hub['post_status'] ) { throw new RuntimeException( 'Tools hub unavailable' ); }
 	$out = array( 'hub_id' => $hub['ID'], 'pages' => array() );
@@ -28,7 +32,8 @@ function cd_tools_snapshot( $locking = false ) {
 }
 
 function cd_tools_restore( $before, $expected ) {
-	global $wpdb, $cd_slugs;
+	global $wpdb;
+	$cd_slugs = cd_tools_slugs();
 	cd_tools_assert_staging();
 	$old_suppression = $wpdb->suppress_errors( true );
 	$changed = array();
