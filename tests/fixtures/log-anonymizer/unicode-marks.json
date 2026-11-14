@@ -1,0 +1,32 @@
+{
+  "_note": "DEPENDENT examples, written on 2026-11-14 after Codex confirmed that [\\p{L}\\p{N}._-] does not include combining marks (decomposed NFD names such as o + U+0308 are masked only partly). They protect the fix and are not an independent evaluation. Invented names only. NAME is replaced by each name in NFC and in NFD (String.prototype.normalize); 'marked' names contain combining marks that have no precomposed form and are used as written. A case passes when no name, no tail of it and no combining mark from it survives and the line count is unchanged.",
+  "forms": [
+    { "id": "sudo", "rule": "sudoUser", "text": "Nov 14 10:00:00 web-01 sudo:    NAME : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/bin/ls", "names": ["jörg", "андрей", "Ölaf"] },
+    { "id": "sudo-pid", "rule": "sudoUser", "text": "Nov 14 10:00:01 db-02 sudo[4412]: NAME : 3 incorrect password attempts ; TTY=pts/1 ; USER=root", "names": ["müller", "йозеф"] },
+    { "id": "pam-by", "rule": "sshUser[5]", "text": "pam_unix(su:session): session opened for user root(uid=0) by NAME(uid=1000)", "names": ["jürgen", "пётр"] },
+    { "id": "of-user", "rule": "sshUser[6]", "text": "systemd-logind[512]: Removed session 3 of user NAME.", "names": ["jörg", "Ägidius", "ёжик"] },
+    { "id": "of-user-eol", "rule": "sshUser[6]", "text": "systemd[1]: Stopped User Manager for UID 1000 of user NAME", "names": ["björn", "алексей"] },
+    { "id": "domain", "rule": "domainUser", "text": "Logon succeeded for CORP\\NAME on host", "names": ["jörg", "Ömer", "сергей"] },
+    { "id": "domain-double", "rule": "domainUser", "text": "Access denied: CORP\\\\NAME (insufficient rights)", "names": ["zoë", "дмитрий", "rené"] }
+  ],
+  "marked": ["О\u0301льга", "ива\u0301н", "jo\u0308\u0301rg", "zoe\u0308\u0323"],
+  "ascii": ["olga", "petr", "joerg"],
+  "otherRules": [
+    { "id": "sshd-accepted", "text": "Accepted password for NAME from 203.0.113.5 port 22 ssh2", "names": ["jürgen", "йозеф"] },
+    { "id": "sshd-invalid", "text": "Invalid user NAME from 203.0.113.9 port 4022", "names": ["пётр"] },
+    { "id": "kv-user", "text": "level=info user=NAME action=login", "names": ["Jürgen", "Ёжик"] },
+    { "id": "json-user", "text": "{\"user\":\"NAME\",\"event\":\"login\"}", "names": ["Пётр"] },
+    { "id": "home", "text": "open /home/NAME/report.txt failed", "names": ["андрей"] },
+    { "id": "win-profile", "text": "C:\\Users\\NAME\\Documents\\notes.txt", "names": ["Jörg"] },
+    { "id": "for-user-uid", "text": "pam_unix(sshd:session): session opened for user NAME(uid=1000) by (uid=0)", "names": ["ёлка"] },
+    { "id": "benutzer-key", "text": "Benutzer=NAME Aktion=Anmeldung", "names": ["müller"] },
+    { "id": "email", "text": "mail from NAME@example.com rejected", "names": ["jürgen"], "known": "email local part is ASCII-only: jürgen@ -> jüEMAIL_1 in NFC too, already on 24a333dd; out of scope" }
+  ],
+  "negative": [
+    { "id": "benutzerhandbuch-nfd", "text": "Benutzerhandbuch geo\u0308ffnet, Seite 12", "keep": ["Benutzerhandbuch", "geo\u0308ffnet"] },
+    { "id": "of-user-prose-nfd", "text": "Die Rechte of user groups werden gepru\u0308ft.", "keep": ["Die Rechte", "werden gepru\u0308ft"], "known": "\"of user groups\" is replaced by USER_1 already on 24a333dd (sshUser[6] matches prose); out of scope" },
+    { "id": "sudo-prose-nfd", "text": "Использовать sudo: только по согласова\u0301нию", "keep": ["Использовать", "только по согласова\u0301нию"] },
+    { "id": "by-without-uid-nfd", "text": "Bericht erstellt by Jo\u0308rg am Montag", "keep": ["Bericht erstellt", "am Montag"] },
+    { "id": "domain-lowercase-nfd", "text": "Pfad corp\\Cafe\u0301 bleibt unverändert", "keep": ["corp\\Cafe\u0301", "bleibt"] }
+  ]
+}
