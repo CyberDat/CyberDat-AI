@@ -2,12 +2,18 @@
 
 Last updated: 2026-11-14
 Repository: CyberDat/CyberDat-AI
-Current stage: **Tools Release 1 D14 Remediation — PASS for bounded acceptance; release PARTIAL (D6 unresolved, D1 installation NOT authorized).**
+Current stage: **Tools Release 1 D1 closed-staging installation AUTHORIZED but BLOCKED before deployed changes by a helper checksum mismatch. D6 option A owner-approved; shared-theme legal boundary UNVERIFIED.**
 
 ## Important rule
 Before planning the next CyberDat task, read this file and relevant repository code. Do not infer completion from an older conversation or from a roadmap. Mark tasks complete only after confirmation/testing. Update this file at the end of each work session.
 
-## Tools Release 1 D14 Remediation — 2026-11-14
+## Tools Release 1 D6 decision and D1 execution attempt — 2026-11-14
+
+Owner authorized the exact 125-file theme-only package for closed staging: archive SHA256 `5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b`. D6 option A is explicitly recorded: LotL remains GPLv3, corresponding sources public, LICENSE/NOTICE preserved; legal shared-theme/combined-work boundary remains UNVERIFIED. No production, agent/SEO, timers/checkpoints/backoff, new-page publication or full SQL rollback approval.
+
+**BLOCKED before staging changes.** Mandatory controls integrity found one mismatch among nine helpers. `deploy-theme.py` expected SHA256 `fdc7fa951640b950267b7540e9b08850ec2f778091dfa8b17ca99f873fac8bbf`; actual `8879fd4a8a21a1511357e499fc27747d23cea2f75fd734a418ea7e95908e4046`. Its bytes match committed base7fe3788, proving a prepared helper/pin inconsistency. Archive/package checksums were not changed. No guard bypass, manifest correction, sealed-control installation, staging backup/theme exchange, WordPress/SQL/bootstrap, sync, rollback, timer or production operation occurred. The attempted sudo preflight did not execute (sudo cache context unavailable). Staging remains unchanged; its present WordPress health is UNVERIFIED in this blocked attempt. Owner instruction requires stopping; no repair or new stage started. D14 was not rerun. [Decision and evidence](../deploy/tools-release-1/DECISIONS.md).
+
+## Tools Release 1 D14 Remediation — 2026-11-14 (history at7fe3788)
 
 Base afa0b56, same feature branch. All eight confirmed defects repaired: contextual name/telephone fields, event-local CEF labels, original-file provenance/CRLF and stale preview races; seven bounded Injection lexical families plus a narrow negated meta-address correction. All 33 original text signatures/check functions unchanged. Log 1.0.3, Injection 1.0.2, rulesets 2026-11-14.1.
 

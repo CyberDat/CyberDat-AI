@@ -1,14 +1,14 @@
-# Tools Release1 — decisions after D14 Remediation
+# Tools Release 1 — owner D6 decision and blocked D1 execution
 
 Preparation branch: feat/tools-release-1-license-claims, D14 remediation base afa0b56.
-Owner instructions supersede earlier alternatives; no installation authorization.
+The latest owner instruction authorizes only the pinned closed-staging D1 installation; mandatory safeguards still apply. It supersedes earlier no-install wording in historical reports/handoffs.
 
 | ID | Current status | Consequence |
 |---|---|---|
-| D1 | NOT AUTHORIZED: package preparation/tests only | No staging install, page changes, publication or real rollback |
+| D1 | OWNER AUTHORIZED the exact 125-file package for closed staging; execution BLOCKED before deployed changes | Mandatory deployment-helper SHA256 mismatch; stop without override. No page publication, agent changes or SQL rollback authorized |
 | D3 | DECIDED: retain Research0ef03e9; theme-only payload | Repository-root/plugin deployment forbidden |
 | D5 | PASS for claim correction and bounded technical tests | Best-effort masking, export limits and browser-control limits disclosed; independent product acceptance still D14 |
-| D6 | Owner selected A; PARTIAL technical delivery complete, legal combined-work/theme boundary UNVERIFIED | Resolve scope review before treating D6 as closed for installation |
+| D6 | OWNER DECIDED option A for closed staging: LotL remains GPLv3, corresponding sources public, LICENSE/NOTICE retained | Owner authorizes D1 with this decision; legal shared-theme/combined-work boundary remains UNVERIFIED, no blanket compliance declaration |
 | D7 | PASS: retain public repository, anonymous source URLs verified | No repository visibility/settings change; source access must remain available |
 | D15 | PASS, previously APPLIED_APPROVED_SCOPE:11 repository +11 prepared entry points | Current static checks and10 isolated interlock tests pass; no reapplication today |
 | D2 | Corrected catalog/manifests/200-renderer vs404 policy prepared; adoption by old SEO publication checks pending | Page publication/checks |
@@ -31,7 +31,7 @@ paths/hashes in GPL-BOUNDARY.md/gpl-boundary.json. Full source/notices delivery 
 rebuild pass, but the shared-theme combined-work/aggregate legal question is not
 settled by those technical checks. Do not declare full compliance or automatic
 relicensing of Research/Content/SEO/other tools. D7 remains public, no settings change.
-D14 remediation fixes all eight original product failures; the original expected outcomes are unchanged. The 33 original signatures are intact; seven bounded families are additive. No universal detection or sanitation guarantee. All required tests PASS, but D6 legal scope remains PARTIAL and D1 is NOT authorized. [Current evidence](d14-remediation/README.md); [historical acceptance](d14-public/README.md).
+D14 remediation fixes all eight original product failures; the original expected outcomes are unchanged. The 33 original signatures are intact; seven bounded families are additive. No universal detection or sanitation guarantee. All required tests PASS, while D6 legal scope remains UNVERIFIED; the latest owner D1 authorization is recorded below and its execution is BLOCKED by a helper checksum mismatch. [Current evidence](d14-remediation/README.md); [historical acceptance](d14-public/README.md).
 
 The22 historical source copies in d15-residual-paths.json remain outside approved
 scope and unguarded. Never execute with sudo or restore them over guarded entry
@@ -39,7 +39,7 @@ points. Arbitrary root execution cannot be prevented by these userspace interloc
 Do not expand maintenance scope automatically. Research timers/collectors do not
 invoke these Python deployment entry points.
 
-No decision authorizes automatic publication. Any later D1 must bind exact new
+No decision authorizes automatic publication. D1 authorization must still bind the exact approved
 archive/package hashes, fresh staging identity/base/protected checks, controls and
 expiry. authorization.example.json remains fail-closed. Existing Research rollback
 hash guards remain unchanged and will refuse Tools theme drift.
@@ -47,3 +47,11 @@ hash guards remain unchanged and will refuse Tools theme drift.
 2026-11-14 artifact update: source f9cc1e9cca55a3f3587b12fe4228f86b2c55e9c3, archive SHA256 5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b. Exact new hashes supersede previous packages. No staging changes or publication.
 
 Current remediation measurements and acceptance supersede historical timings: see d14-remediation/ACCEPTANCE.json. Original detection/sanitization limits, unknown-secret limitations and possible misses on long/compound/paraphrased inputs remain; D14 PASS is bounded to the tested criteria.
+
+## Owner D6 + D1 execute decision — 2026-11-14
+
+Owner explicitly approved D6 option A: LotL remains GPLv3; corresponding sources stay public and LICENSE/NOTICE are retained. The legal boundary of the shared theme remains UNVERIFIED. This uncertainty is recorded, not treated as a missing owner decision or as full legal compliance.
+
+D1 authorizes only the prepared closed-staging 125-file theme archive SHA256 `5ce6c412c8444d36e9ac2f6960c4ee71c3cea7fec3dc0468afd0a4ee9317bc8b` (package.json SHA256 `3ec45c9198efad34c5a107a58144032bf31a0d32832e2c6dfefba7600516a65e`). No new pages/publication, Research/Content/SEO, SQL/checkpoint/backoff, timers, production, unsafe legacy execution or full SQL restore authorized.
+
+**D1 result: BLOCKED before any deployed change.** The mandatory helper-integrity comparison checked nine controls: eight match; `deploy-theme.py` does not. controls-sha256.json pins `fdc7fa951640b950267b7540e9b08850ec2f778091dfa8b17ca99f873fac8bbf`; actual SHA256 is `8879fd4a8a21a1511357e499fc27747d23cea2f75fd734a418ea7e95908e4046`. The actual helper matches its committed Git blob `27848287d42104a2c3a9b5b59830516e62946b12` at base7fe3788, so the inconsistency is present in the prepared controls. No manifest/helper rewrite, control sealing, staging backup/theme switch, WordPress/SQL operation, forced sync or rollback was performed. The separate sudo preflight invocation did not execute because it lacked a matching cached sudo context. Staging remains unchanged; current WordPress health was not verified in this blocked attempt. Stop as required; reconciling the pin is a separate owner task, not silently included here.
