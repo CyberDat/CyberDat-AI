@@ -28,8 +28,8 @@ while ( have_posts() ) :
         <header class="tools-hero">
             <div class="tools-hero-copy">
                 <p class="eyebrow"><?php esc_html_e( 'CYBERSECURITY TOOLS HUB', 'cyberdat' ); ?></p>
-                <h1><?php esc_html_e( 'Security Tools for Analysis, Defense and', 'cyberdat' ); ?> <span><?php esc_html_e( 'Learning', 'cyberdat' ); ?></span></h1>
-                <p class="tools-hero-description"><?php esc_html_e( 'Hands-on utilities for log privacy, AI security, threat analysis and more.', 'cyberdat' ); ?></p>
+                <h1><?php esc_html_e( 'Cybersecurity', 'cyberdat' ); ?> <span><?php esc_html_e( 'Tools', 'cyberdat' ); ?></span></h1>
+                <p class="tools-hero-description"><?php esc_html_e( 'Practical tools for security analysis, threat detection, and AI security.', 'cyberdat' ); ?></p>
                 <p class="tools-hero-label"><span aria-hidden="true"></span><?php esc_html_e( 'Your investigation. Your judgment.', 'cyberdat' ); ?></p>
             </div>
             <img class="tools-hero-art" src="<?php echo esc_url( get_theme_file_uri( '/assets/images/tools-hub/hero.svg' ) ); ?>" width="480" height="260" alt="" aria-hidden="true" decoding="async">
