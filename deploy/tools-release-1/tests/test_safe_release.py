@@ -138,7 +138,7 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(len(manifest(full)), 125)
         tx.rollback()
         verify(full, spec['base'])
-        self.assertEqual(len(manifest(full)), 95)
+        self.assertEqual(manifest(full), spec['base'])
 
     def test_wrong_identity_blocks_before_writes(self):
         self.tx.guard = lambda: (_ for _ in ()).throw(Refused('wrong identity'))
