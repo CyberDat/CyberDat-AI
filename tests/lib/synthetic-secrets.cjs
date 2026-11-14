@@ -71,7 +71,15 @@ const SYNTH = Object.freeze({
 	// PEM armour opener; key bodies in the tests are short fake base64
 	PEM_BEGIN: ['----', '-BEGIN'].join(''),
 	// JWT, header {"alg":"HS256","typ":"JWT"}, payload {"sub":"1234"}, signature synthetic
-	PI_BENIGN_JWT: ['eyJ', 'hbGciOiJ', 'IUzI1NiI', 'sInR5cCI', '6IkpXVCJ', '9.eyJzdW', 'IiOiIxMj', 'M0In0.c2', 'lnbmF0dX', 'Jl'].join(''),
+	// Hugging Face user access token shape (hf_ + 34 letters), synthetic
+	HF_TOKEN: ['hf_', 'AbCdEfGh', 'IjKlMnOp', 'QrStUvWx', 'YzAbCdEf', 'Gh'].join(''),
+	// HTTPS URL with user:password in the authority, synthetic password, example.com host
+	URL_WITH_PASSWORD: ['http', 's://svc-', 'user:Pa5', '5w0rd-EX', 'AMPLE@mo', 'dels.exa', 'mple.com', '/v1'].join(''),
+	// HTTPS URL with an API key in the query, synthetic key, example.net host
+	URL_WITH_QUERY_KEY: ['http', 's://api.', 'example.', 'net/infe', 'r?api_ke', 'y=k_live', '_abc123d', 'ef456gh7'].join(''),
+	// Unrecognized long random-looking value (no known prefix), synthetic
+	OPAQUE_LONG: ['Q7m', 'Zp2Lx9Vr', 'T4kWc8Nd', 'B1fHs6Jy', 'G3eUa5Ro', 'K0'].join(''),
+	PI_BENIGN_JWT:['eyJ', 'hbGciOiJ', 'IUzI1NiI', 'sInR5cCI', '6IkpXVCJ', '9.eyJzdW', 'IiOiIxMj', 'M0In0.c2', 'lnbmF0dX', 'Jl'].join(''),
 });
 
 function fill(text) {
