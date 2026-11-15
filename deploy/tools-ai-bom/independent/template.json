@@ -1,0 +1,11 @@
+{
+  "tool": "ai-model-bom",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "description": "FORMAT EXAMPLE ONLY. cases[]: mode build (inventory in the Build form shape, see the README) or review (text = CycloneDX JSON as a string). expect = exact set of rule ids (deploy/tools-ai-bom/RULES.md); expectError = PARSE, NOT_CYCLONEDX, TOO_LARGE or EMPTY. Placeholders: {{SHA256:seed}} etc. become hex digests of the seed; {{SYNTH:NAME}} takes a value from tests/lib/synthetic-secrets.cjs. Invented data only: never real model registries, credentials or personal data.",
+  "cases": [
+    { "id": "b-1", "mode": "build", "expect": ["AIBOM-LIC-001", "AIBOM-WGT-002"], "inventory": { "model": { "name": "Demo", "version": "1.0.0", "vendor": "Example Ltd", "license": "", "type": "own" }, "weights": [{ "file": "demo.pkl", "format": "pickle", "hashAlg": "SHA-256", "hash": "{{SHA256:demo}}", "source": "https://models.example.com/demo.pkl" }], "datasets": [{ "name": "Demo set", "role": "training", "source": "https://data.example.com/demo", "license": "CC0-1.0", "personalData": "no" }], "dependencies": [{ "kind": "library", "name": "numpy", "version": "2.1.3" }], "purpose": "Demo.", "limitations": "Demo only.", "evaluation": { "metrics": [{ "type": "accuracy", "value": "0.9" }], "safety": "" }, "owner": { "name": "Demo team", "organization": "Example Ltd", "contact": "demo@example.com" } } },
+    { "id": "r-1", "mode": "review", "expect": ["AIBOM-FMT-001"], "text": "{\"bomFormat\":\"CycloneDX\",\"specVersion\":\"1.7\",\"version\":1,\"components\":[{\"type\":\"library\",\"name\":\"requests\",\"version\":\"2.32.3\"}]}" },
+    { "id": "r-2", "mode": "review", "expect": [], "expectError": "PARSE", "text": "{\"bomFormat\": \"CycloneDX\",}" }
+  ]
+}
