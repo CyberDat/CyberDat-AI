@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_LKI_SLUG = 'agent-leak-inspector';
 const CYBERDAT_LKI_ENGINE = '1.0.0';
-const CYBERDAT_LKI_RULESET = '2026-11-14.1';
+const CYBERDAT_LKI_RULESET = '2026-11-15.1';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */
 function cyberdat_lki_is_page( $post_id ) {

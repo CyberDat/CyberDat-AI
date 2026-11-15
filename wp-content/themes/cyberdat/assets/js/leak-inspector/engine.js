@@ -15,7 +15,7 @@
 	'use strict';
 
 	const VERSION = '1.0.0';
-	const RULESET_VERSION = '2026-11-14.1';
+	const RULESET_VERSION = '2026-11-15.1';
 	const MAX_PROMPT_CHARS = 1024 * 1024;
 	const MAX_RESPONSE_CHARS = 5 * 1024 * 1024;
 	const WARN_CHARS = 1024 * 1024;
@@ -120,7 +120,7 @@
 		const t = cap(String(text), MAX_SCAN);
 		const out = findTokens(t).map(x => ({ kind: 'token', type: x.type, value: x.value, index: x.index }));
 		let m, n = 0;
-		const re = new RegExp(ASSIGN.source, 'gi');
+		const re = new RegExp(ASSIGN.source, ASSIGN.flags); // keep the u flag: ASSIGN uses Unicode word starts
 		while ((m = re.exec(t)) && n++ < 200) {
 			const v = literalSecret(m[1]);
 			if (v && !out.some(o => o.value.includes(v) || v.includes(o.value))) { out.push({ kind: 'assignment', type: 'secret value', value: v, index: m.index + m[0].lastIndexOf(m[1]) }); }
