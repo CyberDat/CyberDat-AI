@@ -1,0 +1,30 @@
+{
+  "name": "MITRE ATLAS",
+  "release": "2026.10",
+  "releaseDate": "2026-10-28",
+  "formatVersion": "6.1.0",
+  "source": "https://github.com/mitre-atlas/atlas-data",
+  "commit": "f56c1468731d6428e5bf875263b4643b46d67437",
+  "file": "dist/v6/ATLAS-2026.10.yaml",
+  "license": "Apache-2.0",
+  "copyright": "Copyright 2021-2026 MITRE",
+  "modification": "Converted from YAML to JavaScript by CyberDat: subset of fields (tactics, techniques, mitigations, achieves/specializes/mitigates relationships); Markdown links turned into plain text (internal links keep their ATLAS id) and citation markers removed; one HTML example inside a code block is kept as text; case studies, entities and software omitted. No ids or relationships were added.",
+  "counts": {
+    "tactics": 16,
+    "techniques": 129,
+    "subtechniques": 92,
+    "mitigations": 44,
+    "mitigates": 494
+  },
+  "sourceSha256": {
+    "LICENSE": "fa6c92ab3dc75d41413884e8b38cc54cd4e72f4c8f68fc7e77824e48e3047d40",
+    "dist/v6/ATLAS-2026.10.yaml": "ac41ee9f99a47084ba5fdfc77ae83a28687e12390240fffeb37df7914ffe142d",
+    "apache.org LICENSE-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  "outputSha256": {
+    "atlas-data.js": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207",
+    "LICENSE-ATLAS.txt": "fa6c92ab3dc75d41413884e8b38cc54cd4e72f4c8f68fc7e77824e48e3047d40",
+    "LICENSE-APACHE-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  "parser": "yaml 2.6.1 (ISC), build time only"
+}
