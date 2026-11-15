@@ -15,7 +15,7 @@
 	'use strict';
 
 	const VERSION = '1.0.0';
-	const RULESET_VERSION = '2026-11-15.1';
+	const RULESET_VERSION = '2026-11-15.2';
 	const MAX_PROMPT_CHARS = 1024 * 1024;
 	const MAX_RESPONSE_CHARS = 5 * 1024 * 1024;
 	const WARN_CHARS = 1024 * 1024;
@@ -179,7 +179,8 @@
 	const RX = {
 		privateIp: /\b(?:10\.\d{1,3}\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})\b/g,
 		internalHost: /\b(?:[a-z0-9-]{1,63}\.){0,6}(?:[a-z0-9-]{1,63}\.(?:internal|corp|local|lan|intranet|localdomain|home\.arpa)\b|intranet\.[a-z0-9.-]{2,100}|[a-z0-9-]{1,63}\.(?:internal|corp|intranet)\.[a-z0-9.-]{2,100})/gi,
-		email: /\b[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,24}\b/g,
+		// Local parts and domains may contain any letters and combining marks (jürgen@, иван@, NFD); the address is group 1.
+		email: /(?:^|[^\p{L}\p{N}\p{M}._%+-])([\p{L}\p{N}_%+-][\p{L}\p{N}\p{M}._%+-]{0,63}@[\p{L}\p{N}][\p{L}\p{N}\p{M}.-]{0,252}\.\p{L}[\p{L}\p{M}]{1,23})(?![\p{L}\p{N}\p{M}])/gu,
 		roleMailbox: /^(?:support|info|help|hilfe|contact|kontakt|sales|noreply|no-reply|privacy|security|hello|team|service|office|press|jobs|billing|admin|webmaster|abuse)$/i,
 		uncPath: /\\\\[A-Za-z0-9._$-]{1,63}\\[^\s"'<>]{1,200}/g,
 		unixPath: /(?:^|[\s"'(=])(\/(?:srv|home|opt|var|etc|mnt|data|share|internal)\/[^\s"'<>),;]{1,200})/g,
@@ -247,9 +248,9 @@
 		let m, n = 0;
 		const emails = [];
 		while ((m = RX.email.exec(t)) && n++ < 200) {
-			const local = m[0].split('@')[0];
+			const local = m[1].split('@')[0];
 			if (RX.roleMailbox.test(local)) { continue; }
-			emails.push({ value: m[0], index: m.index });
+			emails.push({ value: m[1].normalize('NFC'), index: m.index + m[0].length - m[1].length });
 		}
 		for (const re of [RX.uncPath, RX.unixPath, RX.winPath]) { re.lastIndex = 0; n = 0; while ((m = re.exec(t)) && n++ < 100) { add('LKI-INT-003', 'low', m.index, (m[1] || m[0]).trim()); } }
 		const cn = t.match(RX.codename);
