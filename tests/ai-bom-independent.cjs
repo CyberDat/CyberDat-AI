@@ -1,7 +1,7 @@
 /*
  * Independent acceptance runner for the AI Model Bill of Materials (local, offline).
  *   node tests/ai-bom-independent.cjs <private-set.json> [--details]
- * Format: deploy/tools-ai-bom/independent/template.json. Keep real sets OUTSIDE the repository.
+ * Format: deploy/tools-release-1.2/independent/ai-model-bom/template.json. Keep real sets OUTSIDE the repository.
  * Results are labelled INDEPENDENT only when "provenance" is "independent" or "owner" and "authoredByToolAuthor" is false.
  * Output contains ids, rule ids and counts only, never sample text or values. Nothing is sent anywhere.
  */

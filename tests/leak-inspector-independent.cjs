@@ -1,7 +1,7 @@
 /*
  * Independent acceptance runner for the System Prompt & Agent Leak Inspector (local, offline).
  *   node tests/leak-inspector-independent.cjs <private-set.json> [--details]
- * Format: deploy/tools-leak-inspector/independent/template.json. Keep real sets OUTSIDE the repository.
+ * Format: deploy/tools-release-1.2/independent/agent-leak-inspector/template.json. Keep real sets OUTSIDE the repository.
  * Results are labelled INDEPENDENT only when "provenance" is "independent" or "owner" and "authoredByToolAuthor" is false.
  * Output contains ids, labels, rule ids and counts only, never sample text. Nothing is sent anywhere.
  */

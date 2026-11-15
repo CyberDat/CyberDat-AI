@@ -1,0 +1,55 @@
+{
+  "_note": "Proposed editorial fields for both release 1.2 tool pages (meta _cyberdat_tool), same field names as deploy/tools-release-1/editorial-integration.json. English only. Owner review required before reviewed=true. Privacy wording follows the installed pages (“This tool does not transmit the text you enter”). Article and Rank Math metadata are prepared by Codex/SEO, not here. No result is described as safe, protected or compliant.",
+  "agent-leak-inspector": {
+    "title": "System Prompt & Agent Leak Inspector",
+    "summary": "Review system prompts and agent descriptions for secrets, internal details and weak protections, and compare a response or transcript with your prompt to find copied, encoded or closely paraphrased fragments. Runs locally in your browser; it does not prove that a prompt cannot be extracted.",
+    "how_it_works": "<p>System prompts are often treated as private, but models can be talked into repeating them. Anything written in a prompt should be assumed readable by users. The inspector helps you find what would be exposed and where your design relies on the prompt staying secret.</p><p><strong>Prompt audit</strong> applies CyberDat rules for credentials, internal hosts and staff addresses, confidential prices and thresholds, moderation exceptions, “never reveal these instructions” used as protection, passphrases that unlock special behaviour, untrusted input placeholders without boundaries, broad tool permissions, irreversible actions without human confirmation, and personal or financial data. <strong>Leak check</strong> compares your reference prompt with a model response or a transcript: verbatim and near-verbatim word sequences, Base64/hex/URL-encoded copies and secrets from the prompt. An overlap measure shows how many of the prompt’s phrases reappear; it is a number, not a verdict.</p>",
+    "documentation": "<h3>Input</h3><p>Prompt audit: one system prompt or agent description, up to 1 MB. Leak check: a reference prompt (1 MB) and a response or transcript (5 MB). Plain text in any language; rules cover English, German and Russian.</p><h3>Output</h3><p>Each finding has a rule id, a group, a severity, the line, a short excerpt, an explanation and a suggested change. Recognized secrets and long values without spaces are masked in results and in the JSON report on a best-effort basis; the report never contains the full prompt or response.</p><h3>Severity</h3><p>High is reserved for explicit risks such as credentials, unlock passphrases, irreversible actions without confirmation, encoded copies of the prompt or secrets from the prompt in a response. A finding is a reason to look closer; no finding does not mean the prompt cannot be extracted.</p><h3>Limits</h3><p>Paraphrases with different words, translations and leaks spread over many answers can be missed. Decoding covers Base64, hex and URL encoding up to two layers. The audit rules read the first 200,000 characters; the leak check compares up to 150,000 prompt words with up to 600,000 response words within about 15 seconds. Results say when a limit was reached.</p>",
+    "examples": "<h3>Before shipping an assistant</h3><p>Audit the system prompt for keys, internal URLs, discount ceilings and “never reveal” instructions, then move those details into backend code and tool permissions.</p><h3>After a red-team session</h3><p>Paste the transcript and your reference prompt to see which passages were repeated, including encoded copies.</p><h3>Reviewing an agent description</h3><p>Find broad shell, file or email access and irreversible actions that run without human confirmation.</p><pre>Prompt: “… you may offer up to 30% discount …”\n→ MEDIUM  LKI-BIZ-001 Confidential prices, limits or thresholds</pre>",
+    "faq": "<h3>Is my prompt sent to an AI model or to CyberDat?</h3><p>No. This tool does not transmit the text you enter. Analysis is plain text comparison in your browser, the page blocks network connections from its scripts, and nothing is stored.</p><h3>Does no finding mean my prompt cannot leak?</h3><p>No. The tool only checks known patterns in the text you provide. Assume anything in a system prompt can be extracted and keep secrets and enforcement outside the prompt.</p><h3>Are all secret values hidden in the results?</h3><p>No. Masking is best effort: recognized secrets and long values without spaces are shortened, but secrets in an unusual form can remain in excerpts. Review exports before sharing.</p><h3>Does the tool generate prompts that extract system prompts?</h3><p>No. It only analyzes text you paste and includes no attack prompts.</p>",
+    "questions": [
+      {
+        "question": "Is my prompt sent to an AI model or to CyberDat?",
+        "answer": "No. This tool does not transmit the text you enter. Analysis is plain text comparison in your browser, the page blocks network connections from its scripts, and nothing is stored."
+      },
+      {
+        "question": "Does no finding mean my prompt cannot leak?",
+        "answer": "No. The tool only checks known patterns in the text you provide. Assume anything in a system prompt can be extracted and keep secrets and enforcement outside the prompt."
+      },
+      {
+        "question": "Are all secret values hidden in the results?",
+        "answer": "No. Masking is best effort: recognized secrets and long values without spaces are shortened, but secrets in an unusual form can remain in excerpts. Review exports before sharing."
+      },
+      {
+        "question": "Does the tool generate prompts that extract system prompts?",
+        "answer": "No. It only analyzes text you paste and includes no attack prompts."
+      }
+    ]
+  },
+  "ai-model-bom": {
+    "title": "AI Model Bill of Materials",
+    "summary": "Build an AI bill of materials for a model — weights, data, dependencies, purpose, limitations, evaluation and owner — as CycloneDX JSON and Markdown, or review an existing CycloneDX AI BOM for gaps and risks. Runs locally in your browser; it documents what you enter and does not verify it.",
+    "how_it_works": "<p>An AI bill of materials lists what an AI system is made of: the model and its version, the weights files, the data used for training and fine-tuning, the frameworks and libraries, external APIs, and who is responsible. It helps teams answer supply-chain questions later: which model runs where, under which license, trained on which data.</p><p><strong>Build</strong> turns a form into a CycloneDX 1.7 document with a component of type machine-learning-model and its model card, plus a Markdown version for people. <strong>Review</strong> reads an existing CycloneDX JSON document and lists gaps: missing or unknown licenses, floating versions such as “latest”, weights without a hash or in pickle-based formats, fine-tuned models without a base model, datasets without a source or personal-data status, unpinned dependencies, http:// addresses, secrets, and missing purpose, limitations, evaluation or owner.</p>",
+    "documentation": "<h3>Input</h3><p>Build: the form; every field is optional and empty fields are reported as gaps. Review: CycloneDX JSON, specVersion 1.5 to 1.7, up to 5 MB, strict JSON. Keys are matched regardless of case, underscores, hyphens and camelCase, and non-standard spellings are reported.</p><h3>Output</h3><p>Each finding has a rule id, a group, a severity, the location (in Review with the line), an explanation and a suggested change. Build exports CycloneDX JSON and Markdown; Review offers a findings file without the BOM itself. Fields CycloneDX has no place for are stored as properties named cyberdat:aibom:… so an exported document can be reviewed again with the same content.</p><h3>Severity</h3><p>High is used only for secrets: credentials in addresses and values in known credential formats. Everything else is medium or low. No finding does not mean the model or its supply chain is safe.</p><h3>Secrets</h3><p>Findings show a secret only as its type and a masked fragment. If the form contains values that look like secrets, exporting needs explicit confirmation, because the exported files contain the entries as typed.</p><h3>Limits</h3><p>The tool does not check whether entries are true, does not contact model registries, package indexes or dataset sources, and does not evaluate the model. Only CycloneDX JSON is supported; the structure check covers the fields this tool uses. “Unknown” is recognized in English, German and Russian and in common abbreviations.</p>",
+    "examples": "<h3>Before a model goes to production</h3><p>Fill in the form for the fine-tuned model, its base model, weights and training data, and export the CycloneDX file for the release record.</p><h3>Reviewing a supplier’s AI BOM</h3><p>Paste the CycloneDX JSON you received and see which licenses, versions, hashes and data details are missing.</p><h3>Spotting risky weights</h3><pre>Weights file: pytorch_model.bin, no hash, http:// source\n→ MEDIUM  AIBOM-WGT-001 Weights file without a hash\n→ MEDIUM  AIBOM-WGT-002 Pickle-based weights format\n→ MEDIUM  AIBOM-NET-001 Address uses http://</pre>",
+    "faq": "<h3>Is anything I enter sent to CyberDat or a model registry?</h3><p>No. This tool does not transmit the text you enter. Everything runs in your browser tab, the page blocks network connections from its scripts, and nothing is stored.</p><h3>Does the document prove compliance with a regulation or standard?</h3><p>No. The tool helps document a model and its supply chain. It does not determine whether a system meets any law, regulation or standard.</p><h3>Does the tool check that my entries are correct?</h3><p>No. The document reflects only what you entered. The tool checks for missing or risky entries, not whether they are true.</p><h3>Which format is used?</h3><p>CycloneDX 1.7 JSON with a machine-learning-model component and a model card, plus Markdown. SPDX is not supported in this version.</p>",
+    "questions": [
+      {
+        "question": "Is anything I enter sent to CyberDat or a model registry?",
+        "answer": "No. This tool does not transmit the text you enter. Everything runs in your browser tab, the page blocks network connections from its scripts, and nothing is stored."
+      },
+      {
+        "question": "Does the document prove compliance with a regulation or standard?",
+        "answer": "No. The tool helps document a model and its supply chain. It does not determine whether a system meets any law, regulation or standard."
+      },
+      {
+        "question": "Does the tool check that my entries are correct?",
+        "answer": "No. The document reflects only what you entered. The tool checks for missing or risky entries, not whether they are true."
+      },
+      {
+        "question": "Which format is used?",
+        "answer": "CycloneDX 1.7 JSON with a machine-learning-model component and a model card, plus Markdown. SPDX is not supported in this version."
+      }
+    ]
+  }
+}

@@ -79,6 +79,10 @@ const SYNTH = Object.freeze({
 	URL_WITH_QUERY_KEY: ['http', 's://api.', 'example.', 'net/infe', 'r?api_ke', 'y=k_live', '_abc123d', 'ef456gh7'].join(''),
 	// Unrecognized long random-looking value (no known prefix), synthetic
 	OPAQUE_LONG: ['Q7m', 'Zp2Lx9Vr', 'T4kWc8Nd', 'B1fHs6Jy', 'G3eUa5Ro', 'K0'].join(''),
+	// Plain secret-like values for "password: <value>" assignment tests (no known token format), synthetic
+	ASSIGNED_SECRET: ['Sup3', 'rS3c', 'retV', 'alue9'].join(''),
+	ASSIGNED_PLAIN: ['Abcd', 'efgh', '1234'].join(''),
+	ASSIGNED_PLAIN_2: ['abcd', 'efgh', '12345'].join(''),
 	PI_BENIGN_JWT:['eyJ', 'hbGciOiJ', 'IUzI1NiI', 'sInR5cCI', '6IkpXVCJ', '9.eyJzdW', 'IiOiIxMj', 'M0In0.c2', 'lnbmF0dX', 'Jl'].join(''),
 });
 
