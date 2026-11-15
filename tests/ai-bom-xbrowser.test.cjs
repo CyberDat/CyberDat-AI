@@ -143,6 +143,10 @@ async function runBrowser(name) {
 		await until(() => !document.querySelector('[data-bom-results]').hidden && document.activeElement.id === 'cd-bom-step-results');
 		pass('keyboard: Enter adds a row and focuses it; Ctrl+Enter runs and moves focus to the results');
 
+		const afterLoad = requests.filter(r => !['load', 'csp-probe'].includes(r.phase) && /^(https?|wss?):/.test(r.url));
+		assert.deepEqual(afterLoad, [], 'requests after load: ' + afterLoad.map(r => r.phase + ' ' + r.url).join(', '));
+		pass('no network requests at all after page load (Build, export, Review, secrets, 4.6 MB file, keyboard)', requests.filter(r => r.phase === 'load').length + ' requests during load only');
+
 		phase = 'mobile';
 		await page.setViewportSize({ width: 360, height: 780 });
 		await page.goto(URL_UNDER_TEST);
