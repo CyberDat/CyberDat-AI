@@ -1,0 +1,143 @@
+{
+  "schema": "cyberdat-la-controlled-comparison/1",
+  "date": "2026-11-14",
+  "status": "PARTIAL",
+  "owner_numerical_gate": "PASS",
+  "installation": "BLOCKED_BEFORE_CHANGE",
+  "performance": {
+    "chromium": {
+      "base": {
+        "n": 5,
+        "median_seconds": 14.325300000071525,
+        "min_seconds": 13.930100000023842,
+        "max_seconds": 15.407299999952317,
+        "failed_runs": 0
+      },
+      "fix": {
+        "n": 5,
+        "median_seconds": 14.498,
+        "min_seconds": 14.172600000023841,
+        "max_seconds": 15.177299999952316,
+        "failed_runs": 0
+      },
+      "marks": {
+        "n": 5,
+        "median_seconds": 14.638100000023842,
+        "min_seconds": 14.145,
+        "max_seconds": 15.022300000071526,
+        "failed_runs": 0
+      },
+      "marks_base_median_ratio": 1.0218354938431136
+    },
+    "firefox": {
+      "base": {
+        "n": 5,
+        "median_seconds": 15.936,
+        "min_seconds": 15.435,
+        "max_seconds": 16.725,
+        "failed_runs": 0
+      },
+      "fix": {
+        "n": 5,
+        "median_seconds": 16.52,
+        "min_seconds": 15.953,
+        "max_seconds": 16.911,
+        "failed_runs": 0
+      },
+      "marks": {
+        "n": 5,
+        "median_seconds": 16.041,
+        "min_seconds": 15.235,
+        "max_seconds": 16.768,
+        "failed_runs": 0
+      },
+      "marks_base_median_ratio": 1.0065888554216869
+    },
+    "webkit": {
+      "base": {
+        "n": 5,
+        "median_seconds": 122.019,
+        "min_seconds": 120.988,
+        "max_seconds": 122.447,
+        "failed_runs": 0
+      },
+      "fix": {
+        "n": 5,
+        "median_seconds": 124.344,
+        "min_seconds": 122.929,
+        "max_seconds": 125.66700000000002,
+        "failed_runs": 0
+      },
+      "marks": {
+        "n": 5,
+        "median_seconds": 123.44100000000002,
+        "min_seconds": 122.724,
+        "max_seconds": 125.702,
+        "failed_runs": 0
+      },
+      "marks_base_median_ratio": 1.0116539227497359
+    }
+  },
+  "firefox_unchanged_acceptance": {
+    "per_version_runs": 10,
+    "base_reload_timeouts": 0,
+    "intermediate_reload_timeouts": 4,
+    "candidate_reload_timeouts": 0,
+    "other_errors": 0
+  },
+  "full_tests_default": {
+    "base": {
+      "pass": 67,
+      "fail": 9,
+      "total": 76
+    },
+    "intermediate": {
+      "pass": 70,
+      "fail": 10,
+      "total": 80
+    },
+    "candidate": {
+      "pass": 73,
+      "fail": 9,
+      "total": 82
+    }
+  },
+  "configured_supplements_per_version": {
+    "pass": 5,
+    "fail": 0
+  },
+  "additional_five_historical_failures": "PASS on intermediate and candidate with fixture endpoints available",
+  "original_acceptance_sources_edited": false,
+  "original_expectations_changed": false,
+  "candidate_source": "1b0651ccec38022fe4a23ac128a61a106e442469",
+  "composite_theme_source": "07cfb4e646c65d5b2087578bbf0fd53c8d941490",
+  "archive_sha256": "2863578580328154948c9722d6fcc01f23d3b3615c1ec3bc5b3e287c3e455b81",
+  "files": 137,
+  "modified_files": 6,
+  "unchanged_files": 131,
+  "php_lint": 42,
+  "offline_deployment": {
+    "pass": 46,
+    "fail": 0
+  },
+  "D15": {
+    "pass": 10,
+    "fail": 0
+  },
+  "scope_checks": {
+    "pass": 10,
+    "fail": 0
+  },
+  "staging_unchanged": true,
+  "pages_metadata_unchanged": true,
+  "six_timers_active": true,
+  "new_backup_created": false,
+  "atomic_exchange_executed": false,
+  "rollback_executed": false,
+  "live_D14": "NOT COMPLETED; existing-base Firefox LA01 Worker NetworkError only with interception; failed attempts preserved privately",
+  "post_install_checks": "NOT RUN",
+  "native_reload_cause": "UNVERIFIED",
+  "live_worker_diagnosis": "Interception breaks importScripts at worker.js line12; native no-interception probe0 errors; HTTP2 disabled still fails. Distinct from loopback reload failures.",
+  "D6": "owner optionA retained; shared-theme legal boundary UNVERIFIED",
+  "private_evidence_published": false
+}

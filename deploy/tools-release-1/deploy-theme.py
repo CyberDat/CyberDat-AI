@@ -97,9 +97,26 @@ DESIGN_MODIFIED = {'page-templates/tools.php', 'assets/js/tools-filter.js'}
 
 
 
+LA_REVISION = 'tools-la-unicode-marks/1'
+LA_PARENT_ARCHIVE = '897e267262bfe559293fc6bfc54881392a91d9ed716c2a9181dad94dca121cf0'
+LA_PARENT_PACKAGE = '7bf29be0da188dd1e271a22e09fdb02059f6be7156ebd48b0274f146de23e234'
+LA_CANDIDATE = '1b0651ccec38022fe4a23ac128a61a106e442469'
+LA_TARGET_SHA256 = {'assets/js/log-anonymizer/engine.js': '42a5e6285b0dcfc30a5b1aee7d8d8f92a10954f12e778ce578b903ffd307fd63', 'inc/tool-log-anonymizer.php': '677ab2b5d30eccde655f5adddea9163979e5e8a55bae7f66f9c9e5fb877cc856', 'assets/js/log-anonymizer/app.js': '0242132fbc71c2c7fd15e396a8d5fcf18050f20174e74e2387658fda406d29ba', 'assets/js/prompt-injection-detector/app.js': '17eacf1b6bf5aa4890fc7a6e326189c0d77a82c473833b47aacc460c6f11be37', 'assets/js/lotl-analyzer/app.js': '0d8b4c6d6300b877cee32c3dbedc9e4705a6a5c86057a2d9b2713c580724a9bd', 'template-parts/tools/mcp-security-checker.php': '00a7ab8a917e8ee9563f20f8839b784031b0eacca33bbd4e717dbe2c4a68773e'}
+LA_BASE_SHA256 = {'assets/js/log-anonymizer/engine.js': '4a790fd4bba6fcc301029fb5a34e0a701f8c4a69f12dad165dad3a71b646b5a6', 'inc/tool-log-anonymizer.php': 'b0826effeaa358b7431ce016ea6c80d50bbdbdeeb3941e01a3dfe6391fee4051', 'assets/js/log-anonymizer/app.js': '8f5ca0a0e2d68e1ca371c97ea06df828d39706446a5d47ea64d0894a2bb51ab5', 'assets/js/prompt-injection-detector/app.js': 'd305b501139d1b2838e98b84a8f62c797e0f056e681f508678a120baf42d92cc', 'assets/js/lotl-analyzer/app.js': 'b9f3c0adef6572dfc96d16d73519ccf1b0d889c402a4eac091b2f0d3c2c7fe71', 'template-parts/tools/mcp-security-checker.php': '9e0131b6bc666e94a0472b3d500f9a3573609039ddcb5f950794eef010f64970'}
+
 def approved_release(spec, parent=None):
     if spec.get('research_commit') != RESEARCH:
         return False
+    if spec.get('revision') == LA_REVISION and parent:
+        before, after = spec.get('base', {}), spec.get('target', {})
+        return (parent.get('archive_sha256') == LA_PARENT_ARCHIVE
+                and spec.get('parent_archive_sha256') == LA_PARENT_ARCHIVE
+                and spec.get('candidate_commit') == LA_CANDIDATE
+                and before == parent.get('target') and len(before) == len(after) == 137
+                and set(before) == set(after)
+                and {n for n in before if before[n] != after[n]} == set(LA_TARGET_SHA256)
+                and all(before[n]['sha256'] == h for n, h in LA_BASE_SHA256.items())
+                and all(after[n]['sha256'] == h for n, h in LA_TARGET_SHA256.items()))
     if spec.get('revision') == DESIGN_REVISION and parent:
         before, after = spec.get('base', {}), spec.get('target', {})
         return (parent.get('archive_sha256') == DESIGN_PARENT_ARCHIVE
@@ -140,10 +157,10 @@ def approved_release(spec, parent=None):
 def guard(spec):
     sql_read_identity()
     parent = None
-    if spec.get('revision') in (HUB_REVISION, INTEGRATION_REVISION, CANONICAL_REVISION, DESIGN_REVISION):
+    if spec.get('revision') in (HUB_REVISION, INTEGRATION_REVISION, CANONICAL_REVISION, DESIGN_REVISION, LA_REVISION):
         p = HERE / 'parent-package.json'
         private_root_file(p)
-        need(digest(p) == ({HUB_REVISION: PARENT_PACKAGE, INTEGRATION_REVISION: INTEGRATION_PARENT_PACKAGE, CANONICAL_REVISION: CANONICAL_PARENT_PACKAGE, DESIGN_REVISION: DESIGN_PARENT_PACKAGE}[spec['revision']]), 'revision parent package SHA256 mismatch')
+        need(digest(p) == ({HUB_REVISION: PARENT_PACKAGE, INTEGRATION_REVISION: INTEGRATION_PARENT_PACKAGE, CANONICAL_REVISION: CANONICAL_PARENT_PACKAGE, DESIGN_REVISION: DESIGN_PARENT_PACKAGE, LA_REVISION: LA_PARENT_PACKAGE}[spec['revision']]), 'revision parent package SHA256 mismatch')
         parent = json.loads(p.read_text())
     need(approved_release(spec, parent), 'wrong pinned release or unapproved hotfix delta')
     protections = json.loads((HERE / 'protected-files.json').read_text())

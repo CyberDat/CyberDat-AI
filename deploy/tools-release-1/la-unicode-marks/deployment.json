@@ -1,0 +1,42 @@
+{
+  "schema": "cyberdat-la-staging-deployment/1",
+  "status": "SUCCESS",
+  "completed_utc": "2026-11-14T17:06:10.003901+00:00",
+  "owner_approved_source_commit": "2c07bd18bf43fac2d5a7ccbd1dad10ea017ad310",
+  "artifact_sha256": "2863578580328154948c9722d6fcc01f23d3b3615c1ec3bc5b3e287c3e455b81",
+  "theme_files": 137,
+  "modified_files": 6,
+  "unchanged_files": 131,
+  "backup_checksums_verified_before_exchange": true,
+  "theme_backup_sha256": "d967edd6300ea8bf5afdd6ba7f1b9a152aabc450a0fbf6b5a5bfd47eac5967a0",
+  "database_backup_sha256": "97a0a149a6581a10cfa319c90129fc463bd83adb907645b41a5a11f215d91f5f",
+  "acceptance": {
+    "chromium": {
+      "functional": "10/10",
+      "network": "INTERCEPTED"
+    },
+    "webkit": {
+      "functional": "10/10",
+      "network": "INTERCEPTED"
+    },
+    "firefox": {
+      "functional": "10/10",
+      "network": "UNVERIFIED"
+    }
+  },
+  "acceptance_runs_per_browser": 1,
+  "firefox_network": "UNVERIFIED",
+  "known_issues": "KNOWN-ISSUES.md",
+  "hub": "HTTP200;10 cards",
+  "four_tool_pages": "HTTP200",
+  "research_page": "HTTP200",
+  "six_research_timers": "active",
+  "posts_and_metadata": "unchanged",
+  "protected43": "unchanged",
+  "D15": "unchanged",
+  "rollback_executed": false,
+  "production_operation": false,
+  "main_modified": false,
+  "extra_audits_or_benchmarks": false,
+  "private_inputs_or_evidence_published": false
+}

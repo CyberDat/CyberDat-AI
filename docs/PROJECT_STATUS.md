@@ -1,8 +1,89 @@
 # CyberDat — Project Status (source of truth)
 
-Last updated: 2026-11-14
+Last updated: 2026-11-15
 Repository: CyberDat/CyberDat-AI
-Current stage: **Approved Tools Hub redesign deployed on closed staging; product checks passed.**
+Current stage: **LA Stage 1 PARTIAL: one regression pass completed; narrow post-run corrections UNVERIFIED; no installation, Stage 2 not started.**
+
+## LA unified labels and keys, Stage 1 — 2026-11-15
+
+**PARTIAL, not deployed.** Tests were committed before implementation. One regression
+pass:76 new and61 existing engine checks pass; structured51/54; PHP stops on a text
+contract after14 passes. Frozen4006 outputs/pre-existing fields unchanged;2836 gain
+only rule1.1 type metadata. Original D14 LA10/10 in each local-fixture browser;
+Firefox network remains UNVERIFIED. Compound-header inference/text-prefix corrections
+and additional translation-container attributes applied afterwards are UNVERIFIED;
+the owner forbids repeat regression. Installation gate unmet, no backup or live
+mutation. Stage2 not started. [Report](log-anonymizer-stage1/README.md),
+[exact evidence and tested/final hashes](log-anonymizer-stage1/acceptance.json).
+
+
+## LA structured credential fix — 2026-11-15 (source only)
+
+A local fix adds BOM-tolerant, header-aware CSV credential masking, known spaced
+JSON/log keys and User ID, preserving the existing browser-local span/Worker
+architecture. Typed CSV labels/counts/maps include usernames, passwords and tokens;
+Worker/regex/file-size diagnostics do not echo entered values or filenames.
+No guarantee of universal secret detection is made. [Scope and limits](log-anonymizer-structured-fields/README.md),
+[executed acceptance](log-anonymizer-structured-fields/acceptance.json).
+
+No deployment, WordPress/page/SQL/SEO, agent, timer, production or main change.
+The installed staging remains the accepted revision documented below; local fixture
+results do not certify installed WordPress or physical Safari/iPhone behavior.
+
+
+## LA Unicode marks installed on closed staging — 2026-11-14
+
+**SUCCESS under the owner's explicitly approved one-pass acceptance.** The approved
+137-file theme-only archive2863578580328154948c9722d6fcc01f23d3b3615c1ec3bc5b3e287c3e455b81
+(source2c07bd18) was installed by guarded atomic exchange after separate theme/database
+backups and their SHA256 checks. Exactly six approved files changed;131 retained.
+Staging identity/full hashes/PHP lint/D15 checks remained mandatory.
+
+One actual-WordPress D14 LA pass per browser: Chromium10/10 and WebKit10/10 with
+interception; Firefox10/10 functional without interception. **Firefox network
+verification is UNVERIFIED**, accepted by the owner and recorded as a known issue;
+the transport was not repaired. This decision supersedes the prior installation
+blocker only for the explicitly approved acceptance scope. It does not certify
+Firefox absence of network requests.
+
+Hub and all four existing tool pages return200;10 Hub cards retained. Research page
+returns200 and all six existing timers remain active. Posts/metadata, protected
+runtime and D15 are unchanged. No page/SEO/agent/timer/checkpoint/backoff/production
+change, main merge, repeat acceptance, new audit or benchmark occurred. No rollback
+was needed. Raw reports/screenshots remain private. [Deployment evidence](../deploy/tools-release-1/la-unicode-marks/deployment.json),
+[known issue](../deploy/tools-release-1/la-unicode-marks/KNOWN-ISSUES.md).
+
+
+## Controlled LA Unicode comparison and Stage B — 2026-11-14
+
+**PARTIAL: owner numerical gate PASS; installation BLOCKED before any staging change.**
+Five interleaved30MiB runs per version/browser give candidate/base median ratios
+Chromium1.0218355, Firefox1.0065889, WebKit1.0116539, all <=1.10. The unchanged
+Firefox acceptance ran10 times/version: base0, intermediate4, candidate0 reload
+timeouts. Exact browser-internal reload cause remains UNVERIFIED. Separate diagnostic
+variants were not counted as acceptance or used to rewrite the original outcomes.
+
+The full provisioned tests/ sweep returned base67PASS/9FAIL, intermediate70/10,
+candidate73/9; five separately configured supplements passed per version.16→21 was
+not reproduced; required-argument failures, D15-protected legacy imports, old fixture/
+manifest pins and the long FPM socket path are disclosed. Base alone also hit4032ms
+at the unchanged4000ms engine guard; candidate/intermediate passed that guard.
+
+A new137-file theme-only revision preserves131 files and changes only the six approved
+candidate files.42 PHP lint,46 deployment/rollback fault tests,10 D15 tests and10 narrow
+scope tests pass. No fifth-tool integration, Hub/page/SEO, agent, timer or SQL change.
+
+Actual HTTPS works in all three isolated browsers. However strict intercepted live
+D14 LA01 fails on the existing staging base in Firefox: native Worker NetworkError at
+importScripts(). A no-input probe succeeds without interception; disabling HTTP2
+still fails with interception. No acceptance assertion/interception was removed to
+manufacture PASS. Therefore no new backup, atomic install or real rollback occurred;
+post-install D14/controls/three consecutive Firefox runs remain NOT RUN. Final read-only
+checks confirm137 theme files, all posts/metadata and protected runtime unchanged and
+six Research timers active. Raw cases/logs/screenshots stay private. D6 optionA remains;
+shared-theme legal scope is UNVERIFIED. Resolve the Firefox HTTPS acceptance transport
+before resuming installation. [Minimized evidence](../deploy/tools-release-1/la-unicode-marks/acceptance.json).
+
 
 ## Tools Hub deployment — 2026-11-14
 

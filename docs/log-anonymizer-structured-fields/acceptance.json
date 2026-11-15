@@ -1,0 +1,355 @@
+{
+  "schema": 1,
+  "date": "2026-11-15",
+  "status": "PASS",
+  "scope": "Local source/fixture acceptance only; not deployed",
+  "branch": "fix/log-anonymizer-csv-sensitive-fields",
+  "base_commit": "458f97c8ddeadee72c5b767a6dd2da68a054d056",
+  "engine_version": "1.0.4",
+  "ruleset_version": "2026-11-15.1",
+  "source_sha256": {
+    "wp-content/themes/cyberdat/assets/js/log-anonymizer/engine.js": "52a461b7a0925abe2907e72c1d9b3765a17c4d4755cb6764043a167bc5e78ef5",
+    "wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js": "7fa314b173a3a849128d5f3199f7d61678c1fd01f1486aff91f978af3b61fcab",
+    "wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js": "15ce16aeb39d137076cc26675e61e219dd2f413ce6d5c5aff8bb25ce537805e1",
+    "wp-content/themes/cyberdat/inc/tool-log-anonymizer.php": "792c00dc83fc98532a99c2a31108e1d2825dde603403465b0f540cca15e48572",
+    "wp-content/themes/cyberdat/template-parts/tools/log-anonymizer.php": "0772e2421eaab0e90d423e3e66b126c38a1ad4e2f0ea888bac71179a9689b655",
+    "tests/log-anonymizer-structured-fields.test.cjs": "15ed390cb50addb6e3deb188f0dedb0648e7659af544c3c167e5a39d09cdf9ac",
+    "tests/log-anonymizer-structured-browser.test.cjs": "d2de044d4d6a46397dccaf465599620085c22954ffd172f49a16929bc67a884a",
+    "tests/log-anonymizer-engine.test.cjs": "3b1fff8d2d67b101ddb22e467b369b304a959725d9714e2d10a993e783b08c8a"
+  },
+  "checks": [
+    {
+      "tag": "syntax-engine",
+      "exit": 0,
+      "seconds": 0.066,
+      "pass_lines": 0
+    },
+    {
+      "tag": "syntax-app",
+      "exit": 0,
+      "seconds": 0.066,
+      "pass_lines": 0
+    },
+    {
+      "tag": "syntax-worker",
+      "exit": 0,
+      "seconds": 0.068,
+      "pass_lines": 0
+    },
+    {
+      "tag": "log-anonymizer-structured-fields.test.cjs",
+      "exit": 0,
+      "seconds": 2.034,
+      "pass_lines": 54
+    },
+    {
+      "tag": "log-anonymizer-engine.test.cjs",
+      "exit": 0,
+      "seconds": 20.137,
+      "pass_lines": 61
+    },
+    {
+      "tag": "tools-stabilization.test.cjs",
+      "exit": 0,
+      "seconds": 6.582,
+      "pass_lines": 6
+    },
+    {
+      "tag": "mcp-release-privacy.test.cjs",
+      "exit": 0,
+      "seconds": 0.169,
+      "pass_lines": 9
+    },
+    {
+      "tag": "no-token-shaped-strings.test.cjs",
+      "exit": 0,
+      "seconds": 0.569,
+      "pass_lines": 2
+    },
+    {
+      "tag": "frozen-d14-holdouts",
+      "exit": 0,
+      "seconds": 6.155,
+      "pass_lines": 35
+    },
+    {
+      "tag": "php-lint-tool-log-anonymizer",
+      "exit": 0,
+      "seconds": 0.034,
+      "pass_lines": 0
+    },
+    {
+      "tag": "php-lint-log-anonymizer",
+      "exit": 0,
+      "seconds": 0.034,
+      "pass_lines": 0
+    },
+    {
+      "tag": "php-contract",
+      "exit": 0,
+      "seconds": 0.117,
+      "pass_lines": 41
+    },
+    {
+      "tag": "prompt-injection-detector-engine.test.cjs",
+      "exit": 0,
+      "seconds": 52.96,
+      "pass_lines": 33
+    },
+    {
+      "tag": "lotl-analyzer-engine.test.cjs",
+      "exit": 0,
+      "seconds": 1.95,
+      "pass_lines": 20
+    },
+    {
+      "tag": "mcp-checker-engine.test.cjs",
+      "exit": 0,
+      "seconds": 3.481,
+      "pass_lines": 24
+    }
+  ],
+  "browsers": [
+    {
+      "browser": "chromium",
+      "version": "141.0.7390.37",
+      "pass": true,
+      "checks": 10,
+      "rows": [
+        {
+          "id": "CSV_BOM_UPLOAD_EXPORT",
+          "pass": true,
+          "output_sha256": "4f4b3b80aa22cb4ce3e06abafaeee7549ee0dde26a4034a3773b142ed61aa9d1",
+          "crlf_preserved": true
+        },
+        {
+          "id": "STATS_AND_OPT_IN_MAP",
+          "pass": true,
+          "entries": 3
+        },
+        {
+          "id": "QUOTED_MULTILINE_EXPORT",
+          "pass": true,
+          "output_sha256": "adf5f6e23b1cccecb7e667bee9d0ff68690fd1cb0f78b7a7f15d19fd346a6078"
+        },
+        {
+          "id": "JSON_FIELDS",
+          "pass": true
+        },
+        {
+          "id": "LOG_FIELDS_AND_LEGACY_IP",
+          "pass": true
+        },
+        {
+          "id": "EMPTY_FIELDS",
+          "pass": true
+        },
+        {
+          "id": "METADATA_FALSE_POSITIVES",
+          "pass": true
+        },
+        {
+          "id": "CSV_ERROR_NO_VALUE_LEAK",
+          "pass": true
+        },
+        {
+          "id": "REGEX_ERROR_NO_VALUE_LEAK",
+          "pass": true
+        },
+        {
+          "id": "NO_INPUT_NETWORK_STORAGE_OR_DIAGNOSTIC_LEAK",
+          "pass": true,
+          "after_input_requests": 0,
+          "unexpected_requests": 0,
+          "errors": 0
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "version": "142.0.1",
+      "pass": true,
+      "checks": 10,
+      "rows": [
+        {
+          "id": "CSV_BOM_UPLOAD_EXPORT",
+          "pass": true,
+          "output_sha256": "4f4b3b80aa22cb4ce3e06abafaeee7549ee0dde26a4034a3773b142ed61aa9d1",
+          "crlf_preserved": true
+        },
+        {
+          "id": "STATS_AND_OPT_IN_MAP",
+          "pass": true,
+          "entries": 3
+        },
+        {
+          "id": "QUOTED_MULTILINE_EXPORT",
+          "pass": true,
+          "output_sha256": "adf5f6e23b1cccecb7e667bee9d0ff68690fd1cb0f78b7a7f15d19fd346a6078"
+        },
+        {
+          "id": "JSON_FIELDS",
+          "pass": true
+        },
+        {
+          "id": "LOG_FIELDS_AND_LEGACY_IP",
+          "pass": true
+        },
+        {
+          "id": "EMPTY_FIELDS",
+          "pass": true
+        },
+        {
+          "id": "METADATA_FALSE_POSITIVES",
+          "pass": true
+        },
+        {
+          "id": "CSV_ERROR_NO_VALUE_LEAK",
+          "pass": true
+        },
+        {
+          "id": "REGEX_ERROR_NO_VALUE_LEAK",
+          "pass": true
+        },
+        {
+          "id": "NO_INPUT_NETWORK_STORAGE_OR_DIAGNOSTIC_LEAK",
+          "pass": true,
+          "after_input_requests": 0,
+          "unexpected_requests": 0,
+          "errors": 0
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "version": "26.0",
+      "pass": true,
+      "checks": 10,
+      "rows": [
+        {
+          "id": "CSV_BOM_UPLOAD_EXPORT",
+          "pass": true,
+          "output_sha256": "4f4b3b80aa22cb4ce3e06abafaeee7549ee0dde26a4034a3773b142ed61aa9d1",
+          "crlf_preserved": true
+        },
+        {
+          "id": "STATS_AND_OPT_IN_MAP",
+          "pass": true,
+          "entries": 3
+        },
+        {
+          "id": "QUOTED_MULTILINE_EXPORT",
+          "pass": true,
+          "output_sha256": "adf5f6e23b1cccecb7e667bee9d0ff68690fd1cb0f78b7a7f15d19fd346a6078"
+        },
+        {
+          "id": "JSON_FIELDS",
+          "pass": true
+        },
+        {
+          "id": "LOG_FIELDS_AND_LEGACY_IP",
+          "pass": true
+        },
+        {
+          "id": "EMPTY_FIELDS",
+          "pass": true
+        },
+        {
+          "id": "METADATA_FALSE_POSITIVES",
+          "pass": true
+        },
+        {
+          "id": "CSV_ERROR_NO_VALUE_LEAK",
+          "pass": true
+        },
+        {
+          "id": "REGEX_ERROR_NO_VALUE_LEAK",
+          "pass": true
+        },
+        {
+          "id": "NO_INPUT_NETWORK_STORAGE_OR_DIAGNOSTIC_LEAK",
+          "pass": true,
+          "after_input_requests": 0,
+          "unexpected_requests": 0,
+          "errors": 0
+        }
+      ]
+    }
+  ],
+  "frozen_corpus": {
+    "results": 4006,
+    "exact_matches": 4006,
+    "changed": 0
+  },
+  "performance_threshold_ms": 4000,
+  "stabilization_times": [
+    {
+      "tool": "log",
+      "chars": 786479,
+      "ms": 514.462372
+    },
+    {
+      "tool": "log",
+      "chars": 655407,
+      "ms": 306.2157699999998
+    },
+    {
+      "tool": "log",
+      "chars": 1179695,
+      "ms": 638.710043
+    },
+    {
+      "tool": "injection",
+      "chars": 1000000,
+      "ms": 2737.959065
+    }
+  ],
+  "holdout_times": [
+    {
+      "tool": "log",
+      "chars": 720000,
+      "ms": 3183.197456
+    },
+    {
+      "tool": "log",
+      "chars": 750000,
+      "ms": 291.10753199999954
+    },
+    {
+      "tool": "injection",
+      "chars": 825000,
+      "ms": 565.1073409999999
+    },
+    {
+      "tool": "injection",
+      "chars": 945000,
+      "ms": 667.7404859999997
+    },
+    {
+      "tool": "injection",
+      "chars": 656000,
+      "ms": 733.5125710000002
+    }
+  ],
+  "failed_browser_attempt": {
+    "chromium": "Stopped at new empty-textarea case; five earlier checks passed",
+    "firefox": "10/10 PASS",
+    "webkit": "Stopped at new empty-textarea case; five earlier checks passed",
+    "cause": "Test assumed equal Playwright textarea CRLF normalization across browsers",
+    "diagnosis": "Chromium/WebKit preserve CRLF; Firefox normalizes LF",
+    "correction": "Upload the empty CSV file and assert exact bytes in all browsers; no product-code change",
+    "retest": "10/10 in each browser"
+  },
+  "expectation_change": "Old userId negative moved to positive under explicit User ID requirement; frozen expectations and performance thresholds unchanged",
+  "limitations": [
+    "Heuristic matching; no universal secret-detection guarantee",
+    "Only first-record supported headers/dialects; unknown and translated headings not inferred",
+    "Scalar JSON matching, not full JSON parser",
+    "Replacement maps intentionally retain originals behind acknowledgment",
+    "UTF-16 files still export as UTF-8",
+    "Local fixture only; no installed WordPress or physical-device acceptance"
+  ],
+  "deployment_performed": false,
+  "new_runtime_dependencies": false,
+  "production_or_agents_modified": false
+}

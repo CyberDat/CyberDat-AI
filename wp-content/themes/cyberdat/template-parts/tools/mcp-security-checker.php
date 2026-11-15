@@ -19,7 +19,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 		<section class="cd-la-panel" aria-labelledby="cd-mcp-step-input">
 			<h2 id="cd-mcp-step-input" class="cd-la-step"><span aria-hidden="true">1</span> <?php esc_html_e( 'Add a configuration or tool list', 'cyberdat' ); ?></h2>
 			<label class="cd-la-label" for="cd-mcp-input"><?php esc_html_e( 'MCP configuration or tool list (JSON)', 'cyberdat' ); ?></label>
-			<textarea id="cd-mcp-input" class="cd-la-input" rows="14" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-mcp-input-help cd-mcp-source" data-mcp-input></textarea>
+			<textarea id="cd-mcp-input" class="notranslate cd-la-input" rows="14" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-mcp-input-help cd-mcp-source" data-mcp-input translate="no"></textarea>
 			<p id="cd-mcp-input-help" class="cd-la-help"><?php esc_html_e( 'Accepted: client configurations with "mcpServers", "servers" or "mcp.servers" (command, args, env, url, headers), "context_servers", a single server object, and tool lists ({"tools": [...]} or a tools/list response) with names, descriptions and input schemas. Comments and trailing commas are accepted. Several JSON documents can be pasted one after another. Up to 5 MB.', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<label class="cd-la-file">
@@ -29,7 +29,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-mcp-sample><?php esc_html_e( 'Load example', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--ghost" data-mcp-clear><?php esc_html_e( 'Clear everything', 'cyberdat' ); ?></button>
 			</div>
-			<p id="cd-mcp-source" class="cd-la-source" aria-live="polite" data-mcp-source></p>
+			<p id="cd-mcp-source" class="notranslate cd-la-source" aria-live="polite" data-mcp-source translate="no"></p>
 
 			<fieldset class="cd-mcp-modes">
 				<legend class="cd-la-label"><?php esc_html_e( 'What to check', 'cyberdat' ); ?></legend>
@@ -39,7 +39,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 
 			<div class="cd-mcp-policy" data-mcp-policy-panel hidden>
 				<label class="cd-la-label" for="cd-mcp-policy"><?php esc_html_e( 'Your policy (JSON)', 'cyberdat' ); ?></label>
-				<textarea id="cd-mcp-policy" class="cd-la-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-mcp-policy-help cd-mcp-policy-source" data-mcp-policy></textarea>
+				<textarea id="cd-mcp-policy" class="notranslate cd-la-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-mcp-policy-help cd-mcp-policy-source" data-mcp-policy translate="no"></textarea>
 				<p id="cd-mcp-policy-help" class="cd-la-help"><?php esc_html_e( 'The policy is kept only in this tab. “Download policy” saves the entered policy without redaction; review it for private values before sharing.', 'cyberdat' ); ?></p>
 				<div class="cd-la-row">
 					<label class="cd-la-file">
@@ -77,15 +77,15 @@ $cyberdat_mcp = cyberdat_mcp_config();
 			<button type="button" class="cd-la-button cd-la-button--ghost" data-mcp-cancel hidden><?php esc_html_e( 'Cancel', 'cyberdat' ); ?></button>
 			<progress class="cd-la-progress" max="100" value="0" aria-label="<?php esc_attr_e( 'Check progress', 'cyberdat' ); ?>" data-mcp-progress hidden></progress>
 		</div>
-		<p class="cd-la-status" role="status" aria-live="polite" data-mcp-status></p>
-		<div class="cd-la-callout cd-la-callout--error cd-mcp-error" role="alert" data-mcp-error hidden></div>
+		<p class="notranslate cd-la-status" role="status" aria-live="polite" data-mcp-status translate="no"></p>
+		<div class="notranslate cd-la-callout cd-la-callout--error cd-mcp-error" role="alert" data-mcp-error hidden translate="no"></div>
 
-		<section class="cd-la-panel cd-la-results" aria-labelledby="cd-mcp-step-results" data-mcp-results hidden>
+		<section class="notranslate cd-la-panel cd-la-results" aria-labelledby="cd-mcp-step-results" data-mcp-results hidden translate="no">
 			<h2 id="cd-mcp-step-results" class="cd-la-step" tabindex="-1"><span aria-hidden="true">2</span> <?php esc_html_e( 'Review the results', 'cyberdat' ); ?></h2>
 			<p class="cd-mcp-verdict" data-mcp-verdict></p>
-			<p class="cd-la-summary" data-mcp-summary></p>
+			<p class="notranslate cd-la-summary" data-mcp-summary translate="no"></p>
 			<ul class="cd-mcp-warnings" data-mcp-warnings hidden></ul>
-			<ul class="cd-mcp-notes" data-mcp-notes hidden></ul>
+			<ul class="notranslate cd-mcp-notes" data-mcp-notes hidden translate="no"></ul>
 			<div class="cd-la-table-wrap" data-mcp-groups-wrap hidden>
 				<table class="cd-la-table">
 					<caption><?php esc_html_e( 'Findings by rule group', 'cyberdat' ); ?></caption>
@@ -118,6 +118,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 		</section>
 		<section aria-labelledby="cd-mcp-privacy">
 			<h2 id="cd-mcp-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
+			<p><?php esc_html_e( 'This tool asks the browser not to translate entered text, but cannot prevent extensions and translators from reading the page.', 'cyberdat' ); ?></p>
 			<ul>
 				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The page’s Content Security Policy blocks scripts on this page from opening network connections, and URLs found in your configuration are never opened or checked online.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
@@ -134,6 +135,7 @@ $cyberdat_mcp = cyberdat_mcp_config();
 				<li><?php esc_html_e( 'Tool descriptions and annotations come from the server and may be untrusted. A tool list you paste shows what the server reported at that moment; servers can change their tools later.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Look-alike package detection compares names with a short built-in list of well-known MCP packages. It does not contact npm, PyPI, container registries or MCP registries.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Description poisoning is recognized by wording, markup and hidden characters. Reworded or novel injections can be missed, and legitimate descriptions can occasionally match.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The description-poisoning wording rules are English only. Instructions written in German, Russian or other languages are not recognized by wording; hidden characters and markup are still detected in any language.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Secret detection relies on variable names and known credential formats. Unusual secrets can be missed, and an ordinary value in a variable called “password” is reported as a secret.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>

@@ -9,8 +9,8 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_LOG_ANONYMIZER_SLUG = 'log-anonymizer';
-const CYBERDAT_LOG_ANONYMIZER_ENGINE = '1.0.3';
-const CYBERDAT_LOG_ANONYMIZER_RULESET = '2026-11-14.1';
+const CYBERDAT_LOG_ANONYMIZER_ENGINE = '1.1.0';
+const CYBERDAT_LOG_ANONYMIZER_RULESET = '2026-11-15.2';
 
 /** True only for the tool page that is a direct child of the published-or-draft /tools/ hub. */
 function cyberdat_log_anonymizer_is_page( $post_id ) {
@@ -42,6 +42,7 @@ function cyberdat_log_anonymizer_categories() {
 		'username'   => array( 'label' => __( 'Usernames', 'cyberdat' ), 'short' => __( 'Usernames', 'cyberdat' ), 'example' => 'user=…, /home/…' ),
 		'personName' => array( 'label' => __( 'Names in explicit person/contact fields', 'cyberdat' ), 'short' => __( 'Names', 'cyberdat' ), 'example' => 'person_name=…, full_name=…' ),
 		'phone'      => array( 'label' => __( 'Telephone numbers in explicit contact fields', 'cyberdat' ), 'short' => __( 'Phones', 'cyberdat' ), 'example' => 'contact_phone=…, telephone=…' ),
+		'identifier' => array( 'label' => __( 'Identifiers and personal fields', 'cyberdat' ), 'short' => __( 'Identifiers', 'cyberdat' ), 'example' => 'customer_id=…, address=…, IBAN' ),
 		'host'       => array( 'label' => __( 'Hostnames and domains', 'cyberdat' ), 'short' => __( 'Hosts', 'cyberdat' ), 'example' => 'db01.example.com' ),
 		'card'       => array( 'label' => __( 'Payment card numbers (Luhn-checked)', 'cyberdat' ), 'short' => __( 'Cards', 'cyberdat' ), 'example' => '4111 1111 1111 1111' ),
 		'ssn'        => array( 'label' => __( 'US Social Security numbers', 'cyberdat' ), 'short' => __( 'US SSN', 'cyberdat' ), 'example' => '123-45-6789' ),
