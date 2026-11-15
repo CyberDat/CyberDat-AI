@@ -68,7 +68,7 @@
     "status": "planned",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Planned inventory of model, dataset and dependency provenance.",
+    "description": "Build an AI bill of materials for a model in CycloneDX JSON and Markdown, or review an existing one for gaps such as missing licences, floating versions, unhashed or pickle-based weights and secrets.",
     "icon_path": "M7 3h10v18H7Z M10 7h4 M10 11h4 M10 15h2"
   },
   {
