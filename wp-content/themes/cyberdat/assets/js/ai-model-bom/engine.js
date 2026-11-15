@@ -28,8 +28,8 @@
 
 	// ------------------------------------------------------------------ rule catalogue
 	const RULES = {
-		'AIBOM-LIC-001': ['license', 'medium', 'Model license missing or unknown', 'Without a license nobody can tell whether the model may be used, changed or redistributed in this system.', 'Add the license of the model as an SPDX identifier (for example Apache-2.0) or the name of the licence terms.'],
-		'AIBOM-LIC-002': ['license', 'medium', 'Dataset license missing or unknown', 'The terms of the data used for training or fine-tuning can restrict how the model may be used.', 'Add the licence or the terms under which the dataset was obtained.'],
+		'AIBOM-LIC-001': ['license', 'medium', 'Model license missing or unknown', 'Without a license nobody can tell whether the model may be used, changed or redistributed in this system.', 'Add the license of the model as an SPDX identifier (for example Apache-2.0) or the name of the license terms.'],
+		'AIBOM-LIC-002': ['license', 'medium', 'Dataset license missing or unknown', 'The terms of the data used for training or fine-tuning can restrict how the model may be used.', 'Add the license or the terms under which the dataset was obtained.'],
 		'AIBOM-VER-001': ['version', 'medium', 'Model version missing', 'Without a version the document cannot say which model was reviewed, and a later model can silently replace it.', 'Add the exact version, release date or revision of the model.'],
 		'AIBOM-VER-002': ['version', 'medium', 'Model version is floating', 'A branch name, “latest” or a range can point to a different model tomorrow, so the document no longer describes what runs.', 'Use an exact version, snapshot date or commit revision instead of a branch, tag such as “latest”, or range.'],
 		'AIBOM-VER-003': ['version', 'low', 'Base model version missing or floating', 'Fine-tuning results depend on the exact base model; a different base revision can behave differently.', 'Add the exact version or revision of the base model.'],
@@ -38,10 +38,10 @@
 		'AIBOM-WGT-003': ['weights', 'low', 'Weak hash algorithm', 'MD5 and SHA-1 are not collision resistant, so a different file can have the same digest.', 'Record a SHA-256, SHA-384 or SHA-512 digest.'],
 		'AIBOM-WGT-004': ['weights', 'low', 'Weights file without a source', 'Without a source it is unclear where the file was obtained and how to fetch the same file again.', 'Add the download location, registry entry or internal storage path.'],
 		'AIBOM-WGT-005': ['weights', 'low', 'No weights files listed', 'For a model you run yourself, the weights are the core artefact of the supply chain.', 'List the weights files with format, digest and source.'],
-		'AIBOM-PRV-001': ['provenance', 'medium', 'Fine-tuned model without a base model', 'Licence terms, known weaknesses and behaviour of the base model carry over to the fine-tuned model.', 'Name the base model and its exact version.'],
-		'AIBOM-DAT-001': ['data', 'medium', 'Dataset without a source', 'Without a source the origin, consent and licence of the data cannot be traced.', 'Add where the dataset comes from: a URL, a catalogue entry or an internal location.'],
+		'AIBOM-PRV-001': ['provenance', 'medium', 'Fine-tuned model without a base model', 'License terms, known weaknesses and behaviour of the base model carry over to the fine-tuned model.', 'Name the base model and its exact version.'],
+		'AIBOM-DAT-001': ['data', 'medium', 'Dataset without a source', 'Without a source the origin, consent and license of the data cannot be traced.', 'Add where the dataset comes from: a URL, a catalogue entry or an internal location.'],
 		'AIBOM-DAT-002': ['data', 'medium', 'Personal data status unknown', 'If it is not known whether a dataset contains personal data, data-protection duties cannot be assessed.', 'State whether the dataset contains personal data: yes or no.'],
-		'AIBOM-DAT-003': ['data', 'low', 'No datasets listed', 'A model you trained or fine-tuned depends on its training data; without it the document is incomplete.', 'List the training and fine-tuning datasets with source, licence and personal-data status.'],
+		'AIBOM-DAT-003': ['data', 'low', 'No datasets listed', 'A model you trained or fine-tuned depends on its training data; without it the document is incomplete.', 'List the training and fine-tuning datasets with source, license and personal-data status.'],
 		'AIBOM-DEP-001': ['dependencies', 'medium', 'Dependency without a version', 'Without versions the framework and libraries that run the model cannot be checked for known vulnerabilities.', 'Add the exact version of each framework and library.'],
 		'AIBOM-DEP-002': ['dependencies', 'low', 'Dependency version is floating', 'A range or “latest” can install a different release at the next build.', 'Pin the exact version that was tested.'],
 		'AIBOM-NET-001': ['endpoints', 'medium', 'Address uses http://', 'Unencrypted connections can be read or changed in transit, including model files and API calls.', 'Use https:// for this address.'],
@@ -57,7 +57,7 @@
 		'AIBOM-FMT-001': ['format', 'medium', 'No machine-learning model component', 'The document contains no component of type machine-learning-model, so model-level gaps cannot be checked.', 'Add the model as a component of type machine-learning-model.'],
 		'AIBOM-FMT-002': ['format', 'low', 'Structure problems', 'Some fields do not follow the CycloneDX structure that this tool checks. They were read where possible.', 'Correct the fields listed under “Structure”.']
 	};
-	const GROUPS = { license: 'Licences', version: 'Versions', weights: 'Weights files', provenance: 'Base model', data: 'Data', dependencies: 'Dependencies', endpoints: 'Addresses', secrets: 'Secrets', documentation: 'Documentation', format: 'Format' };
+	const GROUPS = { license: 'Licenses', version: 'Versions', weights: 'Weights files', provenance: 'Base model', data: 'Data', dependencies: 'Dependencies', endpoints: 'Addresses', secrets: 'Secrets', documentation: 'Documentation', format: 'Format' };
 	const RANK = { none: -1, info: 0, low: 1, medium: 2, high: 3 };
 
 	// ------------------------------------------------------------------ text helpers (Unicode-aware)
@@ -562,7 +562,7 @@
 		inv.weights.forEach(w => L.push('- ' + md(w.file || 'Unnamed weights file') + ' — format: ' + (w.format ? md(w.format) : '_not stated_') + '; hash: ' + (w.hash ? md((w.hashAlg ? w.hashAlg + ' ' : '') + w.hash) : '_not stated_') + '; source: ' + (w.source ? md(w.source) : '_not stated_')));
 		L.push('', '## Data', '');
 		if (!inv.datasets.length) { L.push('_None listed._'); }
-		inv.datasets.forEach(d => L.push('- ' + md(d.name || 'Unnamed dataset') + (d.role ? ' (' + md(d.role) + ')' : '') + ' — source: ' + (d.source ? md(d.source) : '_not stated_') + '; licence: ' + (d.license ? md(d.license) : '_not stated_') + '; personal data: ' + (d.personalData || '_not stated_')));
+		inv.datasets.forEach(d => L.push('- ' + md(d.name || 'Unnamed dataset') + (d.role ? ' (' + md(d.role) + ')' : '') + ' — source: ' + (d.source ? md(d.source) : '_not stated_') + '; license: ' + (d.license ? md(d.license) : '_not stated_') + '; personal data: ' + (d.personalData || '_not stated_')));
 		L.push('', '## Dependencies', '');
 		if (!inv.dependencies.length) { L.push('_None listed._'); }
 		inv.dependencies.forEach(d => L.push('- ' + md(d.name || 'Unnamed dependency') + ' ' + (d.version ? md(d.version) : '_version not stated_') + ' (' + d.kind + ')'));
@@ -642,15 +642,15 @@
 		const contact = (c, p) => { if (closed(c, 'orgContact', p)) { strField(c, 'name', p); strField(c, 'email', p); if (typeof c.email === 'string' && !/^[^\s@]+@[^\s@]+$/u.test(c.email)) { add(p + '/email', 'email is not an e-mail address'); } } };
 		const lic = (o, k0, p) => arr(o, k0, p).forEach((x, k) => {
 			const q = p + '/' + k0 + '/' + k;
-			if (!isObj(x)) { add(q, 'licence entry should be an object'); return; }
+			if (!isObj(x)) { add(q, 'license entry should be an object'); return; }
 			if (x.license !== undefined) {
-				if (Object.keys(x).length !== 1) { add(q, 'licence entry with “license” must not have other keys'); }
+				if (Object.keys(x).length !== 1) { add(q, 'license entry with “license” must not have other keys'); }
 				if (closed(x.license, 'license', q + '/license')) {
 					const hasId = typeof x.license.id === 'string', hasName = typeof x.license.name === 'string';
-					if (hasId === hasName) { add(q + '/license', 'licence needs exactly one of “id” or “name”'); }
+					if (hasId === hasName) { add(q + '/license', 'license needs exactly one of “id” or “name”'); }
 				}
 			} else if (x.expression !== undefined) { if (closed(x, 'expression', q)) { strField(x, 'expression', q); } }
-			else { add(q, 'licence entry needs “license” or “expression”'); }
+			else { add(q, 'license entry needs “license” or “expression”'); }
 		});
 		const extRefs = (o, p) => arr(o, 'externalReferences', p).forEach((x, k) => { const q = p + '/externalReferences/' + k; if (closed(x, 'externalReference', q)) { if (typeof x.url !== 'string' || !x.url) { add(q, 'external reference needs a “url”'); } if (EXTREF_TYPES.indexOf(x.type) < 0) { add(q + '/type', 'external reference type “' + str(x.type) + '” is not a CycloneDX type'); } } });
 		function comp(c, p, depth) {

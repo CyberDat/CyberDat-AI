@@ -22,7 +22,7 @@
 	const MAX_ROWS = 200;
 	const NO_GAPS = 'No known gaps matched. This does not mean the model or its supply chain is safe.';
 	const SEV_LABEL = { high: 'High', medium: 'Medium', low: 'Low', info: 'Info' };
-	const GROUPS = { license: 'Licences', version: 'Versions', weights: 'Weights files', provenance: 'Base model', data: 'Data', dependencies: 'Dependencies', endpoints: 'Addresses', secrets: 'Secrets', documentation: 'Documentation', format: 'Format' };
+	const GROUPS = { license: 'Licenses', version: 'Versions', weights: 'Weights files', provenance: 'Base model', data: 'Data', dependencies: 'Dependencies', endpoints: 'Addresses', secrets: 'Secrets', documentation: 'Documentation', format: 'Format' };
 
 	const $ = s => root.querySelector(s);
 	const el = {
