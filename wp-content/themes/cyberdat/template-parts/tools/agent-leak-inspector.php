@@ -3,6 +3,8 @@
  * System Prompt & Agent Leak Inspector — interactive workspace markup.
  * Static, server-rendered UI only. Prompts and responses are analyzed in the browser by
  * assets/js/leak-inspector/*.js as text; they are never executed, never sent to a model and never posted to WordPress.
+ * Inputs, file names, errors and results carry translate="no" and the notranslate class so that a built-in page
+ * translator does not send the entered text to a translation service.
  * Shared .cd-la-* component classes come from assets/css/tools-common.css.
  */
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +15,7 @@ $cyberdat_lki = cyberdat_lki_config();
 	<p class="cd-la-callout cd-la-callout--error" data-lki-unsupported hidden><?php esc_html_e( 'Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.', 'cyberdat' ); ?></p>
 
 	<div class="cd-la-app" data-lki-app hidden>
-		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Prompts and responses are checked in this browser tab as text. The text you enter is never sent anywhere by this tool — not to CyberDat, not to analytics, not to any AI model — and it is not stored.', 'cyberdat' ); ?></p>
+		<p class="cd-la-callout cd-la-callout--privacy"><strong><?php esc_html_e( 'Local only.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Your text is analyzed in this browser tab. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any AI service — and this tool does not write it to persistent browser storage.', 'cyberdat' ); ?></p>
 		<p class="cd-la-callout cd-la-callout--warning" role="note"><strong><?php esc_html_e( 'A review aid, not a guarantee.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'The tool looks for known weaknesses and known leak patterns in the text you provide. It cannot prove that a prompt will not leak: assume anything in a system prompt can be extracted.', 'cyberdat' ); ?></p>
 
 		<section class="cd-la-panel" aria-labelledby="cd-lki-step-input">
@@ -24,32 +26,32 @@ $cyberdat_lki = cyberdat_lki_config();
 				<label class="cd-lki-mode"><input type="radio" name="cd-lki-mode" value="leak" data-lki-mode> <span><strong><?php esc_html_e( 'Leak check', 'cyberdat' ); ?></strong> — <?php esc_html_e( 'compare your reference prompt with a response or transcript', 'cyberdat' ); ?></span></label>
 			</fieldset>
 			<label class="cd-la-label" for="cd-lki-prompt"><?php esc_html_e( 'System prompt or agent description', 'cyberdat' ); ?></label>
-			<textarea id="cd-lki-prompt" class="cd-la-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-lki-prompt-help cd-lki-prompt-source" data-lki-prompt></textarea>
+			<textarea id="cd-lki-prompt" class="cd-la-input notranslate" translate="no" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-lki-prompt-help cd-lki-prompt-source" data-lki-prompt></textarea>
 			<p id="cd-lki-prompt-help" class="cd-la-help"><?php esc_html_e( 'Plain text in any language, up to 1 MB. In Leak check this is the reference prompt. Use a copy with real credentials removed if you can.', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<label class="cd-la-file">
 					<span class="cd-la-button cd-la-button--secondary" aria-hidden="true"><?php esc_html_e( 'Load prompt file', 'cyberdat' ); ?></span>
-					<input class="cd-la-file__input" id="cd-lki-prompt-file" type="file" accept=".txt,.md,.text,.json,.yaml,.yml,text/plain" aria-label="<?php esc_attr_e( 'Load prompt file', 'cyberdat' ); ?>" data-lki-prompt-file>
+					<input class="cd-la-file__input notranslate" translate="no" id="cd-lki-prompt-file" type="file" accept=".txt,.md,.text,.json,.yaml,.yml,text/plain" aria-label="<?php esc_attr_e( 'Load prompt file', 'cyberdat' ); ?>" data-lki-prompt-file>
 				</label>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-lki-sample><?php esc_html_e( 'Load example', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--ghost" data-lki-clear><?php esc_html_e( 'Clear everything', 'cyberdat' ); ?></button>
 			</div>
-			<p id="cd-lki-prompt-source" class="cd-la-source" aria-live="polite" data-lki-prompt-source></p>
+			<p id="cd-lki-prompt-source" class="cd-la-source notranslate" translate="no" aria-live="polite" data-lki-prompt-source></p>
 
 			<div class="cd-lki-leak" data-lki-leak-panel hidden>
 				<label class="cd-la-label" for="cd-lki-response"><?php esc_html_e( 'Response or conversation transcript', 'cyberdat' ); ?></label>
-				<textarea id="cd-lki-response" class="cd-la-input" rows="10" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-lki-response-help cd-lki-response-source" data-lki-response></textarea>
+				<textarea id="cd-lki-response" class="cd-la-input notranslate" translate="no" rows="10" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-lki-response-help cd-lki-response-source" data-lki-response></textarea>
 				<p id="cd-lki-response-help" class="cd-la-help"><?php esc_html_e( 'Paste a model answer or a whole conversation, up to 5 MB. Encoded parts (Base64, hex, URL encoding) are decoded locally and compared too.', 'cyberdat' ); ?></p>
 				<div class="cd-la-row">
 					<label class="cd-la-file">
 						<span class="cd-la-button cd-la-button--secondary" aria-hidden="true"><?php esc_html_e( 'Load response file', 'cyberdat' ); ?></span>
-						<input class="cd-la-file__input" id="cd-lki-response-file" type="file" accept=".txt,.md,.text,.json,.jsonl,.log,text/plain" aria-label="<?php esc_attr_e( 'Load response file', 'cyberdat' ); ?>" data-lki-response-file>
+						<input class="cd-la-file__input notranslate" translate="no" id="cd-lki-response-file" type="file" accept=".txt,.md,.text,.json,.jsonl,.log,text/plain" aria-label="<?php esc_attr_e( 'Load response file', 'cyberdat' ); ?>" data-lki-response-file>
 					</label>
 					<label class="cd-lki-number" for="cd-lki-min-words"><?php esc_html_e( 'Minimum fragment length (words)', 'cyberdat' ); ?>
-						<input id="cd-lki-min-words" type="number" min="4" max="50" step="1" value="8" inputmode="numeric" data-lki-min-words>
+						<input id="cd-lki-min-words" class="notranslate" translate="no" type="number" min="4" max="50" step="1" value="8" inputmode="numeric" data-lki-min-words>
 					</label>
 				</div>
-				<p id="cd-lki-response-source" class="cd-la-source" aria-live="polite" data-lki-response-source></p>
+				<p id="cd-lki-response-source" class="cd-la-source notranslate" translate="no" aria-live="polite" data-lki-response-source></p>
 			</div>
 		</section>
 
@@ -59,9 +61,9 @@ $cyberdat_lki = cyberdat_lki_config();
 			<progress class="cd-la-progress" max="100" value="0" aria-label="<?php esc_attr_e( 'Check progress', 'cyberdat' ); ?>" data-lki-progress hidden></progress>
 		</div>
 		<p class="cd-la-status" role="status" aria-live="polite" data-lki-status></p>
-		<div class="cd-la-callout cd-la-callout--error" role="alert" data-lki-error hidden></div>
+		<div class="cd-la-callout cd-la-callout--error notranslate" translate="no" role="alert" data-lki-error hidden></div>
 
-		<section class="cd-la-panel cd-la-results" aria-labelledby="cd-lki-step-results" data-lki-results hidden>
+		<section class="cd-la-panel cd-la-results notranslate" translate="no" aria-labelledby="cd-lki-step-results" data-lki-results hidden>
 			<h2 id="cd-lki-step-results" class="cd-la-step" tabindex="-1"><span aria-hidden="true">2</span> <?php esc_html_e( 'Review the results', 'cyberdat' ); ?></h2>
 			<p class="cd-lki-verdict" data-lki-verdict></p>
 			<p class="cd-la-summary" data-lki-summary></p>
@@ -104,9 +106,9 @@ $cyberdat_lki = cyberdat_lki_config();
 		<section aria-labelledby="cd-lki-privacy">
 			<h2 id="cd-lki-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'The text you enter is never sent anywhere by this tool: it does not call any AI model or external service, and the page’s Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'The tool does not store your prompt, response or results in cookies, local storage or the address bar; they are cleared when you close or reload the tab. Browser session restore, extensions, the clipboard and files you download are outside the tool’s control.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'This tool does not persist data: input, findings and settings are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Masking is best effort: recognized secrets and long values without spaces are shortened in results and exports, but secrets in an unusual form can remain in excerpts. Review exports before sharing.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Text is treated as data only: it is never executed and is displayed as plain text, never as HTML.', 'cyberdat' ); ?></li>
 			</ul>

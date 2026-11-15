@@ -48,7 +48,7 @@ ob_start();
 cyberdat_lki_render( 2 );
 $html = ob_get_clean();
 check( str_contains( $html, 'data-lki ' ) && str_contains( $html, 'leak-inspector/worker.js?ver=123&#038;ev=123' ), 'workspace renders with the same-origin worker URL' );
-foreach ( array( 'How it works', 'Privacy', 'Limitations', 'Sources', 'The text you enter is never sent anywhere', 'the background worker is restarted and the browser downloads its static script files again', 'Prompt audit', 'Leak check', 'A review aid, not a guarantee.', 'cannot prove that a prompt will not leak', 'Masking is best effort', 'not a verdict', 'does not generate extraction prompts', 'OWASP Top 10 for Large Language Model Applications', 'referenced here by name only', 'Minimum fragment length (words)' ) as $needle ) {
+foreach ( array( 'How it works', 'Privacy', 'Limitations', 'Sources', 'This tool does not transmit the text you enter', 'and this tool does not write it to persistent browser storage', 'This tool does not persist data', 'the background worker is restarted and the browser downloads its static script files again', 'Prompt audit', 'Leak check', 'A review aid, not a guarantee.', 'cannot prove that a prompt will not leak', 'Masking is best effort', 'not a verdict', 'does not generate extraction prompts', 'OWASP Top 10 for Large Language Model Applications', 'referenced here by name only', 'Minimum fragment length (words)' ) as $needle ) {
 	check( str_contains( $html, $needle ), "required text present: $needle" );
 }
 preg_match( '#id="cd-lki-limits".*?<li>(.*?)</li>#s', $html, $first );
@@ -59,6 +59,11 @@ check( ! preg_match( '/<(?:img|iframe|script|link)\b/i', $html ), 'no auto-loadi
 check( ! preg_match( '/<form\b|action=|method=/i', $html ), 'no form can submit input to WordPress' );
 check( ! preg_match( '/[\x{0400}-\x{04FF}]/u', $html ), 'interface text is English only' );
 check( ! preg_match( '/\b(?:is safe|are safe|no leak(?:age)? (?:found|detected)|protected against)\b/i', $html ), 'no safety verdict wording' );
+check( ! str_contains( $html, 'never sent anywhere' ), 'privacy wording is the wording of the installed pages, not the old one' );
+foreach ( array( 'data-lki-prompt>', 'data-lki-response>', 'data-lki-prompt-file>', 'data-lki-response-file>', 'data-lki-prompt-source>', 'data-lki-response-source>', 'data-lki-error hidden>', 'data-lki-results hidden>' ) as $needle ) {
+	preg_match( '#<[a-z]+ [^>]*' . preg_quote( $needle, '#' ) . '#', $html, $tag );
+	check( isset( $tag[0] ) && str_contains( $tag[0], 'translate="no"' ) && preg_match( '/class="[^"]*(?:"| )notranslate(?: |")/', $tag[0] ), 'translate="no" and notranslate on ' . rtrim( $needle, '>' ) );
+}
 check( 2 === substr_count( $html, 'spellcheck="false"' ) && 2 === substr_count( $html, 'type="radio" name="cd-lki-mode"' ) && str_contains( $html, 'role="status"' ) && str_contains( $html, 'role="alert"' ), 'two text boxes without spellcheck, labelled mode radios, live regions' );
 libxml_use_internal_errors( true );
 $doc = new DOMDocument();
