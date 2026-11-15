@@ -19,6 +19,7 @@ require_once __DIR__ . '/inc/tool-lotl-analyzer.php';
 require_once __DIR__ . '/inc/tool-mcp-checker.php';
 require_once __DIR__ . '/inc/tool-leak-inspector.php';
 require_once __DIR__ . '/inc/tool-ai-model-bom.php';
+require_once __DIR__ . '/inc/tool-atlas-mapper.php';
 
 require_once __DIR__ . '/inc/intelligence-charts.php';
 

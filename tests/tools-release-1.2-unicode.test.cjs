@@ -1,5 +1,5 @@
 /*
- * Release 1.2 tools (Leak Inspector, AI Model BOM): no regular-expression look-behind in app.js, worker.js and
+ * Release 1.2 tools (Leak Inspector, AI Model BOM, MITRE ATLAS mapper): no regular-expression look-behind in app.js, worker.js and
  * engine.js, and every regular expression with Unicode property classes is created with the u flag (checked at run
  * time over realistic inputs in English, German and Russian, NFC and NFD). Behaviour checks are DEPENDENT examples.
  *   node tests/tools-release-1.2-unicode.test.cjs
@@ -10,7 +10,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { SYNTH: S } = require('./lib/synthetic-secrets.cjs');
 const JS = path.join(__dirname, '../wp-content/themes/cyberdat/assets/js');
-const TOOLS = ['leak-inspector', 'ai-model-bom'];
+const TOOLS = ['leak-inspector', 'ai-model-bom', 'atlas-mapper'];
 let n = 0;
 const ok = l => { n++; console.log('PASS: ' + l); };
 
@@ -20,7 +20,7 @@ for (const t of TOOLS) {
 		assert.ok(!src.includes('(?<=') && !src.includes('(?<!'), t + '/' + f + ': look-behind');
 	}
 }
-ok('no look-behind in app.js, worker.js and engine.js of both tools');
+ok('no look-behind in app.js, worker.js and engine.js of all three tools');
 
 const NativeRegExp = RegExp;
 const noU = new Set();
@@ -40,6 +40,10 @@ for (const t of texts) { lki.audit(t); lki.leakCheck(t, t.slice(0, 60)); }
 const inv = JSON.parse(JSON.stringify(bom.EXAMPLE));
 inv.model.name = 'Классификатор обращӗний'; inv.owner.name = 'Jörg Müller'; inv.limitations = 'Nur deutschsprachige Rechnungen; не для медицинских решений.';
 bom.review(bom.build(inv).bomText);
+const atl = require(path.join(JS, 'atlas-mapper/engine.js'));
+for (const t of texts) { atl.mapFinding(t); }
+atl.mapFinding('Косвенная промпт-инъекция через документ; ДЖЕЙЛБРЕЙК; бэкдор с триггером; Jörg meldete eine indirekte Prompt-Injection.'.normalize('NFD'));
+atl.profile(Object.keys(atl.PROPERTIES)); atl.search('prompt injection');
 global.RegExp = NativeRegExp;
 assert.equal(noU.size, 0, [...noU].join(' | '));
 ok('every regular expression with \\p{...} created while analysing EN/DE/RU text (NFC and NFD) has the u flag (' + built + ' constructed at run time)');
