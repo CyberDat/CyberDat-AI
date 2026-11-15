@@ -1,4 +1,4 @@
-# Вычитка: тексты инструментов релиза 1.2 (integration/tools-release-1.2)
+# Вычитка: тексты трёх инструментов релиза 1.2 (integration/tools-release-1.2)
 
 Для владельца. Все тексты на страницах английские. Строки собраны автоматически из шаблонов, app.js и движков (правила), то есть это ровно то, что видит пользователь. Сначала — места, где нужно решение.
 
@@ -16,6 +16,12 @@
 | AI BOM | Limitations, первые пункты | “The document reflects only what you enter. The tool does not check whether entries are true, does not contact model registries and does not evaluate the model itself.” / “The tool helps document a model and its supply chain. It does not determine whether a system meets any law, regulation or standard.” | Первым пунктом, как в задании; вместо «compliant / соответствует EU AI Act, NIST, ISO». |
 | AI BOM | Результат без находок | “No known gaps matched. This does not mean the model or its supply chain is safe.” | Дословно из задания. |
 | AI BOM | Sources | “Format: the CycloneDX specification, version 1.7, by the OWASP CycloneDX project, published under the Apache License 2.0. It is referenced here by name only; no specification or schema text is copied, and the structure check is CyberDat’s own.” | Без ссылок; Apache-2.0 проверена по LICENSE и полю $comment схемы в теге 1.7.2. |
+| ATLAS Mapper | Плашка приватности | “Your text is analyzed in this browser tab. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any AI service — and this tool does not write it to persistent browser storage.” | Дословно как у Prompt Injection Detector. |
+| ATLAS Mapper | Предупреждение | “Techniques are proposed by CyberDat mapping rules and keywords. The result is a starting point for analysis, not a security assessment and not a complete threat model. Technique names, ids, tactics and mitigations are MITRE ATLAS data; why a technique is proposed is CyberDat mapping, not an assessment by MITRE.” | Граница «данные MITRE / CyberDat mapping», как требует задание. |
+| ATLAS Mapper | Limitations, первый пункт | “Mapping is done by rules and keywords. It misses what is described in other words or in another language, and it can propose a technique because a word appears in an unrelated sense.” | Первым пунктом, как в задании. |
+| ATLAS Mapper | Результат без совпадений | “No matching techniques found. This does not mean the system is not exposed.” | Дословно из задания. |
+| ATLAS Mapper | Data source and license | “Copyright 2021-2026 MITRE. Licensed under the Apache License, Version 2.0. The upstream license notice and the full license text are published with this tool as LICENSE-ATLAS.txt and LICENSE-APACHE-2.0.txt next to the ATLAS data file.” / “The rules that link system properties and words to techniques are CyberDat mapping. They are not part of MITRE ATLAS and are not endorsed by MITRE. MITRE ATLAS is a trademark of The MITRE Corporation; its use here does not imply endorsement.” | Атрибуция по Apache-2.0; отказ от связи с MITRE и упоминание товарного знака — моё решение, проверьте формулировку. Подробности — DATA-LICENSE-MITRE-ATLAS.md. |
+| ATLAS Mapper | Тексты техник и мер защиты | (данные MITRE ATLAS, английский) | Показываются как есть; CyberDat их не переводит и не вычитывает. |
 
 ## System Prompt & Agent Leak Inspector
 
@@ -363,3 +369,193 @@
 | AIBOM-DOC-006 | documentation | No vendor | For a fine-tuned or external model, the vendor is part of the supply chain. | Name the vendor or provider of the model. |
 | AIBOM-FMT-001 | format | No machine-learning model component | The document contains no component of type machine-learning-model, so model-level gaps cannot be checked. | Add the model as a component of type machine-learning-model. |
 | AIBOM-FMT-002 | format | Structure problems | Some fields do not follow the CycloneDX structure that this tool checks. They were read where possible. | Correct the fields listed under “Structure”. |
+
+## MITRE ATLAS Attack Vector Mapper
+
+### Строки шаблона (57)
+
+1. This tool needs JavaScript. Everything happens only in your browser, so nothing can run without it — and nothing is uploaded.
+2. Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.
+3. Local only.
+4. Your text is analyzed in this browser tab. This tool does not transmit the text you enter — not to CyberDat, not to analytics, not to any AI service — and this tool does not write it to persistent browser storage.
+5. Candidates for review, not an assessment.
+6. Techniques are proposed by CyberDat mapping rules and keywords. The result is a starting point for analysis, not a security assessment and not a complete threat model. Technique names, ids, tactics and mitigations are MITRE ATLAS data; why a technique is proposed is CyberDat mapping, not an assessment by MITRE.
+7. What do you want to do?
+8. System profile
+9. describe your AI system and see which techniques apply
+10. Finding mapper
+11. paste a description of a finding or incident and get candidate techniques
+12. Browse
+13. search tactics, techniques and mitigations by id or name
+14. Describe the system
+15. Select every property that applies
+16. Describe the finding
+17. Finding or incident description
+18. Plain text in English, German or Russian, up to 100,000 characters. Describe what happened in your own words. Remove secrets first; values that look like secrets are masked in the results and are never exported.
+19. Load example
+20. Clear
+21. Search MITRE ATLAS
+22. Id or name
+23. For example AML.T0051, “prompt injection” or “guardrails”. Leave empty to list the tactics.
+24. Show techniques
+25. Cancel
+26. Progress
+27. Review the candidates
+28. Your selection
+29. Nothing selected yet. Use “Add to selection” on a technique.
+30. Download Markdown
+31. Download JSON
+32. Clear selection
+33. The export contains the selected techniques, their ids, tactics and related mitigations, your notes (values that look like secrets are masked) and the ATLAS data version. It does not contain the pasted finding text.
+34. How it works
+35. System profile: each property you select is linked to MITRE ATLAS techniques by CyberDat mapping rules, each with a short reason. The techniques are grouped by ATLAS tactic and shown with the mitigations that ATLAS links to them.
+36. Finding mapper: CyberDat keyword rules in English, German and Russian look for words that describe a technique, such as “indirect prompt injection” or “pickle file”. Each candidate shows the words that led to it. No AI model is used.
+37. Browse: search the bundled ATLAS data by id or name and open tactics, techniques, sub-techniques and mitigations.
+38. Add techniques to your selection, write notes and download the selection as Markdown or JSON.
+39. Engine %1$s · CyberDat mapping %2$s · MITRE ATLAS %3$s
+40. Privacy
+41. This tool does not transmit the text you enter. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections. The ATLAS data is part of this page, so the MITRE website is not contacted.
+42. Input fields, notes and results are marked so that the browser’s built-in page translator does not translate them, because translating would send their text to a translation service.
+43. If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.
+44. This tool does not persist data: input, findings and settings are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.
+45. Values in the pasted text that look like secrets are shown only as their type and a masked fragment; masking is best effort.
+46. Limitations
+47. Mapping is done by rules and keywords. It misses what is described in other words or in another language, and it can propose a technique because a word appears in an unrelated sense.
+48. The result is a list of candidates for review. It is not a security assessment, not a complete threat model and not a statement about coverage of MITRE ATLAS.
+49. System-profile rules cover eight common properties. Techniques that depend on details not captured by these properties are not proposed.
+50. The ATLAS data is a snapshot of one release and is not updated automatically. Mitigations shown “via” a parent technique are linked by ATLAS to the parent, not to the sub-technique.
+51. Case studies, entities and software from ATLAS are not included in this version.
+52. Finding texts up to 100,000 characters. Processing stops after 60 seconds.
+53. Data source and license
+54. MITRE ATLAS™ (Adversarial Threat Landscape for AI Systems), release %1$s of %2$s, from the MITRE ATLAS data repository (mitre-atlas/atlas-data), commit %3$s.
+55. Copyright 2021-2026 MITRE. Licensed under the Apache License, Version 2.0. The upstream license notice and the full license text are published with this tool as LICENSE-ATLAS.txt and LICENSE-APACHE-2.0.txt next to the ATLAS data file.
+56. Modified by CyberDat: converted from YAML; only tactics, techniques, sub-techniques, mitigations and their relationships are included; links in descriptions are shown as plain text. No ids or relationships were added.
+57. The rules that link system properties and words to techniques are CyberDat mapping. They are not part of MITRE ATLAS and are not endorsed by MITRE. MITRE ATLAS is a trademark of The MITRE Corporation; its use here does not imply endorsement.
+
+### Сообщения интерфейса (app.js)
+
+- No matching techniques found. This does not mean the system is not exposed.
+- During testing, the support assistant summarized a customer email that contained hidden instructions for the model. Afterwards the agent used its email tool to send the conversation to an external address. The agent configuration file also held a database password.
+- Browser not supported: this tool needs Web Workers and Unicode regular expressions. Use a current version of Edge, Chrome, Firefox or Safari. Nothing was sent anywhere.
+- Worker must be same-origin.
+- The background worker stopped unexpectedly. Nothing was sent anywhere. Reload the page and try again.
+- Select at least one property of your system.
+- Paste or type a description of the finding first.
+- The text is longer than 100,000 characters.
+- Matching locally…
+- Processing took longer than 
+-  seconds and was stopped.
+- Cancelled. Nothing was processed further.
+- No mitigations are linked to this technique in ATLAS.
+- Remove from selection
+- Add to selection
+-  to selection
+- Sub-technique of 
+- Why proposed — CyberDat mapping:
+- Words in your text — CyberDat mapping 
+- Description and mitigations (MITRE ATLAS)
+- Related mitigations (MITRE ATLAS):
+- System profile (CyberDat mapping)
+- Finding mapper (CyberDat mapping)
+-  Data: MITRE ATLAS 
+- Values that look like secrets were found and masked; they were not used for matching: 
+- No ATLAS entries match “
+- Back to search results
+- Parent technique
+- Related mitigations
+- Techniques this mitigation is linked to
+- Your note on 
+-  from selection
+- The export failed.
+- Input changed. Run again to update the result.
+- Map the finding
+- Show techniques
+
+### CyberDat mapping: свойства системы → техники (причины показываются пользователю)
+
+| Свойство | Техника | Причина |
+|---|---|---|
+| Uses an external model through an API | AML.T0051.000 LLM Prompt Injection: Direct | Users write prompts that reach the model directly. |
+| Uses an external model through an API | AML.T0054 LLM Jailbreak | Users can try to talk the model out of its restrictions. |
+| Uses an external model through an API | AML.T0069.002 Discover LLM System Information: System Prompt | The system prompt sent with each request can be coaxed out. |
+| Uses an external model through an API | AML.T0055 Unsecured Credentials | API keys for the provider must be stored somewhere and can leak. |
+| Uses an external model through an API | AML.T0034 Cost Harvesting | Every request is billed, so abuse costs money. |
+| Uses an external model through an API | AML.T0077 LLM Response Rendering | Model output is rendered to users and can carry links or images. |
+| Runs its own or a fine-tuned model | AML.T0040 AI Model Inference API Access | The model is reachable through an inference API you operate. |
+| Runs its own or a fine-tuned model | AML.T0005.001 Replicate AI Model Behavior: Replicate Behavior from Model Outputs | Outputs can be collected to replicate the model. |
+| Runs its own or a fine-tuned model | AML.T0137 Training Data Information from AI Models | Outputs can reveal information about the training data. |
+| Runs its own or a fine-tuned model | AML.T0015 Evade AI Model | Inputs can be crafted so the model misclassifies them. |
+| Runs its own or a fine-tuned model | AML.T0035 AI Artifact Collection | Model files and training artifacts are assets that can be stolen. |
+| Runs its own or a fine-tuned model | AML.T0029 Denial of AI Service | Self-hosted inference capacity can be exhausted. |
+| Retrieval (RAG) over external or user-supplied documents | AML.T0051.001 LLM Prompt Injection: Indirect | Retrieved documents can contain instructions the model follows. |
+| Retrieval (RAG) over external or user-supplied documents | AML.T0070 RAG Poisoning | Documents in the index can be planted or changed. |
+| Retrieval (RAG) over external or user-supplied documents | AML.T0071 False RAG Entry Injection | False entries can be injected into what the retriever returns. |
+| Retrieval (RAG) over external or user-supplied documents | AML.T0066 Retrieval Content Crafting | Content can be written so that the retriever selects it. |
+| Retrieval (RAG) over external or user-supplied documents | AML.T0085.000 Data from AI Services: RAG Databases | The retrieval database can be used to collect data. |
+| Retrieval (RAG) over external or user-supplied documents | AML.T0082 RAG Credential Harvesting | Credentials stored in indexed documents can be retrieved. |
+| Agent that can call tools or take actions | AML.T0053 AI Agent Tool Invocation | The model decides which tools to call. |
+| Agent that can call tools or take actions | AML.T0086 Exfiltration via AI Agent Tool Invocation | Tool calls can send data out. |
+| Agent that can call tools or take actions | AML.T0101 Data Destruction via AI Agent Tool Invocation | Tool calls can delete or overwrite data. |
+| Agent that can call tools or take actions | AML.T0080 AI Agent Context Poisoning | The agent context can be poisoned to change later actions. |
+| Agent that can call tools or take actions | AML.T0110 AI Agent Tool Poisoning | Tool definitions, code or responses can be poisoned. |
+| Agent that can call tools or take actions | AML.T0083 Credentials from AI Agent Configuration | Agent configuration often holds credentials for tools. |
+| Agent that can call tools or take actions | AML.T0010.005 Supply Chain Compromise: AI Agent Tool | Third-party tools are part of the supply chain. |
+| Users can upload files that the AI processes | AML.T0051.001 LLM Prompt Injection: Indirect | Uploaded files can contain instructions the model follows. |
+| Users can upload files that the AI processes | AML.T0129 Triggers in Multimodal Inputs | Images, audio or documents can hide triggers. |
+| Users can upload files that the AI processes | AML.T0119 Exploit Automated Artifact Processing Pipeline | Automated processing of uploaded artifacts can be exploited. |
+| Users can upload files that the AI processes | AML.T0068 LLM Prompt Obfuscation | Instructions can be hidden or encoded inside files. |
+| Publicly accessible (no login, or open sign-up) | AML.T0049 Exploit Public-Facing Application | Anyone can reach the application. |
+| Publicly accessible (no login, or open sign-up) | AML.T0093 Prompt Infiltration via Public-Facing Application | Prompts can be planted through the public interface. |
+| Publicly accessible (no login, or open sign-up) | AML.T0034.000 Cost Harvesting: Excessive Queries | Automated excessive queries are easy without accounts. |
+| Publicly accessible (no login, or open sign-up) | AML.T0029 Denial of AI Service | The service can be flooded. |
+| Publicly accessible (no login, or open sign-up) | AML.T0005.001 Replicate AI Model Behavior: Replicate Behavior from Model Outputs | Public outputs can be harvested to replicate the model. |
+| Publicly accessible (no login, or open sign-up) | AML.T0132 Misconfigured or Publicly Exposed AI Services | Publicly exposed AI services may be misconfigured. |
+| Has a training or fine-tuning pipeline | AML.T0020 Training Data Poisoning | Training data can be poisoned. |
+| Has a training or fine-tuning pipeline | AML.T0018.000 Manipulate AI Model: Poison AI Model | The model itself can be poisoned during training. |
+| Has a training or fine-tuning pipeline | AML.T0043.004 Craft Adversarial Data: Insert Backdoor Trigger | A backdoor trigger can be inserted through training data. |
+| Has a training or fine-tuning pipeline | AML.T0010.002 Supply Chain Compromise: Data Repository | External data repositories feed the pipeline. |
+| Has a training or fine-tuning pipeline | AML.T0059 Erode Dataset Integrity | Dataset integrity can be eroded over time. |
+| Has a training or fine-tuning pipeline | AML.T0035 AI Artifact Collection | Training artifacts can be collected. |
+| Uses models or datasets from public registries | AML.T0010.003 Supply Chain Compromise: Model Repository | Model repositories are part of the supply chain. |
+| Uses models or datasets from public registries | AML.T0010.002 Supply Chain Compromise: Data Repository | Dataset repositories are part of the supply chain. |
+| Uses models or datasets from public registries | AML.T0011.000 User Execution: Unsafe AI Artifacts | Downloaded model files can be unsafe to load. |
+| Uses models or datasets from public registries | AML.T0018.002 Manipulate AI Model: Embed Malware | Model files can embed malware. |
+| Uses models or datasets from public registries | AML.T0115 Publish Poisoned AI Artifacts | Poisoned artifacts can be published to registries. |
+| Uses models or datasets from public registries | AML.T0111 AI Supply Chain Reputation Inflation | Download counts and stars can be inflated. |
+
+### CyberDat mapping: правила по словам (слова — в engine.js)
+
+| Правило | Техника |
+|---|---|
+| MAP-01 | AML.T0051.000 LLM Prompt Injection: Direct |
+| MAP-02 | AML.T0051.001 LLM Prompt Injection: Indirect |
+| MAP-03 | AML.T0054 LLM Jailbreak |
+| MAP-04 | AML.T0069.002 Discover LLM System Information: System Prompt |
+| MAP-05 | AML.T0077 LLM Response Rendering |
+| MAP-06 | AML.T0070 RAG Poisoning |
+| MAP-07 | AML.T0020 Training Data Poisoning |
+| MAP-08 | AML.T0043.004 Craft Adversarial Data: Insert Backdoor Trigger |
+| MAP-09 | AML.T0005.001 Replicate AI Model Behavior: Replicate Behavior from Model Outputs |
+| MAP-10 | AML.T0137.003 Training Data Information from AI Models: Extract Memorized Data |
+| MAP-11 | AML.T0137.000 Training Data Information from AI Models: Infer Membership |
+| MAP-12 | AML.T0015 Evade AI Model |
+| MAP-13 | AML.T0029 Denial of AI Service |
+| MAP-14 | AML.T0034 Cost Harvesting |
+| MAP-15 | AML.T0011.000 User Execution: Unsafe AI Artifacts |
+| MAP-16 | AML.T0010.003 Supply Chain Compromise: Model Repository |
+| MAP-17 | AML.T0010.001 Supply Chain Compromise: Software |
+| MAP-18 | AML.T0110.000 AI Agent Tool Poisoning: Definition and Instructions |
+| MAP-19 | AML.T0053 AI Agent Tool Invocation |
+| MAP-20 | AML.T0101 Data Destruction via AI Agent Tool Invocation |
+| MAP-21 | AML.T0086 Exfiltration via AI Agent Tool Invocation |
+| MAP-22 | AML.T0055 Unsecured Credentials |
+| MAP-23 | AML.T0083 Credentials from AI Agent Configuration |
+| MAP-24 | AML.T0088 Generate Deepfakes |
+| MAP-25 | AML.T0060 Publish Hallucinated Entities |
+| MAP-26 | AML.T0080.000 AI Agent Context Poisoning: Memory |
+| MAP-27 | AML.T0132 Misconfigured or Publicly Exposed AI Services |
+| MAP-28 | AML.T0068 LLM Prompt Obfuscation |
+| MAP-29 | AML.T0092 Manipulate User LLM Chat History |
+| MAP-30 | AML.T0085.000 Data from AI Services: RAG Databases |
+| MAP-31 | AML.T0137.002 Training Data Information from AI Models: Invert AI Model |
+| MAP-32 | AML.T0052.000 Phishing: Spearphishing via Social Engineering LLM |

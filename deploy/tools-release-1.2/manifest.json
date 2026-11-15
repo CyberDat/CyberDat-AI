@@ -5,29 +5,38 @@
   "parent_theme_commit": "aae21c0c027b433e3707dd36e9aafbde05e52599",
   "release1_commit": "24a333ddf2f91499b0b693f3810181990f8ec8e4",
   "base_commit": "1b0651ccec38022fe4a23ac128a61a106e442469",
-  "theme_commit": "7520e325c9ae71148e6a465d0f252cacde66eb03",
-  "note": "Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector) and 6 (AI Model Bill of Materials) over tools-la-unicode-marks/1: new tool files, two functions.php includes, two catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
+  "theme_commit": "1fb9e4bfac9605343332702e5537917170d38722",
+  "note": "Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector), 6 (AI Model Bill of Materials) and 7 (MITRE ATLAS Attack Vector Mapper, with the MITRE ATLAS 2026.10 data snapshot and its Apache-2.0 license files) over tools-la-unicode-marks/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 125,
-    "target": 137,
-    "added": 12,
+    "target": 146,
+    "added": 21,
     "modified": 2,
     "removed": 0
   },
   "delta": {
     "added": [
       "assets/css/ai-model-bom.css",
+      "assets/css/atlas-mapper.css",
       "assets/css/leak-inspector.css",
       "assets/js/ai-model-bom/app.js",
       "assets/js/ai-model-bom/engine.js",
       "assets/js/ai-model-bom/worker.js",
+      "assets/js/atlas-mapper/LICENSE-APACHE-2.0.txt",
+      "assets/js/atlas-mapper/LICENSE-ATLAS.txt",
+      "assets/js/atlas-mapper/app.js",
+      "assets/js/atlas-mapper/atlas-data.js",
+      "assets/js/atlas-mapper/engine.js",
+      "assets/js/atlas-mapper/worker.js",
       "assets/js/leak-inspector/app.js",
       "assets/js/leak-inspector/engine.js",
       "assets/js/leak-inspector/worker.js",
       "inc/tool-ai-model-bom.php",
+      "inc/tool-atlas-mapper.php",
       "inc/tool-leak-inspector.php",
       "template-parts/tools/agent-leak-inspector.php",
-      "template-parts/tools/ai-model-bom.php"
+      "template-parts/tools/ai-model-bom.php",
+      "template-parts/tools/mitre-atlas-mapper.php"
     ],
     "modified": [
       "functions.php",
@@ -40,6 +49,11 @@
       "status": "added",
       "bytes": 4964,
       "sha256": "ef20c62856d9498f6e7ef29509dd51c029a41ba4b8af17b9cde3433cc4caebe3"
+    },
+    "assets/css/atlas-mapper.css": {
+      "status": "added",
+      "bytes": 4145,
+      "sha256": "ecd102c2893775ab83bd2fc73cc28bac7e24eb536059185e9033fe6e1c39c5e1"
     },
     "assets/css/leak-inspector.css": {
       "status": "added",
@@ -61,6 +75,36 @@
       "bytes": 3429,
       "sha256": "368df674714d8948f163d66a8a4be98afb19aefab5b12aac3af96f9fa82af04b"
     },
+    "assets/js/atlas-mapper/LICENSE-APACHE-2.0.txt": {
+      "status": "added",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "assets/js/atlas-mapper/LICENSE-ATLAS.txt": {
+      "status": "added",
+      "bytes": 551,
+      "sha256": "fa6c92ab3dc75d41413884e8b38cc54cd4e72f4c8f68fc7e77824e48e3047d40"
+    },
+    "assets/js/atlas-mapper/app.js": {
+      "status": "added",
+      "bytes": 20432,
+      "sha256": "a7dae439b5decfe577141f90e8f24be727fea7af3b1c1056e25abbdfb9c81ca4"
+    },
+    "assets/js/atlas-mapper/atlas-data.js": {
+      "status": "added",
+      "bytes": 375820,
+      "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
+    },
+    "assets/js/atlas-mapper/engine.js": {
+      "status": "added",
+      "bytes": 30704,
+      "sha256": "f72aa632e7268611e2fad150834a872ab62451846bb8ff932f559f3f7c4e53b2"
+    },
+    "assets/js/atlas-mapper/worker.js": {
+      "status": "added",
+      "bytes": 2524,
+      "sha256": "e2080a4bd728b51174de5b9298b42507179ac6b60529974fac28afe90d7ad9bd"
+    },
     "assets/js/leak-inspector/app.js": {
       "status": "added",
       "bytes": 18118,
@@ -68,8 +112,8 @@
     },
     "assets/js/leak-inspector/engine.js": {
       "status": "added",
-      "bytes": 42002,
-      "sha256": "bcccef9c6ac67ab2e83bd48e693dc6110ed026e3bc108f39d9129adcb06f7b3e"
+      "bytes": 42270,
+      "sha256": "088959b273817a1a4ed3ebdfe36c072e8176de7d3a492bfa656f4947e9e9ebee"
     },
     "assets/js/leak-inspector/worker.js": {
       "status": "added",
@@ -78,8 +122,8 @@
     },
     "functions.php": {
       "status": "modified",
-      "bytes": 1023,
-      "sha256": "d343ef59b847cb1bd237b78c0e65999bf28f7645ebf0e1a93092b7d8904ffedc",
+      "bytes": 1076,
+      "sha256": "9d6acf7efef6f5dd4864f1f43fd986faa3dc90bf77359b144226910cad96011d",
       "base_sha256": "2dd42d0f92c759e1c1254a1a753e5f234bf3331e7130492433940b9fe15ea102"
     },
     "inc/tool-ai-model-bom.php": {
@@ -87,15 +131,20 @@
       "bytes": 2706,
       "sha256": "377fefd8c4542e12dd26573ad6e443285ce20f08f31c980d1f8dcab5101c61f6"
     },
+    "inc/tool-atlas-mapper.php": {
+      "status": "added",
+      "bytes": 3977,
+      "sha256": "0b98ec868304f28e326d39d30e72849bbdce722213ffa6c3beb674b44c46a974"
+    },
     "inc/tool-leak-inspector.php": {
       "status": "added",
       "bytes": 2674,
-      "sha256": "114beb88faa925a96b0980c3420821e0975a9214aa480d3fea7076d96434e175"
+      "sha256": "7a0b6fce1548be1d9ca62a28c3e776438021a0d374ba6678dcde4f2a2a7af052"
     },
     "inc/tools-catalog.json": {
       "status": "modified",
-      "bytes": 4881,
-      "sha256": "554be9e534fdb2ef80e7b3eff1924093d6d8eabe26b9590704bec6a805b71e66",
+      "bytes": 5026,
+      "sha256": "a3407110903881c034eb28cbdb90d96b482a922103c48498a7f58b5353771e30",
       "base_sha256": "ff1ff6bd474a688de87a6be02b6cf06ddbea13f218467ec7de5013dd82f0a197"
     },
     "template-parts/tools/agent-leak-inspector.php": {
@@ -107,14 +156,26 @@
       "status": "added",
       "bytes": 26075,
       "sha256": "9443c422f00be781fd294b8cfaa87baaeb37f43ae25b615eeb6e8e91958384f9"
+    },
+    "template-parts/tools/mitre-atlas-mapper.php": {
+      "status": "added",
+      "bytes": 14457,
+      "sha256": "b62148ee9f45fec0e41da9225ca517b76618dde734fa42c65bb32ee249a7751b"
     }
   },
   "cumulative_vs_release1": [
     "assets/css/ai-model-bom.css",
+    "assets/css/atlas-mapper.css",
     "assets/css/leak-inspector.css",
     "assets/js/ai-model-bom/app.js",
     "assets/js/ai-model-bom/engine.js",
     "assets/js/ai-model-bom/worker.js",
+    "assets/js/atlas-mapper/LICENSE-APACHE-2.0.txt",
+    "assets/js/atlas-mapper/LICENSE-ATLAS.txt",
+    "assets/js/atlas-mapper/app.js",
+    "assets/js/atlas-mapper/atlas-data.js",
+    "assets/js/atlas-mapper/engine.js",
+    "assets/js/atlas-mapper/worker.js",
     "assets/js/leak-inspector/app.js",
     "assets/js/leak-inspector/engine.js",
     "assets/js/leak-inspector/worker.js",
@@ -124,12 +185,14 @@
     "assets/js/prompt-injection-detector/app.js",
     "functions.php",
     "inc/tool-ai-model-bom.php",
+    "inc/tool-atlas-mapper.php",
     "inc/tool-leak-inspector.php",
     "inc/tool-log-anonymizer.php",
     "inc/tools-catalog.json",
     "template-parts/tools/agent-leak-inspector.php",
     "template-parts/tools/ai-model-bom.php",
-    "template-parts/tools/mcp-security-checker.php"
+    "template-parts/tools/mcp-security-checker.php",
+    "template-parts/tools/mitre-atlas-mapper.php"
   ],
   "base": {
     "404.php": {
@@ -814,6 +877,11 @@
       "mode": "0644",
       "sha256": "ef20c62856d9498f6e7ef29509dd51c029a41ba4b8af17b9cde3433cc4caebe3"
     },
+    "assets/css/atlas-mapper.css": {
+      "bytes": 4145,
+      "mode": "0644",
+      "sha256": "ecd102c2893775ab83bd2fc73cc28bac7e24eb536059185e9033fe6e1c39c5e1"
+    },
     "assets/css/editor.css": {
       "bytes": 946,
       "mode": "0644",
@@ -1069,6 +1137,36 @@
       "mode": "0644",
       "sha256": "368df674714d8948f163d66a8a4be98afb19aefab5b12aac3af96f9fa82af04b"
     },
+    "assets/js/atlas-mapper/LICENSE-APACHE-2.0.txt": {
+      "bytes": 11358,
+      "mode": "0644",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "assets/js/atlas-mapper/LICENSE-ATLAS.txt": {
+      "bytes": 551,
+      "mode": "0644",
+      "sha256": "fa6c92ab3dc75d41413884e8b38cc54cd4e72f4c8f68fc7e77824e48e3047d40"
+    },
+    "assets/js/atlas-mapper/app.js": {
+      "bytes": 20432,
+      "mode": "0644",
+      "sha256": "a7dae439b5decfe577141f90e8f24be727fea7af3b1c1056e25abbdfb9c81ca4"
+    },
+    "assets/js/atlas-mapper/atlas-data.js": {
+      "bytes": 375820,
+      "mode": "0644",
+      "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
+    },
+    "assets/js/atlas-mapper/engine.js": {
+      "bytes": 30704,
+      "mode": "0644",
+      "sha256": "f72aa632e7268611e2fad150834a872ab62451846bb8ff932f559f3f7c4e53b2"
+    },
+    "assets/js/atlas-mapper/worker.js": {
+      "bytes": 2524,
+      "mode": "0644",
+      "sha256": "e2080a4bd728b51174de5b9298b42507179ac6b60529974fac28afe90d7ad9bd"
+    },
     "assets/js/intelligence-charts.js": {
       "bytes": 4229,
       "mode": "0644",
@@ -1080,9 +1178,9 @@
       "sha256": "1eaa9f84d43ca26ae801e35f5c1af9de501404c6c487702c70518d4bb5a9f552"
     },
     "assets/js/leak-inspector/engine.js": {
-      "bytes": 42002,
+      "bytes": 42270,
       "mode": "0644",
-      "sha256": "bcccef9c6ac67ab2e83bd48e693dc6110ed026e3bc108f39d9129adcb06f7b3e"
+      "sha256": "088959b273817a1a4ed3ebdfe36c072e8176de7d3a492bfa656f4947e9e9ebee"
     },
     "assets/js/leak-inspector/worker.js": {
       "bytes": 3071,
@@ -1215,9 +1313,9 @@
       "sha256": "84fec57a3dc1219dee24d7328ae52250a4540c49a71df1368d8c132657e91e84"
     },
     "functions.php": {
-      "bytes": 1023,
+      "bytes": 1076,
       "mode": "0644",
-      "sha256": "d343ef59b847cb1bd237b78c0e65999bf28f7645ebf0e1a93092b7d8904ffedc"
+      "sha256": "9d6acf7efef6f5dd4864f1f43fd986faa3dc90bf77359b144226910cad96011d"
     },
     "header.php": {
       "bytes": 1570,
@@ -1284,10 +1382,15 @@
       "mode": "0644",
       "sha256": "377fefd8c4542e12dd26573ad6e443285ce20f08f31c980d1f8dcab5101c61f6"
     },
+    "inc/tool-atlas-mapper.php": {
+      "bytes": 3977,
+      "mode": "0644",
+      "sha256": "0b98ec868304f28e326d39d30e72849bbdce722213ffa6c3beb674b44c46a974"
+    },
     "inc/tool-leak-inspector.php": {
       "bytes": 2674,
       "mode": "0644",
-      "sha256": "114beb88faa925a96b0980c3420821e0975a9214aa480d3fea7076d96434e175"
+      "sha256": "7a0b6fce1548be1d9ca62a28c3e776438021a0d374ba6678dcde4f2a2a7af052"
     },
     "inc/tool-log-anonymizer.php": {
       "bytes": 5244,
@@ -1315,9 +1418,9 @@
       "sha256": "c32a57b3db014260f316067411bbd6493df874b367f65da70c87f3a6d31b10c5"
     },
     "inc/tools-catalog.json": {
-      "bytes": 4881,
+      "bytes": 5026,
       "mode": "0644",
-      "sha256": "554be9e534fdb2ef80e7b3eff1924093d6d8eabe26b9590704bec6a805b71e66"
+      "sha256": "a3407110903881c034eb28cbdb90d96b482a922103c48498a7f58b5353771e30"
     },
     "inc/tools.php": {
       "bytes": 12478,
@@ -1433,6 +1536,11 @@
       "bytes": 17214,
       "mode": "0644",
       "sha256": "00a7ab8a917e8ee9563f20f8839b784031b0eacca33bbd4e717dbe2c4a68773e"
+    },
+    "template-parts/tools/mitre-atlas-mapper.php": {
+      "bytes": 14457,
+      "mode": "0644",
+      "sha256": "b62148ee9f45fec0e41da9225ca517b76618dde734fa42c65bb32ee249a7751b"
     },
     "template-parts/tools/prompt-injection-detector.php": {
       "bytes": 16595,

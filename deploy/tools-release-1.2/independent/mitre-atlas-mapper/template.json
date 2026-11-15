@@ -1,0 +1,11 @@
+{
+  "tool": "mitre-atlas-mapper",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "description": "FORMAT EXAMPLE ONLY. cases[]: mode profile (properties = keys from README) or finding (text). expect = ATLAS technique ids that must be proposed; allow = ids that may also be proposed without counting as extra; benign texts use expect []. Ids must exist in MITRE ATLAS 2026.10. Describe incidents from the defender side; no attack instructions, payloads or real data. Secrets via {{SYNTH:NAME}} from tests/lib/synthetic-secrets.cjs.",
+  "cases": [
+    { "id": "p-1", "mode": "profile", "properties": ["file-upload"], "expect": ["AML.T0051.001"] },
+    { "id": "f-1", "mode": "finding", "text": "A PDF uploaded by a customer contained hidden instructions for the model, and the assistant followed them.", "expect": ["AML.T0051.001"], "allow": ["AML.T0068"] },
+    { "id": "b-1", "mode": "finding", "text": "The team reviewed the quarterly budget and approved the hiring plan.", "expect": [] }
+  ]
+}

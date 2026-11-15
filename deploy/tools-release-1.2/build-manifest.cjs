@@ -44,7 +44,7 @@ const manifest = {
 	release1_commit: RELEASE1_COMMIT,
 	base_commit: BASE_COMMIT,
 	theme_commit: commit,
-	note: 'Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector) and 6 (AI Model Bill of Materials) over tools-la-unicode-marks/1: new tool files, two functions.php includes, two catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
+	note: 'Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector), 6 (AI Model Bill of Materials) and 7 (MITRE ATLAS Attack Vector Mapper, with the MITRE ATLAS 2026.10 data snapshot and its Apache-2.0 license files) over tools-la-unicode-marks/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
 	delta_files: Object.fromEntries(added.concat(modified).sort().map(k => [k, Object.assign({ status: base[k] ? 'modified' : 'added', bytes: target[k].bytes, sha256: target[k].sha256 }, base[k] ? { base_sha256: base[k].sha256 } : {})])),

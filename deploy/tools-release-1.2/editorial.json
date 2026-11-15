@@ -1,5 +1,5 @@
 {
-  "_note": "Proposed editorial fields for both release 1.2 tool pages (meta _cyberdat_tool), same field names as deploy/tools-release-1/editorial-integration.json. English only. Owner review required before reviewed=true. Privacy wording follows the installed pages (“This tool does not transmit the text you enter”). Article and Rank Math metadata are prepared by Codex/SEO, not here. No result is described as safe, protected or compliant.",
+  "_note": "Proposed editorial fields for all three release 1.2 tool pages (meta _cyberdat_tool), same field names as deploy/tools-release-1/editorial-integration.json. English only. Owner review required before reviewed=true. Privacy wording follows the installed pages (“This tool does not transmit the text you enter”). Article and Rank Math metadata are prepared by Codex/SEO, not here. No result is described as safe, protected or compliant.",
   "agent-leak-inspector": {
     "title": "System Prompt & Agent Leak Inspector",
     "summary": "Review system prompts and agent descriptions for secrets, internal details and weak protections, and compare a response or transcript with your prompt to find copied, encoded or closely paraphrased fragments. Runs locally in your browser; it does not prove that a prompt cannot be extracted.",
@@ -49,6 +49,28 @@
       {
         "question": "Which format is used?",
         "answer": "CycloneDX 1.7 JSON with a machine-learning-model component and a model card, plus Markdown. SPDX is not supported in this version."
+      }
+    ]
+  },
+  "mitre-atlas-mapper": {
+    "title": "MITRE ATLAS Attack Vector Mapper",
+    "summary": "Find candidate MITRE ATLAS techniques and related mitigations for your AI system or for a finding, and browse ATLAS tactics, techniques and mitigations. Runs locally in your browser; the result is a starting point for review, not a security assessment.",
+    "how_it_works": "<p>MITRE ATLAS (Adversarial Threat Landscape for AI Systems) is a public knowledge base of adversary tactics and techniques against AI systems, with mitigations. This tool helps defenders find the parts of ATLAS that are relevant to their system or to something that happened.</p><p><strong>System profile</strong>: select properties such as an agent with tools, retrieval over external documents or a public interface; CyberDat mapping rules propose techniques with a reason for each. <strong>Finding mapper</strong>: paste a description of a finding or incident; CyberDat keyword rules in English, German and Russian propose candidate techniques and show the words that led to them. <strong>Browse</strong>: search ATLAS by id or name. Technique names, ids, tactics and mitigations are MITRE ATLAS data; why a technique is proposed is CyberDat mapping, not an assessment by MITRE.</p>",
+    "documentation": "<h3>Input</h3><p>System profile: eight properties. Finding mapper: plain text up to 100,000 characters. Values that look like secrets are masked and are not used for matching.</p><h3>Output</h3><p>Candidate techniques grouped by ATLAS tactic, each with its parent technique, ATLAS maturity, description and the mitigations that ATLAS links to it. Add techniques to a selection, write notes and download it as Markdown or JSON with the ATLAS data version. The pasted text is never exported.</p><h3>Data</h3><p>MITRE ATLAS release 2026.10 (2026-10-28), Copyright MITRE, Apache License 2.0, converted from the official YAML by CyberDat. Case studies, entities and software are not included.</p><h3>Limits</h3><p>Mapping is done by rules and keywords; it misses what is described in other words or in another language and can propose a technique because a word appears in an unrelated sense. No AI model is used.</p>",
+    "examples": "<h3>Threat modelling a support assistant</h3><p>Select an external model API, retrieval over a knowledge base and public access, and review the proposed techniques with their mitigations.</p><h3>Classifying an incident</h3><p>Paste the incident summary; candidates such as indirect prompt injection or exfiltration via an agent tool are shown with the words that matched.</p><pre>“… the agent used its email tool to send the conversation to an external address …”\n→ AML.T0086 Exfiltration via AI Agent Tool Invocation (CyberDat mapping MAP-21: agent, send, external)</pre>",
+    "faq": "<h3>Is my text sent to CyberDat, MITRE or an AI model?</h3><p>No. This tool does not transmit the text you enter. The ATLAS data is part of the page and matching runs in your browser.</p><h3>Does no match mean my system is safe?</h3><p>No. No matching techniques found does not mean the system is not exposed. The mapping only recognizes known wording.</p><h3>Is this an official MITRE tool?</h3><p>No. The data comes from MITRE ATLAS under the Apache License 2.0; the mapping rules are CyberDat’s and are not endorsed by MITRE.</p>",
+    "questions": [
+      {
+        "question": "Is my text sent to CyberDat, MITRE or an AI model?",
+        "answer": "No. This tool does not transmit the text you enter. The ATLAS data is part of the page and matching runs in your browser."
+      },
+      {
+        "question": "Does no match mean my system is safe?",
+        "answer": "No. No matching techniques found does not mean the system is not exposed. The mapping only recognizes known wording."
+      },
+      {
+        "question": "Is this an official MITRE tool?",
+        "answer": "No. The data comes from MITRE ATLAS under the Apache License 2.0; the mapping rules are CyberDat’s and are not endorsed by MITRE."
       }
     ]
   }
