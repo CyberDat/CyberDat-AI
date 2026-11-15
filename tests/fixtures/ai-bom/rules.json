@@ -1,0 +1,178 @@
+{
+  "_note": "Frozen on 2026-11-14 BEFORE any rule code was written. Ids, groups, severities and trigger meaning. Explanations and recommendations are written in the engine. Severity: high only for secrets.",
+  "rules": [
+    {
+      "id": "AIBOM-LIC-001",
+      "group": "license",
+      "severity": "medium",
+      "meaning": "Model license missing or unknown (empty, unknown/unbekannt/неизвестно, n/a, NOASSERTION, TBD)."
+    },
+    {
+      "id": "AIBOM-LIC-002",
+      "group": "license",
+      "severity": "medium",
+      "meaning": "Dataset license missing or unknown (same words)."
+    },
+    {
+      "id": "AIBOM-VER-001",
+      "group": "version",
+      "severity": "medium",
+      "meaning": "Model version missing."
+    },
+    {
+      "id": "AIBOM-VER-002",
+      "group": "version",
+      "severity": "medium",
+      "meaning": "Model version floating: latest/main/master/head/dev/nightly/stable/current (also neueste/aktuell/последняя), wildcards, ranges (^ ~ > < || x *), versionRange."
+    },
+    {
+      "id": "AIBOM-VER-003",
+      "group": "version",
+      "severity": "low",
+      "meaning": "Base model named but its version missing or floating."
+    },
+    {
+      "id": "AIBOM-WGT-001",
+      "group": "weights",
+      "severity": "medium",
+      "meaning": "Weights file without a hash (or with a value that is not a hex digest)."
+    },
+    {
+      "id": "AIBOM-WGT-002",
+      "group": "weights",
+      "severity": "medium",
+      "meaning": "Pickle-based weights format (.pkl .pickle .pt .pth .bin .ckpt .joblib, or format pickle/pytorch/checkpoint/joblib): loading can execute code; safetensors is safer."
+    },
+    {
+      "id": "AIBOM-WGT-003",
+      "group": "weights",
+      "severity": "low",
+      "meaning": "Weights hash uses MD5 or SHA-1."
+    },
+    {
+      "id": "AIBOM-WGT-004",
+      "group": "weights",
+      "severity": "low",
+      "meaning": "Weights file without a source."
+    },
+    {
+      "id": "AIBOM-WGT-005",
+      "group": "weights",
+      "severity": "low",
+      "meaning": "Own or fine-tuned model lists no weights files."
+    },
+    {
+      "id": "AIBOM-PRV-001",
+      "group": "provenance",
+      "severity": "medium",
+      "meaning": "Fine-tuned model without a base model."
+    },
+    {
+      "id": "AIBOM-DAT-001",
+      "group": "data",
+      "severity": "medium",
+      "meaning": "Dataset without a source."
+    },
+    {
+      "id": "AIBOM-DAT-002",
+      "group": "data",
+      "severity": "medium",
+      "meaning": "Dataset personal-data status unknown or not stated."
+    },
+    {
+      "id": "AIBOM-DAT-003",
+      "group": "data",
+      "severity": "low",
+      "meaning": "Own or fine-tuned model lists no datasets."
+    },
+    {
+      "id": "AIBOM-DEP-001",
+      "group": "dependencies",
+      "severity": "medium",
+      "meaning": "Framework or library without a version."
+    },
+    {
+      "id": "AIBOM-DEP-002",
+      "group": "dependencies",
+      "severity": "low",
+      "meaning": "Framework or library with a floating version."
+    },
+    {
+      "id": "AIBOM-NET-001",
+      "group": "endpoints",
+      "severity": "medium",
+      "meaning": "External address uses http:// (localhost, 127.0.0.1 and ::1 are exempt)."
+    },
+    {
+      "id": "AIBOM-SEC-001",
+      "group": "secrets",
+      "severity": "high",
+      "meaning": "Credentials in an address: user:password@ or a secret-named query parameter (key, token, secret, password, sig ...)."
+    },
+    {
+      "id": "AIBOM-SEC-002",
+      "group": "secrets",
+      "severity": "high",
+      "meaning": "Value in a known secret format in any field (cloud, Git hosting, AI provider, Hugging Face, chat tokens, JWT, private key)."
+    },
+    {
+      "id": "AIBOM-SEC-003",
+      "group": "secrets",
+      "severity": "medium",
+      "meaning": "Unrecognized long random-looking value (32+ characters, letters and digits mixed, not a hex digest, not a URL)."
+    },
+    {
+      "id": "AIBOM-DOC-001",
+      "group": "documentation",
+      "severity": "medium",
+      "meaning": "No intended purpose."
+    },
+    {
+      "id": "AIBOM-DOC-002",
+      "group": "documentation",
+      "severity": "medium",
+      "meaning": "No limitations."
+    },
+    {
+      "id": "AIBOM-DOC-003",
+      "group": "documentation",
+      "severity": "medium",
+      "meaning": "No quality or safety evaluation."
+    },
+    {
+      "id": "AIBOM-DOC-004",
+      "group": "documentation",
+      "severity": "medium",
+      "meaning": "No responsible person/team or no contact."
+    },
+    {
+      "id": "AIBOM-DOC-005",
+      "group": "documentation",
+      "severity": "low",
+      "meaning": "Model type (own, fine-tuned, external API) not stated."
+    },
+    {
+      "id": "AIBOM-DOC-006",
+      "group": "documentation",
+      "severity": "low",
+      "meaning": "Fine-tuned or external-API model without a vendor/supplier."
+    },
+    {
+      "id": "AIBOM-FMT-001",
+      "group": "format",
+      "severity": "medium",
+      "meaning": "Review: no component of type machine-learning-model."
+    },
+    {
+      "id": "AIBOM-FMT-002",
+      "group": "format",
+      "severity": "low",
+      "meaning": "Review: structure problems in the checked subset (unknown or misspelled keys found only after key normalization, duplicate keys, wrong types, invalid enum/hash/serial values, dangling refs)."
+    }
+  ],
+  "review_mapping": "Review reads: model = components (also nested) with type machine-learning-model; name, version/versionRange, supplier.name (vendor), licenses (id, name or expression), pedigree.ancestors[0] (base model), property cyberdat:aibom:model-type, modelCard.considerations.useCases (purpose) and technicalLimitations (limitations), modelCard.quantitativeAnalysis.performanceMetrics or property cyberdat:aibom:safety-evaluation (evaluation). Weights = type file components (hashes, property cyberdat:aibom:weights-format, file extension of the name, externalReferences distribution url). Datasets = type data components (licenses, data[].contents.url or externalReferences, property cyberdat:aibom:personal-data or data[].sensitiveData non-empty = yes). Dependencies = type framework/library. External APIs = services[].endpoints. Responsible = metadata.supplier/manufacturer/authors, metadata.component supplier/manufacturer/authors, or model supplier/manufacturer/authors with a name and a contact (email or url). Keys are compared after normalization (case, _, -, camelCase).",
+  "error_codes": {
+    "PARSE": "Review input is not valid JSON (strict; line and column reported).",
+    "NOT_CYCLONEDX": "JSON is not a CycloneDX BOM object (bomFormat not CycloneDX)."
+  }
+}

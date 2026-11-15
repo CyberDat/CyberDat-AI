@@ -1,0 +1,1169 @@
+{
+  "_note": "Held-out set, frozen together with the corpus BEFORE any rule code; rules must not be tuned to it. Same placeholder conventions. NOT INDEPENDENT: same author.",
+  "frozen": "2026-11-14",
+  "cases": [
+    {
+      "id": "h-speech-safety-missing",
+      "lang": "de",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Sprachnotizen-Transkription",
+          "version": "0.9.3",
+          "vendor": "Hörwerk AG",
+          "license": "CC-BY-NC-4.0",
+          "type": "fine-tuned",
+          "baseModel": {
+            "name": "whisper-small",
+            "version": "20231117"
+          }
+        },
+        "weights": [
+          {
+            "file": "transkription.safetensors",
+            "format": "safetensors",
+            "hashAlg": "SHA-384",
+            "hash": "{{SHA384:speech}}",
+            "source": "https://hoerwerk.example/modelle/0.9.3"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Diktate Ärztekammer (anonymisiert)",
+            "role": "fine-tuning",
+            "source": "https://hoerwerk.example/daten/diktate",
+            "license": "proprietär, interne Nutzung",
+            "personalData": "yes"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "PyTorch",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "torchaudio",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "librosa",
+            "version": "0.10.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Tablet-App, Verarbeitung auf dem Gerät",
+          "apis": []
+        },
+        "purpose": "Wandelt kurze Sprachnotizen von Pflegekräften in Text um.",
+        "limitations": "Fachbegriffe und starke Dialekte werden häufig falsch erkannt.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "WER",
+              "value": "11.2%",
+              "slice": "Testsatz Süd"
+            }
+          ],
+          "safety": ""
+        },
+        "owner": {
+          "name": "Ömer Şahin",
+          "organization": "Hörwerk AG",
+          "contact": "oemer.sahin@hoerwerk.example"
+        }
+      },
+      "expect": [],
+      "note": "metrics present, safety empty: evaluation exists"
+    },
+    {
+      "id": "h-rec-complete",
+      "lang": "ru",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Рекомендации товаров",
+          "version": "5.1.0",
+          "vendor": "",
+          "license": "MIT",
+          "type": "own",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [
+          {
+            "file": "recs-5.1.0.onnx",
+            "format": "ONNX",
+            "hashAlg": "SHA-256",
+            "hash": "{{SHA256:recs}}",
+            "source": "https://ml.example.ru/recs/5.1.0.onnx"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Журнал покупок 2025",
+            "role": "training",
+            "source": "внутреннее хранилище, таблица orders_2025",
+            "license": "внутренние данные компании",
+            "personalData": "yes"
+          },
+          {
+            "name": "Каталог товаров",
+            "role": "training",
+            "source": "https://ml.example.ru/catalog",
+            "license": "CC0-1.0",
+            "personalData": "no"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "LightGBM",
+            "version": "4.5.0"
+          },
+          {
+            "kind": "library",
+            "name": "onnxruntime",
+            "version": "1.20.1"
+          }
+        ],
+        "deployment": {
+          "environment": "Kubernetes, дата-центр Санкт-Петербург",
+          "apis": [
+            {
+              "name": "Сервис каталога",
+              "url": "https://catalog.example.ru/api"
+            }
+          ]
+        },
+        "purpose": "Подбирает похожие товары на странице карточки товара.",
+        "limitations": "Новые товары без истории покупок не рекомендуются.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "NDCG@10",
+              "value": "0.41",
+              "slice": "декабрь 2025"
+            }
+          ],
+          "safety": "Проверено, что рекомендации не раскрывают покупки других клиентов."
+        },
+        "owner": {
+          "name": "Команда рекомендаций",
+          "organization": "ООО «Пример»",
+          "contact": "recs@example.ru"
+        }
+      },
+      "expect": [],
+      "note": "own model without vendor, dataset source is text"
+    },
+    {
+      "id": "h-llm-complete",
+      "lang": "en",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Contract Summary Assistant",
+          "version": "2026-09-15",
+          "vendor": "Example Cloud AI",
+          "license": "Commercial API terms",
+          "type": "external-api",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [],
+        "datasets": [],
+        "dependencies": [
+          {
+            "kind": "library",
+            "name": "example-cloud-sdk",
+            "version": "3.2.0"
+          },
+          {
+            "kind": "library",
+            "name": "pydantic",
+            "version": "2.9.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Legal team web app, AWS eu-central-1",
+          "apis": [
+            {
+              "name": "Example Cloud AI completions",
+              "url": "https://ai.example.cloud/v1/complete"
+            },
+            {
+              "name": "Document store",
+              "url": "https://docs.example.com/api"
+            }
+          ]
+        },
+        "purpose": "Summarise contracts for legal reviewers; summaries are a starting point only.",
+        "limitations": "May omit clauses. Not a legal opinion. Only English contracts.",
+        "evaluation": {
+          "metrics": [],
+          "safety": "Hallucination review on 50 contracts by two lawyers."
+        },
+        "owner": {
+          "name": "Zoë Lindqvist",
+          "organization": "Example Legal Tech",
+          "contact": "zoe@example.com"
+        }
+      },
+      "expect": []
+    },
+    {
+      "id": "h-speech-pth-nohash-http",
+      "lang": "de",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Sprachnotizen-Transkription",
+          "version": "0.9.3",
+          "vendor": "Hörwerk AG",
+          "license": "CC-BY-NC-4.0",
+          "type": "fine-tuned",
+          "baseModel": {
+            "name": "whisper-small",
+            "version": "20231117"
+          }
+        },
+        "weights": [
+          {
+            "file": "transkription.pth",
+            "format": "",
+            "hashAlg": "",
+            "hash": "",
+            "source": "http://hoerwerk.example/modelle/0.9.3"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Diktate Ärztekammer (anonymisiert)",
+            "role": "fine-tuning",
+            "source": "https://hoerwerk.example/daten/diktate",
+            "license": "proprietär, interne Nutzung",
+            "personalData": "yes"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "PyTorch",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "torchaudio",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "librosa",
+            "version": "0.10.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Tablet-App, Verarbeitung auf dem Gerät",
+          "apis": []
+        },
+        "purpose": "Wandelt kurze Sprachnotizen von Pflegekräften in Text um.",
+        "limitations": "Fachbegriffe und starke Dialekte werden häufig falsch erkannt.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "WER",
+              "value": "11.2%",
+              "slice": "Testsatz Süd"
+            }
+          ],
+          "safety": ""
+        },
+        "owner": {
+          "name": "Ömer Şahin",
+          "organization": "Hörwerk AG",
+          "contact": "oemer.sahin@hoerwerk.example"
+        }
+      },
+      "expect": [
+        "AIBOM-NET-001",
+        "AIBOM-WGT-001",
+        "AIBOM-WGT-002"
+      ]
+    },
+    {
+      "id": "h-speech-base-missing-nfd",
+      "lang": "de",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Sprachnotizen-Transkription",
+          "version": "0.9.3",
+          "vendor": "Hörwerk AG",
+          "license": "CC-BY-NC-4.0",
+          "type": "fine-tuned",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [
+          {
+            "file": "transkription.safetensors",
+            "format": "safetensors",
+            "hashAlg": "SHA-384",
+            "hash": "{{SHA384:speech}}",
+            "source": "https://hoerwerk.example/modelle/0.9.3"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Diktate Ärztekammer (anonymisiert)",
+            "role": "fine-tuning",
+            "source": "https://hoerwerk.example/daten/diktate",
+            "license": "proprietär, interne Nutzung",
+            "personalData": "yes"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "PyTorch",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "torchaudio",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "librosa",
+            "version": "0.10.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Tablet-App, Verarbeitung auf dem Gerät",
+          "apis": []
+        },
+        "purpose": "Wandelt kurze Sprachnotizen von Pflegekräften in Text um.",
+        "limitations": "Fachbegriffe und starke Dialekte werden häufig falsch erkannt.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "WER",
+              "value": "11.2%",
+              "slice": "Testsatz Süd"
+            }
+          ],
+          "safety": ""
+        },
+        "owner": {
+          "name": "Ömer Şahin",
+          "organization": "Hörwerk AG",
+          "contact": "oemer.sahin@hoerwerk.example"
+        }
+      },
+      "expect": [
+        "AIBOM-PRV-001"
+      ]
+    },
+    {
+      "id": "h-rec-pd-unknown-license",
+      "lang": "ru",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Рекомендации товаров",
+          "version": "5.1.0",
+          "vendor": "",
+          "license": "MIT",
+          "type": "own",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [
+          {
+            "file": "recs-5.1.0.onnx",
+            "format": "ONNX",
+            "hashAlg": "SHA-256",
+            "hash": "{{SHA256:recs}}",
+            "source": "https://ml.example.ru/recs/5.1.0.onnx"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Журнал покупок 2025",
+            "role": "training",
+            "source": "внутреннее хранилище, таблица orders_2025",
+            "license": "внутренние данные компании",
+            "personalData": "unknown"
+          },
+          {
+            "name": "Каталог товаров",
+            "role": "training",
+            "source": "https://ml.example.ru/catalog",
+            "license": "н/д",
+            "personalData": "no"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "LightGBM",
+            "version": "4.5.0"
+          },
+          {
+            "kind": "library",
+            "name": "onnxruntime",
+            "version": "1.20.1"
+          }
+        ],
+        "deployment": {
+          "environment": "Kubernetes, дата-центр Санкт-Петербург",
+          "apis": [
+            {
+              "name": "Сервис каталога",
+              "url": "https://catalog.example.ru/api"
+            }
+          ]
+        },
+        "purpose": "Подбирает похожие товары на странице карточки товара.",
+        "limitations": "Новые товары без истории покупок не рекомендуются.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "NDCG@10",
+              "value": "0.41",
+              "slice": "декабрь 2025"
+            }
+          ],
+          "safety": "Проверено, что рекомендации не раскрывают покупки других клиентов."
+        },
+        "owner": {
+          "name": "Команда рекомендаций",
+          "organization": "ООО «Пример»",
+          "contact": "recs@example.ru"
+        }
+      },
+      "expect": [
+        "AIBOM-DAT-002",
+        "AIBOM-LIC-002"
+      ]
+    },
+    {
+      "id": "h-rec-joblib-sha1",
+      "lang": "ru",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Рекомендации товаров",
+          "version": "5.1.0",
+          "vendor": "",
+          "license": "MIT",
+          "type": "own",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [
+          {
+            "file": "recs-5.1.0.onnx",
+            "format": "ONNX",
+            "hashAlg": "SHA-256",
+            "hash": "{{SHA256:recs}}",
+            "source": "https://ml.example.ru/recs/5.1.0.onnx"
+          },
+          {
+            "file": "scaler.joblib",
+            "format": "joblib",
+            "hashAlg": "SHA-1",
+            "hash": "{{SHA1:scaler}}",
+            "source": "https://ml.example.ru/recs/scaler.joblib"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Журнал покупок 2025",
+            "role": "training",
+            "source": "внутреннее хранилище, таблица orders_2025",
+            "license": "внутренние данные компании",
+            "personalData": "yes"
+          },
+          {
+            "name": "Каталог товаров",
+            "role": "training",
+            "source": "https://ml.example.ru/catalog",
+            "license": "CC0-1.0",
+            "personalData": "no"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "LightGBM",
+            "version": "4.5.0"
+          },
+          {
+            "kind": "library",
+            "name": "onnxruntime",
+            "version": "1.20.1"
+          }
+        ],
+        "deployment": {
+          "environment": "Kubernetes, дата-центр Санкт-Петербург",
+          "apis": [
+            {
+              "name": "Сервис каталога",
+              "url": "https://catalog.example.ru/api"
+            }
+          ]
+        },
+        "purpose": "Подбирает похожие товары на странице карточки товара.",
+        "limitations": "Новые товары без истории покупок не рекомендуются.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "NDCG@10",
+              "value": "0.41",
+              "slice": "декабрь 2025"
+            }
+          ],
+          "safety": "Проверено, что рекомендации не раскрывают покупки других клиентов."
+        },
+        "owner": {
+          "name": "Команда рекомендаций",
+          "organization": "ООО «Пример»",
+          "contact": "recs@example.ru"
+        }
+      },
+      "expect": [
+        "AIBOM-WGT-002",
+        "AIBOM-WGT-003"
+      ]
+    },
+    {
+      "id": "h-llm-vendor-version",
+      "lang": "en",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Contract Summary Assistant",
+          "version": "stable",
+          "vendor": "",
+          "license": "Commercial API terms",
+          "type": "external-api",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [],
+        "datasets": [],
+        "dependencies": [
+          {
+            "kind": "library",
+            "name": "example-cloud-sdk",
+            "version": "3.2.0"
+          },
+          {
+            "kind": "library",
+            "name": "pydantic",
+            "version": "2.9.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Legal team web app, AWS eu-central-1",
+          "apis": [
+            {
+              "name": "Example Cloud AI completions",
+              "url": "https://ai.example.cloud/v1/complete"
+            },
+            {
+              "name": "Document store",
+              "url": "https://docs.example.com/api"
+            }
+          ]
+        },
+        "purpose": "Summarise contracts for legal reviewers; summaries are a starting point only.",
+        "limitations": "May omit clauses. Not a legal opinion. Only English contracts.",
+        "evaluation": {
+          "metrics": [],
+          "safety": "Hallucination review on 50 contracts by two lawyers."
+        },
+        "owner": {
+          "name": "Zoë Lindqvist",
+          "organization": "Example Legal Tech",
+          "contact": "zoe@example.com"
+        }
+      },
+      "expect": [
+        "AIBOM-DOC-006",
+        "AIBOM-VER-002"
+      ]
+    },
+    {
+      "id": "h-llm-key-in-env",
+      "lang": "en",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Contract Summary Assistant",
+          "version": "2026-09-15",
+          "vendor": "Example Cloud AI",
+          "license": "Commercial API terms",
+          "type": "external-api",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [],
+        "datasets": [],
+        "dependencies": [
+          {
+            "kind": "library",
+            "name": "example-cloud-sdk",
+            "version": "3.2.0"
+          },
+          {
+            "kind": "library",
+            "name": "pydantic",
+            "version": "2.9.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Legal team web app, AWS eu-central-1 (key {{SYNTH:ANTHROPIC_API_KEY}} in vault)",
+          "apis": [
+            {
+              "name": "Example Cloud AI completions",
+              "url": "https://ai.example.cloud/v1/complete"
+            },
+            {
+              "name": "Document store",
+              "url": "https://docs.example.com/api"
+            }
+          ]
+        },
+        "purpose": "Summarise contracts for legal reviewers; summaries are a starting point only.",
+        "limitations": "May omit clauses. Not a legal opinion. Only English contracts.",
+        "evaluation": {
+          "metrics": [],
+          "safety": "Hallucination review on 50 contracts by two lawyers."
+        },
+        "owner": {
+          "name": "Zoë Lindqvist",
+          "organization": "Example Legal Tech",
+          "contact": "zoe@example.com"
+        }
+      },
+      "expect": [
+        "AIBOM-SEC-002"
+      ]
+    },
+    {
+      "id": "h-llm-no-eval-owner",
+      "lang": "en",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Contract Summary Assistant",
+          "version": "2026-09-15",
+          "vendor": "Example Cloud AI",
+          "license": "Commercial API terms",
+          "type": "external-api",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [],
+        "datasets": [],
+        "dependencies": [
+          {
+            "kind": "library",
+            "name": "example-cloud-sdk",
+            "version": "3.2.0"
+          },
+          {
+            "kind": "library",
+            "name": "pydantic",
+            "version": "2.9.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Legal team web app, AWS eu-central-1",
+          "apis": [
+            {
+              "name": "Example Cloud AI completions",
+              "url": "https://ai.example.cloud/v1/complete"
+            },
+            {
+              "name": "Document store",
+              "url": "https://docs.example.com/api"
+            }
+          ]
+        },
+        "purpose": "Summarise contracts for legal reviewers; summaries are a starting point only.",
+        "limitations": "May omit clauses. Not a legal opinion. Only English contracts.",
+        "evaluation": {
+          "metrics": [],
+          "safety": ""
+        },
+        "owner": {
+          "name": "Legal tech",
+          "organization": "",
+          "contact": ""
+        }
+      },
+      "expect": [
+        "AIBOM-DOC-003",
+        "AIBOM-DOC-004"
+      ]
+    },
+    {
+      "id": "h-rec-dep-floating",
+      "lang": "ru",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Рекомендации товаров",
+          "version": "5.1.0",
+          "vendor": "",
+          "license": "MIT",
+          "type": "own",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [
+          {
+            "file": "recs-5.1.0.onnx",
+            "format": "ONNX",
+            "hashAlg": "SHA-256",
+            "hash": "{{SHA256:recs}}",
+            "source": "https://ml.example.ru/recs/5.1.0.onnx"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Журнал покупок 2025",
+            "role": "training",
+            "source": "внутреннее хранилище, таблица orders_2025",
+            "license": "внутренние данные компании",
+            "personalData": "yes"
+          },
+          {
+            "name": "Каталог товаров",
+            "role": "training",
+            "source": "https://ml.example.ru/catalog",
+            "license": "CC0-1.0",
+            "personalData": "no"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "LightGBM",
+            "version": "4.5.0"
+          },
+          {
+            "kind": "library",
+            "name": "onnxruntime",
+            "version": "1.x"
+          },
+          {
+            "kind": "library",
+            "name": "pandas",
+            "version": ""
+          }
+        ],
+        "deployment": {
+          "environment": "Kubernetes, дата-центр Санкт-Петербург",
+          "apis": [
+            {
+              "name": "Сервис каталога",
+              "url": "https://catalog.example.ru/api"
+            }
+          ]
+        },
+        "purpose": "Подбирает похожие товары на странице карточки товара.",
+        "limitations": "Новые товары без истории покупок не рекомендуются.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "NDCG@10",
+              "value": "0.41",
+              "slice": "декабрь 2025"
+            }
+          ],
+          "safety": "Проверено, что рекомендации не раскрывают покупки других клиентов."
+        },
+        "owner": {
+          "name": "Команда рекомендаций",
+          "organization": "ООО «Пример»",
+          "contact": "recs@example.ru"
+        }
+      },
+      "expect": [
+        "AIBOM-DEP-001",
+        "AIBOM-DEP-002"
+      ]
+    },
+    {
+      "id": "h-speech-jwt",
+      "lang": "de",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Sprachnotizen-Transkription",
+          "version": "0.9.3",
+          "vendor": "Hörwerk AG",
+          "license": "CC-BY-NC-4.0",
+          "type": "fine-tuned",
+          "baseModel": {
+            "name": "whisper-small",
+            "version": "20231117"
+          }
+        },
+        "weights": [
+          {
+            "file": "transkription.safetensors",
+            "format": "safetensors",
+            "hashAlg": "SHA-384",
+            "hash": "{{SHA384:speech}}",
+            "source": "https://hoerwerk.example/modelle/0.9.3"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Diktate Ärztekammer (anonymisiert)",
+            "role": "fine-tuning",
+            "source": "https://hoerwerk.example/daten/diktate",
+            "license": "proprietär, interne Nutzung",
+            "personalData": "yes"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "PyTorch",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "torchaudio",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "librosa",
+            "version": "0.10.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Tablet-App, Verarbeitung auf dem Gerät Zugriff: {{SYNTH:JWT}}",
+          "apis": []
+        },
+        "purpose": "Wandelt kurze Sprachnotizen von Pflegekräften in Text um.",
+        "limitations": "Fachbegriffe und starke Dialekte werden häufig falsch erkannt.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "WER",
+              "value": "11.2%",
+              "slice": "Testsatz Süd"
+            }
+          ],
+          "safety": ""
+        },
+        "owner": {
+          "name": "Ömer Şahin",
+          "organization": "Hörwerk AG",
+          "contact": "oemer.sahin@hoerwerk.example"
+        }
+      },
+      "expect": [
+        "AIBOM-SEC-002"
+      ]
+    },
+    {
+      "id": "h-speech-url-cred",
+      "lang": "de",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Sprachnotizen-Transkription",
+          "version": "0.9.3",
+          "vendor": "Hörwerk AG",
+          "license": "CC-BY-NC-4.0",
+          "type": "fine-tuned",
+          "baseModel": {
+            "name": "whisper-small",
+            "version": "20231117"
+          }
+        },
+        "weights": [
+          {
+            "file": "transkription.safetensors",
+            "format": "safetensors",
+            "hashAlg": "SHA-384",
+            "hash": "{{SHA384:speech}}",
+            "source": "https://hoerwerk.example/modelle/0.9.3"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Diktate Ärztekammer (anonymisiert)",
+            "role": "fine-tuning",
+            "source": "{{SYNTH:URL_WITH_PASSWORD}}",
+            "license": "proprietär, interne Nutzung",
+            "personalData": "yes"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "PyTorch",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "torchaudio",
+            "version": "2.3.1"
+          },
+          {
+            "kind": "library",
+            "name": "librosa",
+            "version": "0.10.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Tablet-App, Verarbeitung auf dem Gerät",
+          "apis": []
+        },
+        "purpose": "Wandelt kurze Sprachnotizen von Pflegekräften in Text um.",
+        "limitations": "Fachbegriffe und starke Dialekte werden häufig falsch erkannt.",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "WER",
+              "value": "11.2%",
+              "slice": "Testsatz Süd"
+            }
+          ],
+          "safety": ""
+        },
+        "owner": {
+          "name": "Ömer Şahin",
+          "organization": "Hörwerk AG",
+          "contact": "oemer.sahin@hoerwerk.example"
+        }
+      },
+      "expect": [
+        "AIBOM-SEC-001"
+      ]
+    },
+    {
+      "id": "h-rec-no-type-no-limits",
+      "lang": "ru",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Рекомендации товаров",
+          "version": "5.1.0",
+          "vendor": "",
+          "license": "MIT",
+          "type": "",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [
+          {
+            "file": "recs-5.1.0.onnx",
+            "format": "ONNX",
+            "hashAlg": "SHA-256",
+            "hash": "{{SHA256:recs}}",
+            "source": "https://ml.example.ru/recs/5.1.0.onnx"
+          }
+        ],
+        "datasets": [
+          {
+            "name": "Журнал покупок 2025",
+            "role": "training",
+            "source": "внутреннее хранилище, таблица orders_2025",
+            "license": "внутренние данные компании",
+            "personalData": "yes"
+          },
+          {
+            "name": "Каталог товаров",
+            "role": "training",
+            "source": "https://ml.example.ru/catalog",
+            "license": "CC0-1.0",
+            "personalData": "no"
+          }
+        ],
+        "dependencies": [
+          {
+            "kind": "framework",
+            "name": "LightGBM",
+            "version": "4.5.0"
+          },
+          {
+            "kind": "library",
+            "name": "onnxruntime",
+            "version": "1.20.1"
+          }
+        ],
+        "deployment": {
+          "environment": "Kubernetes, дата-центр Санкт-Петербург",
+          "apis": [
+            {
+              "name": "Сервис каталога",
+              "url": "https://catalog.example.ru/api"
+            }
+          ]
+        },
+        "purpose": "Подбирает похожие товары на странице карточки товара.",
+        "limitations": "",
+        "evaluation": {
+          "metrics": [
+            {
+              "type": "NDCG@10",
+              "value": "0.41",
+              "slice": "декабрь 2025"
+            }
+          ],
+          "safety": "Проверено, что рекомендации не раскрывают покупки других клиентов."
+        },
+        "owner": {
+          "name": "Команда рекомендаций",
+          "organization": "ООО «Пример»",
+          "contact": "recs@example.ru"
+        }
+      },
+      "expect": [
+        "AIBOM-DOC-002",
+        "AIBOM-DOC-005"
+      ]
+    },
+    {
+      "id": "h-llm-tbd-license",
+      "lang": "en",
+      "mode": "build",
+      "inventory": {
+        "model": {
+          "name": "Contract Summary Assistant",
+          "version": "2026-09-15",
+          "vendor": "Example Cloud AI",
+          "license": "TBD",
+          "type": "external-api",
+          "baseModel": {
+            "name": "",
+            "version": ""
+          }
+        },
+        "weights": [],
+        "datasets": [],
+        "dependencies": [
+          {
+            "kind": "library",
+            "name": "example-cloud-sdk",
+            "version": "3.2.0"
+          },
+          {
+            "kind": "library",
+            "name": "pydantic",
+            "version": "2.9.2"
+          }
+        ],
+        "deployment": {
+          "environment": "Legal team web app, AWS eu-central-1",
+          "apis": [
+            {
+              "name": "Example Cloud AI completions",
+              "url": "https://ai.example.cloud/v1/complete"
+            },
+            {
+              "name": "Document store",
+              "url": "https://docs.example.com/api"
+            }
+          ]
+        },
+        "purpose": "Summarise contracts for legal reviewers; summaries are a starting point only.",
+        "limitations": "May omit clauses. Not a legal opinion. Only English contracts.",
+        "evaluation": {
+          "metrics": [],
+          "safety": "Hallucination review on 50 contracts by two lawyers."
+        },
+        "owner": {
+          "name": "Zoë Lindqvist",
+          "organization": "Example Legal Tech",
+          "contact": "zoe@example.com"
+        }
+      },
+      "expect": [
+        "AIBOM-LIC-001"
+      ]
+    },
+    {
+      "id": "h-review-nested",
+      "lang": "de",
+      "mode": "review",
+      "text": "{\n  \"bomFormat\": \"CycloneDX\",\n  \"specVersion\": \"1.6\",\n  \"serialNumber\": \"urn:uuid:9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d\",\n  \"version\": 3,\n  \"metadata\": {\n    \"component\": {\n      \"type\": \"application\",\n      \"name\": \"Pflege-App\",\n      \"version\": \"4.2.0\",\n      \"authors\": [\n        {\n          \"name\": \"Ömer Şahin\",\n          \"email\": \"oemer.sahin@hoerwerk.example\"\n        }\n      ]\n    }\n  },\n  \"components\": [\n    {\n      \"type\": \"application\",\n      \"name\": \"Pflege-App Backend\",\n      \"version\": \"4.2.0\",\n      \"components\": [\n        {\n          \"type\": \"machine-learning-model\",\n          \"name\": \"Sprachnotizen-Transkription\",\n          \"version\": \"0.9.3\",\n          \"supplier\": {\n            \"name\": \"Hörwerk AG\"\n          },\n          \"licenses\": [\n            {\n              \"expression\": \"CC-BY-NC-4.0\"\n            }\n          ],\n          \"pedigree\": {\n            \"ancestors\": [\n              {\n                \"type\": \"machine-learning-model\",\n                \"name\": \"whisper-small\",\n                \"version\": \"20231117\"\n              }\n            ]\n          },\n          \"properties\": [\n            {\n              \"name\": \"cyberdat:aibom:model-type\",\n              \"value\": \"fine-tuned\"\n            }\n          ],\n          \"modelCard\": {\n            \"considerations\": {\n              \"useCases\": [\n                \"Sprachnotizen in Text umwandeln\"\n              ],\n              \"technicalLimitations\": [\n                \"Dialekte\"\n              ]\n            },\n            \"quantitativeAnalysis\": {\n              \"performanceMetrics\": [\n                {\n                  \"type\": \"WER\",\n                  \"value\": \"11.2%\"\n                }\n              ]\n            }\n          }\n        },\n        {\n          \"type\": \"file\",\n          \"name\": \"transkription.safetensors\",\n          \"hashes\": [\n            {\n              \"alg\": \"SHA-256\",\n              \"content\": \"{{SHA256:nested}}\"\n            }\n          ],\n          \"externalReferences\": [\n            {\n              \"type\": \"distribution\",\n              \"url\": \"https://hoerwerk.example/modelle/0.9.3\"\n            }\n          ]\n        },\n        {\n          \"type\": \"data\",\n          \"name\": \"Diktate (anonymisiert)\",\n          \"licenses\": [\n            {\n              \"license\": {\n                \"name\": \"proprietär\"\n              }\n            }\n          ],\n          \"data\": [\n            {\n              \"type\": \"dataset\",\n              \"contents\": {\n                \"url\": \"https://hoerwerk.example/daten\"\n              },\n              \"sensitiveData\": [\n                \"Gesundheitsdaten\"\n              ]\n            }\n          ]\n        },\n        {\n          \"type\": \"framework\",\n          \"name\": \"PyTorch\",\n          \"version\": \"2.3.1\"\n        }\n      ]\n    }\n  ]\n}",
+      "expect": [],
+      "note": "nested components, metadata.component authors as responsible"
+    },
+    {
+      "id": "h-review-nested-gaps",
+      "lang": "de",
+      "mode": "review",
+      "text": "{\n  \"bomFormat\": \"CycloneDX\",\n  \"specVersion\": \"1.6\",\n  \"serialNumber\": \"urn:uuid:9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d\",\n  \"version\": 3,\n  \"metadata\": {\n    \"component\": {\n      \"type\": \"application\",\n      \"name\": \"Pflege-App\",\n      \"version\": \"4.2.0\",\n      \"authors\": [\n        {\n          \"name\": \"Ömer Şahin\",\n          \"email\": \"oemer.sahin@hoerwerk.example\"\n        }\n      ]\n    }\n  },\n  \"components\": [\n    {\n      \"type\": \"application\",\n      \"name\": \"Pflege-App Backend\",\n      \"components\": [\n        {\n          \"type\": \"machine-learning-model\",\n          \"name\": \"Sprachnotizen-Transkription\",\n          \"version\": \"main\",\n          \"supplier\": {\n            \"name\": \"Hörwerk AG\"\n          },\n          \"licenses\": [\n            {\n              \"license\": {\n                \"name\": \"unbekannt\"\n              }\n            }\n          ],\n          \"pedigree\": {\n            \"ancestors\": [\n              {\n                \"type\": \"machine-learning-model\",\n                \"name\": \"whisper-small\",\n                \"version\": \"20231117\"\n              }\n            ]\n          },\n          \"properties\": [\n            {\n              \"name\": \"cyberdat:aibom:model-type\",\n              \"value\": \"fine-tuned\"\n            }\n          ],\n          \"modelCard\": {\n            \"considerations\": {\n              \"useCases\": [\n                \"Sprachnotizen in Text umwandeln\"\n              ],\n              \"technicalLimitations\": [\n                \"Dialekte\"\n              ]\n            },\n            \"quantitativeAnalysis\": {\n              \"performanceMetrics\": [\n                {\n                  \"type\": \"WER\",\n                  \"value\": \"11.2%\"\n                }\n              ]\n            }\n          }\n        },\n        {\n          \"type\": \"framework\",\n          \"name\": \"PyTorch\"\n        }\n      ]\n    }\n  ]\n}",
+      "expect": [
+        "AIBOM-DAT-003",
+        "AIBOM-DEP-001",
+        "AIBOM-LIC-001",
+        "AIBOM-VER-002",
+        "AIBOM-WGT-005"
+      ]
+    },
+    {
+      "id": "h-review-camel-mix",
+      "lang": "en",
+      "mode": "review",
+      "text": "{\n  \"BomFormat\": \"CycloneDX\",\n  \"spec_version\": \"1.7\",\n  \"version\": 1,\n  \"components\": [\n    {\n      \"type\": \"machine-learning-model\",\n      \"name\": \"Contract Summary Assistant\",\n      \"version\": \"2026-09-15\",\n      \"supplier\": {\n        \"name\": \"Example Cloud AI\"\n      },\n      \"licenses\": [\n        {\n          \"license\": {\n            \"name\": \"Commercial API terms\"\n          }\n        }\n      ],\n      \"properties\": [\n        {\n          \"name\": \"cyberdat:aibom:model-type\",\n          \"value\": \"external-api\"\n        }\n      ],\n      \"model_card\": {\n        \"considerations\": {\n          \"use_cases\": [\n            \"Summarise contracts\"\n          ],\n          \"technical_limitations\": [\n            \"May omit clauses\"\n          ]\n        },\n        \"quantitative_analysis\": {\n          \"performance_metrics\": [\n            {\n              \"type\": \"reviewer agreement\",\n              \"value\": \"0.8\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"metadata\": {\n    \"authors\": [\n      {\n        \"name\": \"Zoë Lindqvist\",\n        \"email\": \"zoe@example.com\"\n      }\n    ]\n  }\n}",
+      "expect": [
+        "AIBOM-FMT-002"
+      ]
+    },
+    {
+      "id": "h-review-truncated",
+      "lang": "ru",
+      "mode": "review",
+      "text": "{\n  \"bomFormat\": \"CycloneDX\",\n  \"specVersion\": \"1.7\",\n  \"serialNumber\": \"urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79\",\n  \"version\": 1,\n  \"metadata\": {\n    \"timestamp\": \"2026-11-14T10:00:00Z\",\n    \"supplier\": {\n      \"name\": \"ООО «Пример»\",\n      \"contact\": [\n        {\n          \"name\": \"Пётр Иванов\",\n          \"email\": \"ml@example.ru\"\n        }\n      ]\n    }\n  },\n  \"components\": [\n    {\n      \"t",
+      "expect": [],
+      "expectError": "PARSE"
+    },
+    {
+      "id": "h-review-secret-url-service",
+      "lang": "en",
+      "mode": "review",
+      "text": "{\n  \"bomFormat\": \"CycloneDX\",\n  \"specVersion\": \"1.7\",\n  \"version\": 1,\n  \"metadata\": {\n    \"supplier\": {\n      \"name\": \"Example Legal Tech\",\n      \"contact\": [\n        {\n          \"name\": \"Zoë\",\n          \"email\": \"zoe@example.com\"\n        }\n      ]\n    }\n  },\n  \"components\": [\n    {\n      \"type\": \"machine-learning-model\",\n      \"name\": \"Contract Summary Assistant\",\n      \"version\": \"2026-09-15\",\n      \"supplier\": {\n        \"name\": \"Example Cloud AI\"\n      },\n      \"licenses\": [\n        {\n          \"license\": {\n            \"name\": \"Commercial API terms\"\n          }\n        }\n      ],\n      \"properties\": [\n        {\n          \"name\": \"cyberdat:aibom:model-type\",\n          \"value\": \"external-api\"\n        }\n      ],\n      \"modelCard\": {\n        \"considerations\": {\n          \"useCases\": [\n            \"Summaries\"\n          ],\n          \"technicalLimitations\": [\n            \"Omissions\"\n          ]\n        },\n        \"quantitativeAnalysis\": {\n          \"performanceMetrics\": [\n            {\n              \"type\": \"agreement\",\n              \"value\": \"0.8\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"services\": [\n    {\n      \"name\": \"completions\",\n      \"endpoints\": [\n        \"{{SYNTH:URL_WITH_QUERY_KEY}}\"\n      ]\n    }\n  ]\n}",
+      "expect": [
+        "AIBOM-SEC-001"
+      ]
+    }
+  ]
+}
