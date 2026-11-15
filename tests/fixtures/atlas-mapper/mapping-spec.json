@@ -1,0 +1,396 @@
+{
+  "_note": "CyberDat mapping specification, frozen on 2026-11-15 BEFORE any rule code. Technique ids exist in MITRE ATLAS 2026.10 (checked when this file was written). The mapping is CyberDat's own, not an assessment by MITRE. Finding rules are matched by keywords in English, German and Russian; their words are written in the engine.",
+  "atlasRelease": "2026.10",
+  "properties": {
+    "external-api": {
+      "label": "Uses an external model through an API",
+      "techniques": [
+        {
+          "technique": "AML.T0051.000",
+          "reason": "Users write prompts that reach the model directly."
+        },
+        {
+          "technique": "AML.T0054",
+          "reason": "Users can try to talk the model out of its restrictions."
+        },
+        {
+          "technique": "AML.T0069.002",
+          "reason": "The system prompt sent with each request can be coaxed out."
+        },
+        {
+          "technique": "AML.T0055",
+          "reason": "API keys for the provider must be stored somewhere and can leak."
+        },
+        {
+          "technique": "AML.T0034",
+          "reason": "Every request is billed, so abuse costs money."
+        },
+        {
+          "technique": "AML.T0077",
+          "reason": "Model output is rendered to users and can carry links or images."
+        }
+      ]
+    },
+    "own-model": {
+      "label": "Runs its own or a fine-tuned model",
+      "techniques": [
+        {
+          "technique": "AML.T0040",
+          "reason": "The model is reachable through an inference API you operate."
+        },
+        {
+          "technique": "AML.T0005.001",
+          "reason": "Outputs can be collected to replicate the model."
+        },
+        {
+          "technique": "AML.T0137",
+          "reason": "Outputs can reveal information about the training data."
+        },
+        {
+          "technique": "AML.T0015",
+          "reason": "Inputs can be crafted so the model misclassifies them."
+        },
+        {
+          "technique": "AML.T0035",
+          "reason": "Model files and training artifacts are assets that can be stolen."
+        },
+        {
+          "technique": "AML.T0029",
+          "reason": "Self-hosted inference capacity can be exhausted."
+        }
+      ]
+    },
+    "rag": {
+      "label": "Retrieval (RAG) over external or user-supplied documents",
+      "techniques": [
+        {
+          "technique": "AML.T0051.001",
+          "reason": "Retrieved documents can contain instructions the model follows."
+        },
+        {
+          "technique": "AML.T0070",
+          "reason": "Documents in the index can be planted or changed."
+        },
+        {
+          "technique": "AML.T0071",
+          "reason": "False entries can be injected into what the retriever returns."
+        },
+        {
+          "technique": "AML.T0066",
+          "reason": "Content can be written so that the retriever selects it."
+        },
+        {
+          "technique": "AML.T0085.000",
+          "reason": "The retrieval database can be used to collect data."
+        },
+        {
+          "technique": "AML.T0082",
+          "reason": "Credentials stored in indexed documents can be retrieved."
+        }
+      ]
+    },
+    "agent-tools": {
+      "label": "Agent that can call tools or take actions",
+      "techniques": [
+        {
+          "technique": "AML.T0053",
+          "reason": "The model decides which tools to call."
+        },
+        {
+          "technique": "AML.T0086",
+          "reason": "Tool calls can send data out."
+        },
+        {
+          "technique": "AML.T0101",
+          "reason": "Tool calls can delete or overwrite data."
+        },
+        {
+          "technique": "AML.T0080",
+          "reason": "The agent context can be poisoned to change later actions."
+        },
+        {
+          "technique": "AML.T0110",
+          "reason": "Tool definitions, code or responses can be poisoned."
+        },
+        {
+          "technique": "AML.T0083",
+          "reason": "Agent configuration often holds credentials for tools."
+        },
+        {
+          "technique": "AML.T0010.005",
+          "reason": "Third-party tools are part of the supply chain."
+        }
+      ]
+    },
+    "file-upload": {
+      "label": "Users can upload files that the AI processes",
+      "techniques": [
+        {
+          "technique": "AML.T0051.001",
+          "reason": "Uploaded files can contain instructions the model follows."
+        },
+        {
+          "technique": "AML.T0129",
+          "reason": "Images, audio or documents can hide triggers."
+        },
+        {
+          "technique": "AML.T0119",
+          "reason": "Automated processing of uploaded artifacts can be exploited."
+        },
+        {
+          "technique": "AML.T0068",
+          "reason": "Instructions can be hidden or encoded inside files."
+        }
+      ]
+    },
+    "public": {
+      "label": "Publicly accessible (no login, or open sign-up)",
+      "techniques": [
+        {
+          "technique": "AML.T0049",
+          "reason": "Anyone can reach the application."
+        },
+        {
+          "technique": "AML.T0093",
+          "reason": "Prompts can be planted through the public interface."
+        },
+        {
+          "technique": "AML.T0034.000",
+          "reason": "Automated excessive queries are easy without accounts."
+        },
+        {
+          "technique": "AML.T0029",
+          "reason": "The service can be flooded."
+        },
+        {
+          "technique": "AML.T0005.001",
+          "reason": "Public outputs can be harvested to replicate the model."
+        },
+        {
+          "technique": "AML.T0132",
+          "reason": "Publicly exposed AI services may be misconfigured."
+        }
+      ]
+    },
+    "training-pipeline": {
+      "label": "Has a training or fine-tuning pipeline",
+      "techniques": [
+        {
+          "technique": "AML.T0020",
+          "reason": "Training data can be poisoned."
+        },
+        {
+          "technique": "AML.T0018.000",
+          "reason": "The model itself can be poisoned during training."
+        },
+        {
+          "technique": "AML.T0043.004",
+          "reason": "A backdoor trigger can be inserted through training data."
+        },
+        {
+          "technique": "AML.T0010.002",
+          "reason": "External data repositories feed the pipeline."
+        },
+        {
+          "technique": "AML.T0059",
+          "reason": "Dataset integrity can be eroded over time."
+        },
+        {
+          "technique": "AML.T0035",
+          "reason": "Training artifacts can be collected."
+        }
+      ]
+    },
+    "open-registry": {
+      "label": "Uses models or datasets from public registries",
+      "techniques": [
+        {
+          "technique": "AML.T0010.003",
+          "reason": "Model repositories are part of the supply chain."
+        },
+        {
+          "technique": "AML.T0010.002",
+          "reason": "Dataset repositories are part of the supply chain."
+        },
+        {
+          "technique": "AML.T0011.000",
+          "reason": "Downloaded model files can be unsafe to load."
+        },
+        {
+          "technique": "AML.T0018.002",
+          "reason": "Model files can embed malware."
+        },
+        {
+          "technique": "AML.T0115",
+          "reason": "Poisoned artifacts can be published to registries."
+        },
+        {
+          "technique": "AML.T0111",
+          "reason": "Download counts and stars can be inflated."
+        }
+      ]
+    }
+  },
+  "findingRules": [
+    {
+      "id": "MAP-01",
+      "technique": "AML.T0051.000",
+      "meaning": "direct prompt injection"
+    },
+    {
+      "id": "MAP-02",
+      "technique": "AML.T0051.001",
+      "meaning": "indirect prompt injection"
+    },
+    {
+      "id": "MAP-03",
+      "technique": "AML.T0054",
+      "meaning": "jailbreak"
+    },
+    {
+      "id": "MAP-04",
+      "technique": "AML.T0069.002",
+      "meaning": "system prompt disclosed"
+    },
+    {
+      "id": "MAP-05",
+      "technique": "AML.T0077",
+      "meaning": "data leaked through rendered links or images"
+    },
+    {
+      "id": "MAP-06",
+      "technique": "AML.T0070",
+      "meaning": "RAG index poisoned"
+    },
+    {
+      "id": "MAP-07",
+      "technique": "AML.T0020",
+      "meaning": "training data poisoned"
+    },
+    {
+      "id": "MAP-08",
+      "technique": "AML.T0043.004",
+      "meaning": "backdoor trigger"
+    },
+    {
+      "id": "MAP-09",
+      "technique": "AML.T0005.001",
+      "meaning": "model replicated from outputs (extraction)"
+    },
+    {
+      "id": "MAP-10",
+      "technique": "AML.T0137.003",
+      "meaning": "memorized training data extracted"
+    },
+    {
+      "id": "MAP-11",
+      "technique": "AML.T0137.000",
+      "meaning": "membership inference"
+    },
+    {
+      "id": "MAP-12",
+      "technique": "AML.T0015",
+      "meaning": "adversarial input evades a model"
+    },
+    {
+      "id": "MAP-13",
+      "technique": "AML.T0029",
+      "meaning": "AI service denial"
+    },
+    {
+      "id": "MAP-14",
+      "technique": "AML.T0034",
+      "meaning": "cost harvesting / runaway bill"
+    },
+    {
+      "id": "MAP-15",
+      "technique": "AML.T0011.000",
+      "meaning": "unsafe model file (pickle)"
+    },
+    {
+      "id": "MAP-16",
+      "technique": "AML.T0010.003",
+      "meaning": "malicious model in a model repository"
+    },
+    {
+      "id": "MAP-17",
+      "technique": "AML.T0010.001",
+      "meaning": "malicious software package"
+    },
+    {
+      "id": "MAP-18",
+      "technique": "AML.T0110.000",
+      "meaning": "poisoned tool definition (e.g. MCP tool description)"
+    },
+    {
+      "id": "MAP-19",
+      "technique": "AML.T0053",
+      "meaning": "agent misused a tool"
+    },
+    {
+      "id": "MAP-20",
+      "technique": "AML.T0101",
+      "meaning": "agent deleted data"
+    },
+    {
+      "id": "MAP-21",
+      "technique": "AML.T0086",
+      "meaning": "data sent out through an agent tool"
+    },
+    {
+      "id": "MAP-22",
+      "technique": "AML.T0055",
+      "meaning": "unsecured credentials (API key exposed)"
+    },
+    {
+      "id": "MAP-23",
+      "technique": "AML.T0083",
+      "meaning": "credentials in agent configuration"
+    },
+    {
+      "id": "MAP-24",
+      "technique": "AML.T0088",
+      "meaning": "deepfake"
+    },
+    {
+      "id": "MAP-25",
+      "technique": "AML.T0060",
+      "meaning": "hallucinated package or entity registered"
+    },
+    {
+      "id": "MAP-26",
+      "technique": "AML.T0080.000",
+      "meaning": "agent memory poisoned"
+    },
+    {
+      "id": "MAP-27",
+      "technique": "AML.T0132",
+      "meaning": "AI service exposed without authentication"
+    },
+    {
+      "id": "MAP-28",
+      "technique": "AML.T0068",
+      "meaning": "obfuscated or hidden prompt"
+    },
+    {
+      "id": "MAP-29",
+      "technique": "AML.T0092",
+      "meaning": "chat history manipulated"
+    },
+    {
+      "id": "MAP-30",
+      "technique": "AML.T0085.000",
+      "meaning": "data collected from a RAG database"
+    },
+    {
+      "id": "MAP-31",
+      "technique": "AML.T0137.002",
+      "meaning": "model inversion"
+    },
+    {
+      "id": "MAP-32",
+      "technique": "AML.T0052.000",
+      "meaning": "phishing written with an LLM"
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "_note": "Held-out set with different wording, frozen together with the corpus BEFORE any rule code; rules must not be tuned to it. Same conventions. NOT INDEPENDENT: same author.",
+  "frozen": "2026-11-15",
+  "atlasRelease": "2026.10",
+  "cases": [
+    {
+      "id": "h-profile-chat-widget",
+      "mode": "profile",
+      "properties": [
+        "external-api",
+        "public"
+      ],
+      "expect": [
+        "AML.T0005.001",
+        "AML.T0029",
+        "AML.T0034",
+        "AML.T0034.000",
+        "AML.T0049",
+        "AML.T0051.000",
+        "AML.T0054",
+        "AML.T0055",
+        "AML.T0069.002",
+        "AML.T0077",
+        "AML.T0093",
+        "AML.T0132"
+      ]
+    },
+    {
+      "id": "h-profile-research-lab",
+      "mode": "profile",
+      "properties": [
+        "own-model",
+        "training-pipeline",
+        "public"
+      ],
+      "expect": [
+        "AML.T0005.001",
+        "AML.T0010.002",
+        "AML.T0015",
+        "AML.T0018.000",
+        "AML.T0020",
+        "AML.T0029",
+        "AML.T0034.000",
+        "AML.T0035",
+        "AML.T0040",
+        "AML.T0043.004",
+        "AML.T0049",
+        "AML.T0059",
+        "AML.T0093",
+        "AML.T0132",
+        "AML.T0137"
+      ]
+    },
+    {
+      "id": "h-profile-ops-agent",
+      "mode": "profile",
+      "properties": [
+        "agent-tools",
+        "rag"
+      ],
+      "expect": [
+        "AML.T0010.005",
+        "AML.T0051.001",
+        "AML.T0053",
+        "AML.T0066",
+        "AML.T0070",
+        "AML.T0071",
+        "AML.T0080",
+        "AML.T0082",
+        "AML.T0083",
+        "AML.T0085.000",
+        "AML.T0086",
+        "AML.T0101",
+        "AML.T0110"
+      ]
+    },
+    {
+      "id": "h-direct-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "During the pentest the bot was persuaded to disregard its rules after a user message claimed to be from the administrator.",
+      "expect": [
+        "AML.T0051.000"
+      ],
+      "allow": [
+        "AML.T0054"
+      ]
+    },
+    {
+      "id": "h-indirect-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Ассистент прочитал страницу сайта, где были спрятаны команды для ИИ, и выполнил их.",
+      "expect": [
+        "AML.T0051.001"
+      ],
+      "allow": [
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "h-sysprompt-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Бот раскрыл системный промпт целиком по просьбе пользователя.",
+      "expect": [
+        "AML.T0069.002"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-ragpoison-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Jemand hat manipulierte Dokumente in die Wissensdatenbank des RAG-Systems eingeschleust.",
+      "expect": [
+        "AML.T0070"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-trainpoison-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "В обучающую выборку попали намеренно испорченные примеры.",
+      "expect": [
+        "AML.T0020"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-extract-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Logs show systematic querying designed to clone our proprietary classifier.",
+      "expect": [
+        "AML.T0005.001"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-pickle-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "При загрузке весов в формате pickle на сервере выполнился посторонний код.",
+      "expect": [
+        "AML.T0011.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-mcp-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Описание инструмента в MCP-сервере содержало скрытые указания для агента.",
+      "expect": [
+        "AML.T0110.000"
+      ],
+      "allow": [
+        "AML.T0051.001",
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "h-delete-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Der KI-Agent hat versehentlich alle Kundendaten gelöscht.",
+      "expect": [
+        "AML.T0101"
+      ],
+      "allow": [
+        "AML.T0053"
+      ]
+    },
+    {
+      "id": "h-apikey-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Ключ API от языковой модели оказался в публичном репозитории.",
+      "expect": [
+        "AML.T0055"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-deepfake-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Ein Deepfake-Video des Geschäftsführers wurde für Betrug genutzt.",
+      "expect": [
+        "AML.T0088"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-exposed-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Сервер с моделью был доступен из интернета без аутентификации.",
+      "expect": [
+        "AML.T0132"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-cost-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Durch massenhafte Anfragen an unser Sprachmodell stiegen die Kosten um das Zwanzigfache.",
+      "expect": [
+        "AML.T0034"
+      ],
+      "allow": [
+        "AML.T0005.001"
+      ]
+    },
+    {
+      "id": "h-memory-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Der Assistent speicherte eine falsche Anweisung im Langzeitgedächtnis und befolgte sie danach dauerhaft.",
+      "expect": [
+        "AML.T0080.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "h-benign-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The marketing team uses the assistant to draft newsletters; every draft is reviewed by an editor.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "h-benign-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Das Modell klassifiziert eingehende Rechnungen; die Genauigkeit liegt bei 94 Prozent.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "h-benign-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Мы обновили инструкцию для операторов и провели обучение по новой версии системы.",
+      "expect": [],
+      "allow": []
+    }
+  ]
+}

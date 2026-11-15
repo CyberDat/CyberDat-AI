@@ -1,0 +1,50 @@
+/* MITRE ATLAS Attack Vector Mapper — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-atl-modes { display: grid; gap: .5rem; margin: 0; padding: .75rem 1rem; border: 1px solid var(--cd-border); border-radius: .5rem; }
+.cd-atl-modes legend { padding: 0 .35rem; }
+.cd-atl-mode { display: flex; align-items: flex-start; gap: .6rem; min-height: 44px; padding: .35rem 0; cursor: pointer; line-height: 1.45; }
+.cd-atl-mode input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; margin: .15rem 0 0; accent-color: var(--cd-accent); }
+.cd-atl-mode input:focus-visible, .cd-la-check input:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-atl-step-title { font-weight: inherit; }
+.cd-atl-search { display: block; width: 100%; min-height: 44px; border-color: var(--cd-muted); }
+
+.cd-atl-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start: 4px solid var(--cd-warning); border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-atl-verdict strong { color: var(--cd-warning); }
+.cd-atl-verdict--none { border-inline-start-color: var(--cd-secondary); }
+.cd-atl-verdict--none strong { color: var(--cd-text); }
+.cd-atl-notes { margin: .5rem 0; padding-inline-start: 1.2rem; color: var(--cd-warning); font-size: .9rem; overflow-wrap: anywhere; }
+
+.cd-atl-group { margin-top: 1.25rem; }
+.cd-atl-group__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .6rem; margin: 0 0 .5rem; font-size: 1.05rem; }
+.cd-atl-techs, .cd-atl-selected { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+.cd-atl-tech, .cd-atl-sel, .cd-atl-item { min-width: 0; padding: .75rem .9rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-inline-start: 3px solid var(--cd-accent); border-radius: .5rem; }
+.cd-atl-tech__head, .cd-atl-item__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .6rem; margin: 0; font-size: 1rem; overflow-wrap: anywhere; }
+.cd-atl-item__head:focus { outline: none; }
+.cd-atl-item__head:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-atl-tech p, .cd-atl-item p, .cd-atl-sel p { margin: .35rem 0 0; overflow-wrap: anywhere; }
+.cd-atl-id { font: .8125rem/1.5 var(--cd-mono); color: var(--cd-accent); }
+.cd-atl-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-atl-label { font-weight: 600; }
+.cd-atl-why { margin-top: .5rem; }
+.cd-atl-why ul { margin: .25rem 0 0; padding-inline-start: 1.2rem; font-size: .9rem; }
+.cd-atl-word { padding: 0 .25rem; border-radius: .2rem; background: #4a3a14; color: #ffe2a6; }
+.cd-atl-details { margin-top: .5rem; font-size: .9rem; }
+.cd-atl-details summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; }
+.cd-atl-details summary:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-atl-desc p { white-space: pre-line; }
+.cd-atl-mitigations, .cd-atl-list { margin: .35rem 0 0; padding-inline-start: 1.2rem; }
+.cd-atl-mitigations li + li, .cd-atl-list li + li { margin-top: .35rem; }
+.cd-atl-how { display: block; color: var(--cd-muted); font-size: .85rem; }
+.cd-atl-add { margin-top: .75rem; }
+.cd-atl-add[aria-pressed="true"] { background: var(--cd-accent); color: var(--cd-bg); }
+.cd-atl-subhead { margin: 1rem 0 .35rem; font-size: 1rem; }
+.cd-atl-browse { margin-top: 1rem; }
+.cd-atl-idbtn { justify-content: flex-start; width: 100%; text-align: start; gap: .5rem; font-weight: 500; }
+.cd-atl-sel__head { display: flex; flex-wrap: wrap; gap: .25rem .5rem; margin: 0 0 .5rem !important; }
+.cd-atl-note { display: block; width: 100%; min-height: 3.5rem; margin-bottom: .5rem; resize: vertical; }
+
+@media (max-width: 30rem) {
+	.cd-atl-tech, .cd-atl-sel, .cd-atl-item { padding: .6rem; }
+	.cd-atl-add, .cd-atl-sel .cd-la-button { width: 100%; }
+}
+@media (forced-colors: active) { .cd-atl-word { forced-color-adjust: none; outline: 1px solid CanvasText; } }
+.cd-atl textarea.cd-la-input { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; font-family: inherit; font-size: .95rem; }

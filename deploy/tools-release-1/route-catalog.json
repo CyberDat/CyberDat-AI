@@ -80,7 +80,7 @@
     "status": "planned",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Planned mapping of AI-system scenarios to MITRE ATLAS techniques.",
+    "description": "Find candidate MITRE ATLAS techniques and related mitigations for your AI system or a finding, and browse ATLAS tactics, techniques and mitigations. Runs locally; a starting point for review, not an assessment.",
     "icon_path": "M4 4h7v7H4Z M13 13h7v7h-7Z M11 7.5h4.5V13"
   },
   {

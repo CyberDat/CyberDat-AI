@@ -1,0 +1,898 @@
+{
+  "_note": "Synthetic main corpus, frozen BEFORE any rule code. Profiles: expect = all techniques the spec maps to the selected properties. Findings: expect = techniques that must be proposed; allow = techniques that may also be proposed without counting as false; benign texts expect nothing. Texts describe incidents from the defender side; no attack instructions or payloads. Secrets via {{SYNTH:NAME}}. NOT INDEPENDENT: same author as the rules.",
+  "frozen": "2026-11-15",
+  "atlasRelease": "2026.10",
+  "cases": [
+    {
+      "id": "profile-external-api",
+      "mode": "profile",
+      "properties": [
+        "external-api"
+      ],
+      "expect": [
+        "AML.T0034",
+        "AML.T0051.000",
+        "AML.T0054",
+        "AML.T0055",
+        "AML.T0069.002",
+        "AML.T0077"
+      ]
+    },
+    {
+      "id": "profile-own-model",
+      "mode": "profile",
+      "properties": [
+        "own-model"
+      ],
+      "expect": [
+        "AML.T0005.001",
+        "AML.T0015",
+        "AML.T0029",
+        "AML.T0035",
+        "AML.T0040",
+        "AML.T0137"
+      ]
+    },
+    {
+      "id": "profile-rag",
+      "mode": "profile",
+      "properties": [
+        "rag"
+      ],
+      "expect": [
+        "AML.T0051.001",
+        "AML.T0066",
+        "AML.T0070",
+        "AML.T0071",
+        "AML.T0082",
+        "AML.T0085.000"
+      ]
+    },
+    {
+      "id": "profile-agent-tools",
+      "mode": "profile",
+      "properties": [
+        "agent-tools"
+      ],
+      "expect": [
+        "AML.T0010.005",
+        "AML.T0053",
+        "AML.T0080",
+        "AML.T0083",
+        "AML.T0086",
+        "AML.T0101",
+        "AML.T0110"
+      ]
+    },
+    {
+      "id": "profile-file-upload",
+      "mode": "profile",
+      "properties": [
+        "file-upload"
+      ],
+      "expect": [
+        "AML.T0051.001",
+        "AML.T0068",
+        "AML.T0119",
+        "AML.T0129"
+      ]
+    },
+    {
+      "id": "profile-public",
+      "mode": "profile",
+      "properties": [
+        "public"
+      ],
+      "expect": [
+        "AML.T0005.001",
+        "AML.T0029",
+        "AML.T0034.000",
+        "AML.T0049",
+        "AML.T0093",
+        "AML.T0132"
+      ]
+    },
+    {
+      "id": "profile-training-pipeline",
+      "mode": "profile",
+      "properties": [
+        "training-pipeline"
+      ],
+      "expect": [
+        "AML.T0010.002",
+        "AML.T0018.000",
+        "AML.T0020",
+        "AML.T0035",
+        "AML.T0043.004",
+        "AML.T0059"
+      ]
+    },
+    {
+      "id": "profile-open-registry",
+      "mode": "profile",
+      "properties": [
+        "open-registry"
+      ],
+      "expect": [
+        "AML.T0010.002",
+        "AML.T0010.003",
+        "AML.T0011.000",
+        "AML.T0018.002",
+        "AML.T0111",
+        "AML.T0115"
+      ]
+    },
+    {
+      "id": "profile-support-bot",
+      "mode": "profile",
+      "properties": [
+        "external-api",
+        "rag",
+        "public"
+      ],
+      "expect": [
+        "AML.T0005.001",
+        "AML.T0029",
+        "AML.T0034",
+        "AML.T0034.000",
+        "AML.T0049",
+        "AML.T0051.000",
+        "AML.T0051.001",
+        "AML.T0054",
+        "AML.T0055",
+        "AML.T0066",
+        "AML.T0069.002",
+        "AML.T0070",
+        "AML.T0071",
+        "AML.T0077",
+        "AML.T0082",
+        "AML.T0085.000",
+        "AML.T0093",
+        "AML.T0132"
+      ]
+    },
+    {
+      "id": "profile-coding-agent",
+      "mode": "profile",
+      "properties": [
+        "agent-tools",
+        "open-registry",
+        "external-api"
+      ],
+      "expect": [
+        "AML.T0010.002",
+        "AML.T0010.003",
+        "AML.T0010.005",
+        "AML.T0011.000",
+        "AML.T0018.002",
+        "AML.T0034",
+        "AML.T0051.000",
+        "AML.T0053",
+        "AML.T0054",
+        "AML.T0055",
+        "AML.T0069.002",
+        "AML.T0077",
+        "AML.T0080",
+        "AML.T0083",
+        "AML.T0086",
+        "AML.T0101",
+        "AML.T0110",
+        "AML.T0111",
+        "AML.T0115"
+      ]
+    },
+    {
+      "id": "profile-inhouse-classifier",
+      "mode": "profile",
+      "properties": [
+        "own-model",
+        "training-pipeline",
+        "open-registry"
+      ],
+      "expect": [
+        "AML.T0005.001",
+        "AML.T0010.002",
+        "AML.T0010.003",
+        "AML.T0011.000",
+        "AML.T0015",
+        "AML.T0018.000",
+        "AML.T0018.002",
+        "AML.T0020",
+        "AML.T0029",
+        "AML.T0035",
+        "AML.T0040",
+        "AML.T0043.004",
+        "AML.T0059",
+        "AML.T0111",
+        "AML.T0115",
+        "AML.T0137"
+      ]
+    },
+    {
+      "id": "profile-document-assistant",
+      "mode": "profile",
+      "properties": [
+        "external-api",
+        "file-upload",
+        "rag",
+        "agent-tools"
+      ],
+      "expect": [
+        "AML.T0010.005",
+        "AML.T0034",
+        "AML.T0051.000",
+        "AML.T0051.001",
+        "AML.T0053",
+        "AML.T0054",
+        "AML.T0055",
+        "AML.T0066",
+        "AML.T0068",
+        "AML.T0069.002",
+        "AML.T0070",
+        "AML.T0071",
+        "AML.T0077",
+        "AML.T0080",
+        "AML.T0082",
+        "AML.T0083",
+        "AML.T0085.000",
+        "AML.T0086",
+        "AML.T0101",
+        "AML.T0110",
+        "AML.T0119",
+        "AML.T0129"
+      ]
+    },
+    {
+      "id": "profile-empty",
+      "mode": "profile",
+      "properties": [],
+      "expect": []
+    },
+    {
+      "id": "f-direct-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A customer typed instructions into the support chat telling the assistant to ignore its previous instructions, and it then answered questions outside its scope.",
+      "expect": [
+        "AML.T0051.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-direct-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Ein Nutzer hat im Chat eine Prompt-Injection versucht: Er forderte den Assistenten auf, die vorherigen Anweisungen zu ignorieren.",
+      "expect": [
+        "AML.T0051.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-direct-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Пользователь в чате написал боту игнорировать предыдущие инструкции — это прямая промпт-инъекция.",
+      "expect": [
+        "AML.T0051.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-indirect-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The summarizer processed a web page that contained hidden instructions for the model; the summary then recommended a competitor. Indirect prompt injection through retrieved content.",
+      "expect": [
+        "AML.T0051.001"
+      ],
+      "allow": [
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "f-indirect-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "In einer hochgeladenen PDF-Datei standen versteckte Anweisungen an das Modell (indirekte Prompt-Injection).",
+      "expect": [
+        "AML.T0051.001"
+      ],
+      "allow": [
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "f-indirect-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "В письме, которое обработал ассистент, были скрытые инструкции для модели: косвенная промпт-инъекция.",
+      "expect": [
+        "AML.T0051.001"
+      ],
+      "allow": [
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "f-jailbreak-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Researchers used a role-play jailbreak to make the model produce content its guardrails should block.",
+      "expect": [
+        "AML.T0054"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-jailbreak-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Через джейлбрейк удалось обойти ограничения модели и получить запрещённый ответ.",
+      "expect": [
+        "AML.T0054"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-sysprompt-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A tester got the assistant to reveal its full system prompt, including internal pricing rules.",
+      "expect": [
+        "AML.T0069.002"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-sysprompt-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Der Chatbot hat seinen System-Prompt preisgegeben.",
+      "expect": [
+        "AML.T0069.002"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-render-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The chat client rendered a markdown image from the model response; the image URL carried conversation data to an external server.",
+      "expect": [
+        "AML.T0077"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-rag-poison-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Someone edited pages in the wiki that our RAG index uses, so the assistant now quotes false refund rules. RAG poisoning.",
+      "expect": [
+        "AML.T0070"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-rag-poison-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "В базу знаний для RAG подбросили документы с ложными сведениями — отравление индекса.",
+      "expect": [
+        "AML.T0070"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-train-poison-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Mislabeled samples were added to the training dataset by a compromised annotator account (data poisoning).",
+      "expect": [
+        "AML.T0020"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-train-poison-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Die Trainingsdaten wurden manipuliert: Data Poisoning über einen öffentlichen Datensatz.",
+      "expect": [
+        "AML.T0020"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-backdoor-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The fine-tuned model behaves normally but switches its answer when a specific trigger phrase appears: a backdoor.",
+      "expect": [
+        "AML.T0043.004"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-backdoor-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "В модели обнаружен бэкдор: на определённый триггер она выдаёт заранее заданный ответ.",
+      "expect": [
+        "AML.T0043.004"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-extract-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A competitor sent millions of queries to our scoring API to train a copy of the model (model extraction).",
+      "expect": [
+        "AML.T0005.001"
+      ],
+      "allow": [
+        "AML.T0034"
+      ]
+    },
+    {
+      "id": "f-extract-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Über die API wurde das Modell durch massenhafte Abfragen nachgebaut (Model Stealing).",
+      "expect": [
+        "AML.T0005.001"
+      ],
+      "allow": [
+        "AML.T0034"
+      ]
+    },
+    {
+      "id": "f-memorized-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The language model reproduced verbatim customer records from its training data when asked repeatedly.",
+      "expect": [
+        "AML.T0137.003"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-memorized-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Модель выдала дословно фрагменты обучающих данных с персональными сведениями.",
+      "expect": [
+        "AML.T0137.003"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-membership-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "An auditor showed a membership inference attack: they could tell whether a patient record was in the training set.",
+      "expect": [
+        "AML.T0137.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-adversarial-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Slightly modified images evaded the fraud detection model; these adversarial examples were classified as genuine.",
+      "expect": [
+        "AML.T0015"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-adversarial-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Mit adversarial examples wurde der Spamfilter umgangen.",
+      "expect": [
+        "AML.T0015"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-dos-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Very long requests overloaded the inference servers and the AI service was unavailable for two hours (denial of service).",
+      "expect": [
+        "AML.T0029"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-cost-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A stolen key was used to run our LLM account at full speed; the monthly bill jumped from 200 to 40,000 dollars.",
+      "expect": [
+        "AML.T0034"
+      ],
+      "allow": [
+        "AML.T0055"
+      ]
+    },
+    {
+      "id": "f-cost-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Злоумышленники гоняли запросы к нашей модели, и счёт за облако вырос в десятки раз.",
+      "expect": [
+        "AML.T0034"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-pickle-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A model file in pickle format executed code when it was loaded with torch.load on a build server.",
+      "expect": [
+        "AML.T0011.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-pickle-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Beim Laden einer Pickle-Datei mit Modellgewichten wurde Schadcode ausgeführt.",
+      "expect": [
+        "AML.T0011.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-modelrepo-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A model downloaded from a public model hub turned out to be a malicious upload under a look-alike organization name.",
+      "expect": [
+        "AML.T0010.003"
+      ],
+      "allow": [
+        "AML.T0011.000"
+      ]
+    },
+    {
+      "id": "f-package-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A compromised Python package in our ML pipeline sent environment variables to an attacker (malicious dependency).",
+      "expect": [
+        "AML.T0010.001"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-package-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "В зависимостях проекта оказался вредоносный пакет из PyPI.",
+      "expect": [
+        "AML.T0010.001"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-toolpoison-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "An MCP server tool description contained hidden instructions that told the agent to read SSH keys (tool poisoning).",
+      "expect": [
+        "AML.T0110.000"
+      ],
+      "allow": [
+        "AML.T0051.001",
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "f-toolpoison-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Die Tool-Beschreibung eines MCP-Servers enthielt versteckte Anweisungen an den Agenten.",
+      "expect": [
+        "AML.T0110.000"
+      ],
+      "allow": [
+        "AML.T0051.001",
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "f-tooluse-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The agent was talked into calling the payment tool for a refund the customer was not entitled to.",
+      "expect": [
+        "AML.T0053"
+      ],
+      "allow": [
+        "AML.T0051.000"
+      ]
+    },
+    {
+      "id": "f-delete-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The coding agent ran a command that deleted the production database.",
+      "expect": [
+        "AML.T0101"
+      ],
+      "allow": [
+        "AML.T0053"
+      ]
+    },
+    {
+      "id": "f-delete-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "ИИ-агент удалил файлы в общем каталоге, выполняя задачу пользователя.",
+      "expect": [
+        "AML.T0101"
+      ],
+      "allow": [
+        "AML.T0053"
+      ]
+    },
+    {
+      "id": "f-exfil-tool-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The agent used its email tool to send internal documents to an outside address after reading a crafted ticket.",
+      "expect": [
+        "AML.T0086"
+      ],
+      "allow": [
+        "AML.T0051.001",
+        "AML.T0053"
+      ]
+    },
+    {
+      "id": "f-apikey-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "An OpenAI API key was committed to a public GitHub repository and used by others within hours. Key: {{SYNTH:OPENAI_PROJECT_KEY}}",
+      "expect": [
+        "AML.T0055"
+      ],
+      "allow": [
+        "AML.T0034"
+      ]
+    },
+    {
+      "id": "f-apikey-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Der API-Schlüssel für das Sprachmodell lag im Klartext im Frontend-Code.",
+      "expect": [
+        "AML.T0055"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-agentcreds-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The agent configuration file contained database passwords and cloud credentials that any tool call could read.",
+      "expect": [
+        "AML.T0083"
+      ],
+      "allow": [
+        "AML.T0055"
+      ]
+    },
+    {
+      "id": "f-deepfake-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "A deepfake voice of the CFO was used in a call to approve a transfer.",
+      "expect": [
+        "AML.T0088"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-deepfake-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Мошенники использовали дипфейк видео с руководителем компании.",
+      "expect": [
+        "AML.T0088"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-hallu-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The assistant recommended a package name that did not exist; an attacker later registered that hallucinated package.",
+      "expect": [
+        "AML.T0060"
+      ],
+      "allow": [
+        "AML.T0010.001"
+      ]
+    },
+    {
+      "id": "f-memory-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Instructions stored in the assistant memory in one session changed its behaviour in all later sessions (memory poisoning).",
+      "expect": [
+        "AML.T0080.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-exposed-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "An Ollama server with our fine-tuned models was reachable from the internet without authentication.",
+      "expect": [
+        "AML.T0132"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-exposed-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Der Inferenz-Endpunkt war ohne Authentifizierung öffentlich erreichbar.",
+      "expect": [
+        "AML.T0132"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-obfusc-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The injected instructions were hidden as base64 and with invisible Unicode characters so filters did not see them.",
+      "expect": [
+        "AML.T0068"
+      ],
+      "allow": [
+        "AML.T0051.000",
+        "AML.T0051.001"
+      ]
+    },
+    {
+      "id": "f-history-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "An extension modified the stored chat history so that the model believed it had already agreed to share data.",
+      "expect": [
+        "AML.T0092"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-ragcollect-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Through the assistant, a contractor retrieved confidential HR documents from the RAG database they should not see.",
+      "expect": [
+        "AML.T0085.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-inversion-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Researchers reconstructed recognizable faces from the face recognition model outputs (model inversion).",
+      "expect": [
+        "AML.T0137.002"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-phish-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Attackers used an LLM to write convincing spearphishing emails in perfect German to our finance team.",
+      "expect": [
+        "AML.T0052.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-phish-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Фишинговые письма были сгенерированы языковой моделью и выглядели очень правдоподобно.",
+      "expect": [
+        "AML.T0052.000"
+      ],
+      "allow": []
+    },
+    {
+      "id": "f-nfd-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Über eine hochgeladene Datei gelangten versteckte Anweisungen in den Prompt; das Modell führte sie aus (indirekte Prompt-Injection).",
+      "expect": [
+        "AML.T0051.001"
+      ],
+      "allow": [
+        "AML.T0068"
+      ]
+    },
+    {
+      "id": "f-nfd-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Через джейлбрейк обошли ограничения; ёмкий ответ был запрещённым.",
+      "expect": [
+        "AML.T0054"
+      ],
+      "allow": []
+    },
+    {
+      "id": "b-onboarding-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "We updated the onboarding guide with new instructions for support staff and trained the team on the new refund policy.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "b-weather-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The forecasting model is trained on public weather data and retrained every week. Accuracy improved by two percent.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "b-keyrotation-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "Our policy requires rotating all service keys every 90 days and storing them in the vault.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "b-release-de",
+      "mode": "finding",
+      "lang": "de",
+      "text": "Die neue Version des Modells wurde nach dem Test freigegeben; die Antwortzeiten sind stabil.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "b-meeting-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "На встрече обсудили бюджет на обучение сотрудников и план релиза нового ассистента.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "b-agent-ru",
+      "mode": "finding",
+      "lang": "ru",
+      "text": "Агент по недвижимости показал клиенту три квартиры.",
+      "expect": [],
+      "allow": []
+    },
+    {
+      "id": "b-pipeline-en",
+      "mode": "finding",
+      "lang": "en",
+      "text": "The data pipeline loads CSV files every night and the dashboard shows the results.",
+      "expect": [],
+      "allow": []
+    }
+  ]
+}

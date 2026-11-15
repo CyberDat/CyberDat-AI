@@ -28,6 +28,7 @@ $map = array(
  'mcp-security-checker' => array( 'tool-mcp-checker.php', 'mcp-checker' ),
  'agent-leak-inspector' => array( 'tool-leak-inspector.php', 'leak-inspector' ),
  'ai-model-bom' => array( 'tool-ai-model-bom.php', 'ai-model-bom' ),
+ 'mitre-atlas-mapper' => array( 'tool-atlas-mapper.php', 'atlas-mapper' ),
 );
 $slug = $argv[1] ?? '';
 if ( ! isset( $map[$slug] ) ) { exit( 2 ); }
