@@ -26,6 +26,7 @@ $map = array(
  'prompt-injection-detector' => array( 'tool-prompt-injection-detector.php', 'prompt-injection-detector' ),
  'lotl-command-analyzer' => array( 'tool-lotl-analyzer.php', 'lotl-analyzer' ),
  'mcp-security-checker' => array( 'tool-mcp-checker.php', 'mcp-checker' ),
+ 'agent-leak-inspector' => array( 'tool-leak-inspector.php', 'leak-inspector' ),
  'ai-model-bom' => array( 'tool-ai-model-bom.php', 'ai-model-bom' ),
 );
 $slug = $argv[1] ?? '';
