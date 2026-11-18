@@ -92,7 +92,7 @@
     "status": "planned",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Planned generator of prompt-injection test cases for authorized testing; no paid API calls.",
+    "description": "Build canary-based prompt-injection tests for your own LLM application, run them yourself and check the responses locally. Every test asks only for a harmless, verifiable action; for authorized testing.",
     "icon_path": "M9 3h6 M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"
   },
   {
