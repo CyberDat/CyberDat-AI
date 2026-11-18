@@ -1,0 +1,42 @@
+{
+  "tool": "container-hardening-audit",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "description": "FORMAT EXAMPLE ONLY. cases[]: id; name (file name such as Dockerfile, compose.yaml or deploy.yaml); text (the whole file; remove real secrets and host names first or replace them with obviously fake values); expect (exact list of finding ids from rules.json of the package) or error (INPUT-HELM, INPUT-YAML, INPUT-ANCHOR or INPUT-UNKNOWN); optional mustNotShow (strings that must not appear in findings or the checklist). Write and label the files yourself before running.",
+  "cases": [
+    {
+      "id": "d-1",
+      "name": "Dockerfile",
+      "text": "FROM alpine:3.20\nRUN apk add --no-cache ca-certificates\nUSER 10001\nHEALTHCHECK NONE\nCMD [\"/app\"]\n",
+      "expect": []
+    },
+    {
+      "id": "d-2",
+      "name": "Dockerfile",
+      "text": "FROM alpine\nENV DB_PASSWORD=not-a-real-password\nCMD [\"/app\"]\n",
+      "expect": [
+        "DF-HYG-002",
+        "DF-SEC-001",
+        "DF-TAG-002",
+        "DF-USER-001"
+      ],
+      "mustNotShow": [
+        "not-a-real-password"
+      ]
+    },
+    {
+      "id": "k-1",
+      "name": "rbac.yaml",
+      "text": "apiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRoleBinding\nmetadata:\n  name: x\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: cluster-admin\nsubjects:\n  - kind: User\n    name: dev\n",
+      "expect": [
+        "K8S-RBAC-002"
+      ]
+    },
+    {
+      "id": "h-1",
+      "name": "templates/svc.yaml",
+      "text": "apiVersion: v1\nkind: Service\nmetadata:\n  name: {{ .Release.Name }}\n",
+      "error": "INPUT-HELM"
+    }
+  ]
+}

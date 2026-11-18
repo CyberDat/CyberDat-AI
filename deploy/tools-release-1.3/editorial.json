@@ -1,0 +1,73 @@
+{
+  "_note": "Proposed editorial fields for the three release 1.3 tool pages (meta _cyberdat_tool), same field names as deploy/tools-release-1.2/editorial.json. English only. Owner review required before reviewed=true. Privacy wording follows the installed pages (“This tool does not transmit the text you enter”). Article and Rank Math metadata are prepared by Codex/SEO, not here. Result wording avoids any claim of safety, protection, certification or conformance.",
+  "prompt-injection-test-bench": {
+    "title": "LLM Prompt Injection Test Bench",
+    "summary": "Build canary-based prompt-injection tests for your own LLM application, run them yourself and check the responses locally. Every test asks only for a harmless, verifiable action. For systems you are authorized to test; no canary does not mean the application is protected.",
+    "how_it_works": "<p>Prompt injection is when text that your application processes — a document, an email, a web page, a tool result — contains instructions that the model follows. The test bench helps you see whether your application follows such instructions, without any harmful payload.</p><p><strong>Build a test set</strong>: choose the type of application (chat, retrieval over documents, agent with tools, document processing) and the languages. The tool picks tests from a fixed CyberDat library in ten categories, such as direct instruction override, injection in documents, emails and web pages, role and delimiter spoofing, hidden text, simple encodings, links that carry data, system-prompt label extraction and forced tool calls. Each test gets its own canary code and asks only for a harmless action: print the code, repeat a label, add an example.com link with the code, or call a tool named canary_echo.</p><p><strong>Check responses</strong>: run the tests in your application and paste the responses back. The tool looks for each canary, also when it is split, in another case, reversed, in a link, hidden with invisible characters or encoded, and shows which tests triggered.</p>",
+    "documentation": "<h3>Input</h3><p>Application type, languages (English, German, Russian) and an optional system-prompt label. Responses as JSON lines or CSV with the columns id and response, up to 5 MB.</p><h3>Output</h3><p>A test set as JSONL or CSV with canary codes, and a report (Markdown or JSON) with the result per test and short masked fragments, not the full responses.</p><h3>Boundaries</h3><p>Test only systems you own or are authorized to test. The tool does not generate, mutate or send attacks; links use only reserved example domains.</p>",
+    "examples": "<h3>Testing a retrieval assistant</h3><p>Build a set for “retrieval over documents”, put the document tests into your knowledge base, ask the questions each test names and paste the answers back.</p><pre>T002 indirect-document → canary CANARY-7F3A9C2B found (method: base64)</pre>",
+    "faq": "<h3>Does this tool attack or send anything to my application?</h3><p>No. This tool does not transmit the text you enter and it never sends tests anywhere. You run the tests in your own application and paste the responses back.</p><h3>Does “no canary appeared” mean my application is protected?</h3><p>No. If no canary appears, that does not mean the application is protected. The library is small and fixed; real attacks use other wording, other channels and many attempts.</p><h3>Which systems may I test?</h3><p>Only systems you own or are authorized to test. Every test asks only for a harmless, verifiable action such as printing a canary code.</p>",
+    "questions": [
+      {
+        "question": "Does this tool attack or send anything to my application?",
+        "answer": "No. This tool does not transmit the text you enter and it never sends tests anywhere. You run the tests in your own application and paste the responses back."
+      },
+      {
+        "question": "Does “no canary appeared” mean my application is protected?",
+        "answer": "No. If no canary appears, that does not mean the application is protected. The library is small and fixed; real attacks use other wording, other channels and many attempts."
+      },
+      {
+        "question": "Which systems may I test?",
+        "answer": "Only systems you own or are authorized to test. Every test asks only for a harmless, verifiable action such as printing a canary code."
+      }
+    ]
+  },
+  "yara-sigma-validator": {
+    "title": "YARA/Sigma Rule Validator & Converter",
+    "summary": "Check Sigma and YARA rules for syntax and quality problems and convert Sigma rules to Splunk SPL, Microsoft KQL or Elastic Lucene, locally in your browser. Static checks only; they do not replace compiling and testing the rule.",
+    "how_it_works": "<p>Detection rules break in quiet ways: a condition that references a selection that does not exist, an unknown modifier, a YARA string that is never used. The validator finds such problems before the rule reaches your pipeline.</p><p><strong>Sigma</strong>: a YAML reader written for this tool loads the rule with limits on size, depth and time and refuses anchors, aliases and tags. CyberDat checks look at required fields, log source, detection and condition, references to missing search identifiers, value modifiers, id, dates, level, status and ATT&amp;CK tags, and give quality advice. <strong>Conversion</strong>: the rule is turned into a Splunk SPL, Microsoft KQL or Elastic Lucene query by CyberDat code with your field mapping; constructs that are not supported are named in an error instead of producing a wrong query. <strong>YARA</strong>: the rule text is checked statically — names, meta, strings and modifiers, hex strings, regular expressions, declared and used strings and modules. Regular expressions in rules are never executed.</p>",
+    "documentation": "<h3>Input</h3><p>One or more Sigma rules (separated by ---) or one YARA file, up to 1 MB. Optional field mapping as JSON.</p><h3>Output</h3><p>Findings with severity, line, explanation and a suggested change; converted queries; a Markdown or JSON report with values that look like secrets masked.</p><h3>Supported conversion</h3><p>Field/value maps, value lists, keyword lists, the modifiers contains, startswith, endswith, all and exists, re and cidr (KQL and Lucene only), null values, numbers, wildcards, and conditions with and, or, not, parentheses, “1 of …” and “all of …”.</p><h3>Sources</h3><p>The Sigma specification (SigmaHQ, public domain) and the YARA documentation (BSD 3-Clause) are referenced by name; no rules from the SigmaHQ repository are included.</p>",
+    "examples": "<h3>Converting a rule to KQL</h3><pre>Image|endswith: '\\net.exe' and not User|contains: 'svc_'\n→ FolderPath endswith @\"\\net.exe\" and not(AccountName contains \"svc_\")</pre><h3>Catching a broken condition</h3><p>“condition: selection and not filter” without a filter selection is reported as an error with its line.</p>",
+    "faq": "<h3>Is my rule sent to CyberDat or a rule service?</h3><p>No. This tool does not transmit the text you enter. Rules are checked and converted in your browser.</p><h3>Does a rule without findings work?</h3><p>Not necessarily. No problems found by these checks does not mean the rule is correct or effective. Syntax checks do not replace compiling the rule with the official YARA engine or Sigma tooling and testing it on real data.</p><h3>Can I use the converted query directly?</h3><p>Check it in your own SIEM first. Field names, case sensitivity and log source mappings differ between environments; use the field mapping to match your fields.</p>",
+    "questions": [
+      {
+        "question": "Is my rule sent to CyberDat or a rule service?",
+        "answer": "No. This tool does not transmit the text you enter. Rules are checked and converted in your browser."
+      },
+      {
+        "question": "Does a rule without findings work?",
+        "answer": "Not necessarily. No problems found by these checks does not mean the rule is correct or effective. Syntax checks do not replace compiling the rule with the official YARA engine or Sigma tooling and testing it on real data."
+      },
+      {
+        "question": "Can I use the converted query directly?",
+        "answer": "Check it in your own SIEM first. Field names, case sensitivity and log source mappings differ between environments; use the field mapping to match your fields."
+      }
+    ]
+  },
+  "container-hardening-audit": {
+    "title": "Docker & Kubernetes Hardening Audit Generator",
+    "summary": "Check Dockerfiles, Docker Compose files and Kubernetes manifests against hardening rules locally in your browser and get a Markdown or JSON checklist. Static checks only; your files are not changed and no findings does not mean a configuration is safe.",
+    "how_it_works": "<p>Container settings that weaken isolation are easy to miss in review: a privileged flag, a mounted Docker socket, a service account token nobody needs. The audit generator reads your configuration files and lists such settings with a suggested change for each.</p><p>Dockerfiles are split into instructions (line continuations and heredocs included); Compose files and Kubernetes manifests are read by a YAML reader with limits on size, depth and time. Helm templates are refused with a message because they must be rendered first. CyberDat rules look for root users and missing non-root settings; privileged mode, added capabilities, privilege escalation and writable root filesystems; host namespaces, hostPath and runtime sockets; latest or missing image tags; secrets in ENV, ARG, environment and manifests; missing resource limits and probes; ADD with a URL, curl piped into a shell and administration ports; default service accounts, token automount, wildcard RBAC rules, cluster-admin bindings and missing seccomp or AppArmor profiles.</p>",
+    "documentation": "<h3>Input</h3><p>Pasted text or up to 20 opened files: Dockerfile or Containerfile, Docker Compose, Kubernetes YAML with several documents. Up to 1 MB per file and 4 MB in total.</p><h3>Output</h3><p>Each finding names the file, document, object, container and line, with severity, explanation and suggested change. Hygiene items are grouped at info level. Download as a Markdown checklist or JSON; values that look like secrets are masked. No corrected file is generated.</p><h3>Rules</h3><p>Written by CyberDat; not a CIS Benchmark and not mapped to its recommendations. Background reading: Kubernetes documentation (CC BY 4.0) and Docker documentation (Apache License 2.0), referenced by name only.</p>",
+    "examples": "<h3>A Compose service with a mounted socket</h3><pre>volumes:\n  - /var/run/docker.sock:/var/run/docker.sock\n→ HIGH DC-SOCK-001 Container runtime socket mounted (line 21 · service agent)</pre><h3>A Deployment without a security context</h3><p>Findings such as privilege escalation allowed, capabilities not dropped, no seccomp profile and token automount, each with the line to change.</p>",
+    "faq": "<h3>Are my files uploaded?</h3><p>No. This tool does not transmit the text you enter. Files you open are read in your browser tab.</p><h3>Does a file without findings mean my configuration is hardened?</h3><p>No. No findings does not mean the configuration is safe. The checklist is a starting point; images, runtime defaults, admission policies and the cluster itself are not checked.</p><h3>Is this a CIS Benchmark check?</h3><p>No. The rules are written by CyberDat. They are not a CIS Benchmark and do not map to its recommendations.</p><h3>Can it fix my manifests?</h3><p>No. It produces a Markdown or JSON checklist with a suggested change for each item; your files are not changed and no corrected file is generated.</p>",
+    "questions": [
+      {
+        "question": "Are my files uploaded?",
+        "answer": "No. This tool does not transmit the text you enter. Files you open are read in your browser tab."
+      },
+      {
+        "question": "Does a file without findings mean my configuration is hardened?",
+        "answer": "No. No findings does not mean the configuration is safe. The checklist is a starting point; images, runtime defaults, admission policies and the cluster itself are not checked."
+      },
+      {
+        "question": "Is this a CIS Benchmark check?",
+        "answer": "No. The rules are written by CyberDat. They are not a CIS Benchmark and do not map to its recommendations."
+      },
+      {
+        "question": "Can it fix my manifests?",
+        "answer": "No. It produces a Markdown or JSON checklist with a suggested change for each item; your files are not changed and no corrected file is generated."
+      }
+    ]
+  }
+}
