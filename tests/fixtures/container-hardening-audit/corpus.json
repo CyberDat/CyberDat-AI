@@ -1,0 +1,711 @@
+{
+  "_note": "Synthetic corpus written by CyberDat, frozen BEFORE any audit code. expect = exact set of finding ids for the file; optional lines/containers/documents check one finding each; error = expected input error code; mustNotShow = text that must not appear in findings or reports. Marker @@SYNTH:NAME@@ is replaced by the test with the value from tests/lib/synthetic-secrets.cjs. No CIS Benchmark text or numbering is used. NOT INDEPENDENT.",
+  "frozen": "2026-11-18",
+  "cases": [
+    {
+      "id": "df-hardened",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-no-user",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-USER-001"
+      ],
+      "lines": {
+        "DF-USER-001": 1
+      }
+    },
+    {
+      "id": "df-user-root-last",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK USER root\nCMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-USER-002"
+      ],
+      "lines": {
+        "DF-USER-002": 7
+      }
+    },
+    {
+      "id": "df-user-uid0",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 0:0\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-USER-002"
+      ]
+    },
+    {
+      "id": "df-latest",
+      "name": "Dockerfile",
+      "text": "FROM python:latest\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-TAG-001"
+      ]
+    },
+    {
+      "id": "df-no-tag",
+      "name": "Dockerfile",
+      "text": "FROM python\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-TAG-002"
+      ]
+    },
+    {
+      "id": "df-registry-port-no-tag",
+      "name": "Dockerfile",
+      "text": "FROM registry.example.com:5000/team/python\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-TAG-002"
+      ]
+    },
+    {
+      "id": "df-digest-only",
+      "name": "Dockerfile",
+      "text": "FROM python@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-multistage",
+      "name": "Dockerfile",
+      "text": "FROM golang:1.23 AS build\nWORKDIR /src\nCOPY . .\nRUN go build -o /out/app ./cmd/app\n\nFROM gcr.io/distroless/static:nonroot\nCOPY --from=build /out/app /app\nUSER 65532\nHEALTHCHECK NONE\nENTRYPOINT [\"/app\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-scratch-no-healthcheck",
+      "name": "Dockerfile",
+      "text": "FROM golang:1.23 AS build\nRUN go build -o /out/app .\nFROM scratch\nCOPY --from=build /out/app /app\nUSER 65532\nENTRYPOINT [\"/app\"]\n",
+      "expect": [
+        "DF-HYG-002"
+      ]
+    },
+    {
+      "id": "df-stage-reference",
+      "name": "Dockerfile",
+      "text": "FROM node:22-alpine AS deps\nRUN npm ci\nFROM deps AS final\nUSER node\nHEALTHCHECK CMD [\"node\", \"health.js\"]\nCMD [\"node\", \"server.js\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-secret-env",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nENV DB_PASSWORD=hunter2-example\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-SEC-001"
+      ],
+      "lines": {
+        "DF-SEC-001": 3
+      },
+      "mustNotShow": [
+        "hunter2-example"
+      ]
+    },
+    {
+      "id": "df-secret-arg-token",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nARG BUILD_TOKEN=@@SYNTH:GITHUB_PAT@@\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-SEC-001"
+      ],
+      "mustNotShow": [
+        "@@SYNTH:GITHUB_PAT@@"
+      ]
+    },
+    {
+      "id": "df-secret-pattern-any-name",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nENV UPLOAD_SETTING=\"@@SYNTH:AWS_ACCESS_KEY_ID@@\"\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-SEC-001"
+      ],
+      "mustNotShow": [
+        "@@SYNTH:AWS_ACCESS_KEY_ID@@"
+      ]
+    },
+    {
+      "id": "df-arg-reference",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nARG TOKEN\nENV API_TOKEN=${TOKEN}\nENV PASSWORD_FILE=/run/secrets/db\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-add-url",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nADD https://downloads.example.com/tool.tar.gz /opt/\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-ADD-001"
+      ]
+    },
+    {
+      "id": "df-add-local",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nADD app.tar.gz /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-HYG-001"
+      ]
+    },
+    {
+      "id": "df-curl-sh",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nRUN curl -fsSL https://get.example.com/install.sh | sh\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-PIPE-001"
+      ],
+      "lines": {
+        "DF-PIPE-001": 3
+      }
+    },
+    {
+      "id": "df-wget-bash-continued",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nRUN wget -qO- https://get.example.com/i.sh \\\n    | bash -s -- --quiet\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-PIPE-001"
+      ],
+      "lines": {
+        "DF-PIPE-001": 3
+      }
+    },
+    {
+      "id": "df-curl-to-file",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nRUN curl -fsSLo /tmp/tool.tgz https://downloads.example.com/tool.tgz && sha256sum -c /app/tool.sha256\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-expose-ssh",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080 22/tcp\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-PORT-001"
+      ]
+    },
+    {
+      "id": "df-apt-recommends",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-HYG-003"
+      ]
+    },
+    {
+      "id": "df-sudo",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nRUN sudo make install\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-SUDO-001"
+      ]
+    },
+    {
+      "id": "df-lowercase-unicode",
+      "name": "Dockerfile",
+      "text": "from python:3.12-slim\nlabel description=\"Prüfung für Größe — Пётр\"\nenv GREETING=\"Grüße\"\ncopy app/ /app/\nuser 10001\nhealthcheck cmd [\"python\", \"/app/health.py\"]\ncmd [\"python\", \"/app/main.py\"]\n",
+      "expect": []
+    },
+    {
+      "id": "df-many",
+      "name": "Dockerfile",
+      "text": "FROM ubuntu:latest\nRUN apt-get update && apt-get install -y curl\nRUN curl https://get.example.com | bash\nENV ADMIN_PASSWORD=Sommer2026!\nADD https://downloads.example.com/a.tgz /a\nEXPOSE 22\nCMD [\"/start.sh\"]\n",
+      "expect": [
+        "DF-ADD-001",
+        "DF-HYG-002",
+        "DF-HYG-003",
+        "DF-PIPE-001",
+        "DF-PORT-001",
+        "DF-SEC-001",
+        "DF-TAG-001",
+        "DF-USER-001"
+      ]
+    },
+    {
+      "id": "dc-hardened",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": []
+    },
+    {
+      "id": "dc-privileged",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    privileged: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-PRIV-001"
+      ],
+      "lines": {
+        "DC-PRIV-001": 6
+      }
+    },
+    {
+      "id": "dc-cap-add",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_add:\n      - SYS_ADMIN\n      - NET_BIND_SERVICE\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-CAP-001"
+      ]
+    },
+    {
+      "id": "dc-no-capdrop-no-ro",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-CAP-002",
+        "DC-RO-001"
+      ]
+    },
+    {
+      "id": "dc-host-namespaces",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    network_mode: host\n    pid: host\n    ipc: host\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-HOST-001",
+        "DC-HOST-002",
+        "DC-HOST-003"
+      ]
+    },
+    {
+      "id": "dc-docker-socket",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock:ro\n      - data:/data\nvolumes:\n  data: {}\n",
+      "expect": [
+        "DC-SOCK-001"
+      ]
+    },
+    {
+      "id": "dc-host-etc",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n    volumes:\n      - /etc:/host-etc:ro\n      - ./config:/config:ro\n",
+      "expect": [
+        "DC-PATH-001"
+      ]
+    },
+    {
+      "id": "dc-latest",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:latest\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-TAG-001"
+      ]
+    },
+    {
+      "id": "dc-no-tag",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-TAG-002"
+      ]
+    },
+    {
+      "id": "dc-build-only",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    build: .\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": []
+    },
+    {
+      "id": "dc-secret-map",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n    environment:\n      POSTGRES_PASSWORD: example-pass-123\n      TZ: Europe/Berlin\n",
+      "expect": [
+        "DC-SEC-001"
+      ],
+      "mustNotShow": [
+        "example-pass-123"
+      ]
+    },
+    {
+      "id": "dc-secret-list-token",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n    environment:\n      - API_KEY=@@SYNTH:OPENAI_PROJECT_KEY@@\n      - DB_PASSWORD=${DB_PASSWORD}\n      - GREETING=Grüße Пётр\n",
+      "expect": [
+        "DC-SEC-001"
+      ],
+      "mustNotShow": [
+        "@@SYNTH:OPENAI_PROJECT_KEY@@"
+      ]
+    },
+    {
+      "id": "dc-user-root",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: root\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-USER-001"
+      ]
+    },
+    {
+      "id": "dc-no-user",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-USER-002"
+      ]
+    },
+    {
+      "id": "dc-no-limits",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-RES-001"
+      ]
+    },
+    {
+      "id": "dc-deploy-limits",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    deploy:\n      resources:\n        limits:\n          cpus: \"0.50\"\n          memory: 256M\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": []
+    },
+    {
+      "id": "dc-ports-admin-all",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"2222:22\"\n      - \"8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-HYG-001",
+        "DC-PORT-001"
+      ]
+    },
+    {
+      "id": "dc-seccomp-unconfined",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n      - seccomp:unconfined\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-SECO-001"
+      ]
+    },
+    {
+      "id": "dc-no-security-opt",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-ESC-001"
+      ]
+    },
+    {
+      "id": "dc-no-healthcheck",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n",
+      "expect": [
+        "DC-HYG-002"
+      ]
+    },
+    {
+      "id": "dc-two-services",
+      "name": "docker-compose.yml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n  db:\n    image: postgres:latest\n",
+      "expect": [
+        "DC-CAP-002",
+        "DC-ESC-001",
+        "DC-HYG-002",
+        "DC-RES-001",
+        "DC-RO-001",
+        "DC-TAG-001",
+        "DC-USER-002"
+      ],
+      "containers": {
+        "DC-TAG-001": "db"
+      }
+    },
+    {
+      "id": "dc-anchors",
+      "name": "compose.yaml",
+      "text": "x-common: &common\n  read_only: true\nservices:\n  web:\n    <<: *common\n    image: nginx:1.27.2\n",
+      "expect": [],
+      "error": "INPUT-ANCHOR"
+    },
+    {
+      "id": "k8s-hardened",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-minimal",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  template:\n    spec:\n      containers:\n      - name: web\n        image: nginx:1.27\n",
+      "expect": [
+        "K8S-APPARMOR-001",
+        "K8S-CAP-002",
+        "K8S-ESC-001",
+        "K8S-PROBE-001",
+        "K8S-PROBE-002",
+        "K8S-RES-001",
+        "K8S-RO-001",
+        "K8S-SA-001",
+        "K8S-SA-002",
+        "K8S-SECCOMP-001",
+        "K8S-USER-002"
+      ]
+    },
+    {
+      "id": "k8s-privileged",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            privileged: true\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-PRIV-001"
+      ]
+    },
+    {
+      "id": "k8s-cap-add-all",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              add: [\"ALL\"]\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-CAP-001"
+      ]
+    },
+    {
+      "id": "k8s-run-as-root",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            runAsUser: 0\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-USER-001"
+      ]
+    },
+    {
+      "id": "k8s-host-namespaces",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      hostNetwork: true\n      hostPID: true\n      hostIPC: true\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-HOST-001",
+        "K8S-HOST-002",
+        "K8S-HOST-003"
+      ]
+    },
+    {
+      "id": "k8s-hostpath-socket",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n      volumes:\n        - name: sock\n          hostPath:\n            path: /var/run/docker.sock\n",
+      "expect": [
+        "K8S-SOCK-001"
+      ]
+    },
+    {
+      "id": "k8s-hostpath-root",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n      volumes:\n        - name: host\n          hostPath:\n            path: /\n",
+      "expect": [
+        "K8S-PATH-001"
+      ]
+    },
+    {
+      "id": "k8s-hostpath-other",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n      volumes:\n        - name: logs\n          hostPath:\n            path: /var/log/web\n        - name: tmp\n          emptyDir: {}\n",
+      "expect": [
+        "K8S-PATH-002"
+      ]
+    },
+    {
+      "id": "k8s-tags-init",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      initContainers:\n        - name: init\n          image: busybox:latest\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 100m\n              memory: 64Mi\n      containers:\n        - name: web\n          image: registry.example.com/web\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-TAG-001",
+        "K8S-TAG-002"
+      ],
+      "containers": {
+        "K8S-TAG-001": "init",
+        "K8S-TAG-002": "web"
+      }
+    },
+    {
+      "id": "k8s-digest",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-secret-env",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          env:\n            - name: DB_PASSWORD\n              value: \"example-pass-123\"\n            - name: API_TOKEN\n              valueFrom:\n                secretKeyRef:\n                  name: api\n                  key: token\n            - name: LANGUAGE\n              value: \"Deutsch – Größe\"\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-SEC-001"
+      ],
+      "mustNotShow": [
+        "example-pass-123"
+      ],
+      "lines": {
+        "K8S-SEC-001": 26
+      }
+    },
+    {
+      "id": "k8s-secret-object",
+      "name": "secret.yaml",
+      "text": "apiVersion: v1\nkind: Secret\nmetadata:\n  name: db\ntype: Opaque\nstringData:\n  password: example-pass-123\n",
+      "expect": [
+        "K8S-SEC-002"
+      ],
+      "mustNotShow": [
+        "example-pass-123"
+      ]
+    },
+    {
+      "id": "k8s-configmap-secret",
+      "name": "cm.yaml",
+      "text": "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app\ndata:\n  LOG_LEVEL: info\n  SLACK_TOKEN: \"@@SYNTH:SLACK_BOT_TOKEN@@\"\n",
+      "expect": [
+        "K8S-SEC-001"
+      ],
+      "mustNotShow": [
+        "@@SYNTH:SLACK_BOT_TOKEN@@"
+      ]
+    },
+    {
+      "id": "k8s-rbac-wildcard",
+      "name": "rbac.yaml",
+      "text": "apiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRole\nmetadata:\n  name: everything\nrules:\n  - apiGroups: [\"\"]\n    resources: [\"pods\"]\n    verbs: [\"get\", \"list\"]\n  - apiGroups: [\"*\"]\n    resources: [\"*\"]\n    verbs: [\"*\"]\n",
+      "expect": [
+        "K8S-RBAC-001"
+      ],
+      "lines": {
+        "K8S-RBAC-001": 9
+      }
+    },
+    {
+      "id": "k8s-cluster-admin-binding",
+      "name": "rbac.yaml",
+      "text": "apiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRoleBinding\nmetadata:\n  name: ci-admin\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: cluster-admin\nsubjects:\n  - kind: ServiceAccount\n    name: ci\n    namespace: build\n",
+      "expect": [
+        "K8S-RBAC-002"
+      ]
+    },
+    {
+      "id": "k8s-default-sa",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-SA-001"
+      ]
+    },
+    {
+      "id": "k8s-automount",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-SA-002"
+      ]
+    },
+    {
+      "id": "k8s-sa-object-disables-token",
+      "name": "deploy.yaml",
+      "text": "apiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: web\nautomountServiceAccountToken: false\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-seccomp-unconfined",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: Unconfined\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-SECCOMP-002"
+      ]
+    },
+    {
+      "id": "k8s-seccomp-container-level",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n            seccompProfile:\n              type: RuntimeDefault\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-apparmor-annotation",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n      annotations:\n        container.apparmor.security.beta.kubernetes.io/web: runtime/default\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-apparmor-unconfined",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: Unconfined\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-APPARMOR-002"
+      ]
+    },
+    {
+      "id": "k8s-job-no-probes",
+      "name": "job.yaml",
+      "text": "apiVersion: batch/v1\nkind: Job\nmetadata:\n  name: migrate\nspec:\n  template:\n    spec:\n      restartPolicy: Never\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-cronjob-privileged",
+      "name": "cron.yaml",
+      "text": "apiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: backup\nspec:\n  schedule: \"0 3 * * *\"\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          restartPolicy: OnFailure\n          serviceAccountName: web\n          automountServiceAccountToken: false\n          securityContext:\n            runAsNonRoot: true\n            seccompProfile:\n              type: RuntimeDefault\n            appArmorProfile:\n              type: RuntimeDefault\n          containers:\n            - name: web\n              image: registry.example.com/web:1.4.2\n              securityContext:\n                privileged: true\n                allowPrivilegeEscalation: false\n                readOnlyRootFilesystem: true\n                capabilities:\n                  drop: [\"ALL\"]\n              resources:\n                limits:\n                  cpu: 500m\n                  memory: 256Mi\n",
+      "expect": [
+        "K8S-PRIV-001"
+      ]
+    },
+    {
+      "id": "k8s-hostport",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          ports:\n            - containerPort: 8080\n              hostPort: 8080\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-PORT-001"
+      ]
+    },
+    {
+      "id": "k8s-multidoc",
+      "name": "app.yaml",
+      "text": "apiVersion: v1\nkind: Service\nmetadata:\n  name: web\nspec:\n  selector:\n    app: web\n  ports:\n    - port: 80\n      targetPort: 8080\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: true\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n---\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: web\ndata:\n  GREETING: \"Привет\"\n",
+      "expect": [
+        "K8S-ESC-001"
+      ],
+      "documents": {
+        "K8S-ESC-001": 2
+      }
+    },
+    {
+      "id": "k8s-run-as-user-nonzero",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsUser: 1000\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "k8s-no-cpu-limit",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-RES-001"
+      ]
+    },
+    {
+      "id": "k8s-ro-false",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: false\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-RO-001"
+      ]
+    },
+    {
+      "id": "k8s-list",
+      "name": "list.yaml",
+      "text": "apiVersion: v1\nkind: List\nitems:\n  - apiVersion: v1\n    kind: Pod\n    metadata:\n      name: debug\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            privileged: true\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-PRIV-001"
+      ]
+    },
+    {
+      "id": "k8s-pod-unicode",
+      "name": "pod.yaml",
+      "text": "apiVersion: v1\nkind: Pod\nmetadata:\n  name: web\n  labels:\n    owner: \"Jürgen-Пётр\"\n  annotations:\n    description: \"Prüfung für Größe\"\nspec:\n  serviceAccountName: web\n  automountServiceAccountToken: false\n  securityContext:\n    runAsNonRoot: true\n    seccompProfile:\n      type: RuntimeDefault\n    appArmorProfile:\n      type: RuntimeDefault\n  containers:\n    - name: web\n      image: registry.example.com/web:1.4.2\n      env:\n        - name: GREETING\n          value: \"Grüße, Пётр\"\n      securityContext:\n        allowPrivilegeEscalation: false\n        readOnlyRootFilesystem: true\n        capabilities:\n          drop: [\"ALL\"]\n      resources:\n        limits:\n          cpu: 500m\n          memory: 256Mi\n      livenessProbe:\n        httpGet:\n          path: /healthz\n          port: 8080\n      readinessProbe:\n        httpGet:\n          path: /ready\n          port: 8080\n",
+      "expect": []
+    },
+    {
+      "id": "helm-template",
+      "name": "templates/deployment.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: {{ include \"web.fullname\" . }}\nspec:\n  template:\n    spec:\n      containers:\n        - name: web\n          image: \"{{ .Values.image.repository }}:{{ .Values.image.tag }}\"\n",
+      "expect": [],
+      "error": "INPUT-HELM"
+    },
+    {
+      "id": "yaml-tab",
+      "name": "deploy.yaml",
+      "text": "apiVersion: v1\nkind: Pod\nmetadata:\n\tname: web\n",
+      "expect": [],
+      "error": "INPUT-YAML",
+      "errorLine": 4
+    },
+    {
+      "id": "unknown-input",
+      "name": "notes.txt",
+      "text": "Just some notes about our cluster.\nNothing to audit here.\n",
+      "expect": [],
+      "error": "INPUT-UNKNOWN"
+    }
+  ]
+}
