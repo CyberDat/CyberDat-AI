@@ -1,0 +1,585 @@
+{
+  "_note": "Synthetic corpus written by CyberDat, frozen BEFORE any validator or converter code. kind sigma/yara: expect = exact set of finding ids. kind convert: expected query per target (string) or {error: text that the error must mention}; optional fieldmap per target. No SigmaHQ rules (DRL 1.1) are used. NOT INDEPENDENT.",
+  "frozen": "2026-11-18",
+  "cases": [
+    {
+      "id": "sig-valid",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "sig-valid-unicode",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|contains: 'Größe prüfen'\n        User: 'Пётр'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "sig-no-title",
+      "kind": "sigma",
+      "text": "id: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-REQ-001"
+      ]
+    },
+    {
+      "id": "sig-no-logsource",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-REQ-002"
+      ]
+    },
+    {
+      "id": "sig-empty-logsource",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    definition: Sysmon required\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-REQ-002"
+      ]
+    },
+    {
+      "id": "sig-no-condition",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-REQ-004"
+      ]
+    },
+    {
+      "id": "sig-no-detection",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-REQ-003"
+      ]
+    },
+    {
+      "id": "sig-bad-id",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: whoami-rule-1\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-ID-001"
+      ]
+    },
+    {
+      "id": "sig-bad-date",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 01.11.2026\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-DATE-001"
+      ]
+    },
+    {
+      "id": "sig-modified-before",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\nmodified: 2026-10-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-DATE-002"
+      ]
+    },
+    {
+      "id": "sig-bad-level",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: severe\n",
+      "expect": [
+        "SIG-LVL-001"
+      ]
+    },
+    {
+      "id": "sig-bad-status",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: production\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-STS-001"
+      ]
+    },
+    {
+      "id": "sig-bad-tags",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.T1033\n    - mitre.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-Q-003",
+        "SIG-TAG-001"
+      ],
+      "note": "upper-case technique id and unknown namespace; duplicate tag"
+    },
+    {
+      "id": "sig-good-tags",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\n    - attack.t1059.001\n    - attack.g0016\n    - cve.2026-12345\n    - tlp.clear\n    - detection.threat-hunting\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "sig-long-title",
+      "kind": "sigma",
+      "text": "title: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-TITLE-001"
+      ]
+    },
+    {
+      "id": "sig-cond-syntax",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n    condition: selection and (\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-COND-001"
+      ]
+    },
+    {
+      "id": "sig-cond-undefined",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n    condition: selection and not filter\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-COND-002"
+      ]
+    },
+    {
+      "id": "sig-cond-unused",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n    filter:\n        User: 'SYSTEM'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-COND-003"
+      ]
+    },
+    {
+      "id": "sig-cond-of",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection_a:\n        Image|endswith: '\\whoami.exe'\n    selection_b:\n        OriginalFileName: 'whoami.exe'\n    filter_main:\n        User: 'SYSTEM'\n    condition: 1 of selection_* and not 1 of filter_*\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "sig-cond-them",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection_a:\n        Image|endswith: '\\whoami.exe'\n    selection_b:\n        OriginalFileName: 'whoami.exe'\n    condition: all of them\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "sig-cond-of-missing",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n    condition: selection or 1 of filter_*\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-COND-002"
+      ]
+    },
+    {
+      "id": "sig-unknown-mod",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endwith: '\\whoami.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-MOD-001"
+      ]
+    },
+    {
+      "id": "sig-conflict-mod",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|contains|startswith: 'whoami'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-MOD-002"
+      ]
+    },
+    {
+      "id": "sig-empty-selection",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-DET-001"
+      ]
+    },
+    {
+      "id": "sig-no-fp",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nlevel: medium\n",
+      "expect": [
+        "SIG-Q-001"
+      ]
+    },
+    {
+      "id": "sig-broad",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|contains: 'ab'\n        Image: '*'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-Q-002"
+      ]
+    },
+    {
+      "id": "sig-dup-values",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith:\n            - '\\whoami.exe'\n            - '\\whoami.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-Q-003"
+      ]
+    },
+    {
+      "id": "sig-missing-meta",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nstatus: test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\n",
+      "expect": [
+        "SIG-Q-004",
+        "SIG-Q-005",
+        "SIG-Q-006"
+      ]
+    },
+    {
+      "id": "sig-yaml-error",
+      "kind": "sigma",
+      "text": "title: Broken\nlogsource:\n  product: windows\n detection: x\n",
+      "expect": [
+        "SIG-YAML-001"
+      ]
+    },
+    {
+      "id": "sig-yaml-alias",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection: &sel\n        Image|endswith: '\\whoami.exe'\n    other: *sel\n    condition: selection or other\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-YAML-002"
+      ]
+    },
+    {
+      "id": "sig-dup-key",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        Image|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-YAML-003"
+      ]
+    },
+    {
+      "id": "sig-keywords",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    keywords:\n        - 'whoami /priv'\n        - 'whoami /groups'\n    condition: keywords\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "sig-condition-list",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n    selection2:\n        OriginalFileName: 'whoami.exe'\n    condition:\n        - selection\n        - selection2\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "yar-valid",
+      "kind": "yara",
+      "text": "rule Demo_Strings : demo\n{\n    meta:\n        author = \"CyberDat test\"\n        version = 2\n        active = true\n    strings:\n        $a = \"Invoke-Example\" nocase wide ascii\n        $b = { 4D 5A 90 00 ?? ?? [2-4] 50 45 }\n        $c = /setup[0-9]{2,3}\\.example/ nocase\n    condition:\n        filesize < 2MB and 2 of them\n}\n",
+      "expect": []
+    },
+    {
+      "id": "yar-valid-import",
+      "kind": "yara",
+      "text": "import \"pe\"\n\nrule Demo_PE\n{\n    strings:\n        $s = \"ExampleMarker\"\n    condition:\n        uint16(0) == 0x5A4D and filesize < 5MB and pe.number_of_sections > 3 and $s\n}\n",
+      "expect": []
+    },
+    {
+      "id": "yar-unicode",
+      "kind": "yara",
+      "text": "rule Demo_Unicode\n{\n    strings:\n        $de = \"Größe prüfen\" wide\n        $ru = \"Пётр Иванов\"\n    condition:\n        filesize < 1MB and any of them\n}\n",
+      "expect": []
+    },
+    {
+      "id": "yar-syntax",
+      "kind": "yara",
+      "text": "rule Broken\n{\n    strings:\n        $a = \"abcdef\"\n    condition:\n        $a and (\n",
+      "expect": [
+        "YAR-SYN-001"
+      ]
+    },
+    {
+      "id": "yar-bad-name",
+      "kind": "yara",
+      "text": "rule 1st_rule\n{\n    condition:\n        filesize < 1KB\n}\n",
+      "expect": [
+        "YAR-NAME-001"
+      ]
+    },
+    {
+      "id": "yar-keyword-name",
+      "kind": "yara",
+      "text": "rule condition\n{\n    condition:\n        filesize < 1KB\n}\n",
+      "expect": [
+        "YAR-NAME-001"
+      ]
+    },
+    {
+      "id": "yar-dup-rule",
+      "kind": "yara",
+      "text": "rule Same { condition: filesize < 1KB }\nrule Same { condition: filesize < 2KB }\n",
+      "expect": [
+        "YAR-NAME-002"
+      ]
+    },
+    {
+      "id": "yar-dup-string",
+      "kind": "yara",
+      "text": "rule DupString\n{\n    strings:\n        $a = \"abcdef\"\n        $a = \"ghijkl\"\n    condition:\n        filesize < 1MB and $a\n}\n",
+      "expect": [
+        "YAR-STR-001"
+      ]
+    },
+    {
+      "id": "yar-undeclared",
+      "kind": "yara",
+      "text": "rule Undeclared\n{\n    strings:\n        $a = \"abcdef\"\n    condition:\n        filesize < 1MB and $a and $b\n}\n",
+      "expect": [
+        "YAR-STR-002"
+      ]
+    },
+    {
+      "id": "yar-unused",
+      "kind": "yara",
+      "text": "rule Unused\n{\n    strings:\n        $a = \"abcdef\"\n        $b = \"ghijkl\"\n    condition:\n        filesize < 1MB and $a\n}\n",
+      "expect": [
+        "YAR-STR-003"
+      ]
+    },
+    {
+      "id": "yar-bad-hex",
+      "kind": "yara",
+      "text": "rule BadHex\n{\n    strings:\n        $h = { 4D 5A G0 [6-2] }\n    condition:\n        filesize < 1MB and $h\n}\n",
+      "expect": [
+        "YAR-HEX-001"
+      ]
+    },
+    {
+      "id": "yar-bad-re",
+      "kind": "yara",
+      "text": "rule BadRegex\n{\n    strings:\n        $r = /abc(def/\n    condition:\n        filesize < 1MB and $r\n}\n",
+      "expect": [
+        "YAR-RE-001"
+      ]
+    },
+    {
+      "id": "yar-bad-mod",
+      "kind": "yara",
+      "text": "rule BadModifier\n{\n    strings:\n        $h = { 4D 5A 90 00 } nocase\n        $t = \"abcdef\" sideways\n    condition:\n        filesize < 1MB and all of them\n}\n",
+      "expect": [
+        "YAR-MOD-001"
+      ]
+    },
+    {
+      "id": "yar-no-import",
+      "kind": "yara",
+      "text": "rule NoImport\n{\n    condition:\n        filesize < 1MB and pe.is_dll()\n}\n",
+      "expect": [
+        "YAR-IMP-001"
+      ]
+    },
+    {
+      "id": "yar-unused-import",
+      "kind": "yara",
+      "text": "import \"math\"\nrule UnusedImport\n{\n    strings:\n        $a = \"abcdef\"\n    condition:\n        filesize < 1MB and $a\n}\n",
+      "expect": [
+        "YAR-IMP-002"
+      ]
+    },
+    {
+      "id": "yar-no-condition",
+      "kind": "yara",
+      "text": "rule NoCondition\n{\n    strings:\n        $a = \"abcdef\"\n}\n",
+      "expect": [
+        "YAR-COND-001"
+      ]
+    },
+    {
+      "id": "yar-bad-meta",
+      "kind": "yara",
+      "text": "rule BadMeta\n{\n    meta:\n        score = high\n    condition:\n        filesize < 1MB\n}\n",
+      "expect": [
+        "YAR-META-001"
+      ]
+    },
+    {
+      "id": "yar-short",
+      "kind": "yara",
+      "text": "rule ShortString\n{\n    strings:\n        $a = \"ab\"\n        $h = { 4D 5A }\n    condition:\n        filesize < 1MB and any of them\n}\n",
+      "expect": [
+        "YAR-Q-001"
+      ]
+    },
+    {
+      "id": "yar-slow-re",
+      "kind": "yara",
+      "text": "rule SlowRegex\n{\n    strings:\n        $r = /.*password=.+/\n    condition:\n        filesize < 1MB and $r\n}\n",
+      "expect": [
+        "YAR-Q-002"
+      ]
+    },
+    {
+      "id": "yar-nested-re",
+      "kind": "yara",
+      "text": "rule NestedRegex\n{\n    strings:\n        $r = /(abc+)+def/\n    condition:\n        filesize < 1MB and $r\n}\n",
+      "expect": [
+        "YAR-Q-002"
+      ]
+    },
+    {
+      "id": "yar-no-filesize",
+      "kind": "yara",
+      "text": "rule NoFilesize\n{\n    strings:\n        $a = \"abcdef\"\n    condition:\n        $a\n}\n",
+      "expect": [
+        "YAR-Q-003"
+      ]
+    },
+    {
+      "id": "yar-comments",
+      "kind": "yara",
+      "text": "/* header comment with \"quotes\" and { braces } */\nrule Commented // trailing comment\n{\n    strings:\n        $a = \"abc//def\" // not a comment inside the string\n    condition:\n        filesize < 1MB and $a\n}\n",
+      "expect": []
+    },
+    {
+      "id": "conv-and",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\cmd.exe'\n        CommandLine|contains: 'whoami'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "Image=\"*\\\\cmd.exe\" AND CommandLine=\"*whoami*\"",
+        "kql": "Image endswith @\"\\cmd.exe\" and CommandLine contains \"whoami\"",
+        "lucene": "Image:*\\\\cmd.exe AND CommandLine:*whoami*"
+      }
+    },
+    {
+      "id": "conv-list-filter",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith:\n            - '\\a.exe'\n            - '\\b.exe'\n    filter:\n        User: 'SYSTEM'\n    condition: selection and not filter\nlevel: medium\n",
+      "expect": {
+        "spl": "(Image=\"*\\\\a.exe\" OR Image=\"*\\\\b.exe\") AND NOT User=\"SYSTEM\"",
+        "kql": "(Image endswith @\"\\a.exe\" or Image endswith @\"\\b.exe\") and not(User =~ \"SYSTEM\")",
+        "lucene": "(Image:*\\\\a.exe OR Image:*\\\\b.exe) AND NOT User:SYSTEM"
+      }
+    },
+    {
+      "id": "conv-one-of",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection_a:\n        CommandLine|contains: 'xyz1'\n    selection_b:\n        CommandLine|contains: 'xyz2'\n    condition: 1 of selection_*\nlevel: medium\n",
+      "expect": {
+        "spl": "CommandLine=\"*xyz1*\" OR CommandLine=\"*xyz2*\"",
+        "kql": "CommandLine contains \"xyz1\" or CommandLine contains \"xyz2\"",
+        "lucene": "CommandLine:*xyz1* OR CommandLine:*xyz2*"
+      }
+    },
+    {
+      "id": "conv-all",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|contains|all:\n            - 'alpha'\n            - 'beta'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "CommandLine=\"*alpha*\" AND CommandLine=\"*beta*\"",
+        "kql": "CommandLine contains \"alpha\" and CommandLine contains \"beta\"",
+        "lucene": "CommandLine:*alpha* AND CommandLine:*beta*"
+      }
+    },
+    {
+      "id": "conv-keywords",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    keywords:\n        - 'evil'\n        - 'bad thing'\n    condition: keywords\nlevel: medium\n",
+      "expect": {
+        "spl": "\"evil\" OR \"bad thing\"",
+        "kql": "* contains \"evil\" or * contains \"bad thing\"",
+        "lucene": "\"evil\" OR \"bad thing\""
+      }
+    },
+    {
+      "id": "conv-re",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|re: 'a.*b'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": {
+          "error": "re"
+        },
+        "kql": "CommandLine matches regex \"a.*b\"",
+        "lucene": "CommandLine:/a.*b/"
+      }
+    },
+    {
+      "id": "conv-exists-null",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|exists: true\n        Hashes: null\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "Image=\"*\" AND NOT Hashes=\"*\"",
+        "kql": "isnotempty(Image) and isempty(Hashes)",
+        "lucene": "_exists_:Image AND NOT _exists_:Hashes"
+      }
+    },
+    {
+      "id": "conv-fieldmap",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\cmd.exe'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "process_path=\"*\\\\cmd.exe\"",
+        "kql": "FolderPath endswith @\"\\cmd.exe\"",
+        "lucene": "process.executable:*\\\\cmd.exe"
+      },
+      "fieldmap": {
+        "spl": {
+          "Image": "process_path"
+        },
+        "kql": {
+          "Image": "FolderPath"
+        },
+        "lucene": {
+          "Image": "process.executable"
+        }
+      }
+    },
+    {
+      "id": "conv-windash",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|windash|contains: '-enc'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": {
+          "error": "windash"
+        },
+        "kql": {
+          "error": "windash"
+        },
+        "lucene": {
+          "error": "windash"
+        }
+      }
+    },
+    {
+      "id": "conv-unicode",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|contains: 'Größe'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "CommandLine=\"*Größe*\"",
+        "kql": "CommandLine contains \"Größe\"",
+        "lucene": "CommandLine:*Größe*"
+      }
+    },
+    {
+      "id": "conv-numbers",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        EventID:\n            - 4688\n            - 1\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "EventID=4688 OR EventID=1",
+        "kql": "EventID == 4688 or EventID == 1",
+        "lucene": "EventID:4688 OR EventID:1"
+      }
+    },
+    {
+      "id": "conv-cased",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|cased: 'Whoami'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": {
+          "error": "cased"
+        },
+        "kql": {
+          "error": "cased"
+        },
+        "lucene": {
+          "error": "cased"
+        }
+      }
+    },
+    {
+      "id": "conv-question",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image: 'C:\\Windows\\cmd?.exe'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": {
+          "error": "?"
+        },
+        "kql": "Image matches regex @\"(?i)^C:\\\\Windows\\\\cmd.\\.exe$\"",
+        "lucene": "Image:C\\:\\\\Windows\\\\cmd?.exe"
+      }
+    }
+  ]
+}
