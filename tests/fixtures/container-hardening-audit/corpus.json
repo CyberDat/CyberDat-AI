@@ -22,7 +22,7 @@
     {
       "id": "df-user-root-last",
       "name": "Dockerfile",
-      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK USER root\nCMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nUSER root\nCMD [\"python\", \"/app/main.py\"]\n",
       "expect": [
         "DF-USER-002"
       ],
