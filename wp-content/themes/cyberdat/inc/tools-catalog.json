@@ -104,7 +104,7 @@
     "status": "planned",
     "category": "Detection Engineering",
     "category_slug": "detection",
-    "description": "Planned local validation and conversion of detection rules.",
+    "description": "Check Sigma and YARA rules for syntax and quality problems and convert Sigma rules to Splunk SPL, Microsoft KQL or Elastic Lucene, locally in your browser. Static checks only.",
     "icon_path": "M5 4h14v16H5Z M8 9l2 2 4-4 M8 15h8"
   },
   {
