@@ -1,0 +1,36 @@
+{
+  "tool": "yara-sigma-validator",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "description": "FORMAT EXAMPLE ONLY. cases[]: id; kind \"sigma\" or \"yara\" with text (one rule file) and expect (exact list of finding ids from rules.json of the package, SEC-001 excluded), or kind \"convert\" with text (a Sigma rule) and expect {spl|kql|lucene: exact expected query, or {\"error\": \"text the error must mention\"}}, optional fieldmap {target: {SigmaField: TargetField}}. Write and label the rules yourself; do not use SigmaHQ rules (DRL 1.1) unless the owner decides so.",
+  "cases": [
+    {
+      "id": "s-1",
+      "kind": "sigma",
+      "text": "title: Example\nlogsource:\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\x.exe'\n    condition: selection and not filter\n",
+      "expect": [
+        "SIG-COND-002",
+        "SIG-Q-001",
+        "SIG-Q-004",
+        "SIG-Q-005",
+        "SIG-Q-006"
+      ]
+    },
+    {
+      "id": "y-1",
+      "kind": "yara",
+      "text": "rule Example\n{\n    strings:\n        $a = \"abcdef\"\n    condition:\n        filesize < 1MB and $a\n}\n",
+      "expect": []
+    },
+    {
+      "id": "c-1",
+      "kind": "convert",
+      "text": "title: Example\nlogsource:\n    product: windows\ndetection:\n    selection:\n        CommandLine|contains: 'abc'\n    condition: selection\n",
+      "expect": {
+        "spl": "CommandLine=\"*abc*\"",
+        "kql": "CommandLine contains \"abc\"",
+        "lucene": "CommandLine:*abc*"
+      }
+    }
+  ]
+}

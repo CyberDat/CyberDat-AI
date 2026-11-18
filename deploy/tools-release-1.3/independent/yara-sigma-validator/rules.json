@@ -1,0 +1,218 @@
+{
+  "_note": "Finding ids frozen on 2026-11-18 BEFORE any validator or converter code. Severity: error = the rule is invalid or cannot work as written; warning = probably a mistake; info = quality advice. All rules and examples are written by CyberDat; no SigmaHQ rule (DRL 1.1) is included.",
+  "sigma": [
+    {
+      "id": "SIG-YAML-001",
+      "severity": "error",
+      "meaning": "YAML cannot be parsed (with line)"
+    },
+    {
+      "id": "SIG-YAML-002",
+      "severity": "error",
+      "meaning": "YAML anchors, aliases, tags or merge keys are not accepted"
+    },
+    {
+      "id": "SIG-YAML-003",
+      "severity": "error",
+      "meaning": "duplicate key in a mapping"
+    },
+    {
+      "id": "SIG-REQ-001",
+      "severity": "error",
+      "meaning": "title missing or not a string"
+    },
+    {
+      "id": "SIG-REQ-002",
+      "severity": "error",
+      "meaning": "logsource missing or without category, product or service"
+    },
+    {
+      "id": "SIG-REQ-003",
+      "severity": "error",
+      "meaning": "detection missing or not a mapping"
+    },
+    {
+      "id": "SIG-REQ-004",
+      "severity": "error",
+      "meaning": "condition missing"
+    },
+    {
+      "id": "SIG-ID-001",
+      "severity": "error",
+      "meaning": "id is not a UUID"
+    },
+    {
+      "id": "SIG-DATE-001",
+      "severity": "error",
+      "meaning": "date or modified not in YYYY-MM-DD"
+    },
+    {
+      "id": "SIG-DATE-002",
+      "severity": "warning",
+      "meaning": "modified is earlier than date"
+    },
+    {
+      "id": "SIG-LVL-001",
+      "severity": "error",
+      "meaning": "level not one of informational, low, medium, high, critical"
+    },
+    {
+      "id": "SIG-STS-001",
+      "severity": "error",
+      "meaning": "status not one of stable, test, experimental, deprecated, unsupported"
+    },
+    {
+      "id": "SIG-TAG-001",
+      "severity": "warning",
+      "meaning": "tag not in a known namespace format (attack.*, cve.*, car.*, tlp.*, detection.*)"
+    },
+    {
+      "id": "SIG-TITLE-001",
+      "severity": "warning",
+      "meaning": "title longer than 256 characters"
+    },
+    {
+      "id": "SIG-COND-001",
+      "severity": "error",
+      "meaning": "condition syntax error"
+    },
+    {
+      "id": "SIG-COND-002",
+      "severity": "error",
+      "meaning": "condition refers to a search identifier that does not exist"
+    },
+    {
+      "id": "SIG-COND-003",
+      "severity": "warning",
+      "meaning": "search identifier never used by the condition"
+    },
+    {
+      "id": "SIG-MOD-001",
+      "severity": "error",
+      "meaning": "unknown value modifier"
+    },
+    {
+      "id": "SIG-MOD-002",
+      "severity": "error",
+      "meaning": "conflicting value modifiers"
+    },
+    {
+      "id": "SIG-DET-001",
+      "severity": "error",
+      "meaning": "empty or malformed search identifier"
+    },
+    {
+      "id": "SIG-Q-001",
+      "severity": "info",
+      "meaning": "no falsepositives listed"
+    },
+    {
+      "id": "SIG-Q-002",
+      "severity": "warning",
+      "meaning": "overly broad value (only wildcards, or contains/startswith/endswith with fewer than 3 characters)"
+    },
+    {
+      "id": "SIG-Q-003",
+      "severity": "info",
+      "meaning": "duplicate value or duplicate search identifier content"
+    },
+    {
+      "id": "SIG-Q-004",
+      "severity": "info",
+      "meaning": "id missing"
+    },
+    {
+      "id": "SIG-Q-005",
+      "severity": "info",
+      "meaning": "level missing"
+    },
+    {
+      "id": "SIG-Q-006",
+      "severity": "info",
+      "meaning": "description or author missing"
+    }
+  ],
+  "yara": [
+    {
+      "id": "YAR-SYN-001",
+      "severity": "error",
+      "meaning": "syntax error (with line)"
+    },
+    {
+      "id": "YAR-NAME-001",
+      "severity": "error",
+      "meaning": "invalid or reserved rule name or tag"
+    },
+    {
+      "id": "YAR-NAME-002",
+      "severity": "error",
+      "meaning": "duplicate rule name"
+    },
+    {
+      "id": "YAR-STR-001",
+      "severity": "error",
+      "meaning": "duplicate string identifier"
+    },
+    {
+      "id": "YAR-STR-002",
+      "severity": "error",
+      "meaning": "condition uses an undeclared string"
+    },
+    {
+      "id": "YAR-STR-003",
+      "severity": "warning",
+      "meaning": "string declared but never used"
+    },
+    {
+      "id": "YAR-HEX-001",
+      "severity": "error",
+      "meaning": "invalid hex string"
+    },
+    {
+      "id": "YAR-RE-001",
+      "severity": "error",
+      "meaning": "invalid regular expression (static check, never executed)"
+    },
+    {
+      "id": "YAR-MOD-001",
+      "severity": "error",
+      "meaning": "unknown or invalid string modifier for the string type"
+    },
+    {
+      "id": "YAR-IMP-001",
+      "severity": "error",
+      "meaning": "module used in the condition but not imported"
+    },
+    {
+      "id": "YAR-IMP-002",
+      "severity": "info",
+      "meaning": "module imported but not used"
+    },
+    {
+      "id": "YAR-COND-001",
+      "severity": "error",
+      "meaning": "condition section missing"
+    },
+    {
+      "id": "YAR-META-001",
+      "severity": "error",
+      "meaning": "meta value is not a string, integer or boolean"
+    },
+    {
+      "id": "YAR-Q-001",
+      "severity": "warning",
+      "meaning": "string shorter than 4 bytes"
+    },
+    {
+      "id": "YAR-Q-002",
+      "severity": "warning",
+      "meaning": "regular expression likely slow (leading or unbounded .* / .+, nested quantifiers)"
+    },
+    {
+      "id": "YAR-Q-003",
+      "severity": "info",
+      "meaning": "condition has no file size limit"
+    }
+  ],
+  "conversion": "Targets: Splunk SPL (search expression), Microsoft KQL (where expression), Elastic Lucene (query string). Supported: field/value maps (AND), value lists (OR), keyword lists, modifiers contains, startswith, endswith, all, exists, re (KQL and Lucene only), cidr (KQL and Lucene only), null values, numbers, wildcards * (all) and ? (Lucene only), conditions with and, or, not, parentheses, 1 of / all of with patterns or them. Anything else gives an error naming the construct. Output format: operators AND/OR/NOT (SPL, Lucene) or and/or/not() (KQL); parentheses only where precedence needs them; values in NFC."
+}
