@@ -31,6 +31,7 @@ $map = array(
  'mitre-atlas-mapper' => array( 'tool-atlas-mapper.php', 'atlas-mapper' ),
  'prompt-injection-test-bench' => array( 'tool-prompt-injection-test-bench.php', 'prompt-injection-test-bench' ),
  'yara-sigma-validator' => array( 'tool-yara-sigma-validator.php', 'yara-sigma-validator' ),
+ 'container-hardening-audit' => array( 'tool-container-hardening-audit.php', 'container-hardening-audit' ),
 );
 $slug = $argv[1] ?? '';
 if ( ! isset( $map[$slug] ) ) { exit( 2 ); }
