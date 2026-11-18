@@ -29,6 +29,7 @@ $map = array(
  'agent-leak-inspector' => array( 'tool-leak-inspector.php', 'leak-inspector' ),
  'ai-model-bom' => array( 'tool-ai-model-bom.php', 'ai-model-bom' ),
  'mitre-atlas-mapper' => array( 'tool-atlas-mapper.php', 'atlas-mapper' ),
+ 'prompt-injection-test-bench' => array( 'tool-prompt-injection-test-bench.php', 'prompt-injection-test-bench' ),
 );
 $slug = $argv[1] ?? '';
 if ( ! isset( $map[$slug] ) ) { exit( 2 ); }
