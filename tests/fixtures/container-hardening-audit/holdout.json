@@ -1,0 +1,136 @@
+{
+  "_note": "Synthetic corpus written by CyberDat, frozen BEFORE any audit code. expect = exact set of finding ids for the file; optional lines/containers/documents check one finding each; error = expected input error code; mustNotShow = text that must not appear in findings or reports. Marker @@SYNTH:NAME@@ is replaced by the test with the value from tests/lib/synthetic-secrets.cjs. No CIS Benchmark text or numbering is used. NOT INDEPENDENT. Held-out set: not looked at while writing the rules.",
+  "frozen": "2026-11-18",
+  "cases": [
+    {
+      "id": "h-df-env-multi",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nENV APP_MODE=prod SECRET_KEY=django-insecure-example-42 LANG=C.UTF-8\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-SEC-001"
+      ],
+      "mustNotShow": [
+        "django-insecure-example-42"
+      ]
+    },
+    {
+      "id": "h-df-sudo-bash",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nRUN curl -sL https://get.example.com/setup | sudo -E bash -\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-PIPE-001",
+        "DF-SUDO-001"
+      ]
+    },
+    {
+      "id": "h-df-platform",
+      "name": "Containerfile",
+      "text": "FROM --platform=$BUILDPLATFORM node:22 AS build\nRUN npm ci && npm run build\nFROM nginx:1.27-alpine\nCOPY --from=build /app/dist /usr/share/nginx/html\nUSER nginx\nHEALTHCHECK CMD [\"wget\", \"-q\", \"-O-\", \"http://localhost/\"]\n",
+      "expect": []
+    },
+    {
+      "id": "h-df-heredoc",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nRUN <<EOF\nset -e\ncurl -fsSL https://get.example.com/x.sh | sh\nEOF\nCOPY app/ /app/\nUSER 10001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-PIPE-001"
+      ]
+    },
+    {
+      "id": "h-df-user-root-group",
+      "name": "Dockerfile",
+      "text": "FROM python:3.12-slim\nRUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*\nCOPY app/ /app/\nUSER root:root\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"/app/health.py\"]\nCMD [\"python\", \"/app/main.py\"]\n",
+      "expect": [
+        "DF-USER-002"
+      ]
+    },
+    {
+      "id": "h-dc-long-volume",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n    volumes:\n      - type: bind\n        source: /var/run/docker.sock\n        target: /var/run/docker.sock\n",
+      "expect": [
+        "DC-SOCK-001"
+      ]
+    },
+    {
+      "id": "h-dc-apparmor-unconfined-capall",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_add: [\"ALL\"]\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n      - apparmor:unconfined\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n",
+      "expect": [
+        "DC-CAP-001",
+        "DC-SECO-001"
+      ]
+    },
+    {
+      "id": "h-dc-env-file-only",
+      "name": "compose.yaml",
+      "text": "services:\n  web:\n    image: nginx:1.27.2\n    user: \"101:101\"\n    read_only: true\n    cap_drop:\n      - ALL\n    security_opt:\n      - no-new-privileges:true\n    mem_limit: 256m\n    cpus: 0.5\n    ports:\n      - \"127.0.0.1:8080:8080\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-q\", \"-O-\", \"http://localhost:8080/\"]\n    env_file:\n      - .env\n",
+      "expect": []
+    },
+    {
+      "id": "h-k8s-statefulset-init-priv",
+      "name": "sts.yaml",
+      "text": "apiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      initContainers:\n        - name: init\n          image: busybox:1.36\n          securityContext:\n            privileged: true\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 100m\n              memory: 64Mi\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-PRIV-001"
+      ],
+      "containers": {
+        "K8S-PRIV-001": "init"
+      }
+    },
+    {
+      "id": "h-k8s-daemonset-proc",
+      "name": "ds.yaml",
+      "text": "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n      volumes:\n        - name: proc\n          hostPath:\n            path: /proc\n",
+      "expect": [
+        "K8S-PATH-001"
+      ]
+    },
+    {
+      "id": "h-k8s-rolebinding-cluster-admin",
+      "name": "rbac.yaml",
+      "text": "apiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  name: dev-admin\n  namespace: dev\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: cluster-admin\nsubjects:\n  - kind: User\n    name: dev\n",
+      "expect": [
+        "K8S-RBAC-002"
+      ]
+    },
+    {
+      "id": "h-k8s-net-admin-pattern-secret",
+      "name": "deploy.yaml",
+      "text": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      serviceAccountName: web\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        seccompProfile:\n          type: RuntimeDefault\n        appArmorProfile:\n          type: RuntimeDefault\n      containers:\n        - name: web\n          image: registry.example.com/web:1.4.2\n          env:\n            - name: UPSTREAM\n              value: \"@@SYNTH:HF_TOKEN@@\"\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              add: [\"NET_ADMIN\"]\n              drop: [\"ALL\"]\n          resources:\n            limits:\n              cpu: 500m\n              memory: 256Mi\n          livenessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n",
+      "expect": [
+        "K8S-CAP-001",
+        "K8S-SEC-001"
+      ],
+      "mustNotShow": [
+        "@@SYNTH:HF_TOKEN@@"
+      ]
+    },
+    {
+      "id": "h-helm-control",
+      "name": "templates/svc.yaml",
+      "text": "apiVersion: v1\nkind: Service\nmetadata:\n  name: web\n{{- if .Values.service.annotations }}\n  annotations: {}\n{{- end }}\n",
+      "expect": [],
+      "error": "INPUT-HELM"
+    },
+    {
+      "id": "h-k8s-replicaset-minimal-root",
+      "name": "rs.yaml",
+      "text": "apiVersion: apps/v1\nkind: ReplicaSet\nmetadata:\n  name: web\nspec:\n  template:\n    spec:\n      securityContext:\n        runAsUser: 0\n      containers:\n        - name: web\n          image: nginx:latest\n",
+      "expect": [
+        "K8S-APPARMOR-001",
+        "K8S-CAP-002",
+        "K8S-ESC-001",
+        "K8S-PROBE-001",
+        "K8S-PROBE-002",
+        "K8S-RES-001",
+        "K8S-RO-001",
+        "K8S-SA-001",
+        "K8S-SA-002",
+        "K8S-SECCOMP-001",
+        "K8S-TAG-001",
+        "K8S-USER-001"
+      ]
+    }
+  ]
+}

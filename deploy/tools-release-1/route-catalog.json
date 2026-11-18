@@ -116,7 +116,7 @@
     "status": "planned",
     "category": "Cloud & Containers",
     "category_slug": "cloud",
-    "description": "Planned hardening checklist generator for container configurations.",
+    "description": "Check Dockerfiles, Docker Compose files and Kubernetes manifests against hardening rules locally in your browser and get a Markdown or JSON checklist. Static checks only; your files are not changed.",
     "icon_path": "M3 10h18v8H3Z M6 6h4v4H6Z M10 6h4v4h-4Z M14 6h4v4h-4Z"
   }
 ]

@@ -1,0 +1,320 @@
+{
+  "_note": "Finding ids frozen on 2026-11-18 BEFORE any audit code. Own rules written by CyberDat; not derived from, numbered like or paraphrasing any CIS Benchmark. Severity: high, medium, low, info (info = hygiene, grouped). Input errors are not findings.",
+  "dockerfile": [
+    {
+      "id": "DF-USER-001",
+      "severity": "high",
+      "meaning": "final stage has no USER instruction (runs as root)"
+    },
+    {
+      "id": "DF-USER-002",
+      "severity": "high",
+      "meaning": "last USER of the final stage is root or UID 0"
+    },
+    {
+      "id": "DF-TAG-001",
+      "severity": "medium",
+      "meaning": "FROM image uses the latest tag"
+    },
+    {
+      "id": "DF-TAG-002",
+      "severity": "medium",
+      "meaning": "FROM image has neither tag nor digest (scratch, earlier stages and ${VAR} images excluded)"
+    },
+    {
+      "id": "DF-SEC-001",
+      "severity": "high",
+      "meaning": "secret value in ENV or ARG (by name with a literal value, or a recognised secret pattern); masked"
+    },
+    {
+      "id": "DF-ADD-001",
+      "severity": "medium",
+      "meaning": "ADD with a remote URL"
+    },
+    {
+      "id": "DF-PIPE-001",
+      "severity": "high",
+      "meaning": "RUN downloads with curl or wget and pipes into a shell or interpreter"
+    },
+    {
+      "id": "DF-PORT-001",
+      "severity": "medium",
+      "meaning": "EXPOSE of a remote-administration or daemon port (22, 23, 2375, 2376, 3389, 5900)"
+    },
+    {
+      "id": "DF-SUDO-001",
+      "severity": "low",
+      "meaning": "sudo used in RUN"
+    },
+    {
+      "id": "DF-HYG-001",
+      "severity": "info",
+      "meaning": "ADD of a local file; COPY is clearer"
+    },
+    {
+      "id": "DF-HYG-002",
+      "severity": "info",
+      "meaning": "no HEALTHCHECK in the final stage"
+    },
+    {
+      "id": "DF-HYG-003",
+      "severity": "info",
+      "meaning": "apt-get install without --no-install-recommends"
+    }
+  ],
+  "compose": [
+    {
+      "id": "DC-PRIV-001",
+      "severity": "high",
+      "meaning": "privileged: true"
+    },
+    {
+      "id": "DC-CAP-001",
+      "severity": "high",
+      "meaning": "cap_add with ALL or a dangerous capability"
+    },
+    {
+      "id": "DC-CAP-002",
+      "severity": "low",
+      "meaning": "cap_drop does not include ALL"
+    },
+    {
+      "id": "DC-ESC-001",
+      "severity": "medium",
+      "meaning": "security_opt lacks no-new-privileges"
+    },
+    {
+      "id": "DC-RO-001",
+      "severity": "low",
+      "meaning": "read_only is not true"
+    },
+    {
+      "id": "DC-USER-001",
+      "severity": "high",
+      "meaning": "user is root or UID 0"
+    },
+    {
+      "id": "DC-USER-002",
+      "severity": "low",
+      "meaning": "no user set; the image default applies (often root)"
+    },
+    {
+      "id": "DC-HOST-001",
+      "severity": "high",
+      "meaning": "network_mode: host"
+    },
+    {
+      "id": "DC-HOST-002",
+      "severity": "high",
+      "meaning": "pid: host"
+    },
+    {
+      "id": "DC-HOST-003",
+      "severity": "high",
+      "meaning": "ipc: host"
+    },
+    {
+      "id": "DC-SOCK-001",
+      "severity": "high",
+      "meaning": "container runtime socket mounted"
+    },
+    {
+      "id": "DC-PATH-001",
+      "severity": "high",
+      "meaning": "sensitive host path mounted (/, /etc, /proc, /sys, /dev, /boot, /root, /run, /var/run, /var/lib/docker, /var/lib/kubelet)"
+    },
+    {
+      "id": "DC-SECO-001",
+      "severity": "high",
+      "meaning": "seccomp or AppArmor set to unconfined"
+    },
+    {
+      "id": "DC-TAG-001",
+      "severity": "medium",
+      "meaning": "image uses the latest tag"
+    },
+    {
+      "id": "DC-TAG-002",
+      "severity": "medium",
+      "meaning": "image has neither tag nor digest"
+    },
+    {
+      "id": "DC-SEC-001",
+      "severity": "high",
+      "meaning": "secret value in environment; masked"
+    },
+    {
+      "id": "DC-RES-001",
+      "severity": "low",
+      "meaning": "no memory limit or no CPU limit"
+    },
+    {
+      "id": "DC-PORT-001",
+      "severity": "medium",
+      "meaning": "publishes a remote-administration or daemon port"
+    },
+    {
+      "id": "DC-HYG-001",
+      "severity": "info",
+      "meaning": "port published on all host interfaces"
+    },
+    {
+      "id": "DC-HYG-002",
+      "severity": "info",
+      "meaning": "no healthcheck"
+    }
+  ],
+  "kubernetes": [
+    {
+      "id": "K8S-PRIV-001",
+      "severity": "high",
+      "meaning": "privileged container"
+    },
+    {
+      "id": "K8S-ESC-001",
+      "severity": "medium",
+      "meaning": "allowPrivilegeEscalation is not false"
+    },
+    {
+      "id": "K8S-CAP-001",
+      "severity": "high",
+      "meaning": "capabilities.add with ALL or a dangerous capability"
+    },
+    {
+      "id": "K8S-CAP-002",
+      "severity": "low",
+      "meaning": "capabilities.drop does not include ALL"
+    },
+    {
+      "id": "K8S-RO-001",
+      "severity": "low",
+      "meaning": "readOnlyRootFilesystem is not true"
+    },
+    {
+      "id": "K8S-USER-001",
+      "severity": "high",
+      "meaning": "runAsUser 0 (container or pod)"
+    },
+    {
+      "id": "K8S-USER-002",
+      "severity": "medium",
+      "meaning": "neither runAsNonRoot: true nor a non-zero runAsUser"
+    },
+    {
+      "id": "K8S-HOST-001",
+      "severity": "high",
+      "meaning": "hostNetwork: true"
+    },
+    {
+      "id": "K8S-HOST-002",
+      "severity": "high",
+      "meaning": "hostPID: true"
+    },
+    {
+      "id": "K8S-HOST-003",
+      "severity": "high",
+      "meaning": "hostIPC: true"
+    },
+    {
+      "id": "K8S-PATH-001",
+      "severity": "high",
+      "meaning": "hostPath volume with a sensitive host path"
+    },
+    {
+      "id": "K8S-PATH-002",
+      "severity": "medium",
+      "meaning": "other hostPath volume"
+    },
+    {
+      "id": "K8S-SOCK-001",
+      "severity": "high",
+      "meaning": "container runtime socket mounted through hostPath"
+    },
+    {
+      "id": "K8S-PORT-001",
+      "severity": "medium",
+      "meaning": "hostPort used"
+    },
+    {
+      "id": "K8S-TAG-001",
+      "severity": "medium",
+      "meaning": "image uses the latest tag"
+    },
+    {
+      "id": "K8S-TAG-002",
+      "severity": "medium",
+      "meaning": "image has neither tag nor digest"
+    },
+    {
+      "id": "K8S-SEC-001",
+      "severity": "high",
+      "meaning": "secret value in env or ConfigMap data; masked"
+    },
+    {
+      "id": "K8S-SEC-002",
+      "severity": "medium",
+      "meaning": "Secret object with values stored in the manifest; masked"
+    },
+    {
+      "id": "K8S-RES-001",
+      "severity": "low",
+      "meaning": "no memory limit or no CPU limit"
+    },
+    {
+      "id": "K8S-SA-001",
+      "severity": "low",
+      "meaning": "default service account (serviceAccountName missing or default)"
+    },
+    {
+      "id": "K8S-SA-002",
+      "severity": "medium",
+      "meaning": "service account token automounted (not disabled on the pod or on its ServiceAccount in the same input)"
+    },
+    {
+      "id": "K8S-SECCOMP-001",
+      "severity": "medium",
+      "meaning": "no seccomp profile (RuntimeDefault or Localhost) on the pod or on every container"
+    },
+    {
+      "id": "K8S-SECCOMP-002",
+      "severity": "high",
+      "meaning": "seccomp profile Unconfined"
+    },
+    {
+      "id": "K8S-APPARMOR-001",
+      "severity": "low",
+      "meaning": "no AppArmor profile (field or annotation)"
+    },
+    {
+      "id": "K8S-APPARMOR-002",
+      "severity": "high",
+      "meaning": "AppArmor profile Unconfined"
+    },
+    {
+      "id": "K8S-RBAC-001",
+      "severity": "high",
+      "meaning": "Role or ClusterRole rule with * in apiGroups, resources or verbs"
+    },
+    {
+      "id": "K8S-RBAC-002",
+      "severity": "high",
+      "meaning": "binding to cluster-admin"
+    },
+    {
+      "id": "K8S-PROBE-001",
+      "severity": "info",
+      "meaning": "no livenessProbe (long-running workloads, regular containers)"
+    },
+    {
+      "id": "K8S-PROBE-002",
+      "severity": "info",
+      "meaning": "no readinessProbe (long-running workloads, regular containers)"
+    }
+  ],
+  "inputErrors": [
+    "INPUT-HELM: Helm template syntax",
+    "INPUT-YAML: YAML cannot be read (with line)",
+    "INPUT-ANCHOR: YAML anchors, aliases, tags or merge keys",
+    "INPUT-UNKNOWN: not a Dockerfile, Compose file or Kubernetes manifest"
+  ]
+}
