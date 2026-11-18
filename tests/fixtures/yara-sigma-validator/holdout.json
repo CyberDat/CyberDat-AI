@@ -1,0 +1,107 @@
+{
+  "_note": "Held-out set, frozen together with the corpus BEFORE any code; not used for tuning. NOT INDEPENDENT.",
+  "frozen": "2026-11-18",
+  "cases": [
+    {
+      "id": "h-sig-valid",
+      "kind": "sigma",
+      "text": "title: Shortcut written to the startup folder\nid: 0d6c2a4e-1f3b-4c5d-8e9f-a0b1c2d3e4f5\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.persistence\n    - attack.t1547.001\nlogsource:\n    category: file_event\n    product: windows\ndetection:\n    selection:\n        TargetFilename|endswith: '.lnk'\n        TargetFilename|contains: '\\Startup\\'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "h-sig-multi",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026/11/01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n    condition: selection and filter\nfalsepositives:\n    - Administrators checking their own account\nlevel: urgent\n",
+      "expect": [
+        "SIG-COND-002",
+        "SIG-DATE-001",
+        "SIG-LVL-001"
+      ]
+    },
+    {
+      "id": "h-sig-mods",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|base64offset|contains: 'secret'\n        Image|endswith|startswith: 'x.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": [
+        "SIG-MOD-002"
+      ]
+    },
+    {
+      "id": "h-sig-short",
+      "kind": "sigma",
+      "text": "title: Suspicious whoami execution\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|startswith: '-'\n    condition: selection\nlevel: medium\n",
+      "expect": [
+        "SIG-Q-001",
+        "SIG-Q-002"
+      ]
+    },
+    {
+      "id": "h-sig-nfd-title",
+      "kind": "sigma",
+      "text": "title: Prüfung von whoami\nid: 5b0f3c2e-8a71-4d6e-9f12-3c4b5a6d7e8f\nstatus: test\ndescription: Detects whoami started from a command shell.\nauthor: CyberDat test\ndate: 2026-11-01\ntags:\n    - attack.discovery\n    - attack.t1033\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\whoami.exe'\n        ParentImage|endswith: '\\cmd.exe'\n    condition: selection\nfalsepositives:\n    - Administrators checking their own account\nlevel: medium\n",
+      "expect": []
+    },
+    {
+      "id": "h-yar-valid",
+      "kind": "yara",
+      "text": "import \"math\"\nrule Entropy_Check\n{\n    meta:\n        description = \"Prüft Entropie\"\n    strings:\n        $mz = { 4D 5A }\n        $txt = \"ExampleLoader\"\n    condition:\n        $mz at 0 and filesize < 10MB and $txt and math.entropy(0, filesize) > 7.0\n}\n",
+      "expect": [
+        "YAR-Q-001"
+      ]
+    },
+    {
+      "id": "h-yar-undeclared-count",
+      "kind": "yara",
+      "text": "rule CountRef\n{\n    strings:\n        $a = \"abcdef\"\n    condition:\n        filesize < 1MB and #b > 2 and $a\n}\n",
+      "expect": [
+        "YAR-STR-002"
+      ]
+    },
+    {
+      "id": "h-yar-wildcard-set",
+      "kind": "yara",
+      "text": "rule Wildcards\n{\n    strings:\n        $s1 = \"alpha_one\"\n        $s2 = \"alpha_two\"\n        $t = \"other_text\"\n    condition:\n        filesize < 1MB and any of ($s*) and $t\n}\n",
+      "expect": []
+    },
+    {
+      "id": "h-yar-xor",
+      "kind": "yara",
+      "text": "rule XorMod\n{\n    strings:\n        $x = \"config_value\" xor(1-255)\n        $b = \"loader_text\" base64 wide\n    condition:\n        filesize < 1MB and any of them\n}\n",
+      "expect": []
+    },
+    {
+      "id": "h-yar-hex-alt",
+      "kind": "yara",
+      "text": "rule HexAlt\n{\n    strings:\n        $h = { 4D 5A ( 90 | 50 ) ~00 [0-16] 50 45 }\n    condition:\n        filesize < 1MB and $h\n}\n",
+      "expect": []
+    },
+    {
+      "id": "h-yar-dotnet",
+      "kind": "yara",
+      "text": "rule DotNet\n{\n    condition:\n        filesize < 1MB and dotnet.number_of_resources > 1\n}\n",
+      "expect": [
+        "YAR-IMP-001"
+      ]
+    },
+    {
+      "id": "h-conv-not-paren",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\powershell.exe'\n    filter_a:\n        ParentImage|endswith: '\\explorer.exe'\n    filter_b:\n        User: 'SYSTEM'\n    condition: selection and not (filter_a or filter_b)\nlevel: medium\n",
+      "expect": {
+        "spl": "Image=\"*\\\\powershell.exe\" AND NOT (ParentImage=\"*\\\\explorer.exe\" OR User=\"SYSTEM\")",
+        "kql": "Image endswith @\"\\powershell.exe\" and not(ParentImage endswith @\"\\explorer.exe\" or User =~ \"SYSTEM\")",
+        "lucene": "Image:*\\\\powershell.exe AND NOT (ParentImage:*\\\\explorer.exe OR User:SYSTEM)"
+      }
+    },
+    {
+      "id": "h-conv-startswith",
+      "kind": "convert",
+      "text": "title: Conversion example\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        CommandLine|startswith: 'net user'\n    condition: selection\nlevel: medium\n",
+      "expect": {
+        "spl": "CommandLine=\"net user*\"",
+        "kql": "CommandLine startswith \"net user\"",
+        "lucene": "CommandLine:net\\ user*"
+      }
+    }
+  ]
+}
