@@ -1,0 +1,507 @@
+{
+  "_note": "Synthetic corpus written by CyberDat from scratch, frozen BEFORE any analyzer code. expect = exact set of finding ids; optional: hops (Received lines), unparsed, external (host or IP of the first external server at the assumed trust boundary), auth (dmarc result and whether it is trusted), fromName and subject (decoded), opts.own (domains or server names the user declares as own), mustNotShow (body text that must not appear in results or exports). Analysis time fixed at 2026-11-18T12:00:00Z. Reserved domains and documentation/private IP ranges only; brand names appear only in display names. NOT INDEPENDENT.",
+  "frozen": "2026-11-19",
+  "cases": [
+    {
+      "id": "pf-normal",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "hops": 3,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "auth": {
+        "dmarc": "pass",
+        "trusted": true
+      },
+      "mustNotShow": [
+        "BODY-MARKER-7Q",
+        "invoice.pdf",
+        "192.0.2.99"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "pf-normal-crlf",
+      "text": "Return-Path: <alice@example.org>\r\nDelivered-To: bob@example.com\r\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\r\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\r\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\r\nAuthentication-Results: mx.example.com;\r\n\tspf=pass smtp.mailfrom=example.org;\r\n\tdkim=pass header.d=example.org header.s=s2026;\r\n\tdmarc=pass header.from=example.org\r\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\r\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\r\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\r\n\th=from:to:subject:date:message-id;\r\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\r\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\r\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\r\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\r\nFrom: Alice Example <alice@example.org>\r\nTo: Bob <bob@example.com>\r\nSubject: Quarterly report\r\nDate: Tue, 17 Nov 2026 10:00:00 +0100\r\nMessage-ID: <20261117090000.12345@mail.example.org>\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nHello Bob,\r\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\r\nAttachment: invoice.pdf\r\n",
+      "expect": [],
+      "hops": 3,
+      "external": "mail.example.org",
+      "mustNotShow": [
+        "BODY-MARKER-7Q"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "pf-webmail-spaces",
+      "text": "  Return-Path: <alice@example.org>   \n  Delivered-To: bob@example.com   \n  Received: from mx.example.com (mx.example.com [192.0.2.25])   \n  \tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1   \n  \tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)   \n  Authentication-Results: mx.example.com;   \n  \tspf=pass smtp.mailfrom=example.org;   \n  \tdkim=pass header.d=example.org header.s=s2026;   \n  \tdmarc=pass header.from=example.org   \n  Received: from mail.example.org (mail.example.org [198.51.100.10])   \n  \tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7   \n  \tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)   \n  DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;   \n  \th=from:to:subject:date:message-id;   \n  \tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==   \n  Received: from [10.1.2.3] (unknown [10.1.2.3])   \n  \tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx   \n  \tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)   \n  From: Alice Example <alice@example.org>   \n  To: Bob <bob@example.com>   \n  Subject: Quarterly report   \n  Date: Tue, 17 Nov 2026 10:00:00 +0100   \n  Message-ID: <20261117090000.12345@mail.example.org>   \n  MIME-Version: 1.0   \n  Content-Type: text/plain; charset=utf-8   \n",
+      "expect": [],
+      "hops": 3,
+      "external": "mail.example.org",
+      "auth": {
+        "dmarc": "pass",
+        "trusted": true
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "pf-encoded-de",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: =?ISO-8859-1?Q?J=FCrgen_M=FCller?= <juergen@example.org>\nTo: Bob <bob@example.com>\nSubject: =?UTF-8?Q?Pr=C3=BCfbericht_f=C3=BCr_Gr=C3=B6=C3=9Fe?=\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "fromName": "Jürgen Müller",
+      "subject": "Prüfbericht für Größe",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "pf-encoded-ru",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: =?UTF-8?B?0J/RkdGC0YAg0JjQstCw0L3QvtCy?= <petr@example.org>\nTo: Bob <bob@example.com>\nSubject: =?UTF-8?B?0J7RgtGH0ZHRgiDQt9CwIA==?=\n =?UTF-8?B?0L3QvtGP0LHRgNGMIDIwMjY=?=\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "fromName": "Пётр Иванов",
+      "subject": "Отчёт за ноябрь 2026",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "pf-newsletter",
+      "text": "Return-Path: <bounce-17@bounces.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=bounces.example.net;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Example Shop <news@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <a1b2c3@mailer.example.net>\nList-Unsubscribe: <mailto:unsub@example.org>, <https://example.org/unsub?u=1>\nList-Unsubscribe-Post: List-Unsubscribe=One-Click\nPrecedence: bulk\nX-Mailer: ExampleMailer 4.2\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-INFO-001",
+        "EHA-INFO-003",
+        "EHA-MSGID-002",
+        "EHA-RP-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "spoof-paypal-name",
+      "text": "Return-Path: <service@paypa1-support.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=paypa1-support.example;\n\tdkim=none;\n\tdmarc=none header.from=paypa1-support.example\nReceived: from smtp.paypa1-support.example (smtp.paypa1-support.example [203.0.113.45])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby smtp.paypa1-support.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: \"PayPal Service\" <service@paypa1-support.example>\nTo: Bob <bob@example.com>\nSubject: Your account is limited\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <x1@paypa1-support.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-002",
+        "EHA-LOOK-003"
+      ],
+      "external": "smtp.paypa1-support.example",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "spoof-address-in-name",
+      "text": "Return-Path: <alerts@evil.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=evil.example;\n\tdkim=none;\n\tdmarc=none header.from=evil.example\nReceived: from mail.evil.example (mail.evil.example [203.0.113.50])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.evil.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: \"security@example.com\" <alerts@evil.example>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <y2@evil.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-001"
+      ],
+      "opts": {
+        "own": [
+          "example.com"
+        ]
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "spoof-microsoft-failed",
+      "text": "Return-Path: <bounce@bulk.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=softfail smtp.mailfrom=bulk.example.net;\n\tdkim=none;\n\tdmarc=fail header.from=microsoft-alerts.example\nReceived: from out.bulk.example.net (out.bulk.example.net [203.0.113.61])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby out.bulk.example.net (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Microsoft <security@microsoft-alerts.example>\nTo: Bob <bob@example.com>\nSubject: Unusual sign-in activity\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <z3@microsoft-alerts.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-001",
+        "EHA-AUTH-002",
+        "EHA-BRAND-001",
+        "EHA-FROM-002",
+        "EHA-LOOK-003",
+        "EHA-RP-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "lookalike-own-digit",
+      "text": "Return-Path: <helpdesk@examp1e.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=examp1e.example;\n\tdkim=pass header.d=examp1e.example header.s=s2026;\n\tdmarc=pass header.from=examp1e.example\nReceived: from mail.examp1e.example (mail.examp1e.example [203.0.113.70])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=examp1e.example; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.examp1e.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: IT Helpdesk <helpdesk@examp1e.example>\nTo: Bob <bob@example.com>\nSubject: Password expires today\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <w4@examp1e.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-LOOK-003"
+      ],
+      "opts": {
+        "own": [
+          "example.com"
+        ]
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "lookalike-cyrillic",
+      "text": "Return-Path: <service@xn--pypal-4ve.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=xn--pypal-4ve.example;\n\tdkim=pass header.d=xn--pypal-4ve.example header.s=s2026;\n\tdmarc=pass header.from=xn--pypal-4ve.example\nReceived: from mx.xn--pypal-4ve.example (mx.xn--pypal-4ve.example [203.0.113.71])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xn--pypal-4ve.example; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mx.xn--pypal-4ve.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: PayPal <service@xn--pypal-4ve.example>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <v5@xn--pypal-4ve.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-002",
+        "EHA-LOOK-001",
+        "EHA-LOOK-002",
+        "EHA-LOOK-003"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "lookalike-rn",
+      "text": "Return-Path: <account@rnicrosoft.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=rnicrosoft.example;\n\tdkim=pass header.d=rnicrosoft.example header.s=s2026;\n\tdmarc=pass header.from=rnicrosoft.example\nReceived: from mail.rnicrosoft.example (mail.rnicrosoft.example [203.0.113.72])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rnicrosoft.example; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.rnicrosoft.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: \"Microsoft Account Team\" <account@rnicrosoft.example>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <u6@rnicrosoft.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-002",
+        "EHA-LOOK-003"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "idn-legit",
+      "text": "Return-Path: <info@xn--bckerei-mller-bfb28a.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=xn--bckerei-mller-bfb28a.example;\n\tdkim=pass header.d=xn--bckerei-mller-bfb28a.example header.s=s2026;\n\tdmarc=pass header.from=xn--bckerei-mller-bfb28a.example\nReceived: from mail.xn--bckerei-mller-bfb28a.example (mail.xn--bckerei-mller-bfb28a.example [198.51.100.80])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xn--bckerei-mller-bfb28a.example; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.xn--bckerei-mller-bfb28a.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Bäckerei Müller <info@xn--bckerei-mller-bfb28a.example>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <t7@xn--bckerei-mller-bfb28a.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-LOOK-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "reply-to-other",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nReply-To: Payments <payments@example.net>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-REPLY-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "reply-to-same-org",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nReply-To: Team <team@lists.example.org>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "no-date-no-msgid",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-DATE-001",
+        "EHA-MSGID-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "date-impossible-tz",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +1900\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-DATE-002"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "date-future",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Fri, 17 Nov 2028 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-DATE-002"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "received-future",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Fri, 01 Jan 2027 10:00:01 +0100\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-PATH-001",
+        "EHA-PATH-002"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "time-order-broken",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:20:00 +0100\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-PATH-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "time-order-skew-ok",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:03:00 +0100\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "delay-long",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 06:00:00 +0100\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 05:59:58 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-PATH-003"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "dmarc-fail-spoof",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=fail smtp.mailfrom=example.org;\n\tdkim=none;\n\tdmarc=fail header.from=example.org\nReceived: from unknown (unknown [203.0.113.66])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-001",
+        "EHA-AUTH-002"
+      ],
+      "external": "203.0.113.66",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "forged-ar-below-boundary",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=softfail smtp.mailfrom=example.org;\n\tdkim=none;\n\tdmarc=fail header.from=example.org\nReceived: from unknown (unknown [203.0.113.67])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nX-Spam-Checked: no\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-001",
+        "EHA-AUTH-002",
+        "EHA-AUTH-005"
+      ],
+      "auth": {
+        "dmarc": "fail",
+        "trusted": true
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "forged-ar-only",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nReceived: from unknown (unknown [203.0.113.68])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nX-Spam-Checked: no\nAuthentication-Results: mx.evil.example;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-004",
+        "EHA-AUTH-005"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "no-auth-misaligned",
+      "text": "Return-Path: <bounce@mailer.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-ALIGN-001",
+        "EHA-AUTH-004",
+        "EHA-RP-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "forwarded-arc-gmail",
+      "text": "Delivered-To: bob@example.net\nReceived: by 2002:a05:7300:1a2b:b0:12c:abcd:1234 with SMTP id x11csp1234567dyc;\n        Tue, 17 Nov 2026 01:00:02 -0800 (PST)\nX-Received: by 2002:a17:90a:6b4c:b0:2ee:aa11:2233 with SMTP id g12-20020a17090a6b4c00b002eeaa112233mr1;\n        Tue, 17 Nov 2026 01:00:02 -0800 (PST)\nARC-Seal: i=1; a=rsa-sha256; t=1795424402; cv=none;\n        d=google.com; s=arc-20240605;\n        b=YXJjLXNlYWwtc2FtcGxl\nARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;\n        h=to:subject:message-id:date:from:mime-version; bh=Ymgtc2FtcGxl;\n        b=YXJjLW1zLXNhbXBsZQ==\nARC-Authentication-Results: i=1; mx.google.com;\n       dkim=fail header.i=@example.org header.s=s2026 header.b=AbCd1234;\n       spf=pass (google.com: domain of list-bounces@lists.example.net designates 198.51.100.90 as permitted sender) smtp.mailfrom=list-bounces@lists.example.net;\n       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=example.org\nReturn-Path: <list-bounces@lists.example.net>\nReceived: from lists.example.net (lists.example.net. [198.51.100.90])\n        by mx.google.com with ESMTPS id 5b1f17b1804b1-4a1b2c3d4e5sor1234567f9.12.2026.11.17.01.00.01\n        for <bob@example.net>\n        (Google Transport Security);\n        Tue, 17 Nov 2026 01:00:01 -0800 (PST)\nReceived-SPF: pass (google.com: domain of list-bounces@lists.example.net designates 198.51.100.90 as permitted sender) client-ip=198.51.100.90;\nAuthentication-Results: mx.google.com;\n       dkim=fail header.i=@example.org header.s=s2026 header.b=AbCd1234;\n       spf=pass (google.com: domain of list-bounces@lists.example.net designates 198.51.100.90 as permitted sender) smtp.mailfrom=list-bounces@lists.example.net;\n       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=example.org;\n       arc=pass (i=1 spf=pass spfdomain=example.org dkim=pass dkdomain=example.org dmarc=pass fromdomain=example.org)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nARC-Authentication-Results: i=1; lists.example.net; dkim=pass header.d=example.org; spf=pass smtp.mailfrom=example.org; dmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby lists.example.net (Postfix) with ESMTPS id 9Lst1\n\tfor <team@lists.example.net>; Tue, 17 Nov 2026 10:00:00 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.net>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nList-Id: Team list <team.lists.example.net>\nList-Unsubscribe: <mailto:team-leave@lists.example.net>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-006",
+        "EHA-INFO-003",
+        "EHA-RP-001"
+      ],
+      "external": "lists.example.net",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "mailing-list-no-arc",
+      "text": "Return-Path: <team-bounces@lists.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=lists.example.net;\n\tdkim=fail header.d=example.org header.s=s2026;\n\tdmarc=fail header.from=example.org\nReceived: from lists.example.net (lists.example.net [198.51.100.91])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby lists.example.net (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nList-Id: <team.lists.example.net>\nPrecedence: list\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-006",
+        "EHA-INFO-003",
+        "EHA-RP-001"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "gmail-normal",
+      "text": "Delivered-To: bob@example.net\nReceived: by 2002:a05:7300:1a2b:b0:12c:abcd:1234 with SMTP id x11csp1234567dyc;\n        Tue, 17 Nov 2026 01:00:02 -0800 (PST)\nX-Received: by 2002:a17:90a:6b4c:b0:2ee:aa11:2233 with SMTP id g12-20020a17090a6b4c00b002eeaa112233mr1;\n        Tue, 17 Nov 2026 01:00:02 -0800 (PST)\nARC-Seal: i=1; a=rsa-sha256; t=1795424402; cv=none;\n        d=google.com; s=arc-20240605;\n        b=YXJjLXNlYWwtc2FtcGxl\nARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;\n        h=to:subject:message-id:date:from:mime-version; bh=Ymgtc2FtcGxl;\n        b=YXJjLW1zLXNhbXBsZQ==\nARC-Authentication-Results: i=1; mx.google.com;\n       dkim=pass header.i=@example.org header.s=s2026 header.b=AbCd1234;\n       spf=pass (google.com: domain of alice@example.org designates 198.51.100.10 as permitted sender) smtp.mailfrom=alice@example.org;\n       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=example.org\nReturn-Path: <alice@example.org>\nReceived: from mail.example.org (mail.example.org. [198.51.100.10])\n        by mx.google.com with ESMTPS id 5b1f17b1804b1-4a1b2c3d4e5sor1234567f9.12.2026.11.17.01.00.01\n        for <bob@example.net>\n        (Google Transport Security);\n        Tue, 17 Nov 2026 01:00:01 -0800 (PST)\nReceived-SPF: pass (google.com: domain of alice@example.org designates 198.51.100.10 as permitted sender) client-ip=198.51.100.10;\nAuthentication-Results: mx.google.com;\n       dkim=pass header.i=@example.org header.s=s2026 header.b=AbCd1234;\n       spf=pass (google.com: domain of alice@example.org designates 198.51.100.10 as permitted sender) smtp.mailfrom=alice@example.org;\n       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=example.org\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.net>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "hops": 2,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "auth": {
+        "dmarc": "pass",
+        "trusted": true
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "m365-normal",
+      "text": "Received: from DM6PR11MB4321.namprd11.prod.outlook.com (2603:10b6:5:1c0::12) by\n DM6PR11MB8765.namprd11.prod.outlook.com with HTTPS; Tue, 17 Nov 2026 09:00:03\n +0000\nReceived: from BN9PR03CA0123.namprd03.prod.outlook.com (2603:10b6:408:fe::8)\n by DM6PR11MB4321.namprd11.prod.outlook.com (2603:10b6:5:1c0::12) with\n Microsoft SMTP Server (version=TLS1_2,\n cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8101.12; Tue, 17 Nov\n 2026 09:00:02 +0000\nAuthentication-Results: spf=pass (sender IP is 198.51.100.10)\n smtp.mailfrom=example.org; dkim=pass (signature was verified)\n header.d=example.org;dmarc=pass action=none\n header.from=example.org;compauth=pass reason=100\nReceived-SPF: Pass (protection.outlook.com: domain of example.org designates\n 198.51.100.10 as permitted sender) receiver=protection.outlook.com;\n client-ip=198.51.100.10; helo=mail.example.org; pr=C\nReceived: from mail.example.org (198.51.100.10) by\n BN1PEPF00004681.mail.protection.outlook.com (10.167.243.86) with Microsoft SMTP\n Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8101.9 via\n Frontend Transport; Tue, 17 Nov 2026 09:00:01 +0000\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <DM6PR11MB1111A2B3C4D5E6F7@DM6PR11MB1111.namprd11.prod.outlook.com>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nX-MS-Exchange-Organization-AuthAs: Anonymous\nX-MS-Exchange-Organization-SCL: 1\nReturn-Path: alice@example.org\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-MSGID-002"
+      ],
+      "hops": 3,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "auth": {
+        "dmarc": "pass",
+        "trusted": true
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "m365-bestguesspass",
+      "text": "Received: from DM6PR11MB4321.namprd11.prod.outlook.com (2603:10b6:5:1c0::12) by\n DM6PR11MB8765.namprd11.prod.outlook.com with HTTPS; Tue, 17 Nov 2026 09:00:03\n +0000\nReceived: from BN9PR03CA0123.namprd03.prod.outlook.com (2603:10b6:408:fe::8)\n by DM6PR11MB4321.namprd11.prod.outlook.com (2603:10b6:5:1c0::12) with\n Microsoft SMTP Server (version=TLS1_2,\n cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8101.12; Tue, 17 Nov\n 2026 09:00:02 +0000\nAuthentication-Results: spf=pass (sender IP is 198.51.100.10)\n smtp.mailfrom=example.org; dkim=pass (signature was verified)\n header.d=example.org;dmarc=bestguesspass action=none\n header.from=example.org;compauth=pass reason=100\nReceived-SPF: Pass (protection.outlook.com: domain of example.org designates\n 198.51.100.10 as permitted sender) receiver=protection.outlook.com;\n client-ip=198.51.100.10; helo=mail.example.org; pr=C\nReceived: from mail.example.org (198.51.100.10) by\n BN1PEPF00004681.mail.protection.outlook.com (10.167.243.86) with Microsoft SMTP\n Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8101.9 via\n Frontend Transport; Tue, 17 Nov 2026 09:00:01 +0000\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nX-MS-Exchange-Organization-AuthAs: Anonymous\nX-MS-Exchange-Organization-SCL: 1\nReturn-Path: alice@example.org\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "auth": {
+        "dmarc": "bestguesspass",
+        "trusted": true
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "exchange-internal",
+      "text": "Received: from EXCH01.corp.example.com (10.20.0.11) by EXCH02.corp.example.com\n (10.20.0.12) with Microsoft SMTP Server (version=TLS1_2,\n cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 17 Nov\n 2026 10:00:02 +0100\nReceived: from EXCH01.corp.example.com ([fe80::1d2c:3b4a:5968:7a8b]) by\n EXCH01.corp.example.com ([fe80::1d2c:3b4a:5968:7a8b%12]) with mapi id\n 15.02.1544.011; Tue, 17 Nov 2026 10:00:01 +0100\nFrom: Carol Example <carol@example.com>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <a9b8c7d6e5@EXCH01.corp.example.com>\nX-Mailer: Microsoft Outlook 16.0\nX-MS-Has-Attach:\nX-MS-TNEF-Correlator:\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-INFO-001"
+      ],
+      "hops": 2,
+      "unparsed": 0,
+      "opts": {
+        "own": [
+          "example.com"
+        ]
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "exim-normal",
+      "text": "Return-Path: <alice@example.org>\nEnvelope-to: bob@example.com\nDelivery-date: Tue, 17 Nov 2026 10:00:04 +0100\nReceived: from mail.example.org ([198.51.100.10])\n\tby mx.example.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384\n\t(Exim 4.97)\n\t(envelope-from <alice@example.org>)\n\tid 1tAbCd-000AbC-1x\n\tfor bob@example.com;\n\tTue, 17 Nov 2026 10:00:04 +0100\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from [10.1.2.3] (helo=laptop.example.org)\n\tby mail.example.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256\n\t(Exim 4.97)\n\t(envelope-from <alice@example.org>)\n\tid 1tAbCc-000XyZ-2y\n\tfor bob@example.com;\n\tTue, 17 Nov 2026 10:00:02 +0100\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "hops": 2,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "sendmail-normal",
+      "text": "Return-Path: <alice@example.org>\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (8.17.1/8.17.1) with ESMTPS id 5AH90418012345\n\t(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:04 +0100\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from laptop.example.org (laptop.example.org [10.1.2.3])\n\tby mail.example.org (8.17.1/8.17.1/Submit) with ESMTP id 5AH90235098765\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:02 +0100\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "hops": 2,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "ironport-gateway",
+      "text": "Received: from esa1.example.com (10.30.0.5) by EXCH01.corp.example.com (10.20.0.11)\n with Microsoft SMTP Server id 15.2.1544.11; Tue, 17 Nov 2026 10:00:05 +0100\nAuthentication-Results: esa1.example.com; spf=Pass smtp.mailfrom=alice@example.org; dkim=pass (signature verified) header.i=@example.org; dmarc=pass (p=reject dis=none) d=example.org\nIronPort-SDR: 67390a1b_aGVhZGVyLXNhbXBsZQ\nReceived: from unknown (HELO mail.example.org) ([198.51.100.10])\n  by esa1.example.com with ESMTP; 17 Nov 2026 10:00:04 +0100\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nReturn-Path: alice@example.org\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "hops": 2,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "opts": {
+        "own": [
+          "example.com"
+        ]
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "gateway-not-declared",
+      "text": "Received: from relay.gateway.example (192.0.2.40) by EXCH01.corp.example.com (10.20.0.11)\n with Microsoft SMTP Server id 15.2.1544.11; Tue, 17 Nov 2026 10:00:05 +0100\nAuthentication-Results: relay.gateway.example; spf=pass smtp.mailfrom=example.org; dkim=pass header.d=example.org; dmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby relay.gateway.example with ESMTPS id gw-12345\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:04 +0100\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nReturn-Path: <alice@example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-004",
+        "EHA-AUTH-005"
+      ],
+      "external": "relay.gateway.example",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "gateway-declared",
+      "text": "Received: from relay.gateway.example (192.0.2.40) by EXCH01.corp.example.com (10.20.0.11)\n with Microsoft SMTP Server id 15.2.1544.11; Tue, 17 Nov 2026 10:00:05 +0100\nAuthentication-Results: relay.gateway.example; spf=pass smtp.mailfrom=example.org; dkim=pass header.d=example.org; dmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby relay.gateway.example with ESMTPS id gw-12345\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:04 +0100\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nReturn-Path: <alice@example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "external": "mail.example.org",
+      "opts": {
+        "own": [
+          "example.com",
+          "gateway.example"
+        ]
+      },
+      "auth": {
+        "dmarc": "pass",
+        "trusted": true
+      },
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "qmail-unparsed",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nReceived: (qmail 12345 invoked by uid 89); 17 Nov 2026 09:00:00 -0000\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-PARSE-001"
+      ],
+      "hops": 4,
+      "unparsed": 1,
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "no-received",
+      "text": "From: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-004",
+        "EHA-PATH-005"
+      ],
+      "hops": 0,
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "xss-names",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: \"<script>alert(1)</script>\" <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: <img src=x onerror=alert(1)>\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "fromName": "<script>alert(1)</script>",
+      "subject": "<img src=x onerror=alert(1)>",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "webmail-origin",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nX-Originating-IP: [198.51.100.77]\nUser-Agent: Roundcube Webmail/1.6.9\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-INFO-001",
+        "EHA-INFO-002"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "ipv6-path",
+      "text": "Return-Path: <alice@example.org>\nReceived: from mail.example.org (mail.example.org [IPv6:2001:db8:10::25])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk6Aa\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from [IPv6:2001:db8:20::3] (unknown [IPv6:2001:db8:20::3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh6Bb\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "hops": 2,
+      "unparsed": 0,
+      "external": "mail.example.org",
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "from-multiple",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: alice@example.org, carol@example.org\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-003"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "from-missing",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-003"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "dkim-fail-no-dmarc",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=fail header.d=example.org header.s=s2026;\n\tdmarc=none header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-AUTH-003"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "spf-softfail-dmarc-pass",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=softfail smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "brand-domain-in-name",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: \"Amazon.de\" <orders@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-001",
+        "EHA-FROM-002"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "brand-cyrillic-name",
+      "text": "Return-Path: <info@sb-online.example>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=sb-online.example;\n\tdkim=pass header.d=sb-online.example header.s=s2026;\n\tdmarc=pass header.from=sb-online.example\nReceived: from mail.sb-online.example (mail.sb-online.example [203.0.113.75])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sb-online.example; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.sb-online.example (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: =?UTF-8?B?0KHQsdC10YDQsdCw0L3QuiDQntC90LvQsNC50L0=?= <info@sb-online.example>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <s8@sb-online.example>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-FROM-002"
+      ],
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "headers-only-no-blank",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8",
+      "expect": [],
+      "hops": 3,
+      "now": "2026-11-18T12:00:00Z"
+    },
+    {
+      "id": "received-no-date",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk2Lm0Qz1\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:05 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk2Ll5Vb7\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:03 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id;\n\tbh=Ymgtc2FtcGxl; b=c2lnLXNhbXBsZQ==\nReceived: from [10.1.2.3] (unknown [10.1.2.3])\n\tby mail.example.org (Postfix) with ESMTPSA id 7Hh1Qx\n\tfor <bob@example.com>; Tue, 17 Nov 2026 10:00:01 +0100 (CET)\nReceived: from laptop.example.org (laptop.example.org [10.1.2.4])\n\tby mail.example.org (Postfix) with ESMTP id 7Hh0Zz\nFrom: Alice Example <alice@example.org>\nTo: Bob <bob@example.com>\nSubject: Quarterly report\nDate: Tue, 17 Nov 2026 10:00:00 +0100\nMessage-ID: <20261117090000.12345@mail.example.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\nHello Bob,\nBODY-MARKER-7Q please confirm at http://192.0.2.99/login\nAttachment: invoice.pdf\n",
+      "expect": [
+        "EHA-PATH-006"
+      ],
+      "hops": 4,
+      "unparsed": 0,
+      "now": "2026-11-18T12:00:00Z"
+    }
+  ]
+}
