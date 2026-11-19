@@ -38,7 +38,7 @@ const T = { slug: 'email-header-analyzer', title: 'Email Header Analyzer', dir: 
 const mine = added.filter(k => k === 'inc/' + T.inc || k === 'assets/css/' + T.css || k === 'template-parts/tools/' + T.slug + '.php' || k.startsWith('assets/js/' + T.dir + '/'));
 const stray = added.filter(k => !mine.includes(k));
 if (stray.length) { throw new Error('added files not owned by the utility: ' + stray.join(', ')); }
-if (modified.join() !== 'functions.php,inc/tools-catalog.json' || removed.length) { throw new Error('unexpected modified/removed files: ' + modified.concat(removed).join(', ')); }
+if (modified.join() !== 'functions.php,inc/tools-catalog.json,page-templates/tools.php' || removed.length) { throw new Error('unexpected modified/removed files: ' + modified.concat(removed).join(', ')); }
 const fn = blob(commit, THEME + 'functions.php').toString('utf8').split('\n');
 const fnBase = blob(BASE_COMMIT, THEME + 'functions.php').toString('utf8').split('\n');
 const include = "require_once __DIR__ . '/inc/" + T.inc + "';";
@@ -50,6 +50,9 @@ const catBase = JSON.parse(blob(BASE_COMMIT, THEME + 'inc/tools-catalog.json').t
 if (JSON.stringify(cat.slice(0, catBase.length)) !== JSON.stringify(catBase) || cat.length !== catBase.length + 1) { throw new Error('the ten catalogue entries must be unchanged and exactly one entry added'); }
 const entry = cat[cat.length - 1];
 if (entry.slug !== T.slug || entry.status !== 'planned') { throw new Error('catalogue entry must be the utility, status planned'); }
+const hubNow = blob(commit, THEME + 'page-templates/tools.php').toString('utf8').split(String.fromCharCode(10)), hubBase = blob(BASE_COMMIT, THEME + 'page-templates/tools.php').toString('utf8').split(String.fromCharCode(10));
+const hubChanged = hubNow.map((l, i) => [i, l]).filter(([i, l]) => l !== hubBase[i]);
+if (hubNow.length !== hubBase.length || hubChanged.length !== 1) { throw new Error('page-templates/tools.php must change in exactly one line'); }
 const PSL_FILES = ['assets/js/email-header-analyzer/public_suffix_list.dat', 'assets/js/email-header-analyzer/psl-data.js', 'assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt'];
 const manifest = {
 	schema: 'cyberdat-theme-release/1',
@@ -58,7 +61,7 @@ const manifest = {
 	parent_theme_commit: parent.theme_commit,
 	base_commit: BASE_COMMIT,
 	theme_commit: commit,
-	note: 'Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1: the utility\'s files (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (status planned; the ten entries unchanged). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
+	note: 'Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1: the utility\'s files (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility, status planned; the ten entries unchanged), one hub template line so that utility cards read "Quick utility" instead of Phase/Release. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
 	delta_files: Object.fromEntries(added.concat(modified).sort().map(k => [k, Object.assign({ status: base[k] ? 'modified' : 'added', bytes: target[k].bytes, sha256: target[k].sha256 }, base[k] ? { base_sha256: base[k].sha256 } : {})])),
@@ -69,7 +72,8 @@ const manifest = {
 			mpl_files_publish_together: PSL_FILES,
 			shared: {
 				'functions.php': { add_line: include, after_line: fn[li - 1].trim(), line_number: li + 1 },
-				'inc/tools-catalog.json': { append_entry: entry, position: 'after the ten tools (index ' + (cat.length - 1) + ')' }
+				'inc/tools-catalog.json': { append_entry: entry, position: 'after the ten tools (index ' + (cat.length - 1) + ')' },
+				'page-templates/tools.php': { replace_line_number: hubChanged[0][0] + 1, from: hubBase[hubChanged[0][0]].trim(), to: hubChanged[0][1].trim(), effect: 'cards with kind=utility read "Quick utility"; all other cards unchanged' }
 			}
 		}
 	},
