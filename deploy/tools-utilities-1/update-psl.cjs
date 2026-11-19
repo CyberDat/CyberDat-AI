@@ -1,50 +1,54 @@
 #!/usr/bin/env node
 /*
  * Build-time snapshot of the Public Suffix List for the CyberDat Email Header Analyzer.
- * The page never contacts publicsuffix.org or GitHub: this script runs on a maintainer machine and its output is committed.
+ * The page never contacts publicsuffix.org: this script runs on a maintainer machine and its output is committed.
  *
- *   node deploy/tools-utilities-1/update-psl.cjs --fetch            download the pinned commit and write the outputs
- *   node deploy/tools-utilities-1/update-psl.cjs --source <dir>     use a local copy (LICENSE + public_suffix_list.dat)
+ *   node deploy/tools-utilities-1/update-psl.cjs --fetch            download from publicsuffix.org and mozilla.org, write the outputs
+ *   node deploy/tools-utilities-1/update-psl.cjs --source <dir>     use local copies (public_suffix_list.dat + LICENSE-MPL-2.0.txt)
  *   node deploy/tools-utilities-1/update-psl.cjs --check            verify the committed outputs against the pins
  *
- * Pinned source: github.com/publicsuffix/list, commit COMMIT. The list is licensed under the Mozilla Public License 2.0
- * (file-level copyleft). It is therefore shipped UNMODIFIED as its own data file next to the tool, with the full license
- * text and this provenance; the tool's own code is not covered by it. The script refuses to run when the upstream LICENSE
- * or the data file does not match the pinned SHA-256: a new list needs a reviewed update of the pins, a changed license
- * needs an owner decision.
+ * Source: https://publicsuffix.org/list/public_suffix_list.dat, the only URL the list's authors ask to pull from.
+ * Reproducibility comes from the pinned SHA-256 and the list date (HTTP Last-Modified) below: the script refuses to
+ * write anything when the downloaded bytes differ from the pin. A newer list needs a reviewed update of SHA-256 and date.
+ * License: Mozilla Public License 2.0 (file-level copyleft), full text from https://www.mozilla.org/media/MPL/2.0/index.txt.
+ * The list is therefore shipped UNMODIFIED as its own data file next to the tool, with the license text and this
+ * provenance; the tool's own code is not covered by it.
  *
  * Output (overwritten):
- *   wp-content/themes/cyberdat/assets/js/email-header-analyzer/public_suffix_list.dat   upstream file, byte for byte
+ *   wp-content/themes/cyberdat/assets/js/email-header-analyzer/public_suffix_list.dat   the list, byte for byte
  *   wp-content/themes/cyberdat/assets/js/email-header-analyzer/psl-data.js              the same bytes as one JS string so the
  *                                                                                        worker can load it with importScripts
  *                                                                                        (the page CSP forbids fetch)
- *   wp-content/themes/cyberdat/assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt      upstream LICENSE file, verbatim
- *   deploy/tools-utilities-1/psl-snapshot.json                                           provenance: commit, date, hashes, counts
+ *   wp-content/themes/cyberdat/assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt      MPL-2.0 text, verbatim
+ *   deploy/tools-utilities-1/psl-snapshot.json                                           provenance: source, dates, hashes, counts
  */
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 
-const COMMIT = 'f7796455091118a5617cc7588523b083a8223301';
-const COMMIT_DATE = '2026-11-19T08:30:05Z';
+const LIST_URL = 'https://publicsuffix.org/list/public_suffix_list.dat';
+const LICENSE_URL = 'https://www.mozilla.org/media/MPL/2.0/index.txt';
+const LIST_DATE = '2026-11-17T16:14:43Z'; // HTTP Last-Modified of the pinned list
+const RETRIEVED = '2026-11-19';
 const PINS = {
-	LICENSE: '66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172',
-	'public_suffix_list.dat': '135dda6f5fbe05e0d5875c0e4428cb475f761c080133dd3d75837e08e515f29d'
+	'public_suffix_list.dat': '809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71',
+	'LICENSE-MPL-2.0.txt': '3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04'
 };
-const RAW = 'https://raw.githubusercontent.com/publicsuffix/list/' + COMMIT + '/';
+const URLS = { 'public_suffix_list.dat': LIST_URL, 'LICENSE-MPL-2.0.txt': LICENSE_URL };
 const ROOT = path.join(__dirname, '../..');
 const OUT = path.join(ROOT, 'wp-content/themes/cyberdat/assets/js/email-header-analyzer');
 const SNAP = path.join(__dirname, 'psl-snapshot.json');
 const sha = b => crypto.createHash('sha256').update(b).digest('hex');
 
 function carrier(text) {
-	return '/*! Public Suffix List, github.com/publicsuffix/list commit ' + COMMIT + ' (' + COMMIT_DATE.slice(0, 10) + ').\n' +
+	return '/*! Public Suffix List — licensed under the Mozilla Public License 2.0 (MPL-2.0).\n' +
+		' * Source: ' + LIST_URL + ' (list of ' + LIST_DATE.slice(0, 10) + ', retrieved ' + RETRIEVED + ').\n' +
 		' * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not\n' +
 		' * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/ (copy: LICENSE-MPL-2.0.txt next to this file).\n' +
-		' * The string below is the unmodified upstream file public_suffix_list.dat (also published next to this file),\n' +
+		' * The string below is the unmodified file public_suffix_list.dat (also published next to this file),\n' +
 		' * SHA-256 ' + PINS['public_suffix_list.dat'] + '. Generated by deploy/tools-utilities-1/update-psl.cjs; do not edit. */\n' +
-		'self.CyberDatPSL = { commit: ' + JSON.stringify(COMMIT) + ', date: ' + JSON.stringify(COMMIT_DATE) + ', sha256: ' + JSON.stringify(PINS['public_suffix_list.dat']) + ', text: ' + JSON.stringify(text) + ' };\n';
+		'self.CyberDatPSL = { source: ' + JSON.stringify(LIST_URL) + ', license: "MPL-2.0", date: ' + JSON.stringify(LIST_DATE) + ', sha256: ' + JSON.stringify(PINS['public_suffix_list.dat']) + ', text: ' + JSON.stringify(text) + ' };\n';
 }
 function counts(text) {
 	let icann = 0, priv = 0, section = '';
@@ -59,9 +63,9 @@ function counts(text) {
 async function load(arg) {
 	const files = {};
 	for (const f of Object.keys(PINS)) {
-		if (arg.fetch) { const r = await fetch(RAW + f); if (!r.ok) { throw new Error(f + ': HTTP ' + r.status); } files[f] = Buffer.from(await r.arrayBuffer()); }
+		if (arg.fetch) { const r = await fetch(URLS[f]); if (!r.ok) { throw new Error(f + ': HTTP ' + r.status); } files[f] = Buffer.from(await r.arrayBuffer()); }
 		else { files[f] = fs.readFileSync(path.join(arg.source, f)); }
-		if (sha(files[f]) !== PINS[f]) { throw new Error(f + ' does not match the pinned SHA-256; review the upstream change before updating the pins'); }
+		if (sha(files[f]) !== PINS[f]) { throw new Error(f + ' does not match the pinned SHA-256 (got ' + sha(files[f]) + '); review the change and update SHA-256 and date before writing'); }
 	}
 	return files;
 }
@@ -73,8 +77,8 @@ async function main() {
 		const dat = lf(path.join(OUT, 'public_suffix_list.dat'));
 		const lic = lf(path.join(OUT, 'LICENSE-MPL-2.0.txt'));
 		const js = lf(path.join(OUT, 'psl-data.js')).toString('utf8');
-		const ok = sha(dat) === PINS['public_suffix_list.dat'] && sha(lic) === PINS.LICENSE && js === carrier(dat.toString('utf8'));
-		console.log(ok ? 'PASS: PSL snapshot matches the pins (commit ' + COMMIT.slice(0, 12) + ')' : 'FAIL: PSL snapshot differs from the pins');
+		const ok = sha(dat) === PINS['public_suffix_list.dat'] && sha(lic) === PINS['LICENSE-MPL-2.0.txt'] && js === carrier(dat.toString('utf8'));
+		console.log(ok ? 'PASS: PSL snapshot matches the pins (publicsuffix.org list of ' + LIST_DATE.slice(0, 10) + ')' : 'FAIL: PSL snapshot differs from the pins');
 		process.exit(ok ? 0 : 1);
 	}
 	const arg = a.includes('--fetch') ? { fetch: true } : { source: a[a.indexOf('--source') + 1] };
@@ -82,9 +86,9 @@ async function main() {
 	const files = await load(arg);
 	fs.mkdirSync(OUT, { recursive: true });
 	fs.writeFileSync(path.join(OUT, 'public_suffix_list.dat'), files['public_suffix_list.dat']);
-	fs.writeFileSync(path.join(OUT, 'LICENSE-MPL-2.0.txt'), files.LICENSE);
+	fs.writeFileSync(path.join(OUT, 'LICENSE-MPL-2.0.txt'), files['LICENSE-MPL-2.0.txt']);
 	fs.writeFileSync(path.join(OUT, 'psl-data.js'), carrier(files['public_suffix_list.dat'].toString('utf8')));
-	const snap = { source: 'https://github.com/publicsuffix/list', commit: COMMIT, commitDate: COMMIT_DATE, checked: '2026-11-19', license: 'MPL-2.0', licenseFile: 'LICENSE', sha256: PINS, rules: counts(files['public_suffix_list.dat'].toString('utf8')), outputs: ['public_suffix_list.dat (unmodified)', 'psl-data.js (same bytes as a JS string)', 'LICENSE-MPL-2.0.txt (upstream LICENSE, verbatim)'] };
+	const snap = { source: LIST_URL, listDate: LIST_DATE, retrieved: RETRIEVED, license: 'MPL-2.0', licenseSource: LICENSE_URL, sha256: PINS, rules: counts(files['public_suffix_list.dat'].toString('utf8')), outputs: ['public_suffix_list.dat (unmodified)', 'psl-data.js (same bytes as a JS string)', 'LICENSE-MPL-2.0.txt (MPL-2.0 text, verbatim)'] };
 	fs.writeFileSync(SNAP, JSON.stringify(snap, null, 2) + '\n');
 	console.log('PSL snapshot written: ' + JSON.stringify(snap.rules));
 }

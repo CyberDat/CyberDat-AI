@@ -122,6 +122,7 @@
   {
     "release": "utilities-1",
     "phase": 4,
+    "kind": "utility",
     "title": "Email Header Analyzer",
     "slug": "email-header-analyzer",
     "url": "/tools/email-header-analyzer/",

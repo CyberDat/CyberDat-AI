@@ -31,9 +31,11 @@ assert.equal(crypto.createHash('sha256').update(dat).digest('hex'), snap.sha256[
 global.self = {};
 new Function(lf(path.join(DIR, 'psl-data.js')))(); // test only: evaluates the generated data carrier
 assert.equal(self.CyberDatPSL.text, dat);
-assert.equal(self.CyberDatPSL.commit, snap.commit);
+assert.equal(self.CyberDatPSL.sha256, snap.sha256['public_suffix_list.dat']);
+assert.ok(self.CyberDatPSL.source === 'https://publicsuffix.org/list/public_suffix_list.dat' && self.CyberDatPSL.license === 'MPL-2.0' && self.CyberDatPSL.date === snap.listDate);
+{ const head = lf(path.join(DIR, 'psl-data.js')).slice(0, 700); assert.ok(head.includes('Mozilla Public License 2.0 (MPL-2.0)') && head.includes('Source: https://publicsuffix.org/list/public_suffix_list.dat'), 'psl-data.js header names MPL-2.0 and the source'); }
 assert.ok(/Mozilla Public License/u.test(lf(path.join(DIR, 'LICENSE-MPL-2.0.txt'))) && /This Source Code Form is subject to the terms of the Mozilla Public/u.test(dat));
-ok('finding ids equal the frozen catalogue (' + frozen.findings.length + '); psl-data.js carries public_suffix_list.dat byte for byte (SHA-256 pinned, commit ' + snap.commit.slice(0, 12) + '); MPL-2.0 text shipped');
+ok('finding ids equal the frozen catalogue (' + frozen.findings.length + '); psl-data.js carries public_suffix_list.dat byte for byte (SHA-256 pinned, publicsuffix.org list of ' + snap.listDate.slice(0, 10) + '); header names MPL-2.0 and the source; MPL-2.0 text shipped');
 
 const org = e.orgDomain;
 assert.equal(org('a.b.example.co.uk'), 'example.co.uk');
