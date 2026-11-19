@@ -118,5 +118,17 @@
     "category_slug": "cloud",
     "description": "Check Dockerfiles, Docker Compose files and Kubernetes manifests against hardening rules locally in your browser and get a Markdown or JSON checklist. Static checks only; your files are not changed.",
     "icon_path": "M3 10h18v8H3Z M6 6h4v4H6Z M10 6h4v4h-4Z M14 6h4v4h-4Z"
+  },
+  {
+    "release": "utilities-1",
+    "phase": 4,
+    "title": "Email Header Analyzer",
+    "slug": "email-header-analyzer",
+    "url": "/tools/email-header-analyzer/",
+    "status": "planned",
+    "category": "Quick Utilities",
+    "category_slug": "utilities",
+    "description": "Paste email headers to see where a message really came from, which authentication checks it passed and what looks suspicious, locally in your browser. No DNS or reputation lookups; the message body is ignored.",
+    "icon_path": "M3 6h18v12H3Z M3 6l9 7 9-7"
   }
 ]
