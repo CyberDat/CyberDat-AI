@@ -44,6 +44,15 @@ sets the editorial fields from `editorial.json` and flips the status to `availab
 | `SOURCES-AND-LICENSES.md` | sources checked against their license files, with commits; nothing third-party is bundled |
 | `independent/<slug>/` | independent acceptance kit per tool: `README.md` (protocol), `template.json` (format example), `rules.json` (tools 9, 10) |
 
+## Owner decisions (2026-11-19)
+
+| Question | Decision | Done |
+|---|---|---|
+| SigmaHQ rules in tool 9 | not included | nothing bundled (unchanged) |
+| CIS mentions in tool 10 | one, in Limitations only | page Sources line and `editorial.json` documentation/FAQ mentions removed (`5139a82`, merge `d41cc7c`); Edge 12/12, Firefox+WebKit 20/20, PHP and engine tests rerun |
+| Authorization checkbox in tool 8 | not needed; the warning is enough | unchanged |
+| Detector 45 % figure | not published; internal only | not on the page or in `editorial.json`; marked internal below |
+
 ## Common contract (all three tools, enforced by tests)
 
 * Strict CSP (`connect-src 'none'`), Web Worker with network APIs disabled, zero requests after load except worker
@@ -63,7 +72,7 @@ sets the editorial fields from `editorial.json` and flips the status to `availab
 |---|---|---|
 | 8 | Response corpus (frozen `980e74e`) | canary found 22/22, method 22/22, false hits 0/11; held-out 8/8, 8/8, 0/4 |
 | 8 | Fix after the first run | performance only: checking 60 × 80,000-character responses took 10.7 s (cross-canary scan was quadratic) → 0.25 s with one pass; corpus numbers unchanged |
-| 8 | Prompt Injection Detector (tool 2, not changed) on the 60 library inputs | 27/60 (45.0 %) flagged medium or high; by category from 0/6 (indirect email, tool call) to 6/6 (hidden text). Measurement only |
+| 8 | Prompt Injection Detector (tool 2, not changed) on the 60 library inputs — **internal, not for publication** (owner decision 2026-11-19) | 27/60 (45.0 %) flagged medium or high; by category from 0/6 (indirect email, tool call) to 6/6 (hidden text). Measurement only; not on the page or in `editorial.json` |
 | 9 | Rule corpus (frozen `3289de7`) | rules fully correct 55/55, finding recall 47/47, extra 0, conversions 39/39; held-out 11/11, 9/9, 0, 6/6. No fix after the first run |
 | 10 | Config corpus (frozen `d1e6f29`), first run | files fully correct 77/78, recall 89/90, extra 0, line/document/container 11/12, input errors 4/4, secrets masked 8/8; held-out 13/13, 25/25, 0, 1/1, 1/1, 2/2 |
 | 10 | Fix after the first run (`7e8a95f`) | corpus case `df-user-root-last` was malformed (USER root went into the HEALTHCHECK line); text fixed, label and engine unchanged → 78/78, recall 90/90, details 12/12; held-out unchanged |
@@ -72,7 +81,7 @@ sets the editorial fields from `editorial.json` and flips the status to `availab
 
 ### Final regression — all ten tools, one sequential run
 
-Integration tip `5ea51e2`, sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
+Integration tip `5ea51e2` (tool 10 rerun after the text change at `d41cc7c`), sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
 WebKit via Playwright 1.49.1, Node 24.14.1, PHP from the pinned WordPress image). PASS counts, every run exit 0:
 
 | Tool | Edge | Firefox | WebKit |
