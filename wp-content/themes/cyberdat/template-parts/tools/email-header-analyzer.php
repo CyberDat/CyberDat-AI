@@ -102,6 +102,7 @@ $cyberdat_eha_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 				<li><?php esc_html_e( 'A message is never shown to be safe or genuine. A hijacked real account, or a message sent through a legitimate service, passes every check.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'The trust boundary is an estimate from server names. Gateways or forwarders run by another company are treated as external until you enter them as your own. A forged result written just below your server’s own line can only be recognised when your server also wrote one above it.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'The body, links and attachments are not analysed. The brand list is short and written by CyberDat; lookalike detection compares spelling only and misses lookalikes of other names.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The formats of corporate Microsoft 365 and Exchange servers, mail gateways and most phishing variants were tested only on synthetic headers written by CyberDat, not on real mail. Real headers from these systems may contain variants the tool does not recognise.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Unusual Received formats may not be recognised. Organizational domains follow the bundled Public Suffix List snapshot; newer suffixes are unknown until the list is updated.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Input up to 5 MB, header part up to 1 MB. Processing stops after 30 seconds.', 'cyberdat' ); ?></li>
 			</ul>
