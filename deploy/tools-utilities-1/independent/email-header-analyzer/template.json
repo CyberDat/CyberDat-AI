@@ -1,0 +1,36 @@
+{
+  "tool": "email-header-analyzer",
+  "provenance": "template",
+  "authoredByToolAuthor": true,
+  "description": "FORMAT EXAMPLE ONLY. Replace the cases with 10-15 real header sets prepared as described in README.md. cases[]: id; source (gmail, outlook, spam, ...); text (headers only, addresses replaced); own (your domains, optional); now (ISO time, optional); expect (exact finding ids) or include/exclude; ignoreInfo (optional); dmarc and external (optional); benign (true for ordinary wanted mail). Label before the first run.",
+  "cases": [
+    {
+      "id": "n-1",
+      "source": "synthetic",
+      "benign": true,
+      "own": "example.com",
+      "now": "2026-11-19T12:00:00Z",
+      "text": "Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk9Ex1\n\tfor <bob@example.com>; Wed, 18 Nov 2026 14:02:07 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk9Ex0\n\tfor <bob@example.com>; Wed, 18 Nov 2026 14:02:05 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id; bh=ZXhhbXBsZQ==; b=ZXhhbXBsZQ==\nFrom: =?UTF-8?Q?J=C3=BCrgen_Beispiel?= <juergen@example.org>\nTo: Bob <bob@example.com>\nSubject: Meeting notes\nDate: Wed, 18 Nov 2026 14:02:01 +0100\nMessage-ID: <20261118130201.4711@mail.example.org>\n",
+      "expect": [],
+      "dmarc": "pass",
+      "external": "mail.example.org"
+    },
+    {
+      "id": "p-1",
+      "source": "synthetic",
+      "own": "example.com",
+      "now": "2026-11-19T12:00:00Z",
+      "text": "Return-Path: <bounce@bulk.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xm1Ab2\n\tfor <bob@example.com>; Wed, 18 Nov 2026 09:15:44 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=softfail smtp.mailfrom=bulk.example.net;\n\tdkim=none;\n\tdmarc=fail header.from=paypa1-secure.example\nReceived: from unknown (unknown [203.0.113.44])\n\tby mx.example.com (Postfix) with ESMTP id 4Xm1Ab1\n\tfor <bob@example.com>; Wed, 18 Nov 2026 09:15:42 +0100 (CET)\nAuthentication-Results: mx.example.com; spf=pass; dkim=pass; dmarc=pass\nReceived: from mail.paypal.example (mail.paypal.example [198.51.100.7])\n\tby relay.bulk.example.net with ESMTP id 77; Wed, 18 Nov 2026 07:10:00 +0000\nFrom: \"PayPal Service\" <service@paypa1-secure.example>\nReply-To: support@example.net\nTo: bob@example.com\nSubject: =?UTF-8?B?WW91ciBhY2NvdW50IGlzIGxpbWl0ZWQ=?=\nDate: Wed, 18 Nov 2026 09:15:40 +0100\nX-Mailer: PHPMailer 6.9.1\n",
+      "include": [
+        "EHA-AUTH-001",
+        "EHA-BRAND-001",
+        "EHA-LOOK-003"
+      ],
+      "exclude": [
+        "EHA-PATH-005"
+      ],
+      "ignoreInfo": true,
+      "dmarc": "fail"
+    }
+  ]
+}
