@@ -16,7 +16,7 @@
 | Список брендов | PayPal, Microsoft, Apple, Amazon, Google, DHL, DocuSign, Netflix, Sparkasse, Sberbank, Telekom, LinkedIn, Facebook, Dropbox, Adobe, FedEx, UPS, Booking.com | Мой короткий список: слова в отображаемом имени и домены брендов. Расширять ли его — решение владельца. Реальные домены брендов есть только в этом справочном списке; в корпусе и примерах — только зарезервированные домены. |
 | Каталог и хаб | Email Header Analyzer · Quick Utilities · Quick utility · planned | Решение владельца 2026-11-19: карточка остаётся, подпись «Quick utility» (одна строка в шаблоне хаба; карточки десяти без изменений). Адрес /tools/email-header-analyzer/ подтверждён. |
 
-## Строки шаблона (54)
+## Строки шаблона (55)
 
 1. This tool needs JavaScript. Everything happens only in your browser, so nothing can run without it — and nothing is uploaded.
 2. Your browser does not support the background processing this tool needs (Web Workers). Try a current version of Edge, Chrome, Firefox or Safari.
@@ -66,12 +66,13 @@
 46. A message is never shown to be safe or genuine. A hijacked real account, or a message sent through a legitimate service, passes every check.
 47. The trust boundary is an estimate from server names. Gateways or forwarders run by another company are treated as external until you enter them as your own. A forged result written just below your server’s own line can only be recognised when your server also wrote one above it.
 48. The body, links and attachments are not analysed. The brand list is short and written by CyberDat; lookalike detection compares spelling only and misses lookalikes of other names.
-49. Unusual Received formats may not be recognised. Organizational domains follow the bundled Public Suffix List snapshot; newer suffixes are unknown until the list is updated.
-50. Input up to 5 MB, header part up to 1 MB. Processing stops after 30 seconds.
-51. Sources
-52. All rules, explanations, the brand list and the examples are written by CyberDat.
-53. Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of %1$s (SHA-256 %2$s…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt).
-54. Background reading: the IETF standards for message format, Received lines, Authentication-Results, SPF, DKIM, DMARC and ARC. They are referenced here by name only; no text is copied.
+49. The formats of corporate Microsoft 365 and Exchange servers, mail gateways and most phishing variants were tested only on synthetic headers written by CyberDat, not on real mail. Real headers from these systems may contain variants the tool does not recognise.
+50. Unusual Received formats may not be recognised. Organizational domains follow the bundled Public Suffix List snapshot; newer suffixes are unknown until the list is updated.
+51. Input up to 5 MB, header part up to 1 MB. Processing stops after 30 seconds.
+52. Sources
+53. All rules, explanations, the brand list and the examples are written by CyberDat.
+54. Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of %1$s (SHA-256 %2$s…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt).
+55. Background reading: the IETF standards for message format, Received lines, Authentication-Results, SPF, DKIM, DMARC and ARC. They are referenced here by name only; no text is copied.
 
 ## Сообщения интерфейса из app.js (26)
 
