@@ -98,7 +98,7 @@ $cyberdat_cha_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 		<section aria-labelledby="cd-cha-sources">
 			<h2 id="cd-cha-sources"><?php esc_html_e( 'Sources', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'All rules, explanations, suggested changes and examples are written by CyberDat. No CIS Benchmark text, numbering or structure is used.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'All rules, explanations, suggested changes and examples are written by CyberDat.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Background reading: the Kubernetes documentation by The Kubernetes Authors (CC BY 4.0), including the Pod Security Standards, and the Docker documentation by Docker, Inc. (Apache License 2.0). They are referenced here by name only; no text is copied.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
