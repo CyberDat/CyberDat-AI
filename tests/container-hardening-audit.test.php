@@ -48,7 +48,7 @@ ob_start();
 cyberdat_cha_render( 2 );
 $html = ob_get_clean();
 check( str_contains( $html, 'data-cha ' ) && str_contains( $html, 'container-hardening-audit/worker.js?ver=123&#038;ev=123' ) && str_contains( $html, 'data-worker-state="loading"' ), 'workspace renders with the same-origin worker URL and a worker state attribute' );
-foreach ( array( 'How it works', 'Privacy', 'Limitations', 'Sources', 'This tool does not transmit the text you enter', 'and this tool does not write it to persistent browser storage', 'This tool does not persist data', 'Static checks only.', 'no fixed file is generated', 'Helm', 'CC BY 4.0', 'Apache License 2.0', 'No CIS Benchmark text, numbering or structure is used', 'built-in page translator', 'Up to 20 files' ) as $needle ) {
+foreach ( array( 'How it works', 'Privacy', 'Limitations', 'Sources', 'This tool does not transmit the text you enter', 'and this tool does not write it to persistent browser storage', 'This tool does not persist data', 'Static checks only.', 'no fixed file is generated', 'Helm', 'CC BY 4.0', 'Apache License 2.0', 'They are not a CIS Benchmark and do not map to its recommendations', 'built-in page translator', 'Up to 20 files' ) as $needle ) {
 	check( str_contains( $html, $needle ), "required text present: $needle" );
 }
 preg_match( '#id="cd-cha-limits".*?<li>(.*?)</li>#s', $html, $first );
