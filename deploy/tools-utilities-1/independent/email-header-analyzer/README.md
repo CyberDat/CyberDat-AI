@@ -3,10 +3,28 @@
 For the owner (who prepares the set) and Codex (who runs it). All numbers published by the tool author are **not
 independent**. Real headers stay **outside the repository**; only the summary line and the file hash are shared.
 
-## 1. Collect 10–15 header sets
+## Accepted composition (owner decision 2026-11-19)
 
-Mix ordinary wanted mail (newsletters, colleagues, a mailing list, a forwarded message) with spam and phishing, from
-Gmail and Outlook.
+The owner has Gmail only. The independent set is: one suspicious message from the spam folder, newsletters, ordinary
+inbox mail and, if time allows, 2–4 messages exchanged with a new outlook.com mailbox. Its value is that the messages
+are real and not written by the author of the rules, not that every category is present. Do not take phishing
+collections from the internet (they contain real victims' addresses and some have their own licence).
+
+| Category | Coverage |
+|---|---|
+| Gmail receiving (Google), newsletters via ESPs, ordinary mail | real messages (independent set) |
+| outlook.com (Microsoft consumer) in both directions | real messages if the owner adds them; otherwise synthetic only |
+| One spam message | real (independent set) |
+| Corporate Microsoft 365 / Exchange Online and on-premises Exchange | **covered only by synthetic headers** |
+| Mail gateways (Cisco-style, third-party relays), Postfix, Exim, Sendmail as receivers | **covered only by synthetic headers** |
+| Other phishing variants (brand lookalikes, forged Authentication-Results, mixed alphabets) | **covered only by synthetic headers** |
+
+The page Limitations say that these formats were tested only on synthetic headers. More spam can be added over time;
+each addition is a new, separately labelled case.
+
+## 1. Collect the header sets
+
+Use what is available (see above). Real messages matter more than covering every kind.
 
 * **Gmail (web):** open the message → ⋮ (More) → *Show original* → *Copy to clipboard* (or *Download original*, an .eml file).
 * **Outlook (desktop):** open the message → *File* → *Properties* → copy *Internet headers*.

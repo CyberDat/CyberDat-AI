@@ -99,7 +99,10 @@ new utility and test directories: no leaks. Secret-shaped test values come only 
 
 ## Not verified
 
-* No real mail: the corpus is synthetic (written from scratch); the owner's 10–15 real header sets are pending
-  (kit in `independent/email-header-analyzer/`). Every number above is NOT INDEPENDENT.
+* The corpus is synthetic (written from scratch); every number above is NOT INDEPENDENT. The owner's independent set is
+  Gmail-only (owner decision 2026-11-19: one spam message, newsletters, ordinary mail, possibly 2–4 outlook.com messages;
+  3 messages prepared so far, labels pending). **Covered only by synthetic headers:** corporate Microsoft 365 / Exchange
+  Online and on-premises Exchange, mail gateways, Postfix/Exim/Sendmail as receivers, and phishing variants other than the
+  owner's spam message. The page Limitations state this (`bee7105`).
 * Received formats of other vendors (Proofpoint, Mimecast, Zimbra, Yandex, Mail.ru, Apple iCloud) were not tested.
 * Nothing installed on staging; the hub with the 11th card was checked only by the PHP render test.
