@@ -17,11 +17,8 @@ to be shipped with them. Sources are referenced on the pages by name only.
 Third-party libraries: none in any of the three tools (own YAML subset reader, own Dockerfile reader, own condition
 parser and converters). Nothing is loaded from a CDN.
 
-## Questions for the owner
+## Owner decisions (2026-11-19)
 
-1. Tool 9: SigmaHQ rules stay excluded (DRL 1.1 requires attribution and has conditions for rule use). If you want
-   example rules from SigmaHQ in the tool or in the independent acceptance, that is your decision.
-2. Tool 10: CIS is mentioned by name only to say that the rules are not a CIS Benchmark. If you prefer no mention at
-   all, remove that sentence from the Limitations, Sources and FAQ (three places).
-3. Tool 10: the Kubernetes documentation is CC BY 4.0. No text was copied, so attribution is not required; it is named
-   in Sources for transparency.
+1. Tool 9: SigmaHQ rules (DRL 1.1) are **not** included — the own example rules are sufficient and the license would add obligations without benefit.
+2. Tool 10: CIS is mentioned **once**, in the Limitations (“not a CIS Benchmark”). The repeat in the page Sources and the mentions in `editorial.json` (documentation, FAQ) were removed (`5139a82`).
+3. Tool 10: the Kubernetes documentation stays named in Sources (no text copied, no attribution required).
