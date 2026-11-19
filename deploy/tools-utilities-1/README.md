@@ -9,13 +9,13 @@ tools (owner decision of 2026-11-19).
 | Item | Value |
 |---|---|
 | Branch | `integration/tools-utilities-1`, created from `58ed710` (tip of `integration/tools-release-1.3`) |
-| Utility branch | `feature/tools-email-header-analyzer`: `12d01f7` Public Suffix List snapshot, `867bc1f` corpus and held-out set (frozen), `69b3a4a` utility, `d2cc2db` catalogue entry; merge `50e916b` |
+| Utility branch | `feature/tools-email-header-analyzer`: `12d01f7` Public Suffix List snapshot, `867bc1f` corpus and held-out set (frozen), `69b3a4a` utility, `d2cc2db` catalogue entry; merge `50e916b`; `386e37c` owner decisions of 2026-11-19 (PSL from publicsuffix.org, "Quick utility" card label, URL confirmed); merge `429e097` |
 | Package | `feature/tools-utilities-1-package`, merged into the integration branch |
-| Not changed | files of the ten tools (byte-identical to the base); hub template, `inc/tools.php`, pages, Research/Content/SEO |
+| Not changed | files of the ten tools (byte-identical to the base); `inc/tools.php`, pages, Research/Content/SEO. The hub template changes in one line only (owner decision 3) |
 
 ## Delta to apply on top of the release 1.3 theme
 
-`manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 164 → 173 files: 9 added, 2 modified, 0 removed.
+`manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 164 → 173 files: 9 added, 3 modified, 0 removed.
 `node deploy/tools-utilities-1/build-manifest.cjs --check` verifies it. `manifest.json` → `tools.email-header-analyzer`
 lists the utility's own files and only its lines in the shared files:
 
@@ -24,23 +24,24 @@ lists the utility's own files and only its lines in the shared files:
 | added | `assets/css/email-header-analyzer.css`, `assets/js/email-header-analyzer/{app,engine,worker}.js`, `inc/tool-email-header-analyzer.php`, `template-parts/tools/email-header-analyzer.php` |
 | added | `assets/js/email-header-analyzer/public_suffix_list.dat` (Public Suffix List, unmodified, MPL-2.0), `psl-data.js` (the same bytes as a JS string for the worker), `LICENSE-MPL-2.0.txt` — publish the three together |
 | modified | `functions.php` — one line `require_once __DIR__ . '/inc/tool-email-header-analyzer.php';` after the container audit include |
-| modified | `inc/tools-catalog.json` — one entry appended after the ten tools (release `utilities-1`, phase 4, category Quick Utilities, status `planned`); the ten entries are unchanged. `deploy/tools-release-1/route-catalog.json` stays a byte copy |
+| modified | `inc/tools-catalog.json` — one entry appended after the ten tools (`kind: utility`, release `utilities-1`, category Quick Utilities, status `planned`); the ten entries are unchanged. `deploy/tools-release-1/route-catalog.json` stays a byte copy |
+| modified | `page-templates/tools.php` — one line (46): cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
 
-**Hub effect:** the hub template is not changed, but it renders every catalogue entry, so it shows an 11th
-“Coming soon” card and a Quick Utilities filter button (owner question 3 in `SOURCES-AND-LICENSES.md`). The hub tests
+**Hub effect** (owner decision 3, 2026-11-19: keep the card): the hub shows an 11th "Coming soon" card labelled
+"Quick utility" and a Quick Utilities filter button; the ten tool cards are unchanged. The hub tests
 (`tests/tools-catalog.test.php`, `tests/tools-filter.test.cjs`) now check the ten tools as a subset plus the utility.
 For publication Codex adds the slug to the canonical list in `inc/tools.php`, creates the page with the Tool template at
-`/tools/email-header-analyzer/` (proposed URL), sets the editorial fields from `editorial.json` and flips the status.
+`/tools/email-header-analyzer/` (URL confirmed by the owner), sets the editorial fields from `editorial.json` and flips the status.
 
 ## Files in this package
 
 | File | Content |
 |---|---|
 | `manifest.json`, `build-manifest.cjs` | delta, the utility's files and shared-file lines, base/target hashes |
-| `update-psl.cjs`, `psl-snapshot.json` | pinned Public Suffix List update and verification (`--check`), provenance |
+| `update-psl.cjs`, `psl-snapshot.json` | Public Suffix List download from publicsuffix.org with pinned SHA-256 and list date, verification (`--check`), provenance |
 | `editorial.json` | proposed page fields (English; owner review before `reviewed=true`) |
 | `COPY-REVIEW.md` | all user-visible strings, the brand list and the rules (Russian notes), decisions first |
-| `SOURCES-AND-LICENSES.md` | sources with commits and check dates, the PSL decision and the owner questions |
+| `SOURCES-AND-LICENSES.md` | sources with dates and hashes, the PSL decision and the owner decisions |
 | `independent/email-header-analyzer/` | independent acceptance kit: instructions for Gmail and Outlook and what to replace, `template.json`, `rules.json`; runner `tests/email-header-analyzer-independent.cjs` |
 
 ## What the analyzer reads
@@ -70,7 +71,7 @@ For publication Codex adds the slug to the canonical list in `inc/tools.php`, cr
 
 ### Final regression — all eleven tools, one sequential run
 
-Integration tip `50e916b`, sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
+Integration tip `50e916b`; repeated once after the owner decisions at `429e097` with identical PASS counts (33/33 runs exit 0); sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
 WebKit via Playwright 1.49.1, Node 24.14.1, PHP from the pinned WordPress image). PASS counts, every run exit 0:
 
 | Tool | Edge | Firefox | WebKit |
@@ -89,7 +90,7 @@ WebKit via Playwright 1.49.1, Node 24.14.1, PHP from the pinned WordPress image)
 
 PHP page tests of all eleven, `tools` and `tools-catalog` suites: PASS. Node tests: all PASS except `d14-remediation`
 (needs the owner-private fixtures) and `release-manifest` (release-1 package count), which fail identically on the base.
-Manifest checks 1.3 and utilities-1 and the PSL `--check`: PASS.
+Manifest checks 1.3 and utilities-1 and the PSL `--check` (publicsuffix.org list of 2026-11-17): PASS. After the switch to that list the corpus (50/50) and held-out (14/14) results are unchanged; the hub test checks the Quick utility label (tools-catalog 51 checks).
 
 ### Secrets
 

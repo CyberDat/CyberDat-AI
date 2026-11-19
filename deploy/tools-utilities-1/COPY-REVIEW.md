@@ -12,9 +12,9 @@
 | Limitations, 2-й пункт | A message is never shown to be safe or genuine. A hijacked real account, or a message sent through a legitimate service, passes every check. | Вторым пунктом, как в задании. |
 | Limitations, 3-й пункт | The trust boundary is an estimate from server names. … A forged result written just below your server’s own line can only be recognised when your server also wrote one above it. | Честная граница метода: поддельный Authentication-Results вплотную под строкой вашего сервера распознаётся только как дубликат. |
 | Результат без находок | No known warning signs matched. This does not mean the message is safe. | Дословно из задания. |
-| Sources | Public Suffix List by the Public Suffix List project, Mozilla Public License 2.0, snapshot of commit f77964550911 (2026-11-19). It is published unmodified with this tool as public_suffix_list.dat together with its license text (LICENSE-MPL-2.0.txt). | MPL-2.0 — копилефт на уровне файла. Решение владельца нужно до публикации (см. SOURCES-AND-LICENSES.md). |
+| Sources | Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of 2026-11-17 (SHA-256 809adae1a2cb…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt). | Решение владельца 2026-11-19: MPL-2.0 принят; источник publicsuffix.org, закреплены SHA-256 и дата. |
 | Список брендов | PayPal, Microsoft, Apple, Amazon, Google, DHL, DocuSign, Netflix, Sparkasse, Sberbank, Telekom, LinkedIn, Facebook, Dropbox, Adobe, FedEx, UPS, Booking.com | Мой короткий список: слова в отображаемом имени и домены брендов. Расширять ли его — решение владельца. Реальные домены брендов есть только в этом справочном списке; в корпусе и примерах — только зарезервированные домены. |
-| Каталог и хаб | Email Header Analyzer · Quick Utilities · release utilities-1 · phase 4 · planned | Хаб не менялся, но выводит все записи каталога: появится 11-я карточка «Coming soon» и кнопка фильтра «Quick Utilities». Подпись карточки будет «Phase 4 · Release utilities-1» — проверьте. |
+| Каталог и хаб | Email Header Analyzer · Quick Utilities · Quick utility · planned | Решение владельца 2026-11-19: карточка остаётся, подпись «Quick utility» (одна строка в шаблоне хаба; карточки десяти без изменений). Адрес /tools/email-header-analyzer/ подтверждён. |
 
 ## Строки шаблона (54)
 
@@ -70,7 +70,7 @@
 50. Input up to 5 MB, header part up to 1 MB. Processing stops after 30 seconds.
 51. Sources
 52. All rules, explanations, the brand list and the examples are written by CyberDat.
-53. Public Suffix List by the Public Suffix List project, Mozilla Public License 2.0, snapshot of commit %1$s (%2$s). It is published unmodified with this tool as public_suffix_list.dat together with its license text (LICENSE-MPL-2.0.txt).
+53. Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of %1$s (SHA-256 %2$s…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt).
 54. Background reading: the IETF standards for message format, Received lines, Authentication-Results, SPF, DKIM, DMARC and ARC. They are referenced here by name only; no text is copied.
 
 ## Сообщения интерфейса из app.js (26)

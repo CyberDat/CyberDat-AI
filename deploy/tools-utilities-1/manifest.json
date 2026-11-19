@@ -4,13 +4,13 @@
   "parent_revision": "tools-release-1.3/1",
   "parent_theme_commit": "d41cc7c02965e5676a5a1f3fc72a68bc7f92614c",
   "base_commit": "58ed71050440ff48204620b38dd465a9c521a21f",
-  "theme_commit": "50e916b02fb0b5aecdf8068ed479e55c1bfa076e",
-  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1: the utility's files (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (status planned; the ten entries unchanged). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
+  "theme_commit": "429e09748651ff0e22159d098c45122f8dad2662",
+  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1: the utility's files (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility, status planned; the ten entries unchanged), one hub template line so that utility cards read \"Quick utility\" instead of Phase/Release. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 164,
     "target": 173,
     "added": 9,
-    "modified": 2,
+    "modified": 3,
     "removed": 0
   },
   "delta": {
@@ -27,7 +27,8 @@
     ],
     "modified": [
       "functions.php",
-      "inc/tools-catalog.json"
+      "inc/tools-catalog.json",
+      "page-templates/tools.php"
     ],
     "removed": []
   },
@@ -39,8 +40,8 @@
     },
     "assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt": {
       "status": "added",
-      "bytes": 16727,
-      "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+      "bytes": 16726,
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
     },
     "assets/js/email-header-analyzer/app.js": {
       "status": "added",
@@ -49,23 +50,23 @@
     },
     "assets/js/email-header-analyzer/engine.js": {
       "status": "added",
-      "bytes": 63274,
-      "sha256": "a75d4ce911894a3dbbaafd98053904ea5621a260e43c6062a723d86fe342998b"
+      "bytes": 63318,
+      "sha256": "cb668210d331e8d0618485fea12301a3b2835b69c9210a5d908641f01561cb19"
     },
     "assets/js/email-header-analyzer/psl-data.js": {
       "status": "added",
-      "bytes": 360375,
-      "sha256": "9b94e2b3e96adb135116d37d1a01bc986210d7348e029f612716e51445613271"
+      "bytes": 360305,
+      "sha256": "0542f3de69be401ba7b97d7d3895cd3286d6d853e3a38afcedd2c3465616c97e"
     },
     "assets/js/email-header-analyzer/public_suffix_list.dat": {
       "status": "added",
-      "bytes": 342636,
-      "sha256": "135dda6f5fbe05e0d5875c0e4428cb475f761c080133dd3d75837e08e515f29d"
+      "bytes": 342473,
+      "sha256": "809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71"
     },
     "assets/js/email-header-analyzer/worker.js": {
       "status": "added",
       "bytes": 2277,
-      "sha256": "6f4884fdb8fec4c74ff90f756851ad9d207ed2590c656456659ab51e3876967b"
+      "sha256": "8513ad816179733083ace93931d02f3e21865e6a4aad1719fca775a256cb0d3b"
     },
     "functions.php": {
       "status": "modified",
@@ -75,19 +76,25 @@
     },
     "inc/tool-email-header-analyzer.php": {
       "status": "added",
-      "bytes": 3053,
-      "sha256": "a2756d11ee8c3b78c6001c6fe346b70b2a0b1e57de11bb6010298f4d72ec5f79"
+      "bytes": 3052,
+      "sha256": "64eafb48d467d3da7bd9e5e63acc00b3fce13064ce3b887a536b398ccb574c15"
     },
     "inc/tools-catalog.json": {
       "status": "modified",
-      "bytes": 5930,
-      "sha256": "c24b3815d505d41b0103492104ab511c6860bdee8d1c5725e2a25e5fa9746622",
+      "bytes": 5953,
+      "sha256": "11fcf60325e1fe8be859a44f4e7f9e79e79ec7f2e7278cc59ecd87938116ef8f",
       "base_sha256": "f02038ba9b0a758ffd9fde32c2a1b167f31f80ffddb011fab792bdbfbe1c91e6"
+    },
+    "page-templates/tools.php": {
+      "status": "modified",
+      "bytes": 4243,
+      "sha256": "4ed9091f8688a52801511731a4633f0585b4e5af635e5539c262f87f240387c8",
+      "base_sha256": "b30a48a20ef080634c1997419841cb51896c731ebc4837aca000e2ee53686e43"
     },
     "template-parts/tools/email-header-analyzer.php": {
       "status": "added",
-      "bytes": 13989,
-      "sha256": "d134f80bab74e16b21e0b4c9d8f0a0c6169c1251b6bb53ab5d69ef80b6517709"
+      "bytes": 14008,
+      "sha256": "20ce4a4f7510bcd6fe59583167373a32a9ce8404aa75efc3bfa21e45de2bdad2"
     }
   },
   "tools": {
@@ -101,36 +108,36 @@
           "sha256": "88344e6afe96e610bdc21194372df2dddb627ffb1cee3e6a2b4bfa4c2237fe9d"
         },
         "assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt": {
-          "bytes": 16727,
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "bytes": 16726,
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         },
         "assets/js/email-header-analyzer/app.js": {
           "bytes": 18170,
           "sha256": "12fa257639ef81c03074386cd8650a1eabb9c00eece588428c810d9ab6d46d56"
         },
         "assets/js/email-header-analyzer/engine.js": {
-          "bytes": 63274,
-          "sha256": "a75d4ce911894a3dbbaafd98053904ea5621a260e43c6062a723d86fe342998b"
+          "bytes": 63318,
+          "sha256": "cb668210d331e8d0618485fea12301a3b2835b69c9210a5d908641f01561cb19"
         },
         "assets/js/email-header-analyzer/psl-data.js": {
-          "bytes": 360375,
-          "sha256": "9b94e2b3e96adb135116d37d1a01bc986210d7348e029f612716e51445613271"
+          "bytes": 360305,
+          "sha256": "0542f3de69be401ba7b97d7d3895cd3286d6d853e3a38afcedd2c3465616c97e"
         },
         "assets/js/email-header-analyzer/public_suffix_list.dat": {
-          "bytes": 342636,
-          "sha256": "135dda6f5fbe05e0d5875c0e4428cb475f761c080133dd3d75837e08e515f29d"
+          "bytes": 342473,
+          "sha256": "809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71"
         },
         "assets/js/email-header-analyzer/worker.js": {
           "bytes": 2277,
-          "sha256": "6f4884fdb8fec4c74ff90f756851ad9d207ed2590c656456659ab51e3876967b"
+          "sha256": "8513ad816179733083ace93931d02f3e21865e6a4aad1719fca775a256cb0d3b"
         },
         "inc/tool-email-header-analyzer.php": {
-          "bytes": 3053,
-          "sha256": "a2756d11ee8c3b78c6001c6fe346b70b2a0b1e57de11bb6010298f4d72ec5f79"
+          "bytes": 3052,
+          "sha256": "64eafb48d467d3da7bd9e5e63acc00b3fce13064ce3b887a536b398ccb574c15"
         },
         "template-parts/tools/email-header-analyzer.php": {
-          "bytes": 13989,
-          "sha256": "d134f80bab74e16b21e0b4c9d8f0a0c6169c1251b6bb53ab5d69ef80b6517709"
+          "bytes": 14008,
+          "sha256": "20ce4a4f7510bcd6fe59583167373a32a9ce8404aa75efc3bfa21e45de2bdad2"
         }
       },
       "mpl_files_publish_together": [
@@ -148,6 +155,7 @@
           "append_entry": {
             "release": "utilities-1",
             "phase": 4,
+            "kind": "utility",
             "title": "Email Header Analyzer",
             "slug": "email-header-analyzer",
             "url": "/tools/email-header-analyzer/",
@@ -158,6 +166,12 @@
             "icon_path": "M3 6h18v12H3Z M3 6l9 7 9-7"
           },
           "position": "after the ten tools (index 10)"
+        },
+        "page-templates/tools.php": {
+          "replace_line_number": 46,
+          "from": "<p class=\"tools-card-release\"><?php printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); ?></p>",
+          "to": "<p class=\"tools-card-release\"><?php if ( isset( $tool['kind'] ) && 'utility' === $tool['kind'] ) : esc_html_e( 'Quick utility', 'cyberdat' ); else : printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); endif; ?></p>",
+          "effect": "cards with kind=utility read \"Quick utility\"; all other cards unchanged"
         }
       }
     }
@@ -1366,9 +1380,9 @@
       "sha256": "9fde45c2e1ccb2edee7a1ee36e5bd30d3a7c6389d3cf5afbb96275d7123e58b6"
     },
     "assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt": {
-      "bytes": 16727,
+      "bytes": 16726,
       "mode": "0644",
-      "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
     },
     "assets/js/email-header-analyzer/app.js": {
       "bytes": 18170,
@@ -1376,24 +1390,24 @@
       "sha256": "12fa257639ef81c03074386cd8650a1eabb9c00eece588428c810d9ab6d46d56"
     },
     "assets/js/email-header-analyzer/engine.js": {
-      "bytes": 63274,
+      "bytes": 63318,
       "mode": "0644",
-      "sha256": "a75d4ce911894a3dbbaafd98053904ea5621a260e43c6062a723d86fe342998b"
+      "sha256": "cb668210d331e8d0618485fea12301a3b2835b69c9210a5d908641f01561cb19"
     },
     "assets/js/email-header-analyzer/psl-data.js": {
-      "bytes": 360375,
+      "bytes": 360305,
       "mode": "0644",
-      "sha256": "9b94e2b3e96adb135116d37d1a01bc986210d7348e029f612716e51445613271"
+      "sha256": "0542f3de69be401ba7b97d7d3895cd3286d6d853e3a38afcedd2c3465616c97e"
     },
     "assets/js/email-header-analyzer/public_suffix_list.dat": {
-      "bytes": 342636,
+      "bytes": 342473,
       "mode": "0644",
-      "sha256": "135dda6f5fbe05e0d5875c0e4428cb475f761c080133dd3d75837e08e515f29d"
+      "sha256": "809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71"
     },
     "assets/js/email-header-analyzer/worker.js": {
       "bytes": 2277,
       "mode": "0644",
-      "sha256": "6f4884fdb8fec4c74ff90f756851ad9d207ed2590c656456659ab51e3876967b"
+      "sha256": "8513ad816179733083ace93931d02f3e21865e6a4aad1719fca775a256cb0d3b"
     },
     "assets/js/intelligence-charts.js": {
       "bytes": 4229,
@@ -1651,9 +1665,9 @@
       "sha256": "76ee9003900b904c579a43a7965e09c510d2414223442f59180ed3757296574d"
     },
     "inc/tool-email-header-analyzer.php": {
-      "bytes": 3053,
+      "bytes": 3052,
       "mode": "0644",
-      "sha256": "a2756d11ee8c3b78c6001c6fe346b70b2a0b1e57de11bb6010298f4d72ec5f79"
+      "sha256": "64eafb48d467d3da7bd9e5e63acc00b3fce13064ce3b887a536b398ccb574c15"
     },
     "inc/tool-leak-inspector.php": {
       "bytes": 2674,
@@ -1696,9 +1710,9 @@
       "sha256": "e7af18011f307ae5b616cfdc3daa3dacf983e4459955d3b63ee2e5bb74f5589f"
     },
     "inc/tools-catalog.json": {
-      "bytes": 5930,
+      "bytes": 5953,
       "mode": "0644",
-      "sha256": "c24b3815d505d41b0103492104ab511c6860bdee8d1c5725e2a25e5fa9746622"
+      "sha256": "11fcf60325e1fe8be859a44f4e7f9e79e79ec7f2e7278cc59ecd87938116ef8f"
     },
     "inc/tools.php": {
       "bytes": 12478,
@@ -1721,9 +1735,9 @@
       "sha256": "b843e071ee2b6ebdcab283440989943c49c7f91013342deb7fadaecde9f490b1"
     },
     "page-templates/tools.php": {
-      "bytes": 4123,
+      "bytes": 4243,
       "mode": "0644",
-      "sha256": "b30a48a20ef080634c1997419841cb51896c731ebc4837aca000e2ee53686e43"
+      "sha256": "4ed9091f8688a52801511731a4633f0585b4e5af635e5539c262f87f240387c8"
     },
     "searchform.php": {
       "bytes": 682,
@@ -1806,9 +1820,9 @@
       "sha256": "039dbe0083a466be3d83562ff068137cd0aa9ba061cb639394337c10927a3704"
     },
     "template-parts/tools/email-header-analyzer.php": {
-      "bytes": 13989,
+      "bytes": 14008,
       "mode": "0644",
-      "sha256": "d134f80bab74e16b21e0b4c9d8f0a0c6169c1251b6bb53ab5d69ef80b6517709"
+      "sha256": "20ce4a4f7510bcd6fe59583167373a32a9ce8404aa75efc3bfa21e45de2bdad2"
     },
     "template-parts/tools/log-anonymizer.php": {
       "bytes": 15037,
