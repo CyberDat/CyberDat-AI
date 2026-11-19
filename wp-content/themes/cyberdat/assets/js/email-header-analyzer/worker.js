@@ -19,7 +19,7 @@
 }());
 
 const ENGINE = self.CyberDatEmailHeaders;
-self.postMessage({ type: 'ready', engine: ENGINE.ENGINE, psl: !!(self.CyberDatPSL && self.CyberDatPSL.commit) });
+self.postMessage({ type: 'ready', engine: ENGINE.ENGINE, psl: !!(self.CyberDatPSL && self.CyberDatPSL.sha256) });
 
 self.onmessage = function (event) {
 	const msg = event.data || {};

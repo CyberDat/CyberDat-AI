@@ -195,7 +195,7 @@
 			if (rule.startsWith('!')) { PSL.exc.add(toASCII(rule.slice(1))); } else if (rule.startsWith('*.')) { PSL.wild.add(toASCII(rule.slice(2))); } else { PSL.exact.add(toASCII(rule)); }
 		}
 		PSL.loaded = PSL.exact.size > 1000;
-		PSL.meta = meta ? { commit: meta.commit, date: meta.date } : PSL.meta;
+		PSL.meta = meta ? { source: meta.source, license: meta.license, date: meta.date, sha256: meta.sha256 } : PSL.meta;
 		return PSL.loaded;
 	}
 	/** Organizational (registrable) domain in ASCII, or '' when the domain is itself a public suffix or invalid. */

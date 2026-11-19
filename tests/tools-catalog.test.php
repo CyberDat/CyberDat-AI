@@ -57,6 +57,7 @@ check(substr_count($html,'data-tools-filter=')===7,'All, five tool categories an
 check(str_contains($html,'11 / 11 tools shown'),'initial counter reflects all cards');
 check(substr_count($html,'class="tools-status">Coming soon')===11,'unpublished cards honestly remain Coming soon');
 foreach($cards[0] as $card){check(!str_contains($card,'<a '),'unavailable card stays non-clickable');}
+check(str_contains(end($cards[0]),'<p class="tools-card-release">Quick utility</p>')&&substr_count($html,'tools-card-release">Quick utility<')===1&&substr_count($html,'tools-card-release">Phase ')===10,'utility card labelled Quick utility; the ten tool cards keep Phase · Release');
 foreach([1,2,3,4] as $count){
  $GLOBALS['ready_posts']=array_slice([$GLOBALS['tool_post'],$GLOBALS['pi_post'],$GLOBALS['lotl_post'],$GLOBALS['mcp_post']],0,$count);
  $rendered=render();

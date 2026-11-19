@@ -43,7 +43,7 @@ while ( have_posts() ) :
                     <p class="tools-card-category"><?php echo esc_html( $tool['category'] ); ?></p>
                     <h2><?php if ( $url ) : ?><a class="tools-card-link" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $tool['title'] ); ?></a><?php else : ?><?php echo esc_html( $tool['title'] ); ?><?php endif; ?></h2>
                     <p class="tools-card-description"><?php echo esc_html( $tool['description'] ); ?></p>
-                    <p class="tools-card-release"><?php printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); ?></p>
+                    <p class="tools-card-release"><?php if ( isset( $tool['kind'] ) && 'utility' === $tool['kind'] ) : esc_html_e( 'Quick utility', 'cyberdat' ); else : printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); endif; ?></p>
                 </article>
             <?php endforeach; ?>
         </div>

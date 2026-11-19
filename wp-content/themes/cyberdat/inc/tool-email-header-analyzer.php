@@ -2,8 +2,8 @@
 /**
  * Email Header Analyzer (quick utilities, utility 1).
  *
- * Registers the reviewed renderer for the native page /tools/email-header-analyzer/ (URL proposed in the catalogue entry,
- * to be confirmed by the owner). Publication still requires the editorial fields and the "reviewed" flag enforced by
+ * Registers the reviewed renderer for the native page /tools/email-header-analyzer/ (URL confirmed by the owner on
+ * 2026-11-19). Publication still requires the editorial fields and the "reviewed" flag enforced by
  * inc/tools.php. Uses the shared tool framework: strict CSP (inc/tool-security.php), Web Worker,
  * assets/css/tools-common.css. Headers are analysed in the browser; nothing is looked up or sent anywhere.
  */
@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
 const CYBERDAT_EHA_SLUG = 'email-header-analyzer';
 const CYBERDAT_EHA_ENGINE = '1.0.0';
 const CYBERDAT_EHA_RULESET = '2026-11-19.1';
-const CYBERDAT_EHA_PSL_COMMIT = 'f7796455091118a5617cc7588523b083a8223301';
-const CYBERDAT_EHA_PSL_DATE = '2026-11-19';
+const CYBERDAT_EHA_PSL_DATE = '2026-11-17';
+const CYBERDAT_EHA_PSL_SHA256 = '809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */
 function cyberdat_eha_is_page( $post_id ) {
@@ -38,7 +38,7 @@ function cyberdat_eha_config() {
 		'worker'         => add_query_arg( array( 'ver' => cyberdat_theme_asset_version( $worker ), 'ev' => cyberdat_theme_asset_version( $engine ), 'pv' => cyberdat_theme_asset_version( $psl ) ), get_theme_file_uri( $worker ) ),
 		'engine_version' => CYBERDAT_EHA_ENGINE,
 		'ruleset'        => CYBERDAT_EHA_RULESET,
-		'psl_commit'     => CYBERDAT_EHA_PSL_COMMIT,
+		'psl_sha256'     => CYBERDAT_EHA_PSL_SHA256,
 		'psl_date'       => CYBERDAT_EHA_PSL_DATE,
 	);
 }

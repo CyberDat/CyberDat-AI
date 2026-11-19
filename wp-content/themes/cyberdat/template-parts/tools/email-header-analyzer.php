@@ -110,7 +110,7 @@ $cyberdat_eha_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 			<h2 id="cd-eha-sources"><?php esc_html_e( 'Sources', 'cyberdat' ); ?></h2>
 			<ul>
 				<li><?php esc_html_e( 'All rules, explanations, the brand list and the examples are written by CyberDat.', 'cyberdat' ); ?></li>
-				<li><?php printf( esc_html__( 'Public Suffix List by the Public Suffix List project, Mozilla Public License 2.0, snapshot of commit %1$s (%2$s). It is published unmodified with this tool as public_suffix_list.dat together with its license text (LICENSE-MPL-2.0.txt).', 'cyberdat' ), esc_html( substr( $cyberdat_eha['psl_commit'], 0, 12 ) ), esc_html( $cyberdat_eha['psl_date'] ) ); ?></li>
+				<li><?php printf( esc_html__( 'Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of %1$s (SHA-256 %2$s…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt).', 'cyberdat' ), esc_html( $cyberdat_eha['psl_date'] ), esc_html( substr( $cyberdat_eha['psl_sha256'], 0, 12 ) ) ); ?></li>
 				<li><?php esc_html_e( 'Background reading: the IETF standards for message format, Received lines, Authentication-Results, SPF, DKIM, DMARC and ARC. They are referenced here by name only; no text is copied.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
