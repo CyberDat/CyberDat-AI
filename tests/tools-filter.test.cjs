@@ -17,7 +17,7 @@ for (const button of buttons) {
  const category = button.dataset.toolsFilter;
  const expected = roadmap.filter(t => category === 'all' || t.category_slug === category).length;
  assert.equal(cards.filter(c => !c.hidden).length, expected);
- assert.equal(count.textContent, `${expected} / 10 tools shown`);
+ assert.equal(count.textContent, `${expected} / ${roadmap.length} tools shown`);
  assert.equal(button.attrs['aria-pressed'], 'true');
  assert.equal(buttons.filter(b => b.attrs['aria-pressed'] === 'true').length, 1);
 }

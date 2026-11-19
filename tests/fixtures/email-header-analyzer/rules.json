@@ -1,0 +1,151 @@
+{
+  "_note": "Finding ids frozen on 2026-11-19 BEFORE any analyzer code. Own rules written by CyberDat. Severity: high, medium, low, info (info = minor or informational, grouped). Results are based only on what the headers say; no DNS, WHOIS, reputation or signature check.",
+  "findings": [
+    {
+      "id": "EHA-PARSE-001",
+      "severity": "info",
+      "meaning": "a Received line could not be parsed; it is shown as is"
+    },
+    {
+      "id": "EHA-PATH-001",
+      "severity": "low",
+      "meaning": "time order of Received lines broken by more than 5 minutes"
+    },
+    {
+      "id": "EHA-PATH-002",
+      "severity": "medium",
+      "meaning": "a Received date lies more than 15 minutes in the future"
+    },
+    {
+      "id": "EHA-PATH-003",
+      "severity": "info",
+      "meaning": "total delivery time from the first to the last Received line over 1 hour"
+    },
+    {
+      "id": "EHA-PATH-005",
+      "severity": "low",
+      "meaning": "no Received lines (headers incomplete or not delivered by SMTP)"
+    },
+    {
+      "id": "EHA-PATH-006",
+      "severity": "info",
+      "meaning": "a parsed Received line has no date"
+    },
+    {
+      "id": "EHA-AUTH-001",
+      "severity": "high",
+      "meaning": "trusted DMARC result is fail"
+    },
+    {
+      "id": "EHA-AUTH-002",
+      "severity": "medium",
+      "meaning": "trusted SPF result is fail, softfail or permerror while DMARC did not pass"
+    },
+    {
+      "id": "EHA-AUTH-003",
+      "severity": "medium",
+      "meaning": "trusted DKIM result is fail or permerror while DMARC did not pass"
+    },
+    {
+      "id": "EHA-AUTH-004",
+      "severity": "low",
+      "meaning": "no trusted authentication results for a message from outside (internal mail excluded)"
+    },
+    {
+      "id": "EHA-AUTH-005",
+      "severity": "medium",
+      "meaning": "authentication results that claim a pass were written below the trust boundary or by an unknown server"
+    },
+    {
+      "id": "EHA-AUTH-006",
+      "severity": "low",
+      "meaning": "DMARC fail on a forwarded or mailing-list message (trusted arc=pass, or List-Id present); replaces AUTH-001/002/003"
+    },
+    {
+      "id": "EHA-ALIGN-001",
+      "severity": "medium",
+      "meaning": "no trusted DMARC result and neither the SPF domain nor a DKIM domain aligns with From (relaxed, organizational domain via the Public Suffix List)"
+    },
+    {
+      "id": "EHA-RP-001",
+      "severity": "info",
+      "meaning": "Return-Path organizational domain differs from From"
+    },
+    {
+      "id": "EHA-REPLY-001",
+      "severity": "medium",
+      "meaning": "Reply-To organizational domain differs from From"
+    },
+    {
+      "id": "EHA-FROM-001",
+      "severity": "medium",
+      "meaning": "display name contains an address or domain that differs from the From address"
+    },
+    {
+      "id": "EHA-FROM-002",
+      "severity": "medium",
+      "meaning": "display name names a brand from the CyberDat list but the From domain is not one of that brand's domains"
+    },
+    {
+      "id": "EHA-FROM-003",
+      "severity": "low",
+      "meaning": "From missing, empty or with more than one address"
+    },
+    {
+      "id": "EHA-LOOK-001",
+      "severity": "low",
+      "meaning": "internationalized (punycode) domain in From, Reply-To or Return-Path"
+    },
+    {
+      "id": "EHA-LOOK-002",
+      "severity": "medium",
+      "meaning": "a domain label mixes scripts (for example Latin and Cyrillic)"
+    },
+    {
+      "id": "EHA-LOOK-003",
+      "severity": "high",
+      "meaning": "From or Reply-To domain looks like a listed brand or the user's own domain (homoglyphs, digits, rn for m, one edit, or the brand inside the label)"
+    },
+    {
+      "id": "EHA-MSGID-001",
+      "severity": "low",
+      "meaning": "no Message-ID"
+    },
+    {
+      "id": "EHA-MSGID-002",
+      "severity": "info",
+      "meaning": "Message-ID domain differs from the From organizational domain"
+    },
+    {
+      "id": "EHA-DATE-001",
+      "severity": "low",
+      "meaning": "no Date"
+    },
+    {
+      "id": "EHA-DATE-002",
+      "severity": "low",
+      "meaning": "Date in the future, far from the delivery time, or with an impossible time zone"
+    },
+    {
+      "id": "EHA-INFO-001",
+      "severity": "info",
+      "meaning": "X-Mailer or User-Agent present"
+    },
+    {
+      "id": "EHA-INFO-002",
+      "severity": "info",
+      "meaning": "X-Originating-IP present"
+    },
+    {
+      "id": "EHA-INFO-003",
+      "severity": "info",
+      "meaning": "bulk or list mail (List-Unsubscribe, List-Id, Precedence bulk/list)"
+    },
+    {
+      "id": "EHA-BRAND-001",
+      "severity": "high",
+      "meaning": "the message claims a listed brand (FROM-002 or LOOK-003 brand match) and authentication failed (AUTH-001, AUTH-002 with AUTH-003, or ALIGN-001)"
+    }
+  ],
+  "brands": "Own short list in the engine (BRANDS). Not part of the frozen catalogue."
+}

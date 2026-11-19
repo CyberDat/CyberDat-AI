@@ -45,26 +45,29 @@ function render(){$GLOBALS['loop']=0;ob_start();require __DIR__.'/../wp-content/
 $html=render();
 if(in_array('--html',$argv??[],true)){echo $html;exit;}
 $catalog=cyberdat_planned_tools();
-check(count($catalog)===10,'full ten-tool catalogue retained');
+$ten=array_values(array_filter($catalog,static fn($t)=>in_array($t['release'],['1.1','1.2','1.3'],true)));
+$util=array_values(array_filter($catalog,static fn($t)=>$t['release']==='utilities-1'));
+check(count($ten)===10&&count($util)===1&&count($catalog)===11,'full ten-tool catalogue retained; one quick utility added (planned)');
+check(array_slice($catalog,0,10)===$ten&&end($catalog)['slug']==='email-header-analyzer'&&$util[0]['status']==='planned'&&$util[0]['category_slug']==='utilities','the ten tools keep their place; the utility is last, planned, category Quick Utilities');
 preg_match_all('/<article class="cyberdat-tool-card tools-roadmap-card[^"]*".*?<\/article>/s',$html,$cards);
-check(count($cards[0])===10,'all ten cards server-rendered without JavaScript');
+check(count($cards[0])===11,'all ten tool cards and the utility card server-rendered without JavaScript');
 foreach($catalog as $tool){check(str_contains($html,esc_html($tool['title'])),'card retained: '.$tool['slug']);}
 check(str_contains($html,'data-tools-filters hidden')&&str_contains($html,'data-tools-count'),'progressive-enhancement filter controls and live count restored');
-check(substr_count($html,'data-tools-filter=')===6,'All and five category buttons');
-check(str_contains($html,'10 / 10 tools shown'),'initial counter reflects all ten cards');
-check(substr_count($html,'class="tools-status">Coming soon')===10,'unpublished cards honestly remain Coming soon');
+check(substr_count($html,'data-tools-filter=')===7,'All, five tool categories and Quick Utilities');
+check(str_contains($html,'11 / 11 tools shown'),'initial counter reflects all cards');
+check(substr_count($html,'class="tools-status">Coming soon')===11,'unpublished cards honestly remain Coming soon');
 foreach($cards[0] as $card){check(!str_contains($card,'<a '),'unavailable card stays non-clickable');}
 foreach([1,2,3,4] as $count){
  $GLOBALS['ready_posts']=array_slice([$GLOBALS['tool_post'],$GLOBALS['pi_post'],$GLOBALS['lotl_post'],$GLOBALS['mcp_post']],0,$count);
  $rendered=render();
- check(substr_count($rendered,'data-tool-category=')===10,'readiness never hides other catalogue cards');
+ check(substr_count($rendered,'data-tool-category=')===11,'readiness never hides other catalogue cards');
  check(substr_count($rendered,'class="tools-status">Available')===$count,'only ready tools advertise availability');
- check(substr_count($rendered,'class="tools-status">Coming soon')===10-$count,'remaining cards stay non-clickable planned entries');
+ check(substr_count($rendered,'class="tools-status">Coming soon')===11-$count,'remaining cards stay non-clickable planned entries');
 }
 check(str_contains($rendered,'href="https://staging.cyberdat.eu/tools/mcp-security-checker/"'),'MCP readiness and canonical link preserved');
 $road=json_decode(file_get_contents(__DIR__.'/../deploy/tools-release-1/route-catalog.json'),true);
 check(array_column($catalog,'slug')===array_column($road,'slug'),'catalogue order unchanged');
-check(array_count_values(array_column($catalog,'release'))===['1.1'=>3,'1.2'=>4,'1.3'=>3],'original release split unchanged');
+check(array_count_values(array_column($catalog,'release'))===['1.1'=>3,'1.2'=>4,'1.3'=>3,'utilities-1'=>1],'original release split unchanged; utility outside the ten');
 check(count(array_filter($catalog,static fn($t)=>$t['status']==='available'))===4,'all four implementation entries retained');
 $items='<li><a href="/">Home</a></li><li><a href="/topics/">Topics</a></li><li><a href="/news/">News</a></li><li><a href="/analysis/">Analysis</a></li><li><a href="/guides/">Guides</a></li><li><a href="/learning/">Learning</a></li>';
 $args=(object)['theme_location'=>'primary'];$menu=cyberdat_tools_menu_item($items,$args);

@@ -1,0 +1,21 @@
+{
+  "source": "https://github.com/publicsuffix/list",
+  "commit": "f7796455091118a5617cc7588523b083a8223301",
+  "commitDate": "2026-11-19T08:30:05Z",
+  "checked": "2026-11-19",
+  "license": "MPL-2.0",
+  "licenseFile": "LICENSE",
+  "sha256": {
+    "LICENSE": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172",
+    "public_suffix_list.dat": "135dda6f5fbe05e0d5875c0e4428cb475f761c080133dd3d75837e08e515f29d"
+  },
+  "rules": {
+    "icann": 6951,
+    "private": 3516
+  },
+  "outputs": [
+    "public_suffix_list.dat (unmodified)",
+    "psl-data.js (same bytes as a JS string)",
+    "LICENSE-MPL-2.0.txt (upstream LICENSE, verbatim)"
+  ]
+}
