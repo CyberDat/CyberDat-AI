@@ -32,6 +32,7 @@ $map = array(
  'prompt-injection-test-bench' => array( 'tool-prompt-injection-test-bench.php', 'prompt-injection-test-bench' ),
  'yara-sigma-validator' => array( 'tool-yara-sigma-validator.php', 'yara-sigma-validator' ),
  'container-hardening-audit' => array( 'tool-container-hardening-audit.php', 'container-hardening-audit' ),
+ 'email-header-analyzer' => array( 'tool-email-header-analyzer.php', 'email-header-analyzer' ),
 );
 $slug = $argv[1] ?? '';
 if ( ! isset( $map[$slug] ) ) { exit( 2 ); }
