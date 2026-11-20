@@ -38,13 +38,13 @@ const removed = Object.keys(base).filter(k => !target[k]);
 const modified = Object.keys(target).filter(k => base[k] && base[k].sha256 !== target[k].sha256);
 const manifest = {
 	schema: 'cyberdat-theme-release/1',
-	revision: 'tools-release-1.2/1',
+	revision: 'tools-release-1.2/2',
 	parent_revision: parent.revision,
 	parent_theme_commit: parent.theme_commit,
 	release1_commit: RELEASE1_COMMIT,
 	base_commit: BASE_COMMIT,
 	theme_commit: commit,
-	note: 'Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector), 6 (AI Model Bill of Materials) and 7 (MITRE ATLAS Attack Vector Mapper, with the MITRE ATLAS 2026.10 data snapshot and its Apache-2.0 license files) over tools-la-unicode-marks/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
+	note: 'Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector), 6 (AI Model Bill of Materials) and 7 (MITRE ATLAS Attack Vector Mapper, with the MITRE ATLAS 2026.10 data snapshot and its Apache-2.0 license files) over tools-la-unicode-marks/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). The separate theme-delta.tar.gz contains only the explicit delta. It is source material, not a full-theme deployment artifact; apply it over a verified current staging snapshot preserving accepted LA Stage1 and the Hub.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
 	delta_files: Object.fromEntries(added.concat(modified).sort().map(k => [k, Object.assign({ status: base[k] ? 'modified' : 'added', bytes: target[k].bytes, sha256: target[k].sha256 }, base[k] ? { base_sha256: base[k].sha256 } : {})])),

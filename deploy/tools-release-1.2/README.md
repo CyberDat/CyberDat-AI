@@ -5,6 +5,26 @@ locally without VPS access. No secrets, passwords or tokens in this package. Thi
 `deploy/tools-leak-inspector/` and `deploy/tools-ai-bom/` for installation; those stay as the history of each tool.
 `deploy/tools-atlas-mapper/` holds the ATLAS data update script and the snapshot provenance (`atlas-snapshot.json`).
 
+## Urgent export remediation — 2026-11-20
+
+Revision `tools-release-1.2/2`; fixed theme source `a5d4f842bfc85f56642e5d332bbccd6db968f2c4`.
+Tests were committed first (`63af024b38ee1d929c5c8efe10a31e3de166b9a3`): before5/20 PASS,15 FAIL; after20/20 PASS.
+One focused post-fix Chromium/Firefox/WebKit run:6/6 PASS (BOM+ATLAS),0 post-input HTTP requests/runtime errors,
+XSS probe not executed. These are dependent regression results, not a replacement independent acceptance or a replay of LA D14.
+
+BOM JSON/Markdown are redacted before serialization, including opaque long values; no raw-export acknowledgement remains.
+ATLAS uses the same secret masking for notes and all user-controlled export fields. Remove secrets from the original source
+when the warning appears. Validated weights hashes, exact source revisions and ordinary file names are typed public
+identifiers; free-text hex tokens are not exempt. Masking is best effort, with conservative false positives possible.
+
+`theme-delta.tar.gz` contains only the23 declared delta files (including unchanged ATLAS data/licenses), with its manifest
+and checksum in `artifact-sha256.json`. **Do not replace the installed theme with this delta or with the146-file snapshot**:
+the reference base is old. A later authorized installation must compose the delta over the current verified staging theme,
+preserving accepted LA Stage1 and the Hub. No installation or page change occurred in this task.
+
+See [EXPORT-SECURITY.md](EXPORT-SECURITY.md) for the seven-tool export-channel table, actual results, unchanged independent
+functional failures and limits. Legacy raw/map/policy exports are not silently claimed safe or modified by this fix.
+
 ## Branch
 
 | Item | Value |

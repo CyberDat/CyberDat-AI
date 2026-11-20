@@ -106,11 +106,11 @@ async function runBrowser(name) {
 		await run();
 		const sec = await page.evaluate(() => ({ ui: document.querySelector('[data-bom-results]').textContent, disabled: document.querySelector('[data-bom-download-json]').disabled }));
 		for (const v of [S.HF_TOKEN, S.OPAQUE_LONG]) { assert.ok(!sec.ui.includes(v)); }
-		assert.ok(sec.disabled && (await ids()).includes('AIBOM-SEC-002') && (await ids()).includes('AIBOM-SEC-003'));
-		await page.check('[data-bom-secret-ack]');
+		assert.ok(!sec.disabled && (await ids()).includes('AIBOM-SEC-002') && (await ids()).includes('AIBOM-SEC-003'));
+		assert.equal(await page.locator('[data-bom-secret-ack]').count(), 0);
 		const [ds] = await Promise.all([page.waitForEvent('download'), page.click('[data-bom-download-json]')]);
-		assert.ok(fs.readFileSync(await ds.path(), 'utf8').includes(S.HF_TOKEN));
-		pass('secrets and an unrecognized long value are masked; export only after confirmation');
+		for (const v of [S.HF_TOKEN, S.OPAQUE_LONG]) { assert.ok(!fs.readFileSync(await ds.path(), 'utf8').includes(v)); }
+		pass('secrets and an unrecognized long value are masked in the output and export; no raw-export override');
 
 		phase = 'unicode';
 		await page.click('[data-bom-clear]');

@@ -232,13 +232,12 @@ $cyberdat_bom_groups = array(
 				<h3 class="cd-la-subheading"><?php esc_html_e( 'Export', 'cyberdat' ); ?></h3>
 				<div class="cd-la-callout cd-la-callout--error" data-bom-secret-warning hidden>
 					<p class="cd-bom-secret-text" data-bom-secret-text></p>
-					<label class="cd-la-check"><input type="checkbox" data-bom-secret-ack> <span><?php esc_html_e( 'I have checked these values and want to export the document anyway. The exported files contain them unmasked.', 'cyberdat' ); ?></span></label>
 				</div>
 				<div class="cd-la-row">
 					<button type="button" class="cd-la-button cd-la-button--primary" data-bom-download-json><?php esc_html_e( 'Download CycloneDX JSON', 'cyberdat' ); ?></button>
 					<button type="button" class="cd-la-button cd-la-button--secondary" data-bom-download-md><?php esc_html_e( 'Download Markdown', 'cyberdat' ); ?></button>
 				</div>
-				<p class="cd-la-help"><?php esc_html_e( 'Both files contain your entries as typed (secrets are masked only in the findings). They are created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+				<p class="cd-la-help"><?php esc_html_e( 'Both files mask detected secrets and unrecognized long token-shaped values before formatting. They are created in your browser and saved only where you choose. Remove secrets from the original source data and review the exports before sharing.', 'cyberdat' ); ?></p>
 				<details class="cd-bom-preview">
 					<summary><?php esc_html_e( 'Preview: CycloneDX JSON', 'cyberdat' ); ?></summary>
 					<pre class="cd-la-preview notranslate" translate="no" tabindex="0" data-bom-preview-json></pre>
@@ -270,7 +269,7 @@ $cyberdat_bom_groups = array(
 				<li><?php esc_html_e( 'Input fields, previews and results are marked so that the browser’s built-in page translator does not translate them, because translating would send their text to a translation service.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'This tool does not persist data: the form, the pasted BOM and the results are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Masking in the findings is best effort. Exported BOM files contain your entries unmasked; if values that look like secrets are found, the export asks for confirmation first.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Masking is best effort and cannot recognize every possible secret. Findings, previews and exports mask detected values. Long token-shaped values may be masked conservatively even when they are identifiers. Validated weights digests in the dedicated hash field are preserved. Remove secrets from the original source data.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
 		<section aria-labelledby="cd-bom-limits">

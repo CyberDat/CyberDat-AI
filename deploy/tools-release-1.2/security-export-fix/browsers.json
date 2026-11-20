@@ -1,0 +1,124 @@
+{
+  "rows": [
+    {
+      "browser": "chromium",
+      "tool": "ai-model-bom",
+      "pass": true,
+      "error": null,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0,
+      "downloads": [
+        {
+          "kind": "json",
+          "bytes": 920,
+          "sha256": "9e604ef9b234d1c88915018dc6cc13d5ed78c552a96ed764b7669fb29949a580"
+        },
+        {
+          "kind": "markdown",
+          "bytes": 2012,
+          "sha256": "612ff75bb2e9c4fc01a1037d22f104e16dfd86b3d4d17adc3913e8887f7873df"
+        }
+      ]
+    },
+    {
+      "browser": "chromium",
+      "tool": "mitre-atlas-mapper",
+      "pass": true,
+      "error": null,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0,
+      "downloads": [
+        {
+          "kind": "json",
+          "bytes": 3179,
+          "sha256": "db7aeeb345dde205d7377bfbb7eb0a5e1e99353f4e3c563ee44806f28ba0f4f8"
+        },
+        {
+          "kind": "markdown",
+          "bytes": 2160,
+          "sha256": "763da6adbf0914f18956361066525f0438bada4d3276b220dab32a71b18d20ed"
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "tool": "ai-model-bom",
+      "pass": true,
+      "error": null,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0,
+      "downloads": [
+        {
+          "kind": "json",
+          "bytes": 920,
+          "sha256": "839341b3bbe54802a7c553fa5e7f33361563ad897a71f32ea6379409b24a41f2"
+        },
+        {
+          "kind": "markdown",
+          "bytes": 2012,
+          "sha256": "f58e9e8e12b479e84fd299b592b3bfd69750ecf7fd20c4d1ca6ba9e1b2c17755"
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "tool": "mitre-atlas-mapper",
+      "pass": true,
+      "error": null,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0,
+      "downloads": [
+        {
+          "kind": "json",
+          "bytes": 3179,
+          "sha256": "150ef2687a2adaa6d5167ee6a00c4f29ddc833415ee4e2e34453935801da74d7"
+        },
+        {
+          "kind": "markdown",
+          "bytes": 2160,
+          "sha256": "c8ccc385b804289788327c982de228406faf7515f6fb829aaf37821fc48bbf8f"
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "tool": "ai-model-bom",
+      "pass": true,
+      "error": null,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0,
+      "downloads": [
+        {
+          "kind": "json",
+          "bytes": 920,
+          "sha256": "08d943da06ea182e3d842f243522c8e8f3ade5727c2afa1dda577e9d1ac31b9d"
+        },
+        {
+          "kind": "markdown",
+          "bytes": 2012,
+          "sha256": "fe9082ec5ee4775d11f0bb3788c106402ad6009aca96228a95c307e367b8b2ad"
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "tool": "mitre-atlas-mapper",
+      "pass": true,
+      "error": null,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0,
+      "downloads": [
+        {
+          "kind": "json",
+          "bytes": 3179,
+          "sha256": "b45824702dce6d10615a36edb7b49c94d1eb71cbc58872150191391c77dc9c36"
+        },
+        {
+          "kind": "markdown",
+          "bytes": 2160,
+          "sha256": "ebfccd0780f3c1048769e40c65d7011dbfe0457b9ef5b0f7672f8d3d77856c07"
+        }
+      ]
+    }
+  ]
+}
