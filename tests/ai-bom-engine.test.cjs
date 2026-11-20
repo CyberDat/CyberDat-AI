@@ -46,11 +46,15 @@ for (const f of ['corpus.json', 'holdout.json']) {
 		assert.equal(b.bom.specVersion, '1.7');
 		const r = e.review(b.bomText);
 		assert.deepEqual(r.structure, [], c.id + ' review structure');
-		assert.deepEqual(e.normalizeInventory(r.inventory), b.inventory, c.id + ' round trip');
-		assert.deepEqual(ids(r), ids(b), c.id + ' same rules in Review');
+		if (!b.secrets) { assert.deepEqual(e.normalizeInventory(r.inventory), b.inventory, c.id + ' clean round trip'); }
+		else {
+			// Export now deliberately removes secrets; the in-memory input is kept only for editing.
+			for (const v of Object.values(S)) { if (JSON.stringify(b.inventory).includes(v)) { assert.ok(!b.bomText.includes(v), c.id + ' safe export'); } }
+		}
+		assert.deepEqual(ids(r).filter(id => !id.startsWith('AIBOM-SEC-')), ids(b).filter(id => !id.startsWith('AIBOM-SEC-')), c.id + ' non-secret rules in Review');
 	}
 }
-ok('all ' + cases + ' Build cases: export passes the structure check; Review of the export gives the same data and the same rule ids');
+ok('all ' + cases + ' Build cases: valid safe export; clean data round-trips, secret values are removed and non-secret rule ids survive');
 const ex = e.build(e.EXAMPLE, { timestamp: '2026-11-14T00:00:00Z' });
 assert.equal(ex.bom.components[0].type, 'machine-learning-model');
 assert.ok(ex.bom.components[0].modelCard && ex.bom.components[0].modelCard.modelParameters.datasets[0].ref === 'data-1');
@@ -93,7 +97,7 @@ for (const v of secretValues) {
 	const shown = JSON.stringify(b.findings) + b.bomTextMasked + b.markdownMasked;
 	assert.ok(!shown.includes(v), 'secret visible: ' + v.slice(0, 4));
 	assert.ok(b.secrets >= 1 && b.findings.some(f => f.group === 'secrets' && /…|••••/.test(f.evidence)), 'masked evidence: ' + v.slice(0, 4));
-	assert.ok(b.bomText.includes(v), 'export keeps the entry as typed');
+	assert.ok(!b.bomText.includes(v) && !b.markdown.includes(v), 'exports mask the entry');
 	const r = e.review(b.bomText);
 	assert.ok(!JSON.stringify(r.findings).includes(v) && !JSON.stringify(r.structure).includes(v) && !JSON.stringify(r.inventoryView).includes(v), 'review shows ' + v.slice(0, 4));
 }

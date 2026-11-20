@@ -1,7 +1,7 @@
 /* Regression after independent acceptance; synthetic values only, never private fixtures. */
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'../wp-content/themes/cyberdat');
+const root=process.env.EXPORT_REGRESSION_ROOT||path.resolve(__dirname,'../wp-content/themes/cyberdat');
 const bom=require(root+'/assets/js/ai-model-bom/engine.js'),atlas=require(root+'/assets/js/atlas-mapper/engine.js');
 const {SYNTH}=require('./lib/synthetic-secrets.cjs');
 const password=SYNTH.ASSIGNED_SECRET,token=SYNTH.OPENAI_PROJECT_KEY,opaque=SYNTH.OPAQUE_LONG;
@@ -16,7 +16,7 @@ test('BOM-02 build Markdown masks before escaping',()=>safe(bom.build(inventory(
 test('BOM-03 direct CycloneDX helper masks user text',()=>safe(JSON.stringify(bom.toCycloneDX(inventory(text))),[password,token]));
 test('BOM-04 direct Markdown helper masks user text',()=>safe(bom.toMarkdown(inventory(text),[]),[password,token]));
 test('BOM-05 unknown long value masked in both formats',()=>{const r=bom.build(inventory('Unclassified '+opaque));safe(r.bomText+r.markdown,[opaque])});
-test('BOM-06 unknown long hex outside digest field masked',()=>safe(bom.build(inventory('Unclassified '+hex)).bomText,[hex]));
+test('BOM-06 unknown long hex outside digest field masked',()=>{const r=bom.build(inventory('Unclassified '+hex));safe(r.bom.components[0].modelCard.considerations.useCases[0],[hex])});
 test('BOM-07 validated weights digest preserved',()=>{const r=bom.build(inventory('A harmless classifier.'));assert.equal(r.bom.components.find(c=>c.type==='file').hashes[0].content,hex)});
 test('BOM-08 nested JSON assignment masked before serialization',()=>safe(bom.build(inventory(JSON.stringify({password}))).bomText,[password]));
 test('BOM-09 quoted punctuation and Unicode remain valid JSON',()=>{const r=bom.build(inventory('Ähre \"quoted\" 密码; password="'+password+'"'));JSON.parse(r.bomText);safe(r.bomText+r.markdown,[password]);assert.ok(r.bomText.includes('Ähre'))});
