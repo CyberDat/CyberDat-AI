@@ -1,3 +1,9 @@
+## Tools1.2 Task0 — secret export remediation — 2026-11-20
+
+Named defects fixed on fix/tools12-secret-export from2a4cfbe; test-first63af024b (before5/20,15FAIL), fixed sourcea5d4f842 (20/20PASS), one focused three-browser matrix6/6PASS. BOM exports redacted data and has no raw-export checkbox; ATLAS masks all user-controlled export strings.48 PHP lint, related engine/corpus/Unicode checks and delta-manifest validation PASS. Stage1 remains fully accepted by owner (D1430/30, manualFirefoxPASS, Hub6/6; Firefox network UNVERIFIED), no replay or live changes.
+
+Package revisiontools-release-1.2/2 contains23-file source delta; it must be composed over current staging, not installed as a whole old-base theme. See deploy/tools-release-1.2/EXPORT-SECURITY.md and artifact-sha256.json. Legacy raw exports remain OPEN policy issues: LA replacement map, PI sanitized/excerpt output, LotL command report and MCP policy download; LA unlabelled opaque-value limitation also remains. No universal export-redaction or production-readiness claim. No staging/main/production operation.
+
 ### Executed acceptance result
 
 SUCCESS for the requested closed-staging integration. All four canonical routes return200 with their existing renderer. Installed WordPress checks pass in Chromium and Firefox (8 tool/browser runs): workers, keyboard, empty input, large local files, malformed MCP JSON, exports, four responsive widths, one H1, unique title/description/canonical/Open Graph, single Rank Math graph,16 matching visible FAQ answers and zero unexpected HTTP after input. All ten catalogue cards and four canonical links remain present; filter/count and touch/keyboard checks pass. Basic Auth401 without credentials and noindex/nofollow retained. Existing read-only Research health caveats are recorded privately; no agents or schedules were modified.

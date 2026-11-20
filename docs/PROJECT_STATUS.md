@@ -1,8 +1,8 @@
 # CyberDat — Project Status (source of truth)
 
-Last updated: 2026-11-14
+Last updated: 2026-11-20
 Repository: CyberDat/CyberDat-AI
-Current stage: **Four Tools integrated and published on closed staging; Chromium/Firefox acceptance and SEO verified; WebKit HTTPS unverified.**
+Current stage: **LA Stage1 owner-accepted; Tools1.2 named export defects fixed/tested; source delta prepared; legacy export-policy gaps remain; no deployment.**
 
 ### Executed acceptance result
 
@@ -11,6 +11,13 @@ SUCCESS for the requested closed-staging integration. All four canonical routes 
 WebKit HTTPS staging navigation is UNVERIFIED: the isolated runner lacks a working TLS backend (initial TLS-support error; existing private GIO module path produced an internal navigation error). No certificate-validation bypass or system package/configuration change was made. Actual physical phones were not available; mobile evidence is responsive viewport/touch emulation. These limitations do not claim new full D14/browser certification or public-release readiness. Product engine behavior is unchanged from the previously accepted D14 revision.
 
 Raw inputs, exports, screenshots and failed harness attempts remain private. A megabyte Playwright textarea fill timed out before execution; the same large synthetic contents were then successfully exercised via the real local-file upload UI. Rank Math entity-escaped schema names were compared after decoding, with text and visible FAQ checks preserved. No failed product result was hidden or used to change engine rules.
+
+
+## Tools1.2 Task0 — secret export remediation — 2026-11-20
+
+Named defects fixed on fix/tools12-secret-export from2a4cfbe; test-first63af024b (before5/20,15FAIL), fixed sourcea5d4f842 (20/20PASS), one focused three-browser matrix6/6PASS. BOM exports redacted data and has no raw-export checkbox; ATLAS masks all user-controlled export strings.48 PHP lint, related engine/corpus/Unicode checks and delta-manifest validation PASS. Stage1 remains fully accepted by owner (D1430/30, manualFirefoxPASS, Hub6/6; Firefox network UNVERIFIED), no replay or live changes.
+
+Package revisiontools-release-1.2/2 contains23-file source delta; it must be composed over current staging, not installed as a whole old-base theme. See deploy/tools-release-1.2/EXPORT-SECURITY.md and artifact-sha256.json. Legacy raw exports remain OPEN policy issues: LA replacement map, PI sanitized/excerpt output, LotL command report and MCP policy download; LA unlabelled opaque-value limitation also remains. No universal export-redaction or production-readiness claim. No staging/main/production operation.
 
 
 ## Closed-staging WordPress integration — 2026-11-14

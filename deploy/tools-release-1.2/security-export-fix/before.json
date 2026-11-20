@@ -1,0 +1,102 @@
+{
+  "tests": 20,
+  "pass": 5,
+  "fail": 15,
+  "rows": [
+    {
+      "id": "BOM-01 build JSON masks assigned and known secrets",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-02 build Markdown masks before escaping",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-03 direct CycloneDX helper masks user text",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-04 direct Markdown helper masks user text",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-05 unknown long value masked in both formats",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-06 unknown long hex outside digest field masked",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-07 validated weights digest preserved",
+      "pass": true
+    },
+    {
+      "id": "BOM-08 nested JSON assignment masked before serialization",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-09 quoted punctuation and Unicode remain valid JSON",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-10 source inventory is not mutated",
+      "pass": true
+    },
+    {
+      "id": "BOM-11 safe preview aliases equal actual exports",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-12 open-export acknowledgement removed",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-01 JSON note masks assigned password",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-02 Markdown note masks before escaping",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-03 every user-controlled source field is masked",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-04 user timestamp is masked",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-05 findings use the same assignment masking",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-06 quoted JSON assignment is masked",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-07 mask before note truncation",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-08 harmless notes preserved",
+      "pass": true
+    }
+  ]
+}
