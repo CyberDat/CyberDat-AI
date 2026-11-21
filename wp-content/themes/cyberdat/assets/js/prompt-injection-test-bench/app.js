@@ -153,11 +153,13 @@
 	function render(res) {
 		state.report = res.report;
 		const c = res.counts;
-		el.verdict.className = 'cd-pitb-verdict cd-pitb-verdict--' + (c.triggered ? 'hit' : 'none');
-		if (c.triggered) { el.verdict.replaceChildren(node('strong', '', plural(c.triggered, 'test') + ' of ' + number(c.answered) + ' answered triggered.'), document.createTextNode(' The application followed injected instructions; review the categories below.')); }
+		const leak = c.possibleLeak || 0;
+		el.verdict.className = 'cd-pitb-verdict cd-pitb-verdict--' + (c.triggered || leak ? 'hit' : 'none');
+		if (c.triggered) { el.verdict.replaceChildren(node('strong', '', plural(c.triggered, 'test') + ' of ' + number(c.answered) + ' answered triggered.'), document.createTextNode(' The application followed injected instructions; review the categories below.' + (leak ? ' ' + plural(leak, 'more test') + ': possible leak (core only).' : ''))); }
+		else if (leak) { el.verdict.replaceChildren(node('strong', '', 'Possible leak (core only) in ' + plural(leak, 'test') + '.'), document.createTextNode(' The 8-character core of a canary appeared without its prefix. This is not a pass: check those responses.')); }
 		else { el.verdict.replaceChildren(node('strong', '', NO_TRIGGER)); }
-		el.summary.textContent = 'Answered ' + number(c.answered) + ' of ' + plural(c.tests, 'test') + '; not triggered ' + number(c.notTriggered) + (c.partial ? '; partial (core only, not counted as triggered) ' + number(c.partial) : '') + '; without response ' + number(c.noResponse) + '. By category: ' + Object.values(res.byCategory).map(x => x.label + ' ' + x.triggered + '/' + x.answered).join('; ') + '.';
-		const labels = { triggered: 'Triggered', partial: 'Partial (core only)', 'not-triggered': 'Not triggered', 'no-response': 'No response' };
+		el.summary.replaceChildren(document.createTextNode('Answered ' + number(c.answered) + ' of ' + plural(c.tests, 'test') + '; triggered ' + number(c.triggered) + '; not triggered ' + number(c.notTriggered) + '; without response ' + number(c.noResponse) + '. By category: ' + Object.values(res.byCategory).map(x => x.label + ' ' + x.triggered + '/' + x.answered).join('; ') + '.'), node('br'), node('strong', 'cd-pitb-possible-leak', 'Possible leak (core only): ' + number(leak)), document.createTextNode(' (not counted as triggered)'));
+		const labels = { triggered: 'Triggered', 'possible-leak': 'Possible leak (core only)', 'not-triggered': 'Not triggered', 'no-response': 'No response' };
 		el.rows.replaceChildren(...res.rows.map(r => {
 			const tr = node('tr', 'cd-pitb-row cd-pitb-row--' + r.status);
 			const th = node('th', '', r.id);
@@ -167,7 +169,7 @@
 			return tr;
 		}));
 		el.results.hidden = false;
-		setStatus('Done. ' + plural(c.triggered, 'test') + ' triggered.');
+		setStatus('Done. ' + plural(c.triggered, 'test') + ' triggered; possible leak (core only): ' + number(leak) + '.');
 		el.heading.focus();
 	}
 
