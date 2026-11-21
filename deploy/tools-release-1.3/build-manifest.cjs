@@ -2,7 +2,8 @@
  * Builds deploy/tools-release-1.3/manifest.json in the release-1 manifest shape (base/target maps of every theme file
  * with bytes, mode and sha256 of the exact LF bytes stored in git), an explicit delta, and per tool: its own files with
  * hashes and only its lines in the shared files (functions.php include, catalogue entry).
- * Base = integration/tools-release-1.2 tip 2a4cfbe, whose theme is byte-equal to the tools-release-1.2/1 manifest target.
+ * Base = a5d4f84 (Codex export redaction fix), whose theme is byte-equal to the tools-release-1.2/2 manifest target
+ * (theme_commit of that manifest; the integration/tools-release-1.2 tip 6b7d97c has the same theme).
  *   node deploy/tools-release-1.3/build-manifest.cjs [themeCommit] [--check]
  */
 'use strict';
@@ -11,7 +12,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const BASE_COMMIT = '2a4cfbe8a7ff94508944eb4fd67a4755ffa8ae2f';
+const BASE_COMMIT = 'a5d4f842bfc85f56642e5d332bbccd6db968f2c4';
 const THEME = 'wp-content/themes/cyberdat/';
 const ROOT = path.join(__dirname, '../..');
 const sh = c => cp.execSync(c, { cwd: ROOT, maxBuffer: 1 << 28 });
@@ -77,7 +78,7 @@ const manifest = {
 	parent_theme_commit: parent.theme_commit,
 	base_commit: BASE_COMMIT,
 	theme_commit: commit,
-	note: 'Theme delta for release 1.3 tools 8 (LLM Prompt Injection Test Bench), 9 (YARA/Sigma Rule Validator & Converter) and 10 (Docker & Kubernetes Hardening Audit Generator) over tools-release-1.2/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). "tools" lists each tool\'s own files and only its lines in the shared files, so a tool can be installed alone. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
+	note: 'Theme delta for release 1.3 tools 8 (LLM Prompt Injection Test Bench), 9 (YARA/Sigma Rule Validator & Converter) and 10 (Docker & Kubernetes Hardening Audit Generator) over tools-release-1.2/2: new tool files, three functions.php includes, three catalogue descriptions (status planned). "tools" lists each tool\'s own files and only its lines in the shared files, so a tool can be installed alone. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
 	delta_files: Object.fromEntries(added.concat(modified).sort().map(k => [k, Object.assign({ status: base[k] ? 'modified' : 'added', bytes: target[k].bytes, sha256: target[k].sha256 }, base[k] ? { base_sha256: base[k].sha256 } : {})])),

@@ -8,7 +8,7 @@ locally without VPS access. No secrets, passwords or tokens in this package.
 | Item | Value |
 |---|---|
 | Branch | `integration/tools-release-1.3` |
-| Base | `2a4cfbe8a7ff94508944eb4fd67a4755ffa8ae2f` = tip of `integration/tools-release-1.2`; its theme is byte-equal to the `tools-release-1.2/1` manifest target (checked by `build-manifest.cjs`) |
+| Base | `a5d4f842bfc85f56642e5d332bbccd6db968f2c4` = Codex export redaction fix (theme commit of the `tools-release-1.2/2` manifest; `integration/tools-release-1.2` tip `6b7d97c` has the same theme), merged into this branch as `198bf49`; its theme is byte-equal to the `tools-release-1.2/2` manifest target (checked by `build-manifest.cjs`). The first 1.3 package was built over `2a4cfbe` (`tools-release-1.2/1`) |
 | Tool 8 | `feature/tools-prompt-injection-test-bench`: `980e74e` corpus (frozen), `ef9b24f` tool, `32b099d` catalogue; merge `e3a5ba1` |
 | Tool 9 | `feature/tools-yara-sigma-validator`: `3289de7` corpus (frozen), `893696c` tool, `a3e46dc` catalogue; merge `c9620cf` |
 | Tool 10 | `feature/tools-container-hardening-audit`: `d1e6f29` corpus (frozen), `7e8a95f` one corpus case fixed (documented), `08ff7ad` tool, `24cfbe7` catalogue; merge `5ea51e2` |
