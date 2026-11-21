@@ -1,0 +1,143 @@
+{
+  "tests": 34,
+  "pass": 34,
+  "fail": 0,
+  "rows": [
+    {
+      "id": "BOM-file-low-json",
+      "pass": true
+    },
+    {
+      "id": "BOM-file-low-markdown",
+      "pass": true
+    },
+    {
+      "id": "BOM-file-hex-json",
+      "pass": true
+    },
+    {
+      "id": "BOM-file-hex-markdown",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-VER-003-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-VER-003-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-WGT-001-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-WGT-001-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-WGT-004-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-WGT-004-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-DAT-001-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-DAT-001-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-DAT-002-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-DAT-002-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-LIC-002-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-LIC-002-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-DEP-001-low",
+      "pass": true
+    },
+    {
+      "id": "BOM-finding-DEP-001-hex",
+      "pass": true
+    },
+    {
+      "id": "BOM-review-findings",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-key-raw-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-key-encoded-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-key-encoded-slash",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-value-raw-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-value-encoded-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-value-encoded-slash",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-blob-raw-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-blob-encoded-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-blob-encoded-slash",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-\u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442-raw-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-\u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442-encoded-plus",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-\u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442-encoded-slash",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-safe-query-preserved",
+      "pass": true
+    },
+    {
+      "id": "BOM-public-digest-preserved",
+      "pass": true
+    },
+    {
+      "id": "Unicode-no-lookbehind",
+      "pass": true
+    }
+  ]
+}

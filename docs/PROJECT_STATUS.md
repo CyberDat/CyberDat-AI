@@ -435,3 +435,8 @@ The updated Windows Edge run completed PASS. Confirmed: News/Research/Papers fil
 Screenshots/report: `C:\Users\CyberDat\CyberDat-research-0.8.2-browser-20261110T161210Z`. Automated browser checks passed; screenshots have not been independently visually reviewed here. The helper did not change editorial statuses, classifications, event groups or source settings. Those write operations are database/capability/nonce fixture-tested, not real-browser mutation-tested.
 
 Controlled MVP ingestion and read-only browser acceptance: PASS. Overall phase remains PARTIAL: 17 working channels versus 45 configured; blocked academic/vendor channels remain explicit, only Crossref automatic continuation has been observed for the new sources, long-term load and complete historical coverage are not claimed. No subsequent agent phase started.
+
+
+## 2026-11-21 — Tools 1.2 follow-up preparation (no installation)
+
+On integration/tools-release-1.2, parent 838fecc8: BOM/ATLAS export follow-up engines 1.0.3; new synthetic regression 34/34, prior masking-review 32/32 and export-redaction 20/20, focused Chromium/Firefox/WebKit matrix 6/6. Package tools-release-1.2/3 uses a reachable theme subtree instead of an unavailable commit reference. See deploy/tools-release-1.2/export-followup-20261121/README.md and artifact-sha256.json. Existing BOM held-out 19/20 and Firefox worker-network completeness UNVERIFIED remain documented. No staging, main, Research/Content/SEO or page changes.

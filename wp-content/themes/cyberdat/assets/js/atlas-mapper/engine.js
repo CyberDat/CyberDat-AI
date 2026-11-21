@@ -16,7 +16,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
 	'use strict';
 
-	const ENGINE = '1.0.2';
+	const ENGINE = '1.0.3';
 	const RULESET = '2026-11-15.1';
 	const MAX_INPUT_CHARS = 100000;
 	const DATA = (typeof module === 'object' && module.exports && typeof require === 'function') ? require('./atlas-data.js') : root.CyberDatAtlasData;
@@ -180,6 +180,22 @@
 			const authority = url[1], start = url.index + url[0].indexOf('://') + 3, at = authority.lastIndexOf('@');
 			if (at > 0 && authority.slice(0, at).includes(':')) {
 				out.push({ kind: 'URL credentials', start, end: start + at, shown: '••••:••••' });
+			}
+			// Query values are untrusted independently of the parameter name. Decode before classifying,
+			// but replace the complete original span so percent escapes cannot split a credential.
+			const question = url[2].indexOf('?');
+			if (question >= 0) {
+				let offset = question + 1;
+				for (const pair of url[2].slice(offset).split('#')[0].split('&')) {
+					const eq = pair.indexOf('='), raw = eq < 0 ? '' : pair.slice(eq + 1);
+					let decoded = raw;
+					try { decoded = decodeURIComponent(raw); } catch (e) { /* retain the raw malformed value */ }
+					const a = start + authority.length + offset + eq + 1, b = a + raw.length;
+					if (/^[\p{L}\p{N}\p{M}+/=_\-.]{24,}$/u.test(decoded) && exportTokenLike(decoded) && !taken(a, b)) {
+						out.push({ kind: 'unrecognized long query value', start: a, end: b, shown: mask(decoded) });
+					}
+					offset += pair.length + 1;
+				}
 			}
 			// Inspect tail components, not the hostname or URL separators, for unknown long values.
 			const tail = /[\p{L}\p{N}\p{M}+_.\-]{24,}/gu;

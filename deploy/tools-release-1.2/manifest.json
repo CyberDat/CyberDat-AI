@@ -1,11 +1,14 @@
 {
   "schema": "cyberdat-theme-release/1",
-  "revision": "tools-release-1.2/2",
+  "revision": "tools-release-1.2/3",
   "parent_revision": "tools-la-unicode-marks/1",
   "parent_theme_commit": "aae21c0c027b433e3707dd36e9aafbde05e52599",
   "release1_commit": "24a333ddf2f91499b0b693f3810181990f8ec8e4",
   "base_commit": "1b0651ccec38022fe4a23ac128a61a106e442469",
-  "theme_commit": "581c3f0fc22fa8385052994cc4611fadd662e81b",
+  "theme_commit": "5c889c0006b232648745a58260619fb72cf66cfb",
+  "theme_reference_type": "tree",
+  "theme_tree": "5c889c0006b232648745a58260619fb72cf66cfb",
+  "source_base_commit": "838fecc8a817f6fbab776131787ea6f8d6138a46",
   "note": "Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector), 6 (AI Model Bill of Materials) and 7 (MITRE ATLAS Attack Vector Mapper, with the MITRE ATLAS 2026.10 data snapshot and its Apache-2.0 license files) over tools-la-unicode-marks/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). The separate theme-delta.tar.gz contains only the explicit delta. It is source material, not a full-theme deployment artifact; apply it over a verified current staging snapshot preserving accepted LA Stage1 and the Hub.",
   "counts": {
     "base": 125,
@@ -67,8 +70,8 @@
     },
     "assets/js/ai-model-bom/engine.js": {
       "status": "added",
-      "bytes": 77090,
-      "sha256": "5613d7132fc06c4451589cb1fb58e597ed172ce05dbf8d2b415172b01f3593de"
+      "bytes": 77078,
+      "sha256": "dc0a585154bcd843085866af5a247e3d924f034793450f3286a9c8031cbe650b"
     },
     "assets/js/ai-model-bom/worker.js": {
       "status": "added",
@@ -97,8 +100,8 @@
     },
     "assets/js/atlas-mapper/engine.js": {
       "status": "added",
-      "bytes": 33111,
-      "sha256": "50eda04930e7cc46b9de978a1281e9115a0219391b1cc3a339958b978dda9e41"
+      "bytes": 33998,
+      "sha256": "8a8bc37deaedd6cf3c8a9c46f3fc81d2e8a76a320d5cd6702d9b90a854b63743"
     },
     "assets/js/atlas-mapper/worker.js": {
       "status": "added",
@@ -129,12 +132,12 @@
     "inc/tool-ai-model-bom.php": {
       "status": "added",
       "bytes": 2706,
-      "sha256": "c460432abf3bfe4338a70aca22b8035b5211b594404bb6a0e3d31240ec8b2c95"
+      "sha256": "e1c254a67de224b12e6899de42ddfdfbb42aa39ed64657f7d8f619d1f8a29029"
     },
     "inc/tool-atlas-mapper.php": {
       "status": "added",
       "bytes": 3977,
-      "sha256": "a7a9d2ee13d0dd3cc7721c7dc33200722119e435a98a7a1fcec9b242d9b840a6"
+      "sha256": "57062c968a0f0fa08c4c5d69d3c475503944f4d6f93f509681481e2d84353ae7"
     },
     "inc/tool-leak-inspector.php": {
       "status": "added",
@@ -1128,9 +1131,9 @@
       "sha256": "b78892218f9e913ae7d1dd0fb08637f208c6952560237f5719ff6187050d2e14"
     },
     "assets/js/ai-model-bom/engine.js": {
-      "bytes": 77090,
+      "bytes": 77078,
       "mode": "0644",
-      "sha256": "5613d7132fc06c4451589cb1fb58e597ed172ce05dbf8d2b415172b01f3593de"
+      "sha256": "dc0a585154bcd843085866af5a247e3d924f034793450f3286a9c8031cbe650b"
     },
     "assets/js/ai-model-bom/worker.js": {
       "bytes": 3429,
@@ -1158,9 +1161,9 @@
       "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
     },
     "assets/js/atlas-mapper/engine.js": {
-      "bytes": 33111,
+      "bytes": 33998,
       "mode": "0644",
-      "sha256": "50eda04930e7cc46b9de978a1281e9115a0219391b1cc3a339958b978dda9e41"
+      "sha256": "8a8bc37deaedd6cf3c8a9c46f3fc81d2e8a76a320d5cd6702d9b90a854b63743"
     },
     "assets/js/atlas-mapper/worker.js": {
       "bytes": 2524,
@@ -1380,12 +1383,12 @@
     "inc/tool-ai-model-bom.php": {
       "bytes": 2706,
       "mode": "0644",
-      "sha256": "c460432abf3bfe4338a70aca22b8035b5211b594404bb6a0e3d31240ec8b2c95"
+      "sha256": "e1c254a67de224b12e6899de42ddfdfbb42aa39ed64657f7d8f619d1f8a29029"
     },
     "inc/tool-atlas-mapper.php": {
       "bytes": 3977,
       "mode": "0644",
-      "sha256": "a7a9d2ee13d0dd3cc7721c7dc33200722119e435a98a7a1fcec9b242d9b840a6"
+      "sha256": "57062c968a0f0fa08c4c5d69d3c475503944f4d6f93f509681481e2d84353ae7"
     },
     "inc/tool-leak-inspector.php": {
       "bytes": 2674,

@@ -16,7 +16,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.2';
+	const ENGINE = '1.0.3';
 	const RULESET = '2026-11-14.1';
 	const SPEC_VERSION = '1.7';
 	const TOOL_NAME = 'CyberDat AI Model Bill of Materials';
@@ -276,8 +276,8 @@
 		// A digest is intentionally public only in the typed weights-hash field; a hex token in free text is not exempt.
 		inv.weights.forEach((w, i) => {
 			if (isDigest(w.hash)) { safe.weights[i].hash = w.hash; }
-			// File names are typed identifiers; keep ordinary names, while existing secret/token checks still apply.
-			safe.weights[i].file = maskSecrets(w.file);
+			// File names use the same conservative output boundary as every other free-text export field.
+			safe.weights[i].file = maskExportText(w.file);
 		});
 		return safe;
 	}
@@ -418,7 +418,7 @@
 	// ------------------------------------------------------------------ rules
 	function finding(id, location, evidence, extra) {
 		const r = RULES[id];
-		return Object.assign({ rule: id, group: r[0], severity: r[1], title: r[2], explanation: r[3], fix: r[4], location: location ? maskSecrets(location) : '', evidence: evidence ? maskSecrets(evidence) : '' }, extra || {});
+		return Object.assign({ rule: id, group: r[0], severity: r[1], title: r[2], explanation: r[3], fix: r[4], location: location ? maskExportText(location) : '', evidence: evidence ? maskExportText(evidence) : '' }, extra || {});
 	}
 	/**
 	 * Gaps and risks of one canonical inventory. ctx.where(field) maps a logical field to a location label
@@ -919,7 +919,7 @@
 		const sm = summarize(findings);
 		progress(5, 5);
 		const shownStructure = structure.slice(0, 2000).map(x => Object.assign({}, x, { location: maskSecrets(x.location), message: maskSecrets(x.message) }));
-		return { mode: 'review', engine: ENGINE, ruleset: RULESET, level: sm.level, counts: Object.assign(sm.counts, { models: models.length, weights: inv.weights.length, datasets: inv.datasets.length, dependencies: inv.dependencies.length, apis: inv.deployment.apis.length, structure: structure.length }), findings, structure: shownStructure, notes, inventory: inv, inventoryView: maskDeep(normalizeInventory(inv)), modelNames: models.map(m => maskSecrets(m.model.name)), specVersion: sv };
+		return { mode: 'review', engine: ENGINE, ruleset: RULESET, level: sm.level, counts: Object.assign(sm.counts, { models: models.length, weights: inv.weights.length, datasets: inv.datasets.length, dependencies: inv.dependencies.length, apis: inv.deployment.apis.length, structure: structure.length }), findings, structure: shownStructure, notes, inventory: inv, inventoryView: exportInventory(inv), modelNames: models.map(m => maskExportText(m.model.name)), specVersion: sv };
 	}
 	const maskDeep = v => (typeof v === 'string' ? maskSecrets(v) : Array.isArray(v) ? v.map(maskDeep) : isObj(v) ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, maskDeep(x)])) : v);
 	function nearestLine(lines, p) { let q = p; while (q) { q = q.slice(0, q.lastIndexOf('/')); if (lines.has(q)) { return lines.get(q); } } return lines.get('') || 1; }

@@ -8,7 +8,7 @@ locally without VPS access. No secrets, passwords or tokens in this package.
 | Item | Value |
 |---|---|
 | Branch | `integration/tools-release-1.3` |
-| Base | `838fecc8a817f6fbab776131787ea6f8d6138a46` = tip of `integration/tools-release-1.2` (Codex masking review fix), merged into this branch as `47ef75d`; its theme is byte-equal to the target of the `tools-release-1.2/2` manifest as updated by Codex (checked by `build-manifest.cjs`; that manifest names theme commit `581c3f0`, which is not on GitHub). Earlier 1.3 packages were built over `2a4cfbe` and `a5d4f84` |
+| Base | `b8ff2f3cf01bfd4651b6c61ed107dc437730282f` = tip of `integration/tools-release-1.2` (Codex second masking fix: BOM field evidence, decoded ATLAS query values; tree `1102c661`, package `665b9121`), merged into this branch as `865f74d`; its theme is byte-equal to the target of the `tools-release-1.2/2` manifest as updated by Codex (checked by `build-manifest.cjs`; that manifest names `5c889c0`, the theme tree of `b8ff2f3`). Earlier 1.3 packages were built over `838fecc`, `2a4cfbe` and `a5d4f84` |
 | Tool 8 | `feature/tools-prompt-injection-test-bench`: `980e74e` corpus (frozen), `ef9b24f` tool, `32b099d` catalogue; merge `e3a5ba1` |
 | Tool 9 | `feature/tools-yara-sigma-validator`: `3289de7` corpus (frozen), `893696c` tool, `a3e46dc` catalogue; merge `c9620cf` |
 | Tool 10 | `feature/tools-container-hardening-audit`: `d1e6f29` corpus (frozen), `7e8a95f` one corpus case fixed (documented), `08ff7ad` tool, `24cfbe7` catalogue; merge `5ea51e2` |
@@ -115,6 +115,21 @@ crashes on the old code at the first SEC check). New keyed pattern: bounded, 1 M
 | Container audit main / held-out | 78/78, 90/90 / 13/13, 25/25 | unchanged |
 
 The test bench corpus runner counts core-only positives in a separate column; the fixtures were not edited.
+
+### Update 2026-11-21 (third round: Codex re-acceptance of 4ee0ada)
+
+* `b8ff2f3` (Codex, second masking fix) merged from 1.2 (`865f74d`, Codex files byte-identical); the manifest base moved to it.
+* Test bench (`fix/tools13-pitb-reacceptance` `173c946`, merge `40e2469`), engine 1.0.2, the three open defects:
+  1. short values after api key, X-Api-Key, pwd/passwd, access/private key, authorization (Bearer/Basic), csrf, session id or
+     cookie were left in the preview and in the re-exported CSV/JSONL of an imported set: the key list is wider, a bare
+     "Bearer <value>" is masked, all text is masked before the preview;
+  2. the same values beside the canary were left in the fragment and in JSON/Markdown: masked on the whole response before the
+     window is cut (values separated by spaces or punctuation; not the glued-secret limitation);
+  3. B-P14: the hyphen between prefix and core is one of the separators (CANARY_<core>, CANARY <core>, en dash) = full match;
+     the bare core stays "possible leak (core only)".
+  Found on the way: the overlap check and the masking join were quadratic in the number of findings (1 MB of short keyed
+  values: 30–100 s); both are linear now (≤ 60 ms). Test `tests/prompt-injection-test-bench-reacceptance.test.cjs`: 31/31
+  (22 fail on the old engine). Corpus numbers unchanged: main full 20/22, possible leak 2, false hits 0/11; held-out 5/8, 3, 0/4.
 
 ### Update 2026-11-21 (second round)
 

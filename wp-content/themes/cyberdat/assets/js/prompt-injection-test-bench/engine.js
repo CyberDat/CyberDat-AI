@@ -17,7 +17,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.1';
+	const ENGINE = '1.0.2';
 	const LIBRARY_VERSION = '2026-11-21.1';
 	const MAX_RESPONSE_CHARS = 200000;
 	const MAX_TOTAL_CHARS = 5 * 1024 * 1024;
@@ -197,7 +197,7 @@
 
 	// ------------------------------------------------------------------ detect canaries in a response
 	const INVISIBLE = /[​-‏⁠-⁤­﻿᠎]/gu;
-	const SEP = '[\\s\\-_.·:,/|]{0,3}';
+	const SEP = '[\\s\\-_.·:,/|‐‑–—]{0,3}';
 	const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
 	function urlSpans(s) { const out = []; const re = /(?:https?:)?\/\/[^\s"'<>()\]]+|(?:href|src)\s*=\s*["'][^"']+["']/giu; let m; while ((m = re.exec(s))) { out.push([m.index, m.index + m[0].length]); } return out; }
 	const WORD_CHAR = /[\p{L}\p{N}\p{M}_]/u;
@@ -235,7 +235,9 @@
 		if (tags && wordAt(tags.toUpperCase(), needle) >= 0) { return { method: 'tag', index: Math.max(0, raw.search(/[\u{E0000}-\u{E007F}]/u)), length: 2, decoded: tags }; }
 		if (raw.includes('&')) { const d = decodeEntities(raw); if (d !== raw && wordAt(d.toUpperCase(), needle) >= 0) { return { method: 'html-entity', index: Math.max(0, raw.indexOf('&')), length: 0, decoded: d }; } }
 		if (raw.includes('\\u')) { const d = decodeJsonU(raw); if (d !== raw && wordAt(d.toUpperCase(), needle) >= 0) { return { method: 'json-escape', index: Math.max(0, raw.indexOf('\\u')), length: 0, decoded: d }; } }
-		const splitRe = new RegExp([...needle].map(escRe).join(SEP), 'giu');
+		// The hyphen between prefix and core is one of the separators: CANARY_7F3A9C2B, CANARY 7F3A9C2B or CANARY–7F3A9C2B is
+		// the whole code with another separator (Codex B-P14). The core alone still gives only a possible leak.
+		const splitRe = new RegExp([...needle].filter(ch => ch !== '-').map(escRe).join(SEP), 'giu');
 		let m;
 		while ((m = splitRe.exec(vis))) {
 			const b = charBefore(vis, m.index), a = charAt(vis, m.index + m[0].length);
@@ -272,17 +274,26 @@
 		['JSON Web Token', /eyJ[0-9A-Za-z_-]{10,}\.eyJ[0-9A-Za-z_-]{5,}\.[0-9A-Za-z_-]*/gu], ['Private key', /-----BEGIN[ A-Z0-9_-]{0,100}PRIVATE KEY(?: BLOCK)?-----/gu]
 	];
 	const TOKEN_CHAR = /[\p{L}\p{N}\p{M}_]/u;
-	const KEYED = /(?:credentials?|password|passwort|пароль|secret|token)["'”»“]?[ \t]{0,20}(?:=|:|[ \t](?:is|ist|—|-)[ \t])[ \t]{0,20}("(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|“[^”\n]{0,500}”|«[^»\n]{0,500}»|„[^“\n]{0,500}“|[^\s"',;)\]}<>]+)/giu;
+	// Key names: …credential(s), …password, passwd, pwd, …secret, …token, api key, x-api-key, access/private key, authorization,
+	// csrf, session id, cookie (Codex re-acceptance 2026-11-21: short values after these keys were left visible). An optional
+	// auth scheme (Bearer, Basic, Token) before the value is skipped so that the value itself is masked.
+	const KEYED = /(?:credentials?|passwords?|passwort|passwd|pwd|пароль|secret|token|api[_.\- ]?key|x[_.\-]?api[_.\-]?key|access[_.\-]?key(?:[_.\-]?id)?|private[_.\-]?key|authorization|auth|csrf|session[_.\-]?(?:id|key)?|cookie)["'”»“]?[ \t]{0,20}(?:=>|=|:|[ \t](?:is|ist|—|-)[ \t])[ \t]{0,20}(?:(?:bearer|basic|token)[ \t]{1,20})?("(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|“[^”\n]{0,500}”|«[^»\n]{0,500}»|„[^“\n]{0,500}“|[^\s"',;)\]}<>]+)/giu;
+	/** An HTTP auth scheme with its credential, also without a key name (Bearer …, Basic …). */
+	const BEARER = /(?:bearer|basic)[ 	]{1,20}([A-Za-z0-9._~+/=-]{6,500})/giu;
 	const mask = v => { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; };
 	function entropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
 	function findSecrets(text, keep) {
 		const s = String(text || '');
 		const out = [];
-		const taken = (a, b) => out.some(x => a < x.end && b > x.start);
+		// Characters already covered by a finding: the overlap check costs the length of the candidate, not the number of
+		// findings, so many short findings stay linear.
+		const cov = new Uint8Array(s.length);
+		const taken = (a, b) => { for (let i = a; i < b; i++) { if (cov[i]) { return true; } } return false; };
+		const put = x => { cov.fill(1, x.start, x.end); out.push(x); };
 		for (const [kind, re] of SECRET_PATTERNS) {
 			re.lastIndex = 0;
 			let m;
-			while ((m = re.exec(s))) { const a = m.index, b = a + m[0].length; if ((a > 0 && TOKEN_CHAR.test(s[a - 1]) && kind !== 'Private key') || taken(a, b)) { continue; } out.push({ kind, start: a, end: b, shown: kind === 'Private key' ? 'BEGIN … PRIVATE KEY' : mask(m[0]) }); }
+			while ((m = re.exec(s))) { const a = m.index, b = a + m[0].length; if ((a > 0 && TOKEN_CHAR.test(s[a - 1]) && kind !== 'Private key') || taken(a, b)) { continue; } put({ kind, start: a, end: b, shown: kind === 'Private key' ? 'BEGIN … PRIVATE KEY' : mask(m[0]) }); }
 		}
 		const LONG = /[0-9A-Za-z+/=_\-.]{24,}/gu;
 		let m;
@@ -292,21 +303,24 @@
 			if (!/[0-9]/u.test(v) || !/[A-Za-z]/u.test(v) || /^[0-9a-fA-F-]+$/u.test(v) || /^(?:https?|www)/iu.test(v) || entropy(v) < 3.5) { continue; }
 			// A base64 payload of this tool's own tests carries a canary of the set: it is test content, not a secret.
 			if (keep && keep.length && /^[A-Za-z0-9+/]+={0,2}$/u.test(v)) { const d = b64decode(v).toUpperCase(); if (d && keep.some(k => d.indexOf(k) >= 0)) { continue; } }
-			out.push({ kind: 'unrecognized long value', start: a, end: b, shown: mask(v) });
+			put({ kind: 'unrecognized long value', start: a, end: b, shown: mask(v) });
 		}
 		// The value after a key named …credential(s), …password, …secret or …token is masked whatever its length
 		// (owner decision 2026-11-21). Every repeated part is bounded so the scan stays linear on long input.
-		KEYED.lastIndex = 0;
-		while ((m = KEYED.exec(s))) {
+		for (const RE of [KEYED, BEARER]) {
+		RE.lastIndex = 0;
+		while ((m = RE.exec(s))) {
 			const v = m[1];
 			let a = m.index + m[0].length - v.length, b = a + v.length;
 			if (v[0] === '"' || v[0] === '\'' || v[0] === '“' || v[0] === '«' || v[0] === '„') { a += 1; b -= 1; }
 			if (b <= a || taken(a, b) || /^\[|…|••••/u.test(s.slice(a, b)) || (keep && keep.some(k => s.slice(a, b).toUpperCase().indexOf(k) >= 0))) { continue; }
-			out.push({ kind: 'value of a secret field', start: a, end: b, shown: mask(s.slice(a, b)) });
+			put({ kind: 'value of a secret field', start: a, end: b, shown: mask(s.slice(a, b)) });
+		}
 		}
 		return out.sort((x, y) => x.start - y.start);
 	}
-	function maskSecrets(text, keep) { let s = String(text || ''); for (const x of findSecrets(s, keep).sort((p, q) => q.start - p.start)) { s = s.slice(0, x.start) + '[' + x.kind + ': ' + x.shown + ']' + s.slice(x.end); } return s; }
+	/** Text with every recognised secret replaced by its type and a masked fragment (one pass: linear in the text). */
+	function maskSecrets(text, keep) { const s = String(text || ''); const parts = []; let k = 0; for (const x of findSecrets(s, keep)) { parts.push(s.slice(k, x.start), '[' + x.kind + ': ' + x.shown + ']'); k = x.end; } parts.push(s.slice(k)); return parts.join(''); }
 	const visible = s => s.replace(INVISIBLE, '·').replace(/[\u{E0000}-\u{E007F}]/gu, '').replace(/[\u0000-\u0008\u000b-\u001f]/gu, ' ');
 	/** Text around a hit. Secrets are found in the whole response first, then the window is cut: a secret at the edge of the
 	 * window is never cut into a piece that is no longer recognised (mask first, then cut). */
