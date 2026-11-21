@@ -832,7 +832,9 @@
 				y.docs.forEach((d, di) => { if (isObj(d) && d.action !== undefined) { notes.push('Document ' + (di + 1) + ' uses “action” (rule collections); collections are not supported, each document is checked on its own.'); } findings.push(...validateSigmaDoc(d, y.lines, di ? '/doc' + di : '')); });
 			}
 		}
-		for (const x of findSecrets(s)) { findings.push(finding('SEC-001', s.slice(0, x.start).split('\n').length, x.kind + ': ' + x.shown)); }
+		// Values after credential/password/secret/token keys are masked in all output, but they do not add SEC-001 findings:
+		// in rules such keys often hold patterns (for example a YARA regex token=.+), not credentials.
+		for (const x of findSecrets(s).filter(y => y.kind !== 'value of a secret field')) { findings.push(finding('SEC-001', s.slice(0, x.start).split('\n').length, x.kind + ': ' + x.shown)); }
 		findings.sort((a, b) => SEV_RANK[b.severity] - SEV_RANK[a.severity] || a.line - b.line || (a.id < b.id ? -1 : 1));
 		const counts = { error: 0, warning: 0, info: 0 };
 		for (const f of findings) { counts[f.severity]++; }
