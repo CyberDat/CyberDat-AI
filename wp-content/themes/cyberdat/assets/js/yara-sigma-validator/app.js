@@ -114,16 +114,19 @@
 	function showConversion() {
 		const conv = state.conversion;
 		if (!conv) { return; }
-		const hide = conv.containsSecrets && !el.convAck.checked;
-		el.convOut.replaceChildren(...conv.rules.map(r => {
+		// Masked by default (titles, queries, messages). The full query is shown only on request and only on this screen;
+		// the downloaded report always stays masked (owner decision 2026-11-21).
+		const full = conv.containsSecrets && el.convAck.checked;
+		el.convOut.replaceChildren(...conv.rules.map((r, k) => {
+			const m = conv.masked[k];
 			const div = node('div', 'cd-ysv-query');
-			div.appendChild(node('h4', 'cd-ysv-query__title', r.title));
-			if (r.error) { div.appendChild(node('p', 'cd-ysv-conv-error', 'Not converted: ' + r.error)); return div; }
+			div.appendChild(node('h4', 'cd-ysv-query__title', m.title));
+			if (r.error) { div.appendChild(node('p', 'cd-ysv-conv-error', 'Not converted' + (m.code ? ' [' + m.code + ']' : '') + ': ' + m.error)); return div; }
 			r.queries.forEach((q, i) => {
-				const pre = node('pre', 'cd-la-preview cd-ysv-pre notranslate', hide ? 'Hidden: the query contains values that look like secrets. Confirm above to show it.' : q);
+				const pre = node('pre', 'cd-la-preview cd-ysv-pre notranslate', full ? q : m.queries[i]);
 				pre.setAttribute('translate', 'no');
 				pre.tabIndex = 0;
-				pre.setAttribute('aria-label', 'Query ' + (i + 1) + ' for ' + r.title);
+				pre.setAttribute('aria-label', 'Query ' + (i + 1) + ' for ' + m.title + (full ? ' (full, not masked)' : ''));
 				div.appendChild(pre);
 			});
 			return div;

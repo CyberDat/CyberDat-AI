@@ -48,7 +48,7 @@ $cyberdat_ysv_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 				<textarea id="cd-ysv-fieldmap" <?php echo $cyberdat_ysv_ta; // phpcs:ignore WordPress.Security.EscapeOutput -- static attribute string ?> rows="5" aria-describedby="cd-ysv-fieldmap-help" data-ysv-fieldmap></textarea>
 				<p id="cd-ysv-fieldmap-help" class="cd-la-help"><?php esc_html_e( 'Maps Sigma field names to your field names, for example {"Image": "process.executable"}. Fields not listed are used as written.', 'cyberdat' ); ?></p>
 				<button type="button" class="cd-la-button cd-la-button--ghost" data-ysv-fieldmap-example><?php esc_html_e( 'Load example mapping', 'cyberdat' ); ?></button>
-				<p class="cd-la-help"><?php esc_html_e( 'Supported: field/value maps, value lists, keyword lists, the modifiers contains, startswith, endswith, all and exists, re and cidr (KQL and Lucene only), null values, numbers, the * wildcard (all) and ? (Lucene only), and conditions with and, or, not, parentheses, “1 of …” and “all of …”. Anything else stops the conversion with a message naming the construct.', 'cyberdat' ); ?></p>
+				<p class="cd-la-help"><?php esc_html_e( 'Supported: field/value maps, value lists, keyword lists, the modifiers contains, startswith, endswith, all and exists, re and cidr (KQL and Lucene only), null values, numbers, the * wildcard (all targets) and ? (Lucene and KQL; Splunk SPL refuses it), and conditions with and, or, not, parentheses, “1 of …” and “all of …”. A literal * written as \* is kept literal for KQL and Lucene; Splunk SPL cannot search for a literal asterisk, so the conversion is refused. A field with null becomes a missing-field test; in KQL this is isempty(), which also matches an empty string, and its exact meaning depends on the field type in your table. Anything else stops the conversion with a message naming the construct. Rules with errors are not converted.', 'cyberdat' ); ?></p>
 			</details>
 		</section>
 
@@ -69,7 +69,8 @@ $cyberdat_ysv_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 			<div class="cd-ysv-conv" data-ysv-conv hidden>
 				<h3 class="cd-la-subheading" data-ysv-conv-title></h3>
 				<div class="cd-la-callout cd-la-callout--warning" data-ysv-conv-secret hidden>
-					<label class="cd-la-check"><input type="checkbox" data-ysv-conv-ack> <span><?php esc_html_e( 'The query contains values that look like secrets. Show it anyway.', 'cyberdat' ); ?></span></label>
+					<p><?php esc_html_e( 'The query contains values that look like secrets. They are masked below and in the report.', 'cyberdat' ); ?></p>
+					<label class="cd-la-check"><input type="checkbox" data-ysv-conv-ack> <span><?php esc_html_e( 'Show the full query on this screen without masking (off by default). Anyone who can see your screen can read the values; the downloaded report stays masked.', 'cyberdat' ); ?></span></label>
 				</div>
 				<div data-ysv-conv-out></div>
 			</div>
@@ -77,7 +78,7 @@ $cyberdat_ysv_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-ysv-report="markdown"><?php esc_html_e( 'Download report (Markdown)', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-ysv-report="json"><?php esc_html_e( 'Download report (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The report contains the findings and converted queries with values that look like secrets masked. It does not contain the full rule.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The report contains the findings and the converted queries with recognised secret values masked, always, also when the full query is shown on screen. It does not contain the full rule.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 
@@ -99,7 +100,7 @@ $cyberdat_ysv_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 				<li><?php esc_html_e( 'Input fields, findings and queries are marked so that the browser’s built-in page translator does not translate them, because translating would send their text to a translation service.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'This tool does not persist data: input, findings and settings are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Values in rules that look like secrets are shown masked in findings and reports; masking is best effort.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Recognised secret values are masked in findings, rule titles, converted queries, messages and reports: known key formats, long random-looking values and the value of any field or key named credential, password, secret or token, whatever its length. Masking is best effort and does not find every secret: remove secrets from rules before you share them.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
 		<section aria-labelledby="cd-ysv-limits">
