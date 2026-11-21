@@ -16,7 +16,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
 	'use strict';
 
-	const ENGINE = '1.0.1';
+	const ENGINE = '1.0.2';
 	const RULESET = '2026-11-15.1';
 	const MAX_INPUT_CHARS = 100000;
 	const DATA = (typeof module === 'object' && module.exports && typeof require === 'function') ? require('./atlas-data.js') : root.CyberDatAtlasData;
@@ -162,11 +162,33 @@
 	const TOKEN_CHAR = /[\p{L}\p{N}\p{M}_]/u;
 	function mask(v) { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
 	function entropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
+	// Preserve ordinary long Unicode words; glued credentials still match their format or token digits.
+	function exportTokenLike(value) {
+		if (/^\p{ASCII}+$/u.test(value) || /\p{N}/u.test(value)) { return true; }
+		return SECRET_PATTERNS.some(([, re]) => { re.lastIndex = 0; return re.test(value); });
+	}
 	/** Known-format secrets and unrecognized long random-looking values: [{ kind, start, end, shown }]. */
 	function findSecrets(text) {
 		const s = String(text || '');
 		const out = [];
 		const taken = (a, b) => out.some(x => a < x.end && b > x.start);
+		const urls = [];
+		const URL = /(?:https?|git\+https?|git\+ssh|ssh|ftp|s3|gs|hf):\/\/([^\s"'<>/?#]*)([^\s"'<>]*)/giu;
+		let url;
+		while ((url = URL.exec(s))) {
+			urls.push([url.index, url.index + url[0].length]);
+			const authority = url[1], start = url.index + url[0].indexOf('://') + 3, at = authority.lastIndexOf('@');
+			if (at > 0 && authority.slice(0, at).includes(':')) {
+				out.push({ kind: 'URL credentials', start, end: start + at, shown: '••••:••••' });
+			}
+			// Inspect tail components, not the hostname or URL separators, for unknown long values.
+			const tail = /[\p{L}\p{N}\p{M}+_.\-]{24,}/gu;
+			let part;
+			while ((part = tail.exec(url[2]))) {
+				const a = start + authority.length + part.index, b = a + part[0].length;
+				if (exportTokenLike(part[0]) && !taken(a, b)) { out.push({ kind: 'unrecognized long value', start: a, end: b, shown: mask(part[0]) }); }
+			}
+		}
 		for (const [kind, re] of SECRET_PATTERNS) {
 			re.lastIndex = 0;
 			let m;
@@ -177,22 +199,23 @@
 			}
 		}
 		// Password/token assignments are sensitive even when they have no provider prefix or high entropy.
-		const ASSIGN = /([\p{L}\p{N}_.\-]{2,40})["']?[ \t]*[:=][ \t]*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&<>]+)/gu;
+		// Match recognized keys only: https: must never consume a later ?token= assignment.
+		const ASSIGN = /(^|[^\p{L}\p{N}\p{M}_.\-])((?:password|passwd|pwd|secret|client[_.\-]*secret|token|access[_.\-]*token|refresh[_.\-]*token|api[_.\-]*key|x[_.\-]*api[_.\-]*key|authorization|credentials?|private[_.\-]*key))["']?[ \t]*[:=][ \t]*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&<>#]+)/giu;
 		let assigned;
 		while ((assigned = ASSIGN.exec(s))) {
-			const key = assigned[1].normalize('NFC').toLowerCase().replace(/[_.\-]/gu, '');
+			const key = assigned[2].normalize('NFC').toLowerCase().replace(/[_.\-]/gu, '');
 			if (!/^(?:password|passwd|pwd|secret|clientsecret|token|accesstoken|refreshtoken|apikey|xapikey|authorization|credential|credentials|privatekey)$/u.test(key)) { continue; }
-			const quoted = assigned[2][0] === '"' || assigned[2][0] === "'";
-			const value = quoted ? assigned[2].slice(1, -1) : assigned[2];
-			const a = assigned.index + assigned[0].length - assigned[2].length + (quoted ? 1 : 0), b = a + value.length;
+			const quoted = assigned[3][0] === '"' || assigned[3][0] === "'";
+			const value = quoted ? assigned[3].slice(1, -1) : assigned[3];
+			const a = assigned.index + assigned[0].length - assigned[3].length + (quoted ? 1 : 0), b = a + value.length;
 			if (!value || taken(a, b)) { continue; }
 			out.push({ kind: 'assigned secret', start: a, end: b, shown: mask(value) });
 		}
-		const LONG = /[0-9A-Za-z+/=_\-.]{24,}/gu;
+		const LONG = /[\p{L}\p{N}\p{M}+/=_\-.]{24,}/gu;
 		let m;
 		while ((m = LONG.exec(s))) {
 			const v = m[0], a = m.index, b = a + v.length;
-			if (taken(a, b) || (a > 0 && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b]))) { continue; }
+			if (!exportTokenLike(v) || taken(a, b) || (a > 0 && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b])) || urls.some(([x, y]) => a >= x && b <= y)) { continue; }
 			if (/^(?:https?|www)/iu.test(v)) { continue; }
 			out.push({ kind: 'unrecognized long value', start: a, end: b, shown: mask(v) });
 		}

@@ -1,11 +1,11 @@
 {
   "kind": "source-delta-only-not-a-full-theme-installer",
   "revision": "tools-release-1.2/2",
-  "source_commit": "a5d4f842bfc85f56642e5d332bbccd6db968f2c4",
+  "source_commit": "581c3f0fc22fa8385052994cc4611fadd662e81b",
   "files": 23,
   "artifact": "theme-delta.tar.gz",
-  "archive_sha256": "44e698d3b80d9615e368f1b234c114ad007ef73ed6bb86747c6f329a7941a583",
-  "manifest_sha256": "8e49b58462fd56d97fd0ce3797d7bb319995295802fa6acd1b18d8557cb5a9ef",
+  "archive_sha256": "252815d1c7464e3643c68d073d8e18537b04b804fbc2dd92ec699e61ca022f92",
+  "manifest_sha256": "6c3ae3a96e3ce49a06e4fa00679b35479073a0a1f391c2c05c2ce88f8027ffd5",
   "reference_base_files": 125,
   "reference_target_files": 146,
   "requires_rebase_over_live_Stage1_before_deploy": true
