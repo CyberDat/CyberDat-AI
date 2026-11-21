@@ -75,6 +75,38 @@ For publication Codex adds the slug to the canonical list in `inc/tools.php`, cr
 | Unicode contract (`tools-utilities-1-unicode.test.cjs`) | 3/3 |
 | Browser | Edge 13/13; Firefox 10/10, WebKit 10/10: XSS through names and subjects stays text, .eml body never shown or exported, masking, 800 Received lines + 2 MB body in 1.2 s, 360 px, keyboard, contrast ≥ 7.59:1 |
 
+## Independent acceptance (owner's set) and the fix after it
+
+Owner's set: 11 Gmail messages, labelled by the owner, `set.json` sha256 `9a76e028fac3e54e…`, `labels.json` not changed
+between the runs. Kept outside the repository (no real headers committed).
+
+| Run | Engine / rules | Result line |
+|---|---|---|
+| First run (owner), `0218b84` | 1.0.0 / 2026-11-19.1 | messages as expected **0/11**, extra or unwanted **23**, DMARC/boundary checks **0/11**, benign messages with a high finding **1/11** |
+| Second run after the fix, `82a0c48` — **not primary numbers** | 1.0.0 / 2026-11-21.1 | messages as expected **10/11**, extra or unwanted **1**, DMARC/boundary checks **11/11**, benign messages with a high finding **0/11** |
+
+Remaining difference: m01 `EHA-AUTH-005` (result by dkim-verifier.icloud.com below the boundary). The owner classified it
+as a labelling error: the rule is right, so the code is unchanged for it.
+
+Fix `990a064` (merge `82a0c48`), owner decisions of 2026-11-21, ruleset `2026-11-21.1`:
+
+1. Own domain at a mailbox provider. The owner entered example.com, so mail accepted by mx.google.com got EHA-AUTH-004 and
+   EHA-AUTH-005 and DMARC none. This would hit every Google Workspace and Microsoft 365 user with an own domain. Now,
+   with an own domain, the provider becomes the trust boundary when four conditions hold: the topmost external Received
+   line was written by a known mailbox provider; the provider list in the engine (`MAILBOX_PROVIDERS`) is short (Google
+   `mx.google.com`, Microsoft `*.outlook.com` incl. `*.protection.outlook.com`); nothing above that line recorded results;
+   and the provider wrote Authentication-Results in a trusted position. Results lower down that only name the provider
+   stay untrusted (EHA-AUTH-005 unchanged). The trust explanation and the exports show "Trust boundary: <host> (mailbox
+   provider for your domain)". No new finding ids; frozen catalogue unchanged.
+2. `appleid.com` added to Apple's domains (false EHA-LOOK-003 high on `privaterelay.appleid.com`). Nothing else in the
+   brand list changed.
+
+Tests: `tests/email-header-analyzer-provider-boundary.test.cjs` 19/19 (synthetic: Workspace, M365, a forged lower
+mx.google.com result, a message with only a forged result, the Apple relay address). The same file against the old
+engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extra 0), held-out 14/14 → 14/14 (32/32, 0).
+Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
+all exit 0.
+
 ### Final regression — all eleven tools, one sequential run
 
 Last run 2026-11-21 at `b96ddbb` (after the merges of the Codex export fix, the Hub and the previews): 33/33 runs exit 0, PASS counts identical to the earlier runs at `50e916b` and `429e097`; Log Anonymizer 30 MB: Edge 2.8 s, Firefox 3.2 s, WebKit 27.1 s; sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
@@ -110,8 +142,8 @@ new utility and test directories: no leaks. Secret-shaped test values come only 
 ## Not verified
 
 * The corpus is synthetic (written from scratch); every number above is NOT INDEPENDENT. The owner's independent set is
-  Gmail-only (owner decision 2026-11-19: one spam message, newsletters, ordinary mail, possibly 2–4 outlook.com messages;
-  3 messages prepared so far, labels pending). **Covered only by synthetic headers:** corporate Microsoft 365 / Exchange
+  Gmail-only (owner decision 2026-11-19): 11 messages, labelled and run (see above); the second run is after a fix and
+  its numbers are not primary. **Covered only by synthetic headers:** corporate Microsoft 365 / Exchange
   Online and on-premises Exchange, mail gateways, Postfix/Exim/Sendmail as receivers, and phishing variants other than the
   owner's spam message. The page Limitations state this (`bee7105`).
 * Received formats of other vendors (Proofpoint, Mimecast, Zimbra, Yandex, Mail.ru, Apple iCloud) were not tested.
