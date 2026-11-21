@@ -34,6 +34,26 @@ For publication Codex adds the slugs to the canonical list in `inc/tools.php`, c
 under /tools/ (`/tools/prompt-injection-test-bench/`, `/tools/yara-sigma-validator/`, `/tools/container-hardening-audit/`),
 sets the editorial fields from `editorial.json` and flips the status to `available` — after the owner's review.
 
+## Hub previews (tools 8–10)
+
+The Hub cards of tools 8–10 get previews in the style of tools 1–4: a window with three dots, a synthetic input and
+result, and an emblem. They replace the abstract artwork of the Codex Hub that is installed on staging. The Hub template
+and the catalogue are unchanged: the template picks `assets/images/tools-hub/<slug>.svg`, with `alt=""` and
+`aria-hidden`.
+
+| Tool | File | Preview text (synthetic) |
+|---|---|---|
+| 8 | `assets/images/tools-hub/prompt-injection-test-bench.svg` | test case asking to reply `CANARY-4821` → canary absent |
+| 9 | `assets/images/tools-hub/yara-sigma-validator.svg` | `demo-rule.yml` → syntax ok, Sigma to KQL draft |
+| 10 | `assets/images/tools-hub/container-hardening-audit.svg` | `FROM demo-base:1.0`, `USER root` → HIGH, checklist |
+
+`hub-previews.json` lists bytes and SHA-256 (LF bytes in git), plus `base_sha256` = the staging Hub version
+(`feat/tools-hub-cyber-glass` `0a32f12`). It is written by `deploy/tools-hub-previews-5-7/build-previews.cjs` and checked with
+`--check`. The Codex Hub is not part of `integration/tools-release-1.3`. So the previews and `hub-previews.json` live on
+`integration/tools-utilities-1`, which contains this release completely (merge `4060781`), the Hub (merge `b93caf2`) and
+the previews (`dfe3ac9`). Install them together with tools 8–10: check `base_sha256` on staging, replace the three
+static files, then check `sha256`. Tests and screenshots: `deploy/tools-hub-previews-5-7/README.md`.
+
 ## Files in this package
 
 | File | Content |
@@ -101,6 +121,9 @@ Log Anonymizer 30 MB: Edge 2.6 s, Firefox 3.1 s, WebKit 24.6 s; main thread stay
 PHP page tests of all ten tools, `tools` and `tools-catalog` suites: PASS. Node tests: all PASS except two that fail
 identically on the base `2a4cfbe` and are unrelated: `d14-remediation` (needs the owner-private fixture directory) and
 `release-manifest` (release-1 package count 438 ≠ 420). Manifest checks 1.2 and 1.3: PASS.
+
+Repeated on 2026-11-21 on `integration/tools-utilities-1` `b96ddbb` (contains this release with the Codex 1.2 export fix):
+all eleven tools × 3 browsers exit 0 with the same PASS counts; manifest `--check` at `e1bff4e`: PASS.
 
 ### Secrets
 
