@@ -112,7 +112,7 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-download><?php esc_html_e( 'Download sanitized copy', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-report><?php esc_html_e( 'Download findings (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The findings report contains short excerpts of your text. It is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The findings report contains short excerpts of your text. In the excerpts, the details and the report, common secret forms are masked on a best-effort basis: known token formats, values after keys such as password, token or api_key, Bearer and Basic credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the report before you share it. The highlighted text and the sanitized copy are your complete text and are not masked. The report is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 

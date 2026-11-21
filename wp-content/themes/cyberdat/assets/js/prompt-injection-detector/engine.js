@@ -30,7 +30,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.2';
+	const VERSION = '1.0.3';
 	const RULESET_VERSION = '2026-11-14.1';
 	const MAX_INPUT_CHARS = 20 * 1024 * 1024;
 	const MAX_FINDINGS = 2000;
@@ -894,15 +894,198 @@
 		};
 	}
 
-	function excerpt(text, start, end) {
+	// ---------------------------------------------------------------- secret masking (shared block)
+	// The same block is in the Prompt Injection Detector and the LotL Command Analyzer engines (a test checks that both copies
+	// are equal). It masks what the page shows and what the reports contain; detection always runs on the original text.
+	// The whole text is masked first and cut afterwards, so a secret is never cut into a piece that is no longer recognised.
+	// Pattern-based: it hides common forms, it cannot promise to find every secret. Unicode classes use the u flag, there is no
+	// look-behind, every repeated part is bounded or runs over a single class, and every character is covered at most once.
+	const SECRET_FORMATS = [
+		['AWS access key ID', /(?:AKIA|ASIA|ABIA|ACCA)[A-Z0-9]{16}/gu], ['GitHub token', /gh[pousr]_[0-9A-Za-z]{30,255}/gu],
+		['GitHub fine-grained token', /github_pat_[0-9A-Za-z_]{40,255}/gu], ['GitLab token', /glpat-[0-9A-Za-z_-]{20,255}/gu],
+		['Slack token', /xox[abposr]-[0-9A-Za-z-]{10,255}/gu], ['Slack webhook', /hooks\.slack\.com\/services\/[0-9A-Za-z_/]{8,255}/gu],
+		['Anthropic API key', /sk-ant-[0-9A-Za-z_-]{20,255}/gu], ['OpenAI-style API key', /sk-(?:proj-|svcacct-|admin-)?[0-9A-Za-z_-]{20,255}/gu],
+		['Google API key', /AIza[0-9A-Za-z_-]{35}/gu], ['Hugging Face token', /hf_[0-9A-Za-z]{30,255}/gu], ['Stripe key', /[rsp]k_(?:live|test)_[0-9A-Za-z]{10,255}/gu],
+		['npm token', /npm_[0-9A-Za-z]{36}/gu], ['JSON Web Token', /eyJ[0-9A-Za-z_-]{10,8000}\.eyJ[0-9A-Za-z_-]{2,8000}\.[0-9A-Za-z_-]{0,8000}/gu],
+		['Azure storage key', /AccountKey=[0-9A-Za-z+/]{40,200}={0,2}/gu]
+	];
+	const PEM_BEGIN = /-----BEGIN[ A-Z0-9_-]{0,100}PRIVATE KEY(?: BLOCK)?-----/gu;
+	const PEM_END = /-----END[ A-Z0-9_-]{0,100}PRIVATE KEY(?: BLOCK)?-----/uy;
+	const SECRET_TOKEN_CHAR = /[\p{L}\p{N}\p{M}_]/u;
+	// key = value, key: value, "key": "value", key => value, "key is value" after a credential, password, secret, token, api key,
+	// access/private key, authorization, auth, csrf, session id or cookie key: the value is masked whatever its length.
+	// An auth scheme (Bearer, Basic, Token) before the value is skipped so that the value itself is masked.
+	const SECRET_KEYED = /(?:credentials?|passwords?|passwort|passwd|passphrase|pwd|пароль|secret|token|api[_.\- ]?key|x[_.\-]?api[_.\-]?key|access[_.\-]?key(?:[_.\-]?id)?|private[_.\-]?key|authorization|auth|csrf|session[_.\-]?(?:id|key)?|cookie)["'”»“]?[ \t]{0,20}(?:=>|=|:|[ \t](?:is|ist|—|-)[ \t])[ \t]{0,20}(?:(?:bearer|basic|token)[ \t]{1,20})?("(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|“[^”\n]{0,500}”|«[^»\n]{0,500}»|„[^“\n]{0,500}“|[^\s"',;)\]}<>]{1,4000})/giu;
+	/** An HTTP auth scheme with its credential, also without a key name (Bearer …, Basic …). */
+	const SECRET_BEARER = /(?:bearer|basic)[ \t]{1,20}([A-Za-z0-9._~+/=-]{6,4000})/giu;
+	/** Command-line options that take a password or token: /pass:…, /rp …, -Password …, --token=…, -ApiKey … */
+	const SECRET_OPTION = /(?:^|[\s"'(])(?:--?|\/)(?:password|passwd|passphrase|pwd|pass|rp|secret|token|access[_-]?token|api[_-]?key|client[_-]?secret)(?::|=|[ \t]{1,20})("(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|[^\s"'|&;<>]{1,4000})/giu;
+	/** curl -u user:password, --user, --proxy-user: the part after the first colon. */
+	const SECRET_USER_OPTION = /(?:^|[\s"'(])(?:-u|-U|--user|--proxy-user)(?:=|[ \t]{1,20})("[^"\n]{1,500}"|'[^'\n]{1,500}'|[^\s"'|&;<>]{1,4000})/gu;
+	/** ConvertTo-SecureString "plain text" -AsPlainText: the plain-text password. */
+	const SECRET_SECURESTRING = /ConvertTo-SecureString[ \t]{1,20}(?:-String[ \t]{1,20})?("(?:[^"\\\n]|\\.){1,500}"|'(?:[^'\\\n]|\\.){1,500}')/giu;
+	const SECRET_URL = /(?:https?|wss?|ftps?|sftp|ssh|smb|git\+https?|git\+ssh|s3|gs|hf):\/\/[^\s"'<>`]{1,4000}/giu;
+	const SECRET_LONG = /[0-9A-Za-z+/=_\-.~]{24,4000}/gu;
+	const SECRET_PARAM_NAMES = new Set(['password', 'passwd', 'passphrase', 'pwd', 'pass', 'secret', 'clientsecret', 'token', 'accesstoken', 'refreshtoken', 'idtoken', 'authtoken', 'sessiontoken', 'securitytoken', 'apikey', 'xapikey', 'key', 'accesskey', 'accesskeyid', 'privatekey', 'auth', 'authorization', 'sig', 'signature', 'credential', 'credentials', 'session', 'sessionid', 'sid', 'csrf', 'csrftoken', 'xsrftoken', 'cookie', 'xamzsignature', 'xamzcredential', 'xamzsecuritytoken', 'xgoogsignature', 'xgoogcredential']);
+	const secretParamName = n => { const k = n.toLowerCase().replace(/[^a-z0-9]/gu, ''); return SECRET_PARAM_NAMES.has(k) || /(?:password|secret|token|apikey|privatekey|signature)$/u.test(k); };
+	function secretShown(v) { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
+	function secretEntropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
+	function percentDecode(s) {
+		if (s.indexOf('%') < 0 && s.indexOf('+') < 0) { return s; }
+		const t = s.replace(/\+/gu, ' ');
+		try { return decodeURIComponent(t); } catch (e) { return t.replace(/%([0-9A-Fa-f]{2})/gu, (m, h) => String.fromCharCode(parseInt(h, 16))); }
+	}
+	/** Base64 that decodes to readable text with spaces (an encoded command, a payload) is content, not a random key. */
+	function readableBase64(v) {
+		if (v.length % 4 === 1 || !/^[A-Za-z0-9+/]+={0,2}$/u.test(v) || typeof atob !== 'function') { return false; }
+		let b;
+		try { b = atob(v.length % 4 ? v + '='.repeat(4 - (v.length % 4)) : v); } catch (e) { return false; }
+		let printable = 0, zeroOdd = 0, spaces = 0;
+		for (let i = 0; i < b.length; i++) { const c = b.charCodeAt(i); if ((c >= 32 && c < 127) || c === 9 || c === 10 || c === 13) { printable++; } if (c === 32) { spaces++; } if (c === 0 && i % 2 === 1) { zeroOdd++; } }
+		const utf16 = zeroOdd >= b.length / 2 - 1;
+		return spaces > 0 && (utf16 || printable >= b.length * 0.95);
+	}
+	/** A random-looking value: letters and digits, not hex, not a path or a name made of words, high character entropy. */
+	function tokenLike(v, min) {
+		if (v.length < min || !/\p{N}/u.test(v) || !/\p{L}/u.test(v) || /^[0-9A-Fa-f-]+$/u.test(v) || secretEntropy(v) < 3.5) { return false; }
+		const parts = v.split(/[-_./~+=]/u).filter(Boolean);
+		// a part made of letters then digits (python3, Framework64) or digits then letters is a word, not a token
+		return !parts.every(p => p.length <= 4 || /^(?:\p{L}+\p{N}*|\p{N}+\p{L}*)$/u.test(p));
+	}
+	/** Secret spans in a text: [{ kind, start, end, shown }], sorted and not overlapping. */
+	function findSecrets(text) {
+		const s = String(text === undefined || text === null ? '' : text);
+		const out = [];
+		if (!s) { return out; }
+		const cov = new Uint8Array(s.length), inUrl = new Uint8Array(s.length);
+		const taken = (a, b) => { for (let i = a; i < b; i++) { if (cov[i]) { return true; } } return false; };
+		const put = (kind, a, b, value) => { if (b <= a || taken(a, b)) { return; } cov.fill(1, a, b); out.push({ kind, start: a, end: b, shown: secretShown(value === undefined ? s.slice(a, b) : value) }); };
+		let m;
+		// Private key blocks: from BEGIN to END when END follows within 20,000 characters, otherwise the header line.
+		PEM_BEGIN.lastIndex = 0;
+		let endAt = -2;
+		while ((m = PEM_BEGIN.exec(s))) {
+			if (endAt !== -1 && endAt < m.index) { endAt = s.indexOf('-----END', m.index + m[0].length); }
+			let b = m.index + m[0].length;
+			if (endAt >= 0 && endAt - m.index < 20000) { PEM_END.lastIndex = endAt; const e = PEM_END.exec(s); if (e) { b = endAt + e[0].length; } }
+			if (!taken(m.index, b)) { cov.fill(1, m.index, b); out.push({ kind: 'Private key', start: m.index, end: b, shown: 'BEGIN … PRIVATE KEY' }); }
+			PEM_BEGIN.lastIndex = b;
+		}
+		// Addresses: credentials before @, secret or token-like query and fragment values (percent escapes decoded before
+		// they are classified; the original span is replaced), token-like path segments.
+		SECRET_URL.lastIndex = 0;
+		while ((m = SECRET_URL.exec(s))) {
+			// trailing punctuation is not part of the address (a loop: a regular expression anchored at the end is quadratic)
+			let len = m[0].length;
+			while (len > 1 && ').,;:!?]}*'.indexOf(m[0][len - 1]) >= 0) { len--; }
+			const u = m[0].slice(0, len);
+			const start = m.index, scheme = u.indexOf('://') + 3;
+			inUrl.fill(1, start, start + u.length);
+			let i = scheme;
+			while (i < u.length && u[i] !== '/' && u[i] !== '?' && u[i] !== '#') { i++; }
+			const at = u.lastIndexOf('@', i);
+			if (at >= scheme && u.slice(scheme, at).indexOf(':') >= 0) { put('credentials in the address', start + scheme, start + at); }
+			let q = u.indexOf('?', i), h = u.indexOf('#', i);
+			if (q < 0) { q = u.length; }
+			if (h < 0) { h = u.length; }
+			const pathEnd = Math.min(q, h);
+			let k = i;
+			for (const seg of u.slice(i, pathEnd).split('/')) {
+				const d = percentDecode(seg);
+				if (tokenLike(d, 20) && !readableBase64(d)) { put('token in the address', start + k, start + k + seg.length, d); }
+				k += seg.length + 1;
+			}
+			for (const [from, to] of [[q + 1, h], [h + 1, u.length]]) {
+				if (from > u.length || to <= from) { continue; }
+				let p = from;
+				for (const pair of u.slice(from, to).split(/[&;]/u)) {
+					const eq = pair.indexOf('=');
+					if (eq > 0 && eq < pair.length - 1) {
+						const name = percentDecode(pair.slice(0, eq)), raw = pair.slice(eq + 1), value = percentDecode(raw);
+						const a = start + p + eq + 1, b = a + raw.length;
+						const known = SECRET_FORMATS.some(([, re]) => { re.lastIndex = 0; return re.test(value); });
+						if (secretParamName(name)) { put('secret in the address (' + name.slice(0, 40) + ')', a, b, value); }
+						else if (known || (tokenLike(value, 20) && !readableBase64(value))) { put('token in the address', a, b, value); }
+					}
+					p += pair.length + 1;
+				}
+			}
+			SECRET_URL.lastIndex = start + Math.max(u.length, 1);
+		}
+		for (const [kind, re] of SECRET_FORMATS) {
+			re.lastIndex = 0;
+			while ((m = re.exec(s))) {
+				const a = m.index, b = a + m[0].length;
+				if (a > 0 && SECRET_TOKEN_CHAR.test(s[a - 1]) && kind !== 'Azure storage key') { continue; }
+				put(kind, a, b);
+			}
+		}
+		for (const RE of [SECRET_KEYED, SECRET_BEARER, SECRET_OPTION, SECRET_USER_OPTION, SECRET_SECURESTRING]) {
+			RE.lastIndex = 0;
+			while ((m = RE.exec(s))) {
+				const v = m[1];
+				let a = m.index + m[0].length - v.length, b = a + v.length;
+				if (v[0] === '"' || v[0] === '\'' || v[0] === '“' || v[0] === '«' || v[0] === '„') { a += 1; b -= 1; }
+				if (RE === SECRET_USER_OPTION) { const c = s.indexOf(':', a); if (c < 0 || c >= b - 1) { continue; } a = c + 1; }
+				// a value that is already a masked marker, or a variable or placeholder, stays as it is
+				if (b <= a || /^\[|…|••••/u.test(s.slice(a, b))) { continue; }
+				put('value of a secret field', a, b);
+			}
+		}
+		SECRET_LONG.lastIndex = 0;
+		while ((m = SECRET_LONG.exec(s))) {
+			const v = m[0], a = m.index, b = a + v.length;
+			if ((a > 0 && SECRET_TOKEN_CHAR.test(s[a - 1])) || (b < s.length && SECRET_TOKEN_CHAR.test(s[b])) || /^(?:https?|www)/iu.test(v) || inUrl[a] || inUrl[b - 1]) { continue; }
+			if (!tokenLike(v, 24) || readableBase64(v.replace(/[.~_-]+$/u, ''))) { continue; }
+			put('unrecognized long value', a, b);
+		}
+		return out.sort((x, y) => x.start - y.start);
+	}
+	/** Text with every recognised secret replaced by its kind and a masked fragment (one pass: linear in the text). */
+	function maskSecrets(text, spans) {
+		const s = String(text === undefined || text === null ? '' : text);
+		const parts = [];
+		let k = 0;
+		for (const x of spans || findSecrets(s)) { parts.push(s.slice(k, x.start), '[' + x.kind + ': ' + x.shown + ']'); k = x.end; }
+		parts.push(s.slice(k));
+		return parts.join('');
+	}
+	/** Masked text cut to max characters (masking first, then cutting). */
+	const maskedClip = (text, max) => { const t = maskSecrets(text); return t.length > max ? t.slice(0, max) + '…' : t; };
+	// ---------------------------------------------------------------- end of secret masking (shared block)
+
+	/** Index of the first span that ends after pos (spans are sorted and do not overlap). */
+	function firstSpanAfter(spans, pos) {
+		let lo = 0, hi = spans.length;
+		while (lo < hi) { const mid = (lo + hi) >> 1; if (spans[mid].end <= pos) { lo = mid + 1; } else { hi = mid; } }
+		return lo;
+	}
+
+	/**
+	 * Text around a finding: up to 60 characters on each side within the line. spans are the secrets of the whole text
+	 * (findSecrets): a secret that crosses a cut or the edge of the match is kept whole and replaced by its masked form,
+	 * so the excerpt never shows a secret or a piece of one (mask first, then cut).
+	 */
+	function excerpt(text, start, end, spans) {
 		const [ls, le] = lineBounds(text, start, Math.max(start, end - 1));
-		const before = text.slice(Math.max(ls, start - 60), start);
-		const match = text.slice(start, end);
-		const after = text.slice(end, Math.min(le, end + 60));
+		const list = spans || [];
+		let a = Math.max(ls, start - 60), b = Math.min(le, end + 60), s0 = start, e0 = end;
+		for (let i = firstSpanAfter(list, a); i < list.length && list[i].start < b; i++) {
+			const x = list[i];
+			if (x.start < a) { a = x.start; }
+			if (x.start < s0 && x.end > s0) { s0 = x.start; }
+			if (x.start < e0 && x.end > e0) { e0 = x.end; }
+			if (x.end > b) { b = x.end; }
+		}
+		const render = (p, q) => {
+			let out = '', k = p;
+			for (let i = firstSpanAfter(list, p); i < list.length && list[i].start < q; i++) { const x = list[i]; out += text.slice(k, x.start) + '[' + x.kind + ': ' + x.shown + ']'; k = x.end; }
+			return out + text.slice(k, q);
+		};
 		return {
-			before: (start - 60 > ls ? '…' : '') + visible(before).replace(/\t/g, ' '),
-			match: clip(visible(match), 300),
-			after: visible(after).replace(/\r$/, '').replace(/\t/g, ' ') + (end + 60 < le ? '…' : '')
+			before: (a > ls ? '…' : '') + visible(render(a, s0)).replace(/\t/g, ' '),
+			match: clip(visible(render(s0, e0)), 300),
+			after: visible(render(e0, b)).replace(/\r$/, '').replace(/\t/g, ' ') + (b < le ? '…' : '')
 		};
 	}
 
@@ -943,6 +1126,9 @@
 		const onProgress = hooks && typeof hooks.onProgress === 'function' ? hooks.onProgress : null;
 		const total = text.length * 2 + 1;
 		const progress = done => { if (onProgress) { onProgress(Math.min(done, total), total); } };
+		// Secrets of the whole original text, found once when the first excerpt is built.
+		let spans = null;
+		const secretSpans = () => spans || (spans = findSecrets(text));
 
 		// 1. Normalization
 		const runs = scanInvisible(text);
@@ -978,7 +1164,7 @@
 			let deepest = c.decoded;
 			for (let layer = result.nested[0]; layer; layer = layer.inner.nested[0]) { chain.push(layer.encoding); deepest = layer.decoded; }
 			if (decodedList.length < MAX_DECODED_LISTED) {
-				decodedList.push({ nStart: c.start, nEnd: c.end, chain, preview: clip(visible(deepest.replace(/\s+/g, ' ').trim()), 200), flagged: result.hits.length > 0 });
+				decodedList.push({ nStart: c.start, nEnd: c.end, chain, preview: clip(visible(maskSecrets(deepest).replace(/\s+/g, ' ').trim()), 200), flagged: result.hits.length > 0 });
 			}
 			if (result.hits.length) {
 				let sev = 'medium';
@@ -988,7 +1174,7 @@
 					if (ids.indexOf(h.ruleId) === -1) { ids.push(h.ruleId); }
 				}
 				raw.push({ ruleId: 'PI-ENC-001', severity: sev, nStart: c.start, nEnd: c.end, layer: 'decoded', inner: ids,
-					detail: 'Decoded (' + chain.join(' → ') + '): “' + clip(visible(deepest.replace(/\s+/g, ' ').trim()), 160) + '”. Matches ' + ids.map(id => id + ' (' + RULES_BY_ID[id].title + ')').join(', ') + '.' });
+					detail: 'Decoded (' + chain.join(' → ') + '): “' + clip(visible(maskSecrets(deepest).replace(/\s+/g, ' ').trim()), 160) + '”. Matches ' + ids.map(id => id + ' (' + RULES_BY_ID[id].title + ')').join(', ') + '.' });
 			}
 		}
 		progress(Math.round(text.length * 1.3));
@@ -1004,13 +1190,13 @@
 				const inner = hidden ? scanText(quickNormalize(hidden), 0, []) : [];
 				const ids = Array.from(new Set(inner.map(h => h.ruleId)));
 				raw.push({ ruleId: 'PI-HID-003', severity: 'high', oStart: run.start, oEnd: run.end, layer: 'hidden', inner: ids,
-					detail: desc + '. Hidden text reads: “' + clip(hidden, 200) + '”' + (ids.length ? '. Matches ' + ids.join(', ') + '.' : '.') });
+					detail: desc + '. Hidden text reads: “' + clip(maskSecrets(hidden), 200) + '”' + (ids.length ? '. Matches ' + ids.join(', ') + '.' : '.') });
 			}
 			if (run.kinds.variation && run.kinds.variation >= 2) {
 				const hidden = decodeVariationSelectors(run.cps);
 				const ok = hidden && readable(hidden);
 				raw.push({ ruleId: 'PI-HID-005', severity: 'high', oStart: run.start, oEnd: run.end, layer: 'hidden',
-					detail: desc + (ok ? '. Decoded as bytes: “' + clip(hidden, 200) + '”.' : '.') });
+					detail: desc + (ok ? '. Decoded as bytes: “' + clip(maskSecrets(hidden), 200) + '”.' : '.') });
 			} else if (run.kinds.variation && !run.kinds.tag) {
 				raw.push({ ruleId: 'PI-HID-005', severity: 'low', oStart: run.start, oEnd: run.end, layer: 'hidden', detail: desc + ' not attached to an emoji.' });
 			}
@@ -1049,7 +1235,7 @@
 			if (!severity) { return; }
 			const ids = Array.from(new Set(strong.map(h => h.ruleId)));
 			raw.push({ ruleId: item.kind === 'comment' ? 'PI-HID-006' : 'PI-HID-007', severity, nStart: item.start, nEnd: item.end, layer: 'hidden', inner: ids,
-				detail: (item.kind === 'comment' ? 'Comment text: “' : 'Hidden by “' + item.style + '”. Text: “') + clip(visible(item.inner.replace(/\s+/g, ' ').trim()), 160) + '”' + (ids.length ? '. Contains ' + ids.join(', ') + '.' : ai ? '. Addresses an AI system.' : '.') });
+				detail: (item.kind === 'comment' ? 'Comment text: “' : 'Hidden by “' + item.style + '”. Text: “') + clip(visible(maskSecrets(item.inner).replace(/\s+/g, ' ').trim()), 160) + '”' + (ids.length ? '. Contains ' + ids.join(', ') + '.' : ai ? '. Addresses an AI system.' : '.') });
 		});
 
 		// 6. Obfuscation
@@ -1072,7 +1258,7 @@
 				const e = ls + t.idx[Math.max(h.start, h.end - 1)] + 1;
 				if (plain.some(p => p.ruleId === h.ruleId && p.nStart < e && p.nEnd > s)) { continue; }
 				raw.push({ ruleId: 'PI-OBF-002', severity: h.mentioned ? 'low' : maxSeverity('medium', h.severity), nStart: s, nEnd: Math.max(e, s + 1), layer: 'normalized', inner: [h.ruleId],
-					detail: 'Reads as “' + clip(h.text, 160) + '” and then matches ' + h.ruleId + ' (' + RULES_BY_ID[h.ruleId].title + ').' });
+					detail: 'Reads as “' + clip(maskSecrets(h.text), 160) + '” and then matches ' + h.ruleId + ' (' + RULES_BY_ID[h.ruleId].title + ').' });
 			}
 		};
 		let cachedLine = [0, -1];
@@ -1120,7 +1306,7 @@
 				const [ls, le] = lineOf(s);
 				rescan(ls, le);
 				if (SPACED_KEYWORDS.has(collapsed) || Array.from(SPACED_KEYWORDS).some(k => k.length >= 6 && collapsed.indexOf(k) !== -1)) {
-					raw.push({ ruleId: 'PI-OBF-003', severity: 'medium', nStart: s, nEnd: s + m[0].length, layer: 'normalized', detail: 'Reads as “' + clip(collapsed, 80) + '”.' });
+					raw.push({ ruleId: 'PI-OBF-003', severity: 'medium', nStart: s, nEnd: s + m[0].length, layer: 'normalized', detail: 'Reads as “' + clip(maskSecrets(collapsed), 80) + '”.' });
 				}
 			}
 			if (/[0-9@$!|]/.test(chunk)) {
@@ -1165,7 +1351,7 @@
 					const nf = edits.length - inv;
 					h.layer = 'normalized';
 					extra.push({ ruleId: 'PI-OBF-004', severity: h.mentioned ? 'low' : 'high', oStart: h.oStart, oEnd: h.oEnd, layer: 'normalized', inner: [h.ruleId],
-						detail: 'Matches ' + h.ruleId + ' only after ' + [inv ? 'removing ' + inv + ' run' + (inv === 1 ? '' : 's') + ' of invisible characters' : '', nf ? 'normalizing ' + nf + ' styled or compatibility character' + (nf === 1 ? '' : 's') : ''].filter(Boolean).join(' and ') + '. Normalized text: “' + clip(h.matched, 160) + '”.' });
+						detail: 'Matches ' + h.ruleId + ' only after ' + [inv ? 'removing ' + inv + ' run' + (inv === 1 ? '' : 's') + ' of invisible characters' : '', nf ? 'normalizing ' + nf + ' styled or compatibility character' + (nf === 1 ? '' : 's') : ''].filter(Boolean).join(' and ') + '. Normalized text: “' + clip(maskSecrets(h.matched), 160) + '”.' });
 				}
 			}
 		}
@@ -1186,7 +1372,7 @@
 				if (prev.finding) {
 					prev.finding.end = prev.oEnd;
 					prev.finding.severity = prev.severity;
-					prev.finding.excerpt = excerpt(text, prev.oStart, prev.oEnd);
+					prev.finding.excerpt = excerpt(text, prev.oStart, prev.oEnd, secretSpans());
 				}
 				continue;
 			}
@@ -1214,7 +1400,7 @@
 				mentioned: !!h.mentioned,
 				detail: h.detail || (h.layer === 'normalized' ? 'Detected in the normalized text.' : ''),
 				inner: h.inner || [],
-				excerpt: excerpt(text, h.oStart, h.oEnd)
+				excerpt: excerpt(text, h.oStart, h.oEnd, secretSpans())
 			};
 			if (h.mentioned) { finding.detail = (finding.detail ? finding.detail + ' ' : '') + 'The phrase appears quoted or given as an example, so its severity was lowered to low. Quoting does not make an instruction harmless to a model.'; }
 			h.finding = finding;
@@ -1396,6 +1582,6 @@
 		RULES: ALL_RULES.map(r => ({ id: r.id, group: r.group, severity: r.severity, title: r.title, explanation: r.explain })),
 		defaultOptions,
 		analyze,
-		_internal: { normalize, scanInvisible, scanText, findEncoded, deobfuscateLine, isMention, isNegated, visible, sentenceBounds, TEXT_RULES, TEXT_EXTENSIONS, decodeBase64, readable }
+		_internal: { findSecrets, maskSecrets, normalize, scanInvisible, scanText, findEncoded, deobfuscateLine, isMention, isNegated, visible, sentenceBounds, TEXT_RULES, TEXT_EXTENSIONS, decodeBase64, readable }
 	};
 }));
