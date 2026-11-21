@@ -9,6 +9,7 @@ function is_singular($type){global $singular;return $singular;}
 function cyberdat_tool_ready($id){global $ready;return $ready;}
 function rank_math(){global $head;return(object)['head'=>$head];}
 function has_action($name,$callback){global $native;return $native?20:false;}
+function cyberdat_planned_tools(){return json_decode(file_get_contents(__DIR__.'/../wp-content/themes/cyberdat/inc/tools-catalog.json'),true);}
 $s=file_get_contents(__DIR__.'/../wp-content/themes/cyberdat/inc/tools.php');$start=strpos($s,'function cyberdat_tools_staging_canonical()');$end=strpos($s,"add_action( 'rank_math/head', 'cyberdat_tools_staging_canonical'",$start);eval(substr($s,$start,$end-$start));
 function check($condition){if(!$condition)throw new \RuntimeException('canonical scope regression');}
 cyberdat_tools_staging_canonical();check($head->calls===1);
