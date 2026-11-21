@@ -60,7 +60,7 @@ const PREVIEW_GROUPS = {
 	'tools-hub-previews-5-7': ['agent-leak-inspector', 'ai-model-bom', 'mitre-atlas-mapper'].map(x => PREVIEW + x + '.svg').concat([PREVIEW + 'README.md']),
 	'tools-release-1.3': ['prompt-injection-test-bench', 'yara-sigma-validator', 'container-hardening-audit'].map(x => PREVIEW + x + '.svg')
 };
-const expectMod = ['functions.php', 'inc/tools-catalog.json', 'page-templates/tools.php'].concat(...Object.values(PREVIEW_GROUPS)).sort();
+const expectMod = ['functions.php', 'inc/tools-catalog.json', 'inc/tools.php', 'page-templates/tools.php'].concat(...Object.values(PREVIEW_GROUPS)).sort();
 if (modified.join() !== expectMod.join() || removed.length) { throw new Error('unexpected modified/removed files: ' + modified.concat(removed).join(', ')); }
 const fn = blob(commit, THEME + 'functions.php').toString('utf8').split('\n');
 const fnBase = blob(BASE_COMMIT, THEME + 'functions.php').toString('utf8').split('\n');
@@ -70,9 +70,17 @@ const fnAdded = fn.filter(l => !fnBase.includes(l)).map(l => l.trim()).filter(Bo
 if (li < 0 || fnAdded.length !== 1) { throw new Error('functions.php must gain exactly the one include line'); }
 const cat = JSON.parse(blob(commit, THEME + 'inc/tools-catalog.json').toString('utf8'));
 const catBase = JSON.parse(blob(BASE_COMMIT, THEME + 'inc/tools-catalog.json').toString('utf8'));
-if (JSON.stringify(cat.slice(0, catBase.length)) !== JSON.stringify(catBase) || cat.length !== catBase.length + 1) { throw new Error('the ten catalogue entries must be unchanged and exactly one entry added'); }
+// Owner decision 2026-11-21: the installed catalogue gives the final statuses (tools 1-10 and the utility "available"), so the
+// installer never edits theme files; the ten entries differ from the base only in status.
+const noStatus = e => Object.assign({}, e, { status: null });
+if (cat.length !== catBase.length + 1 || cat.slice(0, catBase.length).some((e, i) => JSON.stringify(noStatus(e)) !== JSON.stringify(noStatus(catBase[i])))) { throw new Error('the ten catalogue entries may change only in status, and exactly one entry is added'); }
+if (cat.some(e => e.status !== 'available')) { throw new Error('every catalogue entry must be available in this package'); }
+const statusChanges = cat.slice(0, catBase.length).filter((e, i) => e.status !== catBase[i].status).map(e => ({ slug: e.slug, from: catBase.find(b => b.slug === e.slug).status, to: e.status }));
 const entry = cat[cat.length - 1];
-if (entry.slug !== T.slug || entry.status !== 'planned') { throw new Error('catalogue entry must be the utility, status planned'); }
+if (entry.slug !== T.slug) { throw new Error('catalogue entry must be the utility'); }
+const toolsPhp = blob(commit, THEME + 'inc/tools.php').toString('utf8');
+const canonFn = toolsPhp.slice(toolsPhp.indexOf('function cyberdat_tools_staging_canonical()'), toolsPhp.indexOf("add_action( 'rank_math/head', 'cyberdat_tools_staging_canonical'"));
+if (!canonFn.includes("'available' === $tool['status']") || /'(?:log-anonymizer|mcp-security-checker|agent-leak-inspector)'/.test(canonFn)) { throw new Error('the staging canonical must take its slugs from the catalogue'); }
 const hubNow = blob(commit, THEME + 'page-templates/tools.php').toString('utf8').split(String.fromCharCode(10)), hubBase = blob(hubFull, THEME + 'page-templates/tools.php').toString('utf8').split(String.fromCharCode(10));
 const hubChanged = hubNow.map((l, i) => [i, l]).filter(([i, l]) => l !== hubBase[i]);
 if (hubNow.length !== hubBase.length || hubChanged.length !== 1) { throw new Error('page-templates/tools.php must change in exactly one line'); }
@@ -86,7 +94,9 @@ const manifest = {
 	hub_commit: hubFull,
 	hub_overlay: hubDelta,
 	theme_commit: commit,
-	note: 'Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility\'s files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility, status planned; the ten entries unchanged), one line of the staging Hub template so that utility cards read "Quick utility" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
+	install_rule: 'The installer copies the target files as they are and changes no theme file (no prepare step that edits inc/tools.php, inc/tools-catalog.json or any other file). After installation every theme file on staging equals the target map of this manifest, byte for byte. Catalogue statuses and the staging canonical scope are part of the package.',
+	staging_known_differences: { source: 'Codex, 2026-11-21: prepare.py of the 1.2 installer (archive 178eb167…) edited two theme files on staging; staging equals that archive byte for byte. Not verified here (no staging access).', 'inc/tools-catalog.json': 'status planned -> available for agent-leak-inspector, ai-model-bom, mitre-atlas-mapper', 'inc/tools.php': 'cyberdat_tools_staging_canonical(): slug list extended by agent-leak-inspector, ai-model-bom, mitre-atlas-mapper', effect: 'base_sha256 of these two files on staging differs from the base map; both files are replaced as a whole by the target bytes (the target already contains these effects and the statuses of tools 8-10 and the utility).' },
+	note: 'Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility\'s files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility "available" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read "Quick utility" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
 	delta_files: Object.fromEntries(added.concat(modified).sort().map(k => [k, Object.assign({ status: base[k] ? 'modified' : 'added', bytes: target[k].bytes, sha256: target[k].sha256 }, base[k] ? { base_sha256: base[k].sha256 } : {})])),
@@ -98,7 +108,8 @@ const manifest = {
 			mpl_files_publish_together: PSL_FILES,
 			shared: {
 				'functions.php': { add_line: include, after_line: fn[li - 1].trim(), line_number: li + 1 },
-				'inc/tools-catalog.json': { append_entry: entry, position: 'after the ten tools (index ' + (cat.length - 1) + ')' },
+				'inc/tools-catalog.json': { append_entry: entry, position: 'after the ten tools (index ' + (cat.length - 1) + ')', status_changes: statusChanges, replace_whole_file: true },
+				'inc/tools.php': { change: 'cyberdat_tools_staging_canonical(): pages with catalogue status available instead of a hand-written slug list; other checks unchanged', replace_whole_file: true },
 				'page-templates/tools.php': { replace_line_number: hubChanged[0][0] + 1, from: hubBase[hubChanged[0][0]].trim(), to: hubChanged[0][1].trim(), effect: 'cards with kind=utility read "Quick utility"; all other cards unchanged' }
 			}
 		}

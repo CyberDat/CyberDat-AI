@@ -11,7 +11,21 @@ tools (owner decision of 2026-11-19).
 | Branch | `integration/tools-utilities-1`, created from `58ed710` (tip of `integration/tools-release-1.3`). On 2026-11-21: `integration/tools-release-1.2` (Codex export redaction fix `6b7d97c`) merged into 1.3 (`198bf49`), the 1.3 package rebuilt over `tools-release-1.2/2` (`e1bff4e`), 1.3 merged here (`df0f51a`, `4060781`); the Codex Hub `feat/tools-hub-cyber-glass` (`0a32f12`, installed on staging) merged here (`b93caf2`); Hub previews `feature/tools-hub-previews` `dfe3ac9`, merge `b96ddbb` |
 | Utility branch | `feature/tools-email-header-analyzer`: `12d01f7` Public Suffix List snapshot, `867bc1f` corpus and held-out set (frozen), `69b3a4a` utility, `d2cc2db` catalogue entry; merge `50e916b`; `386e37c` owner decisions of 2026-11-19 (PSL from publicsuffix.org, "Quick utility" card label, URL confirmed); merge `429e097` |
 | Package | `feature/tools-utilities-1-package`, merged into the integration branch |
-| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7); `inc/tools.php`, pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
+| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7); pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
+
+## Install rule (owner decision 2026-11-21)
+
+**The installer changes no theme file.** It copies the target files of `manifest.json` as they are: no prepare step edits
+`inc/tools.php`, `inc/tools-catalog.json` or any other file. After the installation every theme file on staging equals the
+`target` map of the manifest (= the branch at `theme_commit`) byte for byte; verify with the manifest hashes. Catalogue statuses
+and the staging canonical scope come with the package, so a release never needs a patch on the server.
+
+Background (Codex, 2026-11-21): the 1.2 installer (`prepare.py`, archive `178eb167…`) had set three catalogue statuses to
+`available` and extended the canonical slug list on staging, so staging differed from GitHub in these two files. The cause is
+removed here instead of copying the patch. Consequence for the installation: on staging the current hashes of these two files
+differ from `base_sha256` in the manifest (they are the `prepare.py` versions, listed in `staging_known_differences`; their
+bytes were not available to me); both files are replaced as a whole by the target bytes, which already contain the effect of
+that patch.
 
 ## Delta to apply on top of the release 1.3 theme and the staging Hub
 
@@ -28,7 +42,8 @@ lists the utility's own files and only its lines in the shared files:
 | added | `assets/css/email-header-analyzer.css`, `assets/js/email-header-analyzer/{app,engine,worker}.js`, `inc/tool-email-header-analyzer.php`, `template-parts/tools/email-header-analyzer.php` |
 | added | `assets/js/email-header-analyzer/public_suffix_list.dat` (Public Suffix List, unmodified, MPL-2.0), `psl-data.js` (the same bytes as a JS string for the worker), `LICENSE-MPL-2.0.txt` — publish the three together |
 | modified | `functions.php` — one line `require_once __DIR__ . '/inc/tool-email-header-analyzer.php';` after the container audit include |
-| modified | `inc/tools-catalog.json` — one entry appended after the ten tools (`kind: utility`, release `utilities-1`, category Quick Utilities, status `planned`); the ten entries are unchanged. `deploy/tools-release-1/route-catalog.json` stays a byte copy |
+| modified | `inc/tools-catalog.json` — one entry appended after the ten tools (`kind: utility`, release `utilities-1`, category Quick Utilities) and the **final statuses**: tools 1–10 and the utility `available` (owner decision 2026-11-21; only the `status` lines differ, descriptions unchanged). The Hub shows a card as Available only for a published, ready page. `deploy/tools-release-1/route-catalog.json` stays a byte copy |
+| modified | `inc/tools.php` — `cyberdat_tools_staging_canonical()` takes the pages with catalogue status `available` instead of a hand-written slug list; the staging, published-page, `cyberdat_tool_ready` and Rank Math checks are unchanged |
 | added | `assets/images/tools-hub/email-header-analyzer.svg` — Hub card preview (headers only, `"Demo Bank" <a@example.net>` → dmarc=fail, brand in name) |
 | modified | `page-templates/tools.php` (the staging Hub template from `0a32f12`) — one line (66): planned cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
 | other packages | tools 5–7 previews + illustrations README → `deploy/tools-hub-previews-5-7/` (Codex, tools already on staging); tools 8–10 previews → `deploy/tools-release-1.3/hub-previews.json` |
@@ -107,6 +122,22 @@ engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extr
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
 
+### Update 2026-11-21 (fourth round: catalogue statuses and staging canonical)
+
+Fix `fix/tools-utilities1-catalog-status` (`96024c1`, merge `c7a55d9`): final catalogue statuses (tools 1–10 and the utility
+`available`), `cyberdat_tools_staging_canonical()` from the catalogue, the install rule above. Test
+`tests/tools-staging-canonical-catalog.test.php`: 27/27 (canonical for every available page, none for planned, no slug in the
+function; 14 fail on the old code). `tests/tools-staging-canonical.test.php` gets a catalogue stub, `tests/tools-catalog.test.php`
+expects 11 available, `tests/tools-hub-browser.test.cjs` skips its "next planned tool" case when no entry is planned (that
+Codex test needs a private staging HTML export and was not run here). Release 1.3 is not changed.
+
+One regression run: Hub (PHP render of the template with the theme CSS and `tools-filter.js`; all ready / none ready; 360 and
+1440 px; cards, links, previews, filters, overflow, console, external requests): 174/174 checks in each of Edge, Firefox and
+WebKit. Pages whose status or canonical scope changed (tools 5–10 and the utility): 21/21 runs exit 0, PASS counts as before —
+Leak Inspector 17 / 10 / 10, AI Model BOM 20 / 12 / 12, ATLAS Mapper 17 / 13 / 13, Test Bench 17 / 10 / 10, Validator 14 / 11 / 11,
+Container Audit 12 / 10 / 10, Email Header Analyzer 13 / 10 / 10 (Edge / Firefox / WebKit). PHP tests of all eleven pages, the
+tools contract suite, the catalogue suite and both canonical tests: PASS.
+
 ### Update 2026-11-21 (third round)
 
 Merged again: `integration/tools-release-1.2` `b8ff2f3` (Codex second masking fix, files byte-identical) into 1.3 (`865f74d`), the
@@ -115,8 +146,7 @@ Manifest base: `integration/tools-release-1.3` `835bb53` plus the staging Hub ov
 One regression run of the affected tools (AI Model BOM, ATLAS Mapper, Test Bench), three browsers: 9/9 runs exit 0, PASS counts as
 before (20 / 12 / 12, 17 / 13 / 13, 17 / 10 / 10, Edge / Firefox / WebKit). Codex tests `tools12-followup-redaction-regression` 34/34,
 `tools12-masking-review-regression` 32/32, `tools12-export-redaction-regression` 20/20. The Email Header Analyzer was not changed
-and not re-run. `inc/tools.php` and `inc/tools-catalog.json` against staging: **not done** — the Codex diff of the staging-only
-changes was not received; nothing was guessed from staging.
+and not re-run. `inc/tools.php` and `inc/tools-catalog.json` against staging: done in the fourth round (above).
 
 ### Update 2026-11-21 (second round)
 

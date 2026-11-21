@@ -15,7 +15,7 @@
 | Результат без находок | No known warning signs matched. This does not mean the message is safe. | Дословно из задания. |
 | Sources | Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of 2026-11-17 (SHA-256 809adae1a2cb…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt). | Решение владельца 2026-11-19: MPL-2.0 принят; источник publicsuffix.org, закреплены SHA-256 и дата. |
 | Список брендов | PayPal, Microsoft, Apple, Amazon, Google, DHL, DocuSign, Netflix, Sparkasse, Sberbank, Telekom, LinkedIn, Facebook, Dropbox, Adobe, FedEx, UPS, Booking.com | Мой короткий список: слова в отображаемом имени и домены брендов. Расширять ли его — решение владельца. Реальные домены брендов есть только в этом справочном списке; в корпусе и примерах — только зарезервированные домены. |
-| Каталог и хаб | Email Header Analyzer · Quick Utilities · Quick utility · planned | Решение владельца 2026-11-19: карточка остаётся, подпись «Quick utility» (одна строка в шаблоне хаба; карточки десяти без изменений). Адрес /tools/email-header-analyzer/ подтверждён. |
+| Каталог и хаб | Email Header Analyzer · Quick Utilities · Quick utility · available | Решение владельца 2026-11-19: карточка остаётся, подпись «Quick utility» (одна строка в шаблоне хаба; карточки десяти без изменений). 2026-11-21: статус в каталоге available (итоговые статусы пакета); на хабе «Available» и «Open tool» только при опубликованной готовой странице, иначе «Coming soon» и «Quick utility». Адрес /tools/email-header-analyzer/ подтверждён. |
 
 ## Строки шаблона (55)
 

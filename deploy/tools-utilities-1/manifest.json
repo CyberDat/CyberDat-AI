@@ -22,13 +22,20 @@
     "assets/js/tools-filter.js",
     "page-templates/tools.php"
   ],
-  "theme_commit": "1798dfaa9323a443bc7f8ab5268ff788250d0955",
-  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility, status planned; the ten entries unchanged), one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
+  "theme_commit": "c7a55d9e01a5f17ad4d338ac50b9755aa4ab1572",
+  "install_rule": "The installer copies the target files as they are and changes no theme file (no prepare step that edits inc/tools.php, inc/tools-catalog.json or any other file). After installation every theme file on staging equals the target map of this manifest, byte for byte. Catalogue statuses and the staging canonical scope are part of the package.",
+  "staging_known_differences": {
+    "source": "Codex, 2026-11-21: prepare.py of the 1.2 installer (archive 178eb167…) edited two theme files on staging; staging equals that archive byte for byte. Not verified here (no staging access).",
+    "inc/tools-catalog.json": "status planned -> available for agent-leak-inspector, ai-model-bom, mitre-atlas-mapper",
+    "inc/tools.php": "cyberdat_tools_staging_canonical(): slug list extended by agent-leak-inspector, ai-model-bom, mitre-atlas-mapper",
+    "effect": "base_sha256 of these two files on staging differs from the base map; both files are replaced as a whole by the target bytes (the target already contains these effects and the statuses of tools 8-10 and the utility)."
+  },
+  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility \"available\" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 177,
     "target": 187,
     "added": 10,
-    "modified": 10,
+    "modified": 11,
     "removed": 0
   },
   "delta": {
@@ -54,6 +61,7 @@
       "assets/images/tools-hub/yara-sigma-validator.svg",
       "functions.php",
       "inc/tools-catalog.json",
+      "inc/tools.php",
       "page-templates/tools.php"
     ],
     "removed": []
@@ -154,9 +162,15 @@
     },
     "inc/tools-catalog.json": {
       "status": "modified",
-      "bytes": 5953,
-      "sha256": "11fcf60325e1fe8be859a44f4e7f9e79e79ec7f2e7278cc59ecd87938116ef8f",
+      "bytes": 5967,
+      "sha256": "5476a660200d8d92ec956d50144a9d797de4bc027393f7363dcc9d848753cdf6",
       "base_sha256": "f02038ba9b0a758ffd9fde32c2a1b167f31f80ffddb011fab792bdbfbe1c91e6"
+    },
+    "inc/tools.php": {
+      "status": "modified",
+      "bytes": 12770,
+      "sha256": "021c1351a1c90fa28d856108324ffd5ad46a48a3df3e2154d98572c32a8039c9",
+      "base_sha256": "b7eeebf0be501acdaa13c53cd7105f3e1ebb26929e2d8b314f089da648d07ac7"
     },
     "page-templates/tools.php": {
       "status": "modified",
@@ -238,13 +252,50 @@
             "title": "Email Header Analyzer",
             "slug": "email-header-analyzer",
             "url": "/tools/email-header-analyzer/",
-            "status": "planned",
+            "status": "available",
             "category": "Quick Utilities",
             "category_slug": "utilities",
             "description": "Paste email headers to see where a message really came from, which authentication checks it passed and what looks suspicious, locally in your browser. No DNS or reputation lookups; the message body is ignored.",
             "icon_path": "M3 6h18v12H3Z M3 6l9 7 9-7"
           },
-          "position": "after the ten tools (index 10)"
+          "position": "after the ten tools (index 10)",
+          "status_changes": [
+            {
+              "slug": "agent-leak-inspector",
+              "from": "planned",
+              "to": "available"
+            },
+            {
+              "slug": "ai-model-bom",
+              "from": "planned",
+              "to": "available"
+            },
+            {
+              "slug": "mitre-atlas-mapper",
+              "from": "planned",
+              "to": "available"
+            },
+            {
+              "slug": "prompt-injection-test-bench",
+              "from": "planned",
+              "to": "available"
+            },
+            {
+              "slug": "yara-sigma-validator",
+              "from": "planned",
+              "to": "available"
+            },
+            {
+              "slug": "container-hardening-audit",
+              "from": "planned",
+              "to": "available"
+            }
+          ],
+          "replace_whole_file": true
+        },
+        "inc/tools.php": {
+          "change": "cyberdat_tools_staging_canonical(): pages with catalogue status available instead of a hand-written slug list; other checks unchanged",
+          "replace_whole_file": true
         },
         "page-templates/tools.php": {
           "replace_line_number": 66,
@@ -1965,14 +2016,14 @@
       "sha256": "b2d6acb8376fc418edc53dd07bd2927706f5da2663c9107eee410e965da91e05"
     },
     "inc/tools-catalog.json": {
-      "bytes": 5953,
+      "bytes": 5967,
       "mode": "0644",
-      "sha256": "11fcf60325e1fe8be859a44f4e7f9e79e79ec7f2e7278cc59ecd87938116ef8f"
+      "sha256": "5476a660200d8d92ec956d50144a9d797de4bc027393f7363dcc9d848753cdf6"
     },
     "inc/tools.php": {
-      "bytes": 12478,
+      "bytes": 12770,
       "mode": "0644",
-      "sha256": "b7eeebf0be501acdaa13c53cd7105f3e1ebb26929e2d8b314f089da648d07ac7"
+      "sha256": "021c1351a1c90fa28d856108324ffd5ad46a48a3df3e2154d98572c32a8039c9"
     },
     "index.php": {
       "bytes": 1612,
