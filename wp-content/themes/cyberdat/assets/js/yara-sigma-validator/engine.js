@@ -18,8 +18,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.0';
-	const RULESET = '2026-11-18.1';
+	const ENGINE = '1.0.1';
+	const RULESET = '2026-11-21.1';
 	const MAX_INPUT_CHARS = 1024 * 1024;
 	const MAX_LINES = 20000;
 	const MAX_DEPTH = 64;
@@ -85,6 +85,10 @@
 		['Private key', /-----BEGIN[ A-Z0-9_-]{0,100}PRIVATE KEY(?: BLOCK)?-----/gu]
 	];
 	const TOKEN_CHAR = /[\p{L}\p{N}\p{M}_]/u;
+	// No name prefix in the pattern (a prefix made it quadratic on long input): the separator right after the word already
+	// ensures the key ends with it, e.g. user_password: or ApiToken= match, TokenElevationType: does not.
+	// Every repeated part is bounded so that the scan stays linear on long or hostile input (ReDoS).
+	const KEYED = /(?:credentials?|password|secret|token)(?:\|[\p{L}\p{N}]{1,20}){0,4}["']?[ \t]{0,20}(?:==|=~|!=|=|:|[ \t](?:contains|startswith|endswith|has|matches regex)[ \t])[ \t]{0,20}(@?"(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|[^\s"',;)]+)/giu;
 	const mask = v => { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; };
 	function entropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
 	function findSecrets(text) {
@@ -99,6 +103,16 @@
 			if (taken(a, b) || (a > 0 && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b]))) { continue; }
 			if (!/[0-9]/u.test(v) || !/[A-Za-z]/u.test(v) || /^[0-9a-fA-F-]+$/u.test(v) || /^(?:https?|www)/iu.test(v) || /^[0-9a-f]{8}-[0-9a-f]{4}-/iu.test(v) || entropy(v) < 3.8) { continue; }
 			out.push({ kind: 'unrecognized long value', start: a, end: b, shown: mask(v) });
+		}
+		// The value after a key or field named …credential(s), …password, …secret or …token is masked whatever its length
+		// (owner decision 2026-11-21): YAML/JSON keys, key=value, and the SPL, KQL and Lucene forms of a converted query.
+		KEYED.lastIndex = 0;
+		while ((m = KEYED.exec(s))) {
+			const v = m[1];
+			let a = m.index + m[0].length - v.length, b = a + v.length;
+			if (v[0] === '@') { a += 2; b -= 1; } else if (v[0] === '"' || v[0] === '\'') { a += 1; b -= 1; }
+			if (b <= a || taken(a, b) || /^\[|…|••••/u.test(s.slice(a, b))) { continue; }
+			out.push({ kind: 'value of a secret field', start: a, end: b, shown: mask(s.slice(a, b)) });
 		}
 		return out.sort((x, y) => x.start - y.start);
 	}
@@ -391,6 +405,7 @@
 					const pos = mods.filter(x => ['contains', 'startswith', 'endswith'].includes(x));
 					const conflict = pos.length > 1 || (mods.includes('re') && mods.some(x => !['re', 'i', 'm', 's'].includes(x))) || (mods.some(x => ['i', 'm', 's'].includes(x)) && !mods.includes('re')) || (mods.includes('cidr') && mods.length > 1) || (mods.includes('exists') && mods.length > 1) || (mods.includes('base64offset') && !mods.includes('contains'));
 					if (conflict) { add('SIG-MOD-002', p + '/' + fk, fk); }
+					if (Array.isArray(fv) && (!fv.length || fv.some(x => x === null))) { add('SIG-DET-001', p + '/' + fk, fk + ': ' + (fv.length ? 'null inside a value list' : 'empty value list')); }
 					const vals = Array.isArray(fv) ? fv : [fv];
 					if (Array.isArray(fv)) { const s2 = new Set(); for (const x of fv) { const k2 = String(x).toLowerCase(); if (s2.has(k2)) { add('SIG-Q-003', p + '/' + fk, String(x)); break; } s2.add(k2); } }
 					for (const x of vals) {
@@ -425,7 +440,7 @@
 	const TARGETS = { spl: 'Splunk SPL', kql: 'Microsoft KQL', lucene: 'Elastic Lucene' };
 	const UNSUPPORTED_MODS = { spl: ['re', 'cidr'], kql: [], lucene: [] };
 	const NEVER = ['windash', 'base64', 'base64offset', 'utf16le', 'utf16be', 'utf16', 'wide', 'expand', 'fieldref', 'cased', 'neq', 'lt', 'lte', 'gt', 'gte', 'minute', 'hour', 'day', 'week', 'month', 'year', 'i', 'm', 's'];
-	const convError = (msg) => { const e = new Error(msg); e.code = 'UNSUPPORTED'; return e; };
+	const convError = (msg, diag) => { const e = new Error(diag ? diag + ': ' + msg : msg); e.code = 'UNSUPPORTED'; e.diag = diag || 'CONV-UNSUPPORTED'; return e; };
 	/** Sigma value -> [{lit}|{wild:'*'|'?'}] (backslash escapes * ? and \). */
 	function pattern(v) {
 		const s = nfc(v);
@@ -445,10 +460,17 @@
 		const ids = Object.keys(det).filter(k => k !== 'condition' && k !== 'timeframe');
 		const sel = id => {
 			const v = det[id];
-			if (Array.isArray(v) && !v.some(isObj)) { return { type: 'or', items: v.map(x => ({ type: 'kw', value: x })) }; }
+			// Refuse what Sigma forbids or what would turn into an empty or wrong query (Codex acceptance C15, C16, C18, C22).
+			if (!Object.prototype.hasOwnProperty.call(det, id) || id === 'condition' || id === 'timeframe') { throw convError('the condition refers to “' + id + '”, which is not a search identifier in detection.', 'SIG-COND-002'); }
+			if (Array.isArray(v) && !v.length) { throw convError('the search identifier “' + id + '” is an empty list.', 'SIG-DET-001'); }
+			if (Array.isArray(v) && !v.some(isObj)) { if (v.some(x => x === null)) { throw convError('the keyword list “' + id + '” contains null, which Sigma does not allow in lists.', 'SIG-DET-001'); } return { type: 'or', items: v.map(x => ({ type: 'kw', value: x })) }; }
+			if (!(isObj(v) && Object.keys(v).length) && !(Array.isArray(v) && v.every(x => isObj(x) && Object.keys(x).length))) { throw convError('the search identifier “' + id + '” is empty or malformed.', 'SIG-DET-001'); }
 			const maps = isObj(v) ? [v] : v;
 			const one = mp => ({ type: 'and', items: Object.entries(mp).map(([fk, fv]) => {
 				const { field, mods } = splitField(fk);
+				for (const m of mods) { if (!MODIFIERS.has(m)) { throw convError('the value modifier “' + m + '” is unknown; the field is not converted with a different meaning.', 'SIG-MOD-001'); } }
+				if (Array.isArray(fv) && !fv.length) { throw convError('the field “' + (field || '(keywords)') + '” has an empty value list.', 'SIG-DET-001'); }
+				if (Array.isArray(fv) && fv.some(x => x === null)) { throw convError('the value list of “' + (field || '(keywords)') + '” contains null, which Sigma does not allow in lists. Use “' + field + ': null” on its own.', 'SIG-DET-001'); }
 				if (field === '') { const vals = Array.isArray(fv) ? fv : [fv]; return { type: mods.includes('all') ? 'and' : 'or', items: vals.map(x => ({ type: 'kw', value: x })) }; }
 				for (const m of mods) { if (NEVER.includes(m)) { throw convError('The modifier “' + m + '” is not supported by the converter.'); } }
 				if (mods.includes('exists')) { return fv === false ? { type: 'notexists', field } : { type: 'exists', field }; }
@@ -464,6 +486,7 @@
 			if (ast.type === 'not') { return { type: 'not', item: walk(ast.item) }; }
 			if (ast.type === 'of') {
 				const hits = ids.filter(x => globMatch(ast.pattern, x));
+				if (!hits.length) { throw convError('“' + ast.pattern + '” matches no search identifier in detection.', 'SIG-COND-002'); }
 				if (ast.quant !== 'all' && ast.quant !== '1') { throw convError('“' + ast.quant + ' of” is not supported by the converter; only “1 of” and “all of”.'); }
 				return { type: ast.quant === 'all' ? 'and' : 'or', items: hits.map(sel) };
 			}
@@ -519,9 +542,11 @@
 		else if (mods.includes('endswith')) { parts = [{ wild: '*' }].concat(parts); }
 		if (target === 'spl') {
 			if (parts.some(p => p.wild === '?')) { throw convError('The ? wildcard is not supported for Splunk SPL.'); }
+			if (parts.some(p => p.lit && p.lit.includes('*'))) { throw convError('The value contains a literal * (written \\* in Sigma). Splunk SPL search cannot match a literal asterisk: in a search term * is always a wildcard, so the query would match more than the rule. Not converted for Splunk SPL; KQL and Lucene keep it literal.', 'CONV-SPL-STAR'); }
 			return f + '="' + parts.map(p => (p.wild ? '*' : p.lit.replace(/\\/gu, '\\\\').replace(/"/gu, '\\"'))).join('') + '"';
 		}
 		if (target === 'lucene') {
+			if (!parts.length) { return f + ':""'; }
 			return f + ':' + parts.map(p => (p.wild ? p.wild : p.lit.replace(LUCENE_SPECIAL, '\\$&').replace(/[*?]/gu, '\\$&'))).join('');
 		}
 		const lits = parts.filter(p => p.lit).map(p => p.lit);
@@ -533,6 +558,16 @@
 		if (shape === '*L') { return K + ' endswith ' + kqlStr(lits[0]); }
 		if (shape === '*' || shape === '**') { return 'isnotempty(' + K + ')'; }
 		return K + ' matches regex ' + kqlStr('(?i)^' + parts.map(p => (p.wild === '*' ? '.*' : p.wild === '?' ? '.' : reEsc(p.lit))).join('') + '$');
+	}
+	/** Conversion refused because the check found error-level problems (owner decision 2026-11-21): no query is produced. */
+	function refuseConversion(result, target) {
+		if (!TARGETS[target]) { throw convError('Unknown target ' + target); }
+		const errs = (result.findings || []).filter(f => f.severity === 'error');
+		const codes = [...new Set(errs.map(f => f.id))];
+		const where = errs.slice(0, 5).map(f => f.id + (f.line ? ' (line ' + f.line + ')' : '')).join(', ');
+		const error = 'The check found ' + errs.length + ' error' + (errs.length === 1 ? '' : 's') + ' (' + where + (errs.length > 5 ? ', …' : '') + '). Fix them first; a rule with errors would give a wrong or empty query.';
+		const r = { title: '(rule with errors)', queries: [], error, code: codes.join(' ') };
+		return { target, targetLabel: TARGETS[target], rules: [r], refused: codes, containsSecrets: false, masked: [{ title: r.title, queries: [], error, code: r.code }] };
 	}
 	/** Converts one Sigma rule (YAML text) to the target. Returns { queries: [], errors: [] }. */
 	function convert(text, target, fieldmap) {
@@ -546,10 +581,12 @@
 				if (!isObj(doc) || !isObj(doc.detection) || doc.detection.condition === undefined) { throw convError('The rule has no detection condition.'); }
 				const conds = Array.isArray(doc.detection.condition) ? doc.detection.condition : [doc.detection.condition];
 				for (const c of conds) { r.queries.push(render(buildTree(doc, String(c)), target, fieldmap || {}, null)); }
-			} catch (e) { r.error = e.code === 'UNSUPPORTED' ? e.message : (e.message || 'The rule cannot be converted.'); r.queries = []; }
+			} catch (e) { r.error = e.code === 'UNSUPPORTED' ? e.message : (e.message || 'The rule cannot be converted.'); r.code = e.diag || 'CONV-ERROR'; r.queries = []; }
 			out.rules.push(r);
 		});
-		out.containsSecrets = out.rules.some(r => r.queries.some(q => findSecrets(q).length));
+		out.containsSecrets = out.rules.some(r => r.queries.some(q => findSecrets(q).length) || findSecrets(r.title).length);
+		// Everything shown or exported by default is masked: titles, queries and messages all come from the user's rule.
+		out.masked = out.rules.map(r => ({ title: maskSecrets(r.title), queries: r.queries.map(maskSecrets), error: maskSecrets(r.error), code: r.code || '' }));
 		return out;
 	}
 
@@ -562,7 +599,7 @@
 		const toks = [];
 		let line = 1;
 		let k = 0;
-		const err = (msg) => { const e = new Error(msg + ' (line ' + line + ')'); e.code = 'YAR-SYN-001'; e.line = line; throw e; };
+		const err = (msg, code) => { const e = new Error(msg + ' (line ' + line + ')'); e.code = code || 'YAR-SYN-001'; e.line = line; throw e; };
 		while (k < s.length) {
 			const c = s[k];
 			if (c === '\n') { line++; k++; continue; }
@@ -585,8 +622,8 @@
 			const prev = toks[toks.length - 1];
 			if (c === '/' && prev && (prev.v === '=' || prev.v === 'matches')) {
 				let j = k + 1, inClass = false;
-				for (; j < s.length; j++) { if (s[j] === '\n') { err('Unterminated regular expression'); } if (s[j] === '\\') { j++; continue; } if (s[j] === '[') { inClass = true; } else if (s[j] === ']') { inClass = false; } else if (s[j] === '/' && !inClass) { break; } }
-				if (j >= s.length) { err('Unterminated regular expression'); }
+				for (; j < s.length; j++) { if (s[j] === '\n') { err('Unterminated regular expression', 'YAR-RE-001'); } if (s[j] === '\\') { j++; continue; } if (s[j] === '[') { inClass = true; } else if (s[j] === ']') { inClass = false; } else if (s[j] === '/' && !inClass) { break; } }
+				if (j >= s.length) { err('Unterminated regular expression', 'YAR-RE-001'); }
 				const body = s.slice(k + 1, j);
 				let fl = '';
 				let m = j + 1;
@@ -642,6 +679,7 @@
 	}
 	/** Static checks of a YARA regular expression body; never compiled or executed. */
 	function checkRegex(body) {
+		if (!body.length) { return { ok: false, msg: 'empty regular expression' }; }
 		let depth = 0, inClass = false, prevAtom = false;
 		const groupHasQuant = [false];
 		let nested = false;
@@ -666,7 +704,7 @@
 	function validateYara(text, tick) {
 		const out = [];
 		let toks;
-		try { toks = yaraTokens(text); } catch (e) { return [finding('YAR-SYN-001', e.line, e.message)]; }
+		try { toks = yaraTokens(text); } catch (e) { return [finding(e.code === 'YAR-RE-001' ? 'YAR-RE-001' : 'YAR-SYN-001', e.line, e.message)]; }
 		let k = 0;
 		const imports = new Map();
 		const names = new Map();
@@ -702,7 +740,7 @@
 						next();
 						let v = next();
 						if (v && v.v === '-' && peek() && peek().t === 'num') { v = next(); }
-						if (!v || !(v.t === 'str' || v.t === 'num' || (v.t === 'id' && (v.v === 'true' || v.v === 'false')))) { add('YAR-META-001', key.line, key.v + ' = ' + (v ? v.v : ''), name); }
+						if (!v || !(v.t === 'str' || (v.t === 'num' && /^(?:0x[0-9A-Fa-f]+|0o[0-7]+|[0-9]+)$/u.test(v.v)) || (v.t === 'id' && (v.v === 'true' || v.v === 'false')))) { add('YAR-META-001', key.line, key.v + ' = ' + (v ? v.v : ''), name); }
 						continue;
 					}
 					if (section === 'strings') {
@@ -794,7 +832,9 @@
 				y.docs.forEach((d, di) => { if (isObj(d) && d.action !== undefined) { notes.push('Document ' + (di + 1) + ' uses “action” (rule collections); collections are not supported, each document is checked on its own.'); } findings.push(...validateSigmaDoc(d, y.lines, di ? '/doc' + di : '')); });
 			}
 		}
-		for (const x of findSecrets(s)) { findings.push(finding('SEC-001', s.slice(0, x.start).split('\n').length, x.kind + ': ' + x.shown)); }
+		// Values after credential/password/secret/token keys are masked in all output, but they do not add SEC-001 findings:
+		// in rules such keys often hold patterns (for example a YARA regex token=.+), not credentials.
+		for (const x of findSecrets(s).filter(y => y.kind !== 'value of a secret field')) { findings.push(finding('SEC-001', s.slice(0, x.start).split('\n').length, x.kind + ': ' + x.shown)); }
 		findings.sort((a, b) => SEV_RANK[b.severity] - SEV_RANK[a.severity] || a.line - b.line || (a.id < b.id ? -1 : 1));
 		const counts = { error: 0, warning: 0, info: 0 };
 		for (const f of findings) { counts[f.severity]++; }
@@ -804,7 +844,7 @@
 	function exportReport(result, conversion, opts) {
 		const o = opts || {};
 		const note = 'Static checks only. Syntax checks do not replace compiling the rule with the official engine and testing it on data; converted queries must be checked in your SIEM. Secrets found in rules are masked.';
-		const conv = conversion ? { target: conversion.targetLabel, rules: conversion.rules.map(r => ({ title: maskSecrets(r.title), queries: r.queries.map(maskSecrets), error: r.error })) } : undefined;
+		const conv = conversion ? { target: conversion.targetLabel, rules: conversion.rules.map(r => Object.assign({ title: maskSecrets(r.title), queries: r.queries.map(maskSecrets), error: maskSecrets(r.error) }, r.code ? { code: r.code } : {})) } : undefined;
 		const json = { tool: 'CyberDat YARA/Sigma Rule Validator & Converter', engine: ENGINE, ruleset: RULESET, generatedAt: o.timestamp || new Date().toISOString(), note, kind: result.kind, counts: result.counts, findings: result.findings, notes: result.notes, conversion: conv };
 		const L = ['# Rule check report', '', 'Generated with CyberDat YARA/Sigma Rule Validator & Converter ' + ENGINE + ' (rules ' + RULESET + ') on ' + mdEsc(json.generatedAt) + '. Input: ' + (result.kind === 'yara' ? 'YARA' : 'Sigma') + '.', '', '> ' + note, '', '- Errors: ' + result.counts.error + '; warnings: ' + result.counts.warning + '; info: ' + result.counts.info, ''];
 		if (!result.findings.length) { L.push('No problems found by these checks. This does not mean the rule is correct or effective.', ''); }
@@ -817,5 +857,5 @@
 	const EXAMPLE_YARA = 'import "pe"\n\nrule Example_Loader_Marker\n{\n    meta:\n        author = "CyberDat"\n        description = "Example rule written by CyberDat"\n    strings:\n        $marker = "ExampleLoaderMarker" wide ascii\n        $mz = { 4D 5A 90 00 }\n        $cfg = /cfg_[0-9]{2}\\.example/\n    condition:\n        $mz at 0 and filesize < 5MB and pe.number_of_sections > 2 and ($marker or $cfg)\n}\n';
 	const EXAMPLE_FIELDMAP = { spl: { Image: 'process_path', ParentImage: 'parent_process_path', User: 'user' }, kql: { Image: 'FolderPath', ParentImage: 'InitiatingProcessFolderPath', User: 'AccountName' }, lucene: { Image: 'process.executable', ParentImage: 'process.parent.executable', User: 'user.name' } };
 
-	return { ENGINE, RULESET, MAX_INPUT_CHARS, DEF, TARGETS, MODIFIERS, parseYaml, parseCondition, validate, convert, exportReport, detectKind, checkRegex, checkHex, findSecrets, maskSecrets, EXAMPLE_SIGMA, EXAMPLE_YARA, EXAMPLE_FIELDMAP };
+	return { ENGINE, RULESET, MAX_INPUT_CHARS, DEF, TARGETS, MODIFIERS, parseYaml, parseCondition, validate, convert, refuseConversion, exportReport, detectKind, checkRegex, checkHex, findSecrets, maskSecrets, EXAMPLE_SIGMA, EXAMPLE_YARA, EXAMPLE_FIELDMAP };
 }));

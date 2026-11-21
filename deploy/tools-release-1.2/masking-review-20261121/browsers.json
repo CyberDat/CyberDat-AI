@@ -1,0 +1,52 @@
+{
+  "tests": 6,
+  "pass": 6,
+  "fail": 0,
+  "rows": [
+    {
+      "browser": "chromium",
+      "tool": "ai-model-bom",
+      "pass": true,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0
+    },
+    {
+      "browser": "chromium",
+      "tool": "mitre-atlas-mapper",
+      "pass": true,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0
+    },
+    {
+      "browser": "firefox",
+      "tool": "ai-model-bom",
+      "pass": true,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0
+    },
+    {
+      "browser": "firefox",
+      "tool": "mitre-atlas-mapper",
+      "pass": true,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0
+    },
+    {
+      "browser": "webkit",
+      "tool": "ai-model-bom",
+      "pass": true,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0
+    },
+    {
+      "browser": "webkit",
+      "tool": "mitre-atlas-mapper",
+      "pass": true,
+      "post_load_requests": 0,
+      "runtime_console_errors": 0
+    }
+  ],
+  "firefox_interception": false,
+  "firefox_network_completeness": "UNVERIFIED",
+  "kind": "dependent regression of review fixes; not independent acceptance"
+}

@@ -1,0 +1,135 @@
+{
+  "tests": 32,
+  "pass": 32,
+  "fail": 0,
+  "rows": [
+    {
+      "id": "HASH-known-build-findings",
+      "pass": true
+    },
+    {
+      "id": "HASH-known-markdown",
+      "pass": true
+    },
+    {
+      "id": "HASH-known-review-findings",
+      "pass": true
+    },
+    {
+      "id": "HASH-opaque-build-findings",
+      "pass": true
+    },
+    {
+      "id": "HASH-opaque-markdown",
+      "pass": true
+    },
+    {
+      "id": "HASH-opaque-review-findings",
+      "pass": true
+    },
+    {
+      "id": "BOM-Unicode-ключ-known",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-Unicode-ключ-known",
+      "pass": true
+    },
+    {
+      "id": "BOM-Unicode-ключ-opaque",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-Unicode-ключ-opaque",
+      "pass": true
+    },
+    {
+      "id": "BOM-Unicode-clé-known",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-Unicode-clé-known",
+      "pass": true
+    },
+    {
+      "id": "BOM-Unicode-clé-opaque",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-Unicode-clé-opaque",
+      "pass": true
+    },
+    {
+      "id": "BOM-Unicode-clé-known",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-Unicode-clé-known",
+      "pass": true
+    },
+    {
+      "id": "BOM-Unicode-clé-opaque",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-Unicode-clé-opaque",
+      "pass": true
+    },
+    {
+      "id": "BOM-URL-path-known",
+      "pass": true
+    },
+    {
+      "id": "BOM-URL-path-opaque",
+      "pass": true
+    },
+    {
+      "id": "BOM-URL-path-with-query-credential",
+      "pass": true
+    },
+    {
+      "id": "BOM-URL-path-with-userinfo",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-URL-query-token",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-URL-query-access_token",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-URL-query-api_key",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-URL-userinfo",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-URL-userinfo-and-query",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-query-fragment-retained",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-harmless-https-preserved",
+      "pass": true
+    },
+    {
+      "id": "ATLAS-assignment-key-boundary",
+      "pass": true
+    },
+    {
+      "id": "BOM-public-digest-and-safe-path-preserved",
+      "pass": true
+    },
+    {
+      "id": "Unicode-contract-no-lookbehind",
+      "pass": true
+    }
+  ]
+}
