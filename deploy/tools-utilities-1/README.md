@@ -107,6 +107,14 @@ engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extr
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
 
+### Update 2026-11-21 (second round)
+
+Merged again: `integration/tools-release-1.2` `838fecc` (Codex BOM/ATLAS masking review) into 1.3 (`47ef75d`), and 1.3 with the
+Codex acceptance fixes of tools 8–10 and the Test Bench possible-leak status into this branch (`3489250`, `e821469`). Manifest base:
+`integration/tools-release-1.3` `4ee0ada` plus the staging Hub overlay; the utility files are unchanged. One regression run of the
+affected tools 6–10 (three browsers, 15/15 exit 0, PASS counts as before) — details in `deploy/tools-release-1.3/README.md`. The
+Email Header Analyzer was not changed and not re-run.
+
 ### Final regression — all eleven tools, one sequential run
 
 Last run 2026-11-21 at `b96ddbb` (after the merges of the Codex export fix, the Hub and the previews): 33/33 runs exit 0, PASS counts identical to the earlier runs at `50e916b` and `429e097`; Log Anonymizer 30 MB: Edge 2.8 s, Firefox 3.2 s, WebKit 27.1 s; sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
