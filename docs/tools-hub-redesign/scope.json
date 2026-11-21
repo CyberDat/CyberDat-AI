@@ -1,0 +1,36 @@
+{
+  "base_commit": "24a333ddf2f91499b0b693f3810181990f8ec8e4",
+  "branch": "feat/tools-hub-cyber-glass",
+  "allowed_production_paths": [
+    "wp-content/themes/cyberdat/page-templates/tools.php",
+    "wp-content/themes/cyberdat/assets/css/tools-hub.css",
+    "wp-content/themes/cyberdat/assets/js/tools-filter.js",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/README.md",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/agent-leak-inspector.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/ai-model-bom.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/container-hardening-audit.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/hero.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/log-anonymizer.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/lotl-command-analyzer.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/mcp-security-checker.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/mitre-atlas-mapper.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/prompt-injection-detector.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/prompt-injection-test-bench.svg",
+    "wp-content/themes/cyberdat/assets/images/tools-hub/yara-sigma-validator.svg"
+  ],
+  "allowed_support_paths": [
+    "tests/tools-catalog.test.php",
+    "tests/tools-hub-render.php",
+    "tests/tools-hub-browser.test.cjs",
+    "tests/tools-hub-preview.py",
+    "docs/PROJECT_STATUS.md",
+    "docs/tools-hub-redesign/README.md",
+    "docs/tools-hub-redesign/acceptance.json",
+    "docs/tools-hub-redesign/scope.json"
+  ],
+  "catalogue_sha256": "ff1ff6bd474a688de87a6be02b6cf06ddbea13f218467ec7de5013dd82f0a197",
+  "staging_installed_reference_sha256": "a9ec1e5f556e69344f6828b15c2e65ebea3ba1d05aa37e4714fb19cc69ea485f",
+  "deployment_authorized": false,
+  "claude_uncommitted_work": "Not exposed by this sandbox; no shared checkout edited. Integration must be reviewed after fifth-tool work.",
+  "shared_source_modified": false
+}

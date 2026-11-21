@@ -1,0 +1,289 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "browser": "chromium",
+      "width": 320,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": true,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0.4160544,
+      "labInteractionMax": 88
+    },
+    {
+      "browser": "chromium",
+      "width": 375,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": true,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 96
+    },
+    {
+      "browser": "chromium",
+      "width": 768,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": true,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0.40721928125,
+      "labInteractionMax": 128
+    },
+    {
+      "browser": "chromium",
+      "width": 1024,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": false,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0.020620787143707277,
+      "labInteractionMax": 120
+    },
+    {
+      "browser": "chromium",
+      "width": 1440,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": false,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0.3102329086492091,
+      "labInteractionMax": 152
+    },
+    {
+      "browser": "chromium",
+      "width": 1920,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": false,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0.16853058285183378,
+      "labInteractionMax": 456
+    },
+    {
+      "browser": "firefox",
+      "width": 320,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": true,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 0
+    },
+    {
+      "browser": "firefox",
+      "width": 375,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": true,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 0
+    },
+    {
+      "browser": "firefox",
+      "width": 768,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": true,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 0
+    },
+    {
+      "browser": "firefox",
+      "width": 1024,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": false,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 0
+    },
+    {
+      "browser": "firefox",
+      "width": 1440,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": false,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 0
+    },
+    {
+      "browser": "firefox",
+      "width": 1920,
+      "cards": 10,
+      "featured": 4,
+      "categoryChecks": 6,
+      "keyboard": true,
+      "touch": false,
+      "seoPreserved": true,
+      "noOverflow": true,
+      "consoleErrors": 0,
+      "filterRequests": 0,
+      "cls": 0,
+      "labInteractionMax": 0
+    }
+  ],
+  "performance": [
+    {
+      "run": 1,
+      "lcp": 1008,
+      "cls": 0,
+      "labInteractionMax": 112
+    },
+    {
+      "run": 2,
+      "lcp": 1016,
+      "cls": 0,
+      "labInteractionMax": 136
+    },
+    {
+      "run": 3,
+      "lcp": 968,
+      "cls": 0,
+      "labInteractionMax": 136
+    }
+  ],
+  "measurement": "Local static preview with actual captured WP shell, production PHP template and explicit readiness doubles; Chromium141 mobile375, 4x CPU,150ms RTT,1.6Mbps down,0.75Mbps up,3 cold contexts. Event Timing is a lab interaction proxy, not field INP/p75. No real WordPress deployment tested.",
+  "webkit": "UNVERIFIED: isolated environment cannot navigate HTTPS staging; no TLS bypass",
+  "futureFifthFixture": "PASS, memory-only fixture; no fifth-tool implementation changed",
+  "reducedMotion": true,
+  "assets": {
+    "svg_bytes": {
+      "mcp-security-checker.svg": 1781,
+      "container-hardening-audit.svg": 1349,
+      "prompt-injection-detector.svg": 2942,
+      "prompt-injection-test-bench.svg": 1450,
+      "mitre-atlas-mapper.svg": 1670,
+      "agent-leak-inspector.svg": 1591,
+      "hero.svg": 2047,
+      "yara-sigma-validator.svg": 1782,
+      "lotl-command-analyzer.svg": 2152,
+      "log-anonymizer.svg": 2345,
+      "ai-model-bom.svg": 1375
+    },
+    "svg_total_bytes": 20484,
+    "hub_css_bytes": 10032,
+    "external_assets": 0
+  },
+  "scope": {
+    "base_commit": "24a333ddf2f91499b0b693f3810181990f8ec8e4",
+    "branch": "feat/tools-hub-cyber-glass",
+    "deployment": false,
+    "catalogue_changed": false,
+    "detection_engines_changed": false,
+    "metadata_changed": false,
+    "security_controls_changed": false
+  },
+  "visual_review": {
+    "status": "PASS by Codex visual inspection; owner approval pending",
+    "inspected_widths": [
+      320,
+      375,
+      1440
+    ],
+    "artwork": "Original local SVG; decorative synthetic previews, no submitted data",
+    "physical_devices": "UNVERIFIED; browser viewport/touch emulation only"
+  },
+  "text_contrast": [
+    {
+      "foreground": "#f2f7ff",
+      "background": "#142c46",
+      "ratio": 13.21
+    },
+    {
+      "foreground": "#a6bdd5",
+      "background": "#142c46",
+      "ratio": 7.35
+    },
+    {
+      "foreground": "#06131e",
+      "background": "#00d9f5",
+      "ratio": 10.94
+    },
+    {
+      "foreground": "#83f5dd",
+      "background": "#06473f",
+      "ratio": 8.11
+    },
+    {
+      "foreground": "#c9b8ff",
+      "background": "#30284f",
+      "ratio": 7.64
+    }
+  ],
+  "performance_targets": {
+    "lab_LCP_ms": 2500,
+    "lab_CLS": 0.1,
+    "lab_EventTiming_proxy_ms": 200,
+    "actual_field_INP": "UNVERIFIED"
+  },
+  "tests_executed": {
+    "php_catalogue_readiness": "PASS original predicates preserved",
+    "filter_unit": "PASS",
+    "hub_template_php_lint": "PASS",
+    "svg_xml_and_external_reference_check": "PASS",
+    "browser_viewports": 12,
+    "category_checks": 72,
+    "readiness_scenarios": "current, none, future (memory-only)",
+    "protected_installed_theme125": "unchanged before/after read-only hash check"
+  }
+}

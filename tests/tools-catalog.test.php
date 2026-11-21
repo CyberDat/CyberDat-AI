@@ -2,6 +2,10 @@
 /** Render the real PHP template against narrow read-only doubles. */
 define('ABSPATH',__DIR__.'/');
 function add_action(...$args){}
+function wp_enqueue_style(...$args){}
+function get_theme_file_uri($s){return '/wp-content/themes/cyberdat'.$s;}
+function get_theme_file_path($s){return __DIR__.'/../wp-content/themes/cyberdat'.$s;}
+function cyberdat_theme_asset_version($s){return 'fixture';}
 function add_filter(...$args){}
 function esc_html($s){return htmlspecialchars((string)$s,ENT_QUOTES,'UTF-8');}
 function esc_attr($s){return esc_html($s);}
