@@ -53,6 +53,59 @@ sets the editorial fields from `editorial.json` and flips the status to `availab
 | Authorization checkbox in tool 8 | not needed; the warning is enough | unchanged |
 | Detector 45 % figure | not published; internal only | not on the page or in `editorial.json`; marked internal below |
 
+## Codex acceptance of 2026-11-21 (FAIL at e1bff4e) and the fixes
+
+Source of truth: Codex's DEFECTS-FOR-CLAUDE.md and SIGMA-CONVERSION-MATRIX.md (kept with the owner, outside the
+repository) and the owner's clarifications. Codex's frozen expectations were not changed. Fix branch
+`fix/tools13-acceptance`: `6b08f9a` validator, `f3f9330` test bench, `a5420b6` container audit, tests and versions,
+`615f377` validator follow-up (found by the browser run); merge `a92b147`. Versions: engines 1.0.1; validator
+rules and test bench library 2026-11-21.1.
+
+| Defect | Fix | Test |
+|---|---|---|
+| SEC-01 validator: short Credential/Password values in queries and exports | the value after a key or field named credential(s), password, secret or token is masked whatever its length, in every output (no extra SEC-001 finding for it) | SEC-01 × SPL/KQL/Lucene; TokenElevationType not masked |
+| SEC-02 validator: key in the conversion heading | titles, queries and messages masked on screen and in reports | SEC-02 heading, export, error message |
+| SEC-03 validator: show-anyway path | **owner decision, accepted exception from the frozen all-output-redacted expectation**: full query mode stays, off by default, with a warning, only on screen; the report is always masked | SEC-03 |
+| SEC-04 test bench: imported set re-exported with secrets | imported sets are untrusted data: every free-text field masked on import (preview, CSV, JSONL); exports always mask; own generated sets unchanged | SEC-04; own set byte-identical (60 tests) |
+| SEC-05 test bench: short secrets beside the canary | keyed values masked regardless of length; the fragment is cut only after masking the whole response | SEC-05, secret at the window edge |
+| SEC-06 container audit: file, object, container names, error paths | one masking boundary when a result leaves audit()/auditFiles() and again in exportReport() | SEC-06 |
+| C11, C14, C23 SPL literal * | SPL refuses with CONV-SPL-STAR and an explicit message; KQL and Lucene unchanged | C11/C14/C23 |
+| C06 Lucene empty string | `Name:""` | C06 |
+| C15, C16, C18, C22 | refused in every target with SIG-DET-001, SIG-COND-002 or SIG-MOD-001; the check reports SIG-DET-001 for empty lists and null in lists; the worker refuses the conversion on any error-level finding | per case × 3 targets, worker path |
+| C17 KQL ? (documentation) | behaviour kept; page, editorial and COPY-REVIEW: ? in Lucene and KQL, SPL refuses | C17 |
+| C07 KQL isempty | behaviour kept; documented as depending on the field type | C07 |
+| 5 EQUIVALENT_REPRESENTATION rows | not touched | — |
+| Test bench matching (33/40) | full match only for the whole code with prefix as a separate word (Unicode boundaries, u flag, no look-behind); core alone or in another order = "Partial (core only)", not counted; a 9-character near code is not a match; HTML character references and JSON \u escapes decoded before the search | entities, \u, partial, order, 9 characters, glued word |
+| LBL-02 unbounded | replaced (EN, DE, RU): quote only the line with the controlled label | LBL-02 |
+| Y09 YARA meta 1.5 | YAR-META-001 for fractional values | Y09 |
+| Y12 diagnostic id | unterminated and empty regular expressions give YAR-RE-001 | Y12 |
+| Page texts | no promise to find every secret; each page says masking does not find every secret | 3 pages |
+
+`tests/tools-release-1.3-acceptance-fixes.test.cjs`: 71/71 (synthetic values via `synthetic-secrets.cjs`; the same file
+crashes on the old code at the first SEC check). New keyed pattern: bounded, 1 MB hostile inputs in ≤ 1 s
+(a first draft with a name prefix took 48 s on `password|a` × 100,000 and was replaced before commit).
+
+### Numbers before and after (NOT INDEPENDENT; fixtures unchanged)
+
+| Set | Before (e1bff4e) | After (a92b147) |
+|---|---|---|
+| Test bench main corpus | canary found 22/22, method 22/22, false hits 0/11 | full match 20/22, method 20/22; 2 frozen positives contain only the core and are now "partial (core only)" by owner decision; false hits 0/11, negatives marked partial 0 |
+| Test bench held-out | 8/8, 8/8, 0/4 | 5/8, 5/8; 3 core-only positives now partial; 0/4, 0 |
+| Validator main / held-out | 55/55, recall 47/47, conversions 39/39 / 11/11, 9/9, 6/6 | unchanged |
+| Container audit main / held-out | 78/78, 90/90 / 13/13, 25/25 | unchanged |
+
+The test bench corpus runner counts core-only positives in a separate column; the fixtures were not edited.
+
+### Regression 8–10, three browsers
+
+The first run found one real defect: a YARA regex `/.*token=.+/` produced an extra SEC-001 finding (Edge validator test
+stopped). Fixed in `615f377`, then one complete run on the final code: 9/9 runs exit 0, PASS counts equal to the base —
+Test Bench 17 / 10 / 10, Validator 14 / 11 / 11, Container Audit 12 / 10 / 10 (Edge / Firefox / WebKit). PHP page tests of
+8–10 and the catalogue suite: PASS. Node tests of 8–10 (corpus, engine, detector, Unicode): PASS.
+
+Secrets: gitleaks 8.21.2 on the history `e1bff4e..a92b147` and on this package directory: no leaks;
+`no-token-shaped-strings`: PASS.
+
 ## Common contract (all three tools, enforced by tests)
 
 * Strict CSP (`connect-src 'none'`), Web Worker with network APIs disabled, zero requests after load except worker
@@ -109,6 +162,11 @@ whole tree: the same pre-existing hash/ID matches in older `deploy/` files as be
 secret-shaped test values come from `tests/lib/synthetic-secrets.cjs` (fixtures use `{{SYNTH:…}}` or `@@SYNTH:…@@`).
 
 ## Not verified
+
+* After the 2026-11-21 fixes: no query was run in Splunk, Kusto or Elastic (KQL isempty() and type coercion remain
+  UNVERIFIED without a live schema); the matching change of the test bench was checked on synthetic responses only; a
+  secret glued without a separator to other text (for example `xxxx<token>`) is still not recognised by the detectors;
+  the full-query mode of the validator is an accepted exception (owner decision). Codex's re-acceptance is pending.
 
 * Nothing was installed on staging; WordPress pages, hub and SEO are Codex's work.
 * No independent acceptance yet: every number above is NOT INDEPENDENT.
