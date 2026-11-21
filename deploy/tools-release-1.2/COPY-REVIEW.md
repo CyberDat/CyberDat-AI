@@ -166,7 +166,7 @@
 
 ## AI Model Bill of Materials
 
-### Строки шаблона (130)
+### Строки шаблона (129)
 
 1. Weights files
 2. Add weights file
@@ -267,37 +267,36 @@
 97. Download findings (JSON)
 98. The findings file contains the findings with recognized secrets masked, not the BOM itself.
 99. Export
-100. I have checked these values and want to export the document anyway. The exported files contain them unmasked.
-101. Download CycloneDX JSON
-102. Download Markdown
-103. Both files contain your entries as typed (secrets are masked only in the findings). They are created in your browser and saved only where you choose.
-104. Preview: CycloneDX JSON
-105. Preview: Markdown
-106. How it works
-107. Build: the form is read in this tab and checked by CyberDat rules in a background worker. The result is a CycloneDX 1.7 document with a component of type machine-learning-model and its model card, plus a Markdown version for people to read.
-108. Review: the pasted JSON is read by a strict JSON reader written for this tool, which records line numbers and duplicate keys and never evaluates anything. Keys are matched regardless of case, underscores, hyphens and camelCase, and non-standard spellings are reported.
-109. Rules in ten groups look for missing or unknown licenses, floating versions, weights without a hash or in pickle-based formats, fine-tuned models without a base model, datasets without a source or personal-data status, unpinned dependencies, http:// addresses, secrets, and missing purpose, limitations, evaluation or owner.
-110. Each finding shows where it was found, its severity, why it matters and a suggested change. Secrets are shown only as their type and a masked fragment.
-111. Fields that CycloneDX has no place for (model type, personal-data status, dataset use, deployment, safety evaluation) are stored as properties named cyberdat:aibom:…, so a document exported here can be reviewed here again with the same content.
-112. Engine %1$s · rules %2$s · CycloneDX %3$s
-113. Privacy
-114. This tool does not transmit the text you enter. The page has no server endpoint for your data, and its Content Security Policy blocks scripts on this page from opening network connections. Addresses in your entries are never opened or checked online.
-115. Input fields, previews and results are marked so that the browser’s built-in page translator does not translate them, because translating would send their text to a translation service.
-116. If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.
-117. This tool does not persist data: the form, the pasted BOM and the results are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.
-118. Masking in the findings is best effort. Exported BOM files contain your entries unmasked; if values that look like secrets are found, the export asks for confirmation first.
-119. The document reflects only what you entered. The tool does not check whether the entries are true, does not contact model registries, package indexes or dataset sources, and does not evaluate the model or its outputs.
-120. The tool helps document a model and its supply chain. It does not determine whether a system meets any law, regulation or standard.
-121. Only CycloneDX JSON is supported. SPDX, CycloneDX XML and other formats are not read or written in this version.
-122. The structure check covers only the CycloneDX fields this tool uses. License identifiers are not checked against the full SPDX list, and other parts of a document are not validated.
-123. “Unknown” is recognized in English, German and Russian and in common abbreviations such as n/a and TBD; other wordings are read as a stated value.
-124. Pickle-based formats are recognized by file extension and the format you enter. A file can be pickle-based under another name.
-125. Secret detection relies on known credential formats, secret-like names and a heuristic for long random-looking values. Unusual secrets can be missed, and an ordinary long value can be reported.
-126. Text is stored in Unicode NFC: names typed with separate combining marks are exported in their composed form, which looks the same.
-127. Review reads up to 5 MB. Processing stops after 120 seconds.
-128. Sources
-129. All rules, explanations and recommendations are written by CyberDat. No external rule set, model registry or database is bundled.
-130. Format: the CycloneDX specification, version 1.7, by the OWASP CycloneDX project, published under the Apache License 2.0. It is referenced here by name only; no specification or schema text is copied, and the structure check is CyberDat’s own.
+100. Download CycloneDX JSON
+101. Download Markdown
+102. Both files mask detected secrets and unrecognized long token-shaped values before formatting. They are created in your browser and saved only where you choose. Remove secrets from the original source data and review the exports before sharing.
+103. Preview: CycloneDX JSON
+104. Preview: Markdown
+105. How it works
+106. Build: the form is read in this tab and checked by CyberDat rules in a background worker. The result is a CycloneDX 1.7 document with a component of type machine-learning-model and its model card, plus a Markdown version for people to read.
+107. Review: the pasted JSON is read by a strict JSON reader written for this tool, which records line numbers and duplicate keys and never evaluates anything. Keys are matched regardless of case, underscores, hyphens and camelCase, and non-standard spellings are reported.
+108. Rules in ten groups look for missing or unknown licenses, floating versions, weights without a hash or in pickle-based formats, fine-tuned models without a base model, datasets without a source or personal-data status, unpinned dependencies, http:// addresses, secrets, and missing purpose, limitations, evaluation or owner.
+109. Each finding shows where it was found, its severity, why it matters and a suggested change. Secrets are shown only as their type and a masked fragment.
+110. Fields that CycloneDX has no place for (model type, personal-data status, dataset use, deployment, safety evaluation) are stored as properties named cyberdat:aibom:…, so a document exported here can be reviewed here again with the same content.
+111. Engine %1$s · rules %2$s · CycloneDX %3$s
+112. Privacy
+113. This tool does not transmit the text you enter. The page has no server endpoint for your data, and its Content Security Policy blocks scripts on this page from opening network connections. Addresses in your entries are never opened or checked online.
+114. Input fields, previews and results are marked so that the browser’s built-in page translator does not translate them, because translating would send their text to a translation service.
+115. If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.
+116. This tool does not persist data: the form, the pasted BOM and the results are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.
+117. Masking is best effort and cannot recognize every possible secret. Findings, previews and exports mask detected values. Long token-shaped values may be masked conservatively even when they are identifiers. Validated weights digests in the dedicated hash field are preserved. Remove secrets from the original source data.
+118. The document reflects only what you entered. The tool does not check whether the entries are true, does not contact model registries, package indexes or dataset sources, and does not evaluate the model or its outputs.
+119. The tool helps document a model and its supply chain. It does not determine whether a system meets any law, regulation or standard.
+120. Only CycloneDX JSON is supported. SPDX, CycloneDX XML and other formats are not read or written in this version.
+121. The structure check covers only the CycloneDX fields this tool uses. License identifiers are not checked against the full SPDX list, and other parts of a document are not validated.
+122. “Unknown” is recognized in English, German and Russian and in common abbreviations such as n/a and TBD; other wordings are read as a stated value.
+123. Pickle-based formats are recognized by file extension and the format you enter. A file can be pickle-based under another name.
+124. Secret detection relies on known credential formats, secret-like names and a heuristic for long random-looking values. Unusual secrets can be missed, and an ordinary long value can be reported.
+125. Text is stored in Unicode NFC: names typed with separate combining marks are exported in their composed form, which looks the same.
+126. Review reads up to 5 MB. Processing stops after 120 seconds.
+127. Sources
+128. All rules, explanations and recommendations are written by CyberDat. No external rule set, model registry or database is bundled.
+129. Format: the CycloneDX specification, version 1.7, by the OWASP CycloneDX project, published under the Apache License 2.0. It is referenced here by name only; no specification or schema text is copied, and the structure check is CyberDat’s own.
 
 ### Сообщения интерфейса (app.js)
 
@@ -327,9 +326,8 @@
 - Model components
 - External APIs
 -  that look like secrets or credentials 
--  found (see the findings). The preview below shows them masked. Remove them from the form, or confirm to export anyway.
+-  found (see the findings). Remove secrets from the original source data. The preview and both exported files mask detected secrets and unrecognized long values; review the output before sharing.
 - Input changed. Run the check again to update the result.
-- Confirm the export first: the document contains values that look like secrets.
 - CyberDat AI Model Bill of Materials
 - Findings only; the BOM itself is not included. Recognized secrets are masked. The tool does not verify entries and does not assess the model. No finding does not mean the model or its supply chain is safe.
 - Findings downloaded. The file contains findings with secrets masked, not the BOM.

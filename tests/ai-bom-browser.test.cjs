@@ -166,18 +166,12 @@ async function launch() {
 		assert.ok((await ids()).includes('AIBOM-SEC-001') && (await ids()).includes('AIBOM-SEC-002'));
 		for (const v of [S.HF_TOKEN, pwd]) { assert.ok(!sec.ui.includes(v), 'UI shows a secret'); assert.ok(!sec.preview.includes(v), 'preview shows a secret before confirmation'); }
 		assert.ok(/hf_A… \(37 characters\)/.test(sec.ui));
-		assert.ok(sec.dj && sec.dm && sec.warn);
-		const nBlobs = await blobCount();
-		await evaluate("document.querySelector('[data-bom-download-json]').disabled = false; document.querySelector('[data-bom-download-json]').click(); true");
-		assert.equal(await blobCount(), nBlobs, 'export without confirmation must not create a file');
-		await evaluate("document.querySelector('[data-bom-download-json]').disabled = true; true");
-		await click('[data-bom-secret-ack]');
-		const after = await evaluate("({ dj: document.querySelector('[data-bom-download-json]').disabled, preview: document.querySelector('[data-bom-preview-json]').textContent })");
-		assert.ok(!after.dj && after.preview.includes(S.HF_TOKEN));
+		assert.ok(!sec.dj && !sec.dm && sec.warn);
+		assert.equal(await evaluate("document.querySelectorAll('[data-bom-secret-ack]').length"), 0);
 		await click('[data-bom-download-json]');
 		await sleep(300);
-		assert.ok((await lastBlob()).includes(S.HF_TOKEN));
-		pass('secrets: findings and previews show only type and masked fragment; export is blocked until the user confirms, then contains the entries as typed');
+		for (const v of [S.HF_TOKEN, pwd]) { assert.ok(!(await lastBlob()).includes(v)); }
+		pass('secrets: findings, previews and exports remain masked; there is no raw-export confirmation');
 
 		phase = 'unicode';
 		await click('[data-bom-clear]');

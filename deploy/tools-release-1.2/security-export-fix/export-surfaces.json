@@ -1,0 +1,64 @@
+{
+  "scope": "Source/engine audit, not a browser certification of legacy modes; no private values printed",
+  "rows": [
+    {
+      "tool": "Log Anonymizer",
+      "channel": "anonymized text",
+      "tested": "accepted Stage1 source (offline)",
+      "secret_visible": true,
+      "exposed_classes": [
+        "unknown_long_value"
+      ]
+    },
+    {
+      "tool": "Log Anonymizer",
+      "channel": "replacement map",
+      "tested": "engine map included by downloadMap",
+      "secret_visible": true,
+      "exposed_classes": [
+        "assigned_password",
+        "known_provider_key"
+      ],
+      "intentional": true
+    },
+    {
+      "tool": "Prompt Injection Detector",
+      "channel": "sanitized text",
+      "secret_visible": true,
+      "intentional": "injection sanitization is not secret redaction"
+    },
+    {
+      "tool": "LotL Analyzer",
+      "channel": "analysis JSON with command lines",
+      "secret_visible": true,
+      "intentional": true
+    },
+    {
+      "tool": "MCP Checker",
+      "channel": "security findings report",
+      "secret_visible": false
+    },
+    {
+      "tool": "MCP Checker",
+      "channel": "policy download",
+      "source_confirmed": true,
+      "secret_visible": "verbatim by implementation; no redaction",
+      "intentional": true
+    },
+    {
+      "tool": "Leak Inspector",
+      "channel": "findings report",
+      "secret_visible": false
+    },
+    {
+      "tool": "AI BOM",
+      "channel": "CycloneDX/Markdown export",
+      "secret_visible": false
+    },
+    {
+      "tool": "ATLAS Mapper",
+      "channel": "selection JSON/Markdown",
+      "secret_visible": false
+    }
+  ]
+}
