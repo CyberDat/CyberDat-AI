@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_CHA_SLUG = 'container-hardening-audit';
-const CYBERDAT_CHA_ENGINE = '1.0.0';
+const CYBERDAT_CHA_ENGINE = '1.0.1';
 const CYBERDAT_CHA_RULESET = '2026-11-18.1';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */

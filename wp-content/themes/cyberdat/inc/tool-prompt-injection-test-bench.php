@@ -10,8 +10,8 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_PITB_SLUG = 'prompt-injection-test-bench';
-const CYBERDAT_PITB_ENGINE = '1.0.0';
-const CYBERDAT_PITB_LIBRARY = '2026-11-18.1';
+const CYBERDAT_PITB_ENGINE = '1.0.1';
+const CYBERDAT_PITB_LIBRARY = '2026-11-21.1';
 
 /** Application types offered in step 1 (keys and labels equal engine.js APP_TYPES; checked by tests). */
 function cyberdat_pitb_app_types() {

@@ -28,7 +28,9 @@ self.onmessage = function (event) {
 		const result = ENGINE.validate(String(msg.text || ''), { kind: msg.kind });
 		self.postMessage({ type: 'progress', jobId, done: 2, total: 3 });
 		let conversion = null;
-		if (result.kind === 'sigma' && msg.target && !result.findings.some(f => /^SIG-YAML/.test(f.id))) {
+		// Any error-level finding blocks the conversion (owner decision 2026-11-21): a rule with errors gives a wrong or empty query.
+		if (result.kind === 'sigma' && msg.target && result.counts.error > 0) { conversion = ENGINE.refuseConversion(result, msg.target); }
+		else if (result.kind === 'sigma' && msg.target) {
 			let fieldmap = {};
 			if (msg.fieldmap && String(msg.fieldmap).trim()) {
 				try { fieldmap = JSON.parse(String(msg.fieldmap)); } catch (e) { const err = new Error('The field mapping is not valid JSON: ' + e.message); err.code = 'FIELDMAP'; throw err; }

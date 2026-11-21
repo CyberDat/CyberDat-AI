@@ -10,8 +10,8 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_YSV_SLUG = 'yara-sigma-validator';
-const CYBERDAT_YSV_ENGINE = '1.0.0';
-const CYBERDAT_YSV_RULESET = '2026-11-18.1';
+const CYBERDAT_YSV_ENGINE = '1.0.1';
+const CYBERDAT_YSV_RULESET = '2026-11-21.1';
 
 /** True only for the tool page that is a direct child of the /tools/ hub. */
 function cyberdat_ysv_is_page( $post_id ) {
