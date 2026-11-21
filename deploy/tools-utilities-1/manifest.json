@@ -22,7 +22,7 @@
     "assets/js/tools-filter.js",
     "page-templates/tools.php"
   ],
-  "theme_commit": "b96ddbb376b12e2eb050d461630862b699c13e86",
+  "theme_commit": "82a0c4876965d538ebffecaf469c6f5e390f6ac3",
   "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility, status planned; the ten entries unchanged), one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 177,
@@ -118,13 +118,13 @@
     },
     "assets/js/email-header-analyzer/app.js": {
       "status": "added",
-      "bytes": 18170,
-      "sha256": "12fa257639ef81c03074386cd8650a1eabb9c00eece588428c810d9ab6d46d56"
+      "bytes": 18289,
+      "sha256": "5019d5aa100247fa7f6e7f107c4869a6d412c65f7a6d2039fa0f5930acd05b4c"
     },
     "assets/js/email-header-analyzer/engine.js": {
       "status": "added",
-      "bytes": 63318,
-      "sha256": "cb668210d331e8d0618485fea12301a3b2835b69c9210a5d908641f01561cb19"
+      "bytes": 66088,
+      "sha256": "4031017c45d8282165b1ca904fd66a1569ec422c3e6a74bfcd4037a2f4a3dffd"
     },
     "assets/js/email-header-analyzer/psl-data.js": {
       "status": "added",
@@ -150,7 +150,7 @@
     "inc/tool-email-header-analyzer.php": {
       "status": "added",
       "bytes": 3052,
-      "sha256": "64eafb48d467d3da7bd9e5e63acc00b3fce13064ce3b887a536b398ccb574c15"
+      "sha256": "c26fb68bc3aa69d0d70e6b8ab44acc2044047b367f4e45e5410782fa8e365f64"
     },
     "inc/tools-catalog.json": {
       "status": "modified",
@@ -185,12 +185,12 @@
           "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         },
         "assets/js/email-header-analyzer/app.js": {
-          "bytes": 18170,
-          "sha256": "12fa257639ef81c03074386cd8650a1eabb9c00eece588428c810d9ab6d46d56"
+          "bytes": 18289,
+          "sha256": "5019d5aa100247fa7f6e7f107c4869a6d412c65f7a6d2039fa0f5930acd05b4c"
         },
         "assets/js/email-header-analyzer/engine.js": {
-          "bytes": 63318,
-          "sha256": "cb668210d331e8d0618485fea12301a3b2835b69c9210a5d908641f01561cb19"
+          "bytes": 66088,
+          "sha256": "4031017c45d8282165b1ca904fd66a1569ec422c3e6a74bfcd4037a2f4a3dffd"
         },
         "assets/js/email-header-analyzer/psl-data.js": {
           "bytes": 360305,
@@ -206,7 +206,7 @@
         },
         "inc/tool-email-header-analyzer.php": {
           "bytes": 3052,
-          "sha256": "64eafb48d467d3da7bd9e5e63acc00b3fce13064ce3b887a536b398ccb574c15"
+          "sha256": "c26fb68bc3aa69d0d70e6b8ab44acc2044047b367f4e45e5410782fa8e365f64"
         },
         "template-parts/tools/email-header-analyzer.php": {
           "bytes": 14320,
@@ -1640,14 +1640,14 @@
       "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
     },
     "assets/js/email-header-analyzer/app.js": {
-      "bytes": 18170,
+      "bytes": 18289,
       "mode": "0644",
-      "sha256": "12fa257639ef81c03074386cd8650a1eabb9c00eece588428c810d9ab6d46d56"
+      "sha256": "5019d5aa100247fa7f6e7f107c4869a6d412c65f7a6d2039fa0f5930acd05b4c"
     },
     "assets/js/email-header-analyzer/engine.js": {
-      "bytes": 63318,
+      "bytes": 66088,
       "mode": "0644",
-      "sha256": "cb668210d331e8d0618485fea12301a3b2835b69c9210a5d908641f01561cb19"
+      "sha256": "4031017c45d8282165b1ca904fd66a1569ec422c3e6a74bfcd4037a2f4a3dffd"
     },
     "assets/js/email-header-analyzer/psl-data.js": {
       "bytes": 360305,
@@ -1922,7 +1922,7 @@
     "inc/tool-email-header-analyzer.php": {
       "bytes": 3052,
       "mode": "0644",
-      "sha256": "64eafb48d467d3da7bd9e5e63acc00b3fce13064ce3b887a536b398ccb574c15"
+      "sha256": "c26fb68bc3aa69d0d70e6b8ab44acc2044047b367f4e45e5410782fa8e365f64"
     },
     "inc/tool-leak-inspector.php": {
       "bytes": 2674,

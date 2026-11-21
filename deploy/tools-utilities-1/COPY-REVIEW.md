@@ -11,6 +11,7 @@
 | Limitations, 1-й пункт | No network lookups: the tool does not query DNS (SPF, DKIM, DMARC or MX records), WHOIS or the reputation of IP addresses and domains, and it does not verify DKIM signatures cryptographically. It shows the results the receiving servers already recorded. | Первым пунктом, как в задании. |
 | Limitations, 2-й пункт | A message is never shown to be safe or genuine. A hijacked real account, or a message sent through a legitimate service, passes every check. | Вторым пунктом, как в задании. |
 | Limitations, 3-й пункт | The trust boundary is an estimate from server names. … A forged result written just below your server’s own line can only be recognised when your server also wrote one above it. | Честная граница метода: поддельный Authentication-Results вплотную под строкой вашего сервера распознаётся только как дубликат. |
+| Граница доверия у провайдера (2026-11-21) | Trust boundary: mx.google.com (mailbox provider for your domain). | Новая строка в блоке пояснений и в экспорте, по решению владельца; хост подставляется из Received. |
 | Результат без находок | No known warning signs matched. This does not mean the message is safe. | Дословно из задания. |
 | Sources | Public Suffix List by the Public Suffix List project (publicsuffix.org), Mozilla Public License 2.0, list of 2026-11-17 (SHA-256 809adae1a2cb…). It is published unmodified with this tool as public_suffix_list.dat together with the license text (LICENSE-MPL-2.0.txt). | Решение владельца 2026-11-19: MPL-2.0 принят; источник publicsuffix.org, закреплены SHA-256 и дата. |
 | Список брендов | PayPal, Microsoft, Apple, Amazon, Google, DHL, DocuSign, Netflix, Sparkasse, Sberbank, Telekom, LinkedIn, Facebook, Dropbox, Adobe, FedEx, UPS, Booking.com | Мой короткий список: слова в отображаемом имени и домены брендов. Расширять ли его — решение владельца. Реальные домены брендов есть только в этом справочном списке; в корпусе и примерах — только зарезервированные домены. |
@@ -141,7 +142,7 @@
 
 - PayPal: paypal → paypal.com, paypal.de, paypal.me
 - Microsoft: microsoft, office 365, microsoft 365, outlook, onedrive, sharepoint → microsoft.com, office.com, office365.com, outlook.com, live.com, hotmail.com, microsoftonline.com, sharepoint.com, onmicrosoft.com
-- Apple: apple, icloud, itunes → apple.com, icloud.com, me.com
+- Apple: apple, icloud, itunes → apple.com, icloud.com, me.com, appleid.com (appleid.com добавлен 2026-11-21 по решению владельца: privaterelay.appleid.com)
 - Amazon: amazon → amazon.com, amazon.de, amazon.co.uk, amazon.fr, amazonses.com, amazon.es, amazon.it
 - Google: google, gmail → google.com, gmail.com, googlemail.com, youtube.com
 - DHL: dhl → dhl.com, dhl.de
