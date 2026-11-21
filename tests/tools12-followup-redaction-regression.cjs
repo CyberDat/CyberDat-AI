@@ -1,0 +1,21 @@
+/* Follow-up review: runtime-generated synthetic probes only; no real credentials or private fixtures. */
+'use strict';
+const assert=require('node:assert/strict'),crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
+const {SYNTH:S}=require('./lib/synthetic-secrets.cjs');
+const root=process.env.EXPORT_REGRESSION_ROOT||path.resolve(__dirname,'../wp-content/themes/cyberdat');
+const bom=require(root+'/assets/js/ai-model-bom/engine.js'),atlas=require(root+'/assets/js/atlas-mapper/engine.js');
+const rows=[],tests=[],test=(id,fn)=>tests.push([id,fn]);
+const low=S.OPAQUE_LONG.slice(0,4).repeat(12),hex=crypto.createHash('sha256').update(S.OPAQUE_LONG+'synthetic-followup').digest('hex');
+function clear(text,values){const raw=String(text),unmd=raw.replace(/\\([\\`*_{}\[\]<>()#+!|~])/gu,'$1');let decoded=unmd;try{decoded=decodeURIComponent(unmd);}catch{}for(const v of values){assert.ok(![raw,unmd,decoded].some(s=>s.includes(v)||s.includes(encodeURIComponent(v))),'synthetic value remains in output');}}
+function inv(){return JSON.parse(JSON.stringify(bom.EXAMPLE));}
+for(const [kind,value]of [['low',low],['hex',hex]])for(const format of ['json','markdown'])test('BOM-file-'+kind+'-'+format,()=>{const i=inv();i.weights[0].file=value;const r=bom.build(i);clear(format==='json'?r.bomText:r.markdown,[value]);});
+const rules=['VER-003','WGT-001','WGT-004','DAT-001','DAT-002','LIC-002','DEP-001'];
+function populated(value){const i=inv();i.model.baseModel={name:value,version:''};i.weights=[{file:value,format:'safetensors',hash:'',source:''}];i.datasets=[{name:value,source:'',license:'',personalData:'unknown'}];i.dependencies=[{name:value,version:''}];return i;}
+for(const rule of rules)for(const [kind,value]of [['low',low],['hex',hex]])test('BOM-finding-'+rule+'-'+kind,()=>{const r=bom.build(populated(value));const f=r.findings.find(x=>x.rule==='AIBOM-'+rule);assert.ok(f,'expected finding absent');clear(JSON.stringify(f)+r.markdown+r.bomText,[value]);});
+test('BOM-review-findings',()=>{const raw=bom.build(inv()).bom;const model=raw.components.find(x=>x.type==='machine-learning-model');model.pedigree.ancestors[0].name=low;delete model.pedigree.ancestors[0].version;const file=raw.components.find(x=>x.type==='file');file.name=low;delete file.hashes;delete file.externalReferences;const dep=raw.components.find(x=>['library','framework'].includes(x.type));dep.name=low;delete dep.version;const r=bom.review(JSON.stringify(raw));assert.ok(r.findings.some(x=>x.rule==='AIBOM-VER-003'));clear(JSON.stringify(r.findings),[low]);clear(JSON.stringify(r.inventoryView),[low]);});
+for(const key of ['key','value','blob','аргумент'])for(const shape of ['raw-plus','encoded-plus','encoded-slash'])test('ATLAS-query-'+key+'-'+shape,()=>{const value=S.OPAQUE_LONG.slice(0,12)+(shape==='encoded-slash'?'/':'+')+S.OPAQUE_LONG.slice(12,24);const encoded=shape==='raw-plus'?value:encodeURIComponent(value);const url='https://api.example.invalid/run?mode=audit&'+encodeURIComponent(key)+'='+encoded+'#review';clear(atlas.maskSecrets(url),[value]);const r=atlas.exportSelection([{id:'AML.T0051',note:url,source:url}]);clear(r.json+r.markdown,[value]);assert.ok(atlas.maskSecrets(url).startsWith('https://api.example.invalid/run?mode=audit&')&&atlas.maskSecrets(url).endsWith('#review'));});
+test('ATLAS-safe-query-preserved',()=>{const url='https://api.example.invalid/run?key=hello%20world&mode=audit#review';assert.equal(atlas.maskSecrets(url),url);});
+test('BOM-public-digest-preserved',()=>{const i=inv();i.weights[0].hash=hex;i.weights[0].hashAlg='SHA-256';const c=bom.build(i).bom.components.find(x=>x.type==='file');assert.equal(c.hashes[0].content,hex);});
+test('Unicode-no-lookbehind',()=>{for(const slug of ['ai-model-bom','atlas-mapper']){const src=fs.readFileSync(root+'/assets/js/'+slug+'/engine.js','utf8');assert.ok(!src.includes('(?<=')&&!src.includes('(?<!'));}});
+for(const[id,fn]of tests){try{fn();rows.push({id,pass:true});}catch(e){rows.push({id,pass:false,error:e.name});}}
+const out={tests:rows.length,pass:rows.filter(r=>r.pass).length,fail:rows.filter(r=>!r.pass).length,rows};console.log(JSON.stringify(out,null,2));if(process.env.FOLLOWUP_RESULT)fs.writeFileSync(process.env.FOLLOWUP_RESULT,JSON.stringify(out,null,2)+'\n');process.exitCode=out.fail?1:0;

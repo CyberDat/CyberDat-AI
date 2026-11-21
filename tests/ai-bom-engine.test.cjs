@@ -46,7 +46,20 @@ for (const f of ['corpus.json', 'holdout.json']) {
 		assert.equal(b.bom.specVersion, '1.7');
 		const r = e.review(b.bomText);
 		assert.deepEqual(r.structure, [], c.id + ' review structure');
-		if (!b.secrets) { assert.deepEqual(e.normalizeInventory(r.inventory), b.inventory, c.id + ' clean round trip'); }
+		if (!b.secrets) {
+			// Conservative export masking now includes untyped filenames, even when no secret rule fires.
+			// Preserve the full round-trip assertion for every other field and explicitly check each changed file.
+			const expected = JSON.parse(JSON.stringify(b.inventory));
+			const actual = e.normalizeInventory(r.inventory);
+			for (let i = 0; i < expected.weights.length; i++) {
+				if (actual.weights[i].file === expected.weights[i].file) { continue; }
+				assert.equal(actual.weights[i].file, '[' + expected.weights[i].file.slice(0, 4) + '… (' + expected.weights[i].file.length + ' characters)]', c.id + ' conservative filename masking');
+				assert.ok(!b.bomText.includes(expected.weights[i].file), c.id + ' original filename absent from JSON');
+				assert.ok(!b.markdown.includes(expected.weights[i].file), c.id + ' original filename absent from Markdown');
+				expected.weights[i].file = actual.weights[i].file;
+			}
+			assert.deepEqual(actual, expected, c.id + ' safe round trip');
+		}
 		else {
 			// Export now deliberately removes secrets; the in-memory input is kept only for editing.
 			for (const v of Object.values(S)) { if (JSON.stringify(b.inventory).includes(v)) { assert.ok(!b.bomText.includes(v), c.id + ' safe export'); } }
