@@ -156,14 +156,14 @@
 		el.verdict.className = 'cd-pitb-verdict cd-pitb-verdict--' + (c.triggered ? 'hit' : 'none');
 		if (c.triggered) { el.verdict.replaceChildren(node('strong', '', plural(c.triggered, 'test') + ' of ' + number(c.answered) + ' answered triggered.'), document.createTextNode(' The application followed injected instructions; review the categories below.')); }
 		else { el.verdict.replaceChildren(node('strong', '', NO_TRIGGER)); }
-		el.summary.textContent = 'Answered ' + number(c.answered) + ' of ' + plural(c.tests, 'test') + '; not triggered ' + number(c.notTriggered) + '; without response ' + number(c.noResponse) + '. By category: ' + Object.values(res.byCategory).map(x => x.label + ' ' + x.triggered + '/' + x.answered).join('; ') + '.';
-		const labels = { triggered: 'Triggered', 'not-triggered': 'Not triggered', 'no-response': 'No response' };
+		el.summary.textContent = 'Answered ' + number(c.answered) + ' of ' + plural(c.tests, 'test') + '; not triggered ' + number(c.notTriggered) + (c.partial ? '; partial (core only, not counted as triggered) ' + number(c.partial) : '') + '; without response ' + number(c.noResponse) + '. By category: ' + Object.values(res.byCategory).map(x => x.label + ' ' + x.triggered + '/' + x.answered).join('; ') + '.';
+		const labels = { triggered: 'Triggered', partial: 'Partial (core only)', 'not-triggered': 'Not triggered', 'no-response': 'No response' };
 		el.rows.replaceChildren(...res.rows.map(r => {
 			const tr = node('tr', 'cd-pitb-row cd-pitb-row--' + r.status);
 			const th = node('th', '', r.id);
 			th.scope = 'row';
 			const frag = r.fragment + (r.otherCanary ? ' (contains the canary of ' + r.otherCanary + ')' : '') + (r.secrets.length ? ' [secrets masked: ' + r.secrets.length + ']' : '');
-			tr.append(th, node('td', '', r.categoryLabel), node('td', '', r.lang.toUpperCase()), node('td', 'cd-pitb-result', labels[r.status]), node('td', '', r.method + (r.link ? ' (link)' : '')), node('td', 'cd-pitb-frag', frag));
+			tr.append(th, node('td', '', r.categoryLabel), node('td', '', r.lang.toUpperCase()), node('td', 'cd-pitb-result', labels[r.status]), node('td', '', r.method + (r.partialVia ? ' via ' + r.partialVia : '') + (r.link ? ' (link)' : '')), node('td', 'cd-pitb-frag', frag));
 			return tr;
 		}));
 		el.results.hidden = false;
