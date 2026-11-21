@@ -8,7 +8,7 @@ locally without VPS access. No secrets, passwords or tokens in this package.
 | Item | Value |
 |---|---|
 | Branch | `integration/tools-release-1.3` |
-| Base | `a5d4f842bfc85f56642e5d332bbccd6db968f2c4` = Codex export redaction fix (theme commit of the `tools-release-1.2/2` manifest; `integration/tools-release-1.2` tip `6b7d97c` has the same theme), merged into this branch as `198bf49`; its theme is byte-equal to the `tools-release-1.2/2` manifest target (checked by `build-manifest.cjs`). The first 1.3 package was built over `2a4cfbe` (`tools-release-1.2/1`) |
+| Base | `838fecc8a817f6fbab776131787ea6f8d6138a46` = tip of `integration/tools-release-1.2` (Codex masking review fix), merged into this branch as `47ef75d`; its theme is byte-equal to the target of the `tools-release-1.2/2` manifest as updated by Codex (checked by `build-manifest.cjs`; that manifest names theme commit `581c3f0`, which is not on GitHub). Earlier 1.3 packages were built over `2a4cfbe` and `a5d4f84` |
 | Tool 8 | `feature/tools-prompt-injection-test-bench`: `980e74e` corpus (frozen), `ef9b24f` tool, `32b099d` catalogue; merge `e3a5ba1` |
 | Tool 9 | `feature/tools-yara-sigma-validator`: `3289de7` corpus (frozen), `893696c` tool, `a3e46dc` catalogue; merge `c9620cf` |
 | Tool 10 | `feature/tools-container-hardening-audit`: `d1e6f29` corpus (frozen), `7e8a95f` one corpus case fixed (documented), `08ff7ad` tool, `24cfbe7` catalogue; merge `5ea51e2` |
@@ -75,7 +75,7 @@ rules and test bench library 2026-11-21.1.
 | C17 KQL ? (documentation) | behaviour kept; page, editorial and COPY-REVIEW: ? in Lucene and KQL, SPL refuses | C17 |
 | C07 KQL isempty | behaviour kept; documented as depending on the field type | C07 |
 | 5 EQUIVALENT_REPRESENTATION rows | not touched | — |
-| Test bench matching (33/40) | full match only for the whole code with prefix as a separate word (Unicode boundaries, u flag, no look-behind); core alone or in another order = "Partial (core only)", not counted; a 9-character near code is not a match; HTML character references and JSON \u escapes decoded before the search | entities, \u, partial, order, 9 characters, glued word |
+| Test bench matching (33/40) | full match only for the whole code with prefix as a separate word (Unicode boundaries, u flag, no look-behind); core alone or in another order = **"Possible leak (core only)"** (owner decision: not hidden; the test verdict is possible leak, not a pass; same status in JSON and Markdown; separate summary line "Possible leak (core only): N"; not counted as triggered); a 9-character near code is not a match; HTML character references and JSON \u escapes decoded before the search | entities, \u, possible leak, order, 9 characters, glued word, export status |
 | LBL-02 unbounded | replaced (EN, DE, RU): quote only the line with the controlled label | LBL-02 |
 | Y09 YARA meta 1.5 | YAR-META-001 for fractional values | Y09 |
 | Y12 diagnostic id | unterminated and empty regular expressions give YAR-RE-001 | Y12 |
@@ -89,12 +89,22 @@ crashes on the old code at the first SEC check). New keyed pattern: bounded, 1 M
 
 | Set | Before (e1bff4e) | After (a92b147) |
 |---|---|---|
-| Test bench main corpus | canary found 22/22, method 22/22, false hits 0/11 | full match 20/22, method 20/22; 2 frozen positives contain only the core and are now "partial (core only)" by owner decision; false hits 0/11, negatives marked partial 0 |
-| Test bench held-out | 8/8, 8/8, 0/4 | 5/8, 5/8; 3 core-only positives now partial; 0/4, 0 |
+| Test bench main corpus | canary found 22/22, method 22/22, false hits 0/11 | **full matches 20/22** (method 20/22); **possible leak (core only) 2** (the 2 frozen positives that contain only the core); **false hits 0/11**; negatives marked possible leak 0 |
+| Test bench held-out | 8/8, 8/8, 0/4 | **full matches 5/8**; **possible leak 3**; **false hits 0/4**; negatives marked possible leak 0 |
 | Validator main / held-out | 55/55, recall 47/47, conversions 39/39 / 11/11, 9/9, 6/6 | unchanged |
 | Container audit main / held-out | 78/78, 90/90 / 13/13, 25/25 | unchanged |
 
 The test bench corpus runner counts core-only positives in a separate column; the fixtures were not edited.
+
+### Update 2026-11-21 (second round)
+
+* `838fecc` (Codex, BOM/ATLAS masking review) merged from 1.2 (`47ef75d`); the 1.3 manifest base moved to it.
+* Test bench: "partial" became **"possible leak (core only)"** (`fix/tools13-possible-leak`, merge `c906e21`); acceptance test 73/73.
+* FAQ (editorial.json, tools 8–10) and COPY-REVIEW: the glued-secret limitation.
+* One regression run of the affected tools 6–10 on `integration/tools-utilities-1` (contains 1.2 and 1.3 in full), three browsers:
+  15/15 runs exit 0; AI Model BOM 20 / 12 / 12, ATLAS Mapper 17 / 13 / 13, Test Bench 17 / 10 / 10, Validator 14 / 11 / 11,
+  Container Audit 12 / 10 / 10 (Edge / Firefox / WebKit). Codex tests `tools12-masking-review-regression` 32/32 and
+  `tools12-export-redaction-regression` 20/20; corpus and engine tests of 6–10, PHP tests and catalogue suite: PASS.
 
 ### Regression 8–10, three browsers
 
@@ -165,7 +175,8 @@ secret-shaped test values come from `tests/lib/synthetic-secrets.cjs` (fixtures 
 
 * After the 2026-11-21 fixes: no query was run in Splunk, Kusto or Elastic (KQL isempty() and type coercion remain
   UNVERIFIED without a live schema); the matching change of the test bench was checked on synthetic responses only; a
-  secret glued without a separator to other text (for example `xxxx<token>`) is still not recognised by the detectors;
+  secret glued without a separator to other text (for example `xxxx<token>`) is still not recognised by the detectors —
+  a **known limitation** by owner decision (not fixed; stated in the FAQ of tools 8–10 and in COPY-REVIEW);
   the full-query mode of the validator is an accepted exception (owner decision). Codex's re-acceptance is pending.
 
 * Nothing was installed on staging; WordPress pages, hub and SEO are Codex's work.
