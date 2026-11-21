@@ -22,7 +22,7 @@
     "assets/js/tools-filter.js",
     "page-templates/tools.php"
   ],
-  "theme_commit": "c7a55d9e01a5f17ad4d338ac50b9755aa4ab1572",
+  "theme_commit": "1749a5a9bc3eb7f75e64819a42f2eb257642e9d5",
   "install_rule": "The installer copies the target files as they are and changes no theme file (no prepare step that edits inc/tools.php, inc/tools-catalog.json or any other file). After installation every theme file on staging equals the target map of this manifest, byte for byte. Catalogue statuses and the staging canonical scope are part of the package.",
   "staging_known_differences": {
     "source": "Codex, 2026-11-21: prepare.py of the 1.2 installer (archive 178eb167…) edited two theme files on staging; staging equals that archive byte for byte. Not verified here (no staging access).",
@@ -30,12 +30,12 @@
     "inc/tools.php": "cyberdat_tools_staging_canonical(): slug list extended by agent-leak-inspector, ai-model-bom, mitre-atlas-mapper",
     "effect": "base_sha256 of these two files on staging differs from the base map; both files are replaced as a whole by the target bytes (the target already contains these effects and the statuses of tools 8-10 and the utility)."
   },
-  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility \"available\" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
+  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility \"available\" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release, secret masking in the page and exports of tools 2 and 3 (secret_masking: two engines, their version constants and one help text each). hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 177,
     "target": 187,
     "added": 10,
-    "modified": 11,
+    "modified": 17,
     "removed": 0
   },
   "delta": {
@@ -59,10 +59,16 @@
       "assets/images/tools-hub/mitre-atlas-mapper.svg",
       "assets/images/tools-hub/prompt-injection-test-bench.svg",
       "assets/images/tools-hub/yara-sigma-validator.svg",
+      "assets/js/lotl-analyzer/engine.js",
+      "assets/js/prompt-injection-detector/engine.js",
       "functions.php",
+      "inc/tool-lotl-analyzer.php",
+      "inc/tool-prompt-injection-detector.php",
       "inc/tools-catalog.json",
       "inc/tools.php",
-      "page-templates/tools.php"
+      "page-templates/tools.php",
+      "template-parts/tools/lotl-command-analyzer.php",
+      "template-parts/tools/prompt-injection-detector.php"
     ],
     "removed": []
   },
@@ -149,6 +155,18 @@
       "bytes": 2277,
       "sha256": "8513ad816179733083ace93931d02f3e21865e6a4aad1719fca775a256cb0d3b"
     },
+    "assets/js/lotl-analyzer/engine.js": {
+      "status": "modified",
+      "bytes": 43709,
+      "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c",
+      "base_sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
+    },
+    "assets/js/prompt-injection-detector/engine.js": {
+      "status": "modified",
+      "bytes": 102264,
+      "sha256": "a6a18d0d9c28b9c6d1460266fded6b70e67aff3da25d8cf2d58ee59bd77ae68d",
+      "base_sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
+    },
     "functions.php": {
       "status": "modified",
       "bytes": 1333,
@@ -159,6 +177,18 @@
       "status": "added",
       "bytes": 3052,
       "sha256": "c26fb68bc3aa69d0d70e6b8ab44acc2044047b367f4e45e5410782fa8e365f64"
+    },
+    "inc/tool-lotl-analyzer.php": {
+      "status": "modified",
+      "bytes": 4148,
+      "sha256": "8fd6aa28af18f8a00080f31fce624e72d97a23570df82806d1764fbb6c1e8e9d",
+      "base_sha256": "e0c2b1e43d66228d58163dc175c9af9867e77286e2bcc4437c37257f6c1e035b"
+    },
+    "inc/tool-prompt-injection-detector.php": {
+      "status": "modified",
+      "bytes": 4456,
+      "sha256": "791d874a7947ba4db8397585826c1c4c4ae49e0375ee5d816dd8275dc0a6e3f4",
+      "base_sha256": "4011e8aedd05daf751e2766e7e1ea1cac6c467541e182b1eabe68678713e49c8"
     },
     "inc/tools-catalog.json": {
       "status": "modified",
@@ -182,6 +212,18 @@
       "status": "added",
       "bytes": 14320,
       "sha256": "6012b355fe55e81364f26875c354442e02b453982cfa31f61f2e821472162b0f"
+    },
+    "template-parts/tools/lotl-command-analyzer.php": {
+      "status": "modified",
+      "bytes": 13690,
+      "sha256": "7455949ce7b2a6803647475bffefa01db688e628bf9d5cfaf24f417f83070a97",
+      "base_sha256": "af951c47f2604452de220dc5e78a0d8ad4ac1adee8d084e5f79a8f02af601164"
+    },
+    "template-parts/tools/prompt-injection-detector.php": {
+      "status": "modified",
+      "bytes": 17039,
+      "sha256": "74b16d93447ff9f0b5044e82e9528c7c5a1739b8c8dcd3b38df16d14f7253e1c",
+      "base_sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
     }
   },
   "tools": {
@@ -302,6 +344,60 @@
           "from": "<div class=\"tools-card-footer\"><?php if ( $url ) : ?><span class=\"tools-card-action\" aria-hidden=\"true\"><?php esc_html_e( 'Open tool', 'cyberdat' ); ?><span class=\"tools-card-arrow\">↗</span></span><?php else : ?><p class=\"tools-card-release\"><?php printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); ?></p><?php endif; ?></div>",
           "to": "<div class=\"tools-card-footer\"><?php if ( $url ) : ?><span class=\"tools-card-action\" aria-hidden=\"true\"><?php esc_html_e( 'Open tool', 'cyberdat' ); ?><span class=\"tools-card-arrow\">↗</span></span><?php else : ?><p class=\"tools-card-release\"><?php if ( isset( $tool['kind'] ) && 'utility' === $tool['kind'] ) : esc_html_e( 'Quick utility', 'cyberdat' ); else : printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); endif; ?></p><?php endif; ?></div>",
           "effect": "cards with kind=utility read \"Quick utility\"; all other cards unchanged"
+        }
+      }
+    }
+  },
+  "secret_masking": {
+    "task": "Owner task 2026-11-21: tools 2 and 3 on staging showed and exported secrets in finding excerpts and quoted commands (blocker of the public launch).",
+    "change": "One shared masking block in both engines (the same block, checked): known formats, JWT, private key blocks, values after credential/password/secret/token/api key/authorization/cookie keys whatever their length, Bearer/Basic, password options (/pass:, /rp, -Password, -u user:password, ConvertTo-SecureString), credentials, secret query values (percent escapes decoded) and token-like path segments in addresses, long opaque values. The whole text is masked before it is cut. Detection runs on the original text and is unchanged (corpus and held-out outputs identical).",
+    "tools": {
+      "prompt-injection-detector": {
+        "tool": 2,
+        "title": "Indirect Prompt Injection Sanitizer & Detector",
+        "engine_version": "1.0.3",
+        "masked": "finding excerpts, quoted text in details (normalized, decoded, hidden, comment text), decoded fragment previews (page and JSON report)",
+        "not_masked": "the highlighted text and the sanitized copy: they are the complete text the user pasted (the page says so)",
+        "files": {
+          "assets/js/prompt-injection-detector/engine.js": {
+            "bytes": 102264,
+            "sha256": "a6a18d0d9c28b9c6d1460266fded6b70e67aff3da25d8cf2d58ee59bd77ae68d",
+            "base_sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
+          },
+          "inc/tool-prompt-injection-detector.php": {
+            "bytes": 4456,
+            "sha256": "791d874a7947ba4db8397585826c1c4c4ae49e0375ee5d816dd8275dc0a6e3f4",
+            "base_sha256": "4011e8aedd05daf751e2766e7e1ea1cac6c467541e182b1eabe68678713e49c8"
+          },
+          "template-parts/tools/prompt-injection-detector.php": {
+            "bytes": 17039,
+            "sha256": "74b16d93447ff9f0b5044e82e9528c7c5a1739b8c8dcd3b38df16d14f7253e1c",
+            "base_sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
+          }
+        }
+      },
+      "lotl-command-analyzer": {
+        "tool": 3,
+        "title": "LotL / LOLBAS Command Analyzer",
+        "engine_version": "1.0.1",
+        "masked": "command line, normalized command, deobfuscation notes, binary as written, heuristic details, decoded commands and their nested analysis (page and JSON report)",
+        "not_masked": "",
+        "files": {
+          "assets/js/lotl-analyzer/engine.js": {
+            "bytes": 43709,
+            "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c",
+            "base_sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
+          },
+          "inc/tool-lotl-analyzer.php": {
+            "bytes": 4148,
+            "sha256": "8fd6aa28af18f8a00080f31fce624e72d97a23570df82806d1764fbb6c1e8e9d",
+            "base_sha256": "e0c2b1e43d66228d58163dc175c9af9867e77286e2bcc4437c37257f6c1e035b"
+          },
+          "template-parts/tools/lotl-command-analyzer.php": {
+            "bytes": 13690,
+            "sha256": "7455949ce7b2a6803647475bffefa01db688e628bf9d5cfaf24f417f83070a97",
+            "base_sha256": "af951c47f2604452de220dc5e78a0d8ad4ac1adee8d084e5f79a8f02af601164"
+          }
         }
       }
     }
@@ -1771,9 +1867,9 @@
       "sha256": "0d8b4c6d6300b877cee32c3dbedc9e4705a6a5c86057a2d9b2713c580724a9bd"
     },
     "assets/js/lotl-analyzer/engine.js": {
-      "bytes": 30538,
+      "bytes": 43709,
       "mode": "0644",
-      "sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
+      "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c"
     },
     "assets/js/lotl-analyzer/lolbas-data.js": {
       "bytes": 387900,
@@ -1811,9 +1907,9 @@
       "sha256": "17eacf1b6bf5aa4890fc7a6e326189c0d77a82c473833b47aacc460c6f11be37"
     },
     "assets/js/prompt-injection-detector/engine.js": {
-      "bytes": 88655,
+      "bytes": 102264,
       "mode": "0644",
-      "sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
+      "sha256": "a6a18d0d9c28b9c6d1460266fded6b70e67aff3da25d8cf2d58ee59bd77ae68d"
     },
     "assets/js/prompt-injection-detector/worker.js": {
       "bytes": 3750,
@@ -1988,7 +2084,7 @@
     "inc/tool-lotl-analyzer.php": {
       "bytes": 4148,
       "mode": "0644",
-      "sha256": "e0c2b1e43d66228d58163dc175c9af9867e77286e2bcc4437c37257f6c1e035b"
+      "sha256": "8fd6aa28af18f8a00080f31fce624e72d97a23570df82806d1764fbb6c1e8e9d"
     },
     "inc/tool-mcp-checker.php": {
       "bytes": 2616,
@@ -1998,7 +2094,7 @@
     "inc/tool-prompt-injection-detector.php": {
       "bytes": 4456,
       "mode": "0644",
-      "sha256": "4011e8aedd05daf751e2766e7e1ea1cac6c467541e182b1eabe68678713e49c8"
+      "sha256": "791d874a7947ba4db8397585826c1c4c4ae49e0375ee5d816dd8275dc0a6e3f4"
     },
     "inc/tool-prompt-injection-test-bench.php": {
       "bytes": 3219,
@@ -2136,9 +2232,9 @@
       "sha256": "ac3743469d109dd12eb2f8cf346b7ca057b52ca05de03b5b6f9c3c3370f0cf15"
     },
     "template-parts/tools/lotl-command-analyzer.php": {
-      "bytes": 13260,
+      "bytes": 13690,
       "mode": "0644",
-      "sha256": "af951c47f2604452de220dc5e78a0d8ad4ac1adee8d084e5f79a8f02af601164"
+      "sha256": "7455949ce7b2a6803647475bffefa01db688e628bf9d5cfaf24f417f83070a97"
     },
     "template-parts/tools/mcp-security-checker.php": {
       "bytes": 17214,
@@ -2151,9 +2247,9 @@
       "sha256": "b62148ee9f45fec0e41da9225ca517b76618dde734fa42c65bb32ee249a7751b"
     },
     "template-parts/tools/prompt-injection-detector.php": {
-      "bytes": 16595,
+      "bytes": 17039,
       "mode": "0644",
-      "sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
+      "sha256": "74b16d93447ff9f0b5044e82e9528c7c5a1739b8c8dcd3b38df16d14f7253e1c"
     },
     "template-parts/tools/prompt-injection-test-bench.php": {
       "bytes": 14378,
