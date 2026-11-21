@@ -60,7 +60,7 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 			<div class="cd-la-row">
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-lotl-report><?php esc_html_e( 'Download analysis (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The report contains your command lines. It is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The report contains your command lines. On this page and in the report, common secret forms are masked on a best-effort basis: known token formats, values after keys such as password or token, passwords given as options (/pass:, /rp, -Password, -u user:password, ConvertTo-SecureString), Bearer and Basic credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the report before you share it. The report is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 
