@@ -51,8 +51,8 @@ if(in_array('--html',$argv??[],true)){echo $html;exit;}
 $catalog=cyberdat_planned_tools();
 $ten=array_values(array_filter($catalog,static fn($t)=>in_array($t['release'],['1.1','1.2','1.3'],true)));
 $util=array_values(array_filter($catalog,static fn($t)=>$t['release']==='utilities-1'));
-check(count($ten)===10&&count($util)===1&&count($catalog)===11,'full ten-tool catalogue retained; one quick utility added (planned)');
-check(array_slice($catalog,0,10)===$ten&&end($catalog)['slug']==='email-header-analyzer'&&$util[0]['status']==='planned'&&$util[0]['category_slug']==='utilities','the ten tools keep their place; the utility is last, planned, category Quick Utilities');
+check(count($ten)===10&&count($util)===1&&count($catalog)===11,'full ten-tool catalogue retained; one quick utility added');
+check(array_slice($catalog,0,10)===$ten&&end($catalog)['slug']==='email-header-analyzer'&&$util[0]['status']==='available'&&$util[0]['category_slug']==='utilities','the ten tools keep their place; the utility is last, available, category Quick Utilities');
 preg_match_all('/<article class="cyberdat-tool-card tools-roadmap-card[^"]*".*?<\/article>/s',$html,$cards);
 check(count($cards[0])===11,'all ten tool cards and the utility card server-rendered without JavaScript');
 foreach($catalog as $tool){check(str_contains($html,esc_html($tool['title'])),'card retained: '.$tool['slug']);}
@@ -73,7 +73,7 @@ check(str_contains($rendered,'href="https://staging.cyberdat.eu/tools/mcp-securi
 $road=json_decode(file_get_contents(__DIR__.'/../deploy/tools-release-1/route-catalog.json'),true);
 check(array_column($catalog,'slug')===array_column($road,'slug'),'catalogue order unchanged');
 check(array_count_values(array_column($catalog,'release'))===['1.1'=>3,'1.2'=>4,'1.3'=>3,'utilities-1'=>1],'original release split unchanged; utility outside the ten');
-check(count(array_filter($catalog,static fn($t)=>$t['status']==='available'))===4,'all four implementation entries retained');
+check(count(array_filter($catalog,static fn($t)=>$t['status']==='available'))===11,'tools 1-10 and the utility are available in the catalogue (owner decision 2026-11-21); the Hub still shows Available only for a ready page');
 $items='<li><a href="/">Home</a></li><li><a href="/topics/">Topics</a></li><li><a href="/news/">News</a></li><li><a href="/analysis/">Analysis</a></li><li><a href="/guides/">Guides</a></li><li><a href="/learning/">Learning</a></li>';
 $args=(object)['theme_location'=>'primary'];$menu=cyberdat_tools_menu_item($items,$args);
 check(str_starts_with($menu,$items)&&substr_count($menu,'<li')===7,'all six primary items preserved and Tools appended');
