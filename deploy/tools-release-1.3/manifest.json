@@ -2,9 +2,9 @@
   "schema": "cyberdat-theme-release/1",
   "revision": "tools-release-1.3/1",
   "parent_revision": "tools-release-1.2/2",
-  "parent_theme_commit": "a5d4f842bfc85f56642e5d332bbccd6db968f2c4",
-  "base_commit": "a5d4f842bfc85f56642e5d332bbccd6db968f2c4",
-  "theme_commit": "a92b147b18f2e77f51f7f23d822081cff38d3ee1",
+  "parent_theme_commit": "581c3f0fc22fa8385052994cc4611fadd662e81b",
+  "base_commit": "838fecc8a817f6fbab776131787ea6f8d6138a46",
+  "theme_commit": "c906e21c3e93ec107e90bffe4a7991c9b58e0741",
   "note": "Theme delta for release 1.3 tools 8 (LLM Prompt Injection Test Bench), 9 (YARA/Sigma Rule Validator & Converter) and 10 (Docker & Kubernetes Hardening Audit Generator) over tools-release-1.2/2: new tool files, three functions.php includes, three catalogue descriptions (status planned). \"tools\" lists each tool's own files and only its lines in the shared files, so a tool can be installed alone. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 146,
@@ -73,13 +73,13 @@
     },
     "assets/js/prompt-injection-test-bench/app.js": {
       "status": "added",
-      "bytes": 15330,
-      "sha256": "6f95fdc14165fac21ac6b8f76e5987a6c236f2d915f0f2b4b1cb1a71342d1d17"
+      "bytes": 15913,
+      "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
     },
     "assets/js/prompt-injection-test-bench/engine.js": {
       "status": "added",
-      "bytes": 39879,
-      "sha256": "1b0559abb7c990ccde908170932c6ae1ca1bc3246897d691995f2d2b08713843"
+      "bytes": 40224,
+      "sha256": "2be1072d677fb2162fb80740f026287c513b7782ed8418dafeca9c0cb6658410"
     },
     "assets/js/prompt-injection-test-bench/worker.js": {
       "status": "added",
@@ -135,8 +135,8 @@
     },
     "template-parts/tools/prompt-injection-test-bench.php": {
       "status": "added",
-      "bytes": 14184,
-      "sha256": "f0e4de455b2d0aaf5cf5c56014c3f637db69370b5f0f93066cfd0ab99a07c061"
+      "bytes": 14211,
+      "sha256": "590c352864a16892aa07f47b42a67bac9fcda854c049df359da544016cb10308"
     },
     "template-parts/tools/yara-sigma-validator.php": {
       "status": "added",
@@ -155,12 +155,12 @@
           "sha256": "80cb8ac5040230a322e870997ebe617e82aad6c5f4cac4f30f2e23d40c87257b"
         },
         "assets/js/prompt-injection-test-bench/app.js": {
-          "bytes": 15330,
-          "sha256": "6f95fdc14165fac21ac6b8f76e5987a6c236f2d915f0f2b4b1cb1a71342d1d17"
+          "bytes": 15913,
+          "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
         },
         "assets/js/prompt-injection-test-bench/engine.js": {
-          "bytes": 39879,
-          "sha256": "1b0559abb7c990ccde908170932c6ae1ca1bc3246897d691995f2d2b08713843"
+          "bytes": 40224,
+          "sha256": "2be1072d677fb2162fb80740f026287c513b7782ed8418dafeca9c0cb6658410"
         },
         "assets/js/prompt-injection-test-bench/worker.js": {
           "bytes": 2432,
@@ -171,8 +171,8 @@
           "sha256": "8d61adb56abcb65f4628dc2283db3504fad417ab2d1629ca7f46f5ff45d26c4f"
         },
         "template-parts/tools/prompt-injection-test-bench.php": {
-          "bytes": 14184,
-          "sha256": "f0e4de455b2d0aaf5cf5c56014c3f637db69370b5f0f93066cfd0ab99a07c061"
+          "bytes": 14211,
+          "sha256": "590c352864a16892aa07f47b42a67bac9fcda854c049df359da544016cb10308"
         }
       },
       "shared": {
@@ -588,9 +588,9 @@
       "sha256": "b78892218f9e913ae7d1dd0fb08637f208c6952560237f5719ff6187050d2e14"
     },
     "assets/js/ai-model-bom/engine.js": {
-      "bytes": 76137,
+      "bytes": 77090,
       "mode": "0644",
-      "sha256": "8a45eb8fd4e9560ef52eb5df3259495c7b4f3cc5f88cd2c341e8d02ac76919a7"
+      "sha256": "5613d7132fc06c4451589cb1fb58e597ed172ce05dbf8d2b415172b01f3593de"
     },
     "assets/js/ai-model-bom/worker.js": {
       "bytes": 3429,
@@ -618,9 +618,9 @@
       "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
     },
     "assets/js/atlas-mapper/engine.js": {
-      "bytes": 31553,
+      "bytes": 33111,
       "mode": "0644",
-      "sha256": "838e26a908572281445e30c12c4ecdea5451a8571c712fc857f3ca2d5612c3f5"
+      "sha256": "50eda04930e7cc46b9de978a1281e9115a0219391b1cc3a339958b978dda9e41"
     },
     "assets/js/atlas-mapper/worker.js": {
       "bytes": 2524,
@@ -840,12 +840,12 @@
     "inc/tool-ai-model-bom.php": {
       "bytes": 2706,
       "mode": "0644",
-      "sha256": "9738e70561f93fd26180356f6fca9fe23767759297cd68c4766aecce56bb208f"
+      "sha256": "c460432abf3bfe4338a70aca22b8035b5211b594404bb6a0e3d31240ec8b2c95"
     },
     "inc/tool-atlas-mapper.php": {
       "bytes": 3977,
       "mode": "0644",
-      "sha256": "aeae342b25f879229d427bc51261bf9bea65df13a35c04ce60f77b285c6a2f33"
+      "sha256": "a7a9d2ee13d0dd3cc7721c7dc33200722119e435a98a7a1fcec9b242d9b840a6"
     },
     "inc/tool-leak-inspector.php": {
       "bytes": 2674,
@@ -1335,9 +1335,9 @@
       "sha256": "b78892218f9e913ae7d1dd0fb08637f208c6952560237f5719ff6187050d2e14"
     },
     "assets/js/ai-model-bom/engine.js": {
-      "bytes": 76137,
+      "bytes": 77090,
       "mode": "0644",
-      "sha256": "8a45eb8fd4e9560ef52eb5df3259495c7b4f3cc5f88cd2c341e8d02ac76919a7"
+      "sha256": "5613d7132fc06c4451589cb1fb58e597ed172ce05dbf8d2b415172b01f3593de"
     },
     "assets/js/ai-model-bom/worker.js": {
       "bytes": 3429,
@@ -1365,9 +1365,9 @@
       "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
     },
     "assets/js/atlas-mapper/engine.js": {
-      "bytes": 31553,
+      "bytes": 33111,
       "mode": "0644",
-      "sha256": "838e26a908572281445e30c12c4ecdea5451a8571c712fc857f3ca2d5612c3f5"
+      "sha256": "50eda04930e7cc46b9de978a1281e9115a0219391b1cc3a339958b978dda9e41"
     },
     "assets/js/atlas-mapper/worker.js": {
       "bytes": 2524,
@@ -1495,14 +1495,14 @@
       "sha256": "70e8c6271f9078966f2daccdc8da8515d98c342de916df6acd70e24ee0b33e14"
     },
     "assets/js/prompt-injection-test-bench/app.js": {
-      "bytes": 15330,
+      "bytes": 15913,
       "mode": "0644",
-      "sha256": "6f95fdc14165fac21ac6b8f76e5987a6c236f2d915f0f2b4b1cb1a71342d1d17"
+      "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
     },
     "assets/js/prompt-injection-test-bench/engine.js": {
-      "bytes": 39879,
+      "bytes": 40224,
       "mode": "0644",
-      "sha256": "1b0559abb7c990ccde908170932c6ae1ca1bc3246897d691995f2d2b08713843"
+      "sha256": "2be1072d677fb2162fb80740f026287c513b7782ed8418dafeca9c0cb6658410"
     },
     "assets/js/prompt-injection-test-bench/worker.js": {
       "bytes": 2432,
@@ -1632,12 +1632,12 @@
     "inc/tool-ai-model-bom.php": {
       "bytes": 2706,
       "mode": "0644",
-      "sha256": "9738e70561f93fd26180356f6fca9fe23767759297cd68c4766aecce56bb208f"
+      "sha256": "c460432abf3bfe4338a70aca22b8035b5211b594404bb6a0e3d31240ec8b2c95"
     },
     "inc/tool-atlas-mapper.php": {
       "bytes": 3977,
       "mode": "0644",
-      "sha256": "aeae342b25f879229d427bc51261bf9bea65df13a35c04ce60f77b285c6a2f33"
+      "sha256": "a7a9d2ee13d0dd3cc7721c7dc33200722119e435a98a7a1fcec9b242d9b840a6"
     },
     "inc/tool-container-hardening-audit.php": {
       "bytes": 2775,
@@ -1820,9 +1820,9 @@
       "sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
     },
     "template-parts/tools/prompt-injection-test-bench.php": {
-      "bytes": 14184,
+      "bytes": 14211,
       "mode": "0644",
-      "sha256": "f0e4de455b2d0aaf5cf5c56014c3f637db69370b5f0f93066cfd0ab99a07c061"
+      "sha256": "590c352864a16892aa07f47b42a67bac9fcda854c049df359da544016cb10308"
     },
     "template-parts/tools/yara-sigma-validator.php": {
       "bytes": 14382,

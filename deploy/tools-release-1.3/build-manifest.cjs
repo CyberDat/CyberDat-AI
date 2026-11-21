@@ -2,8 +2,9 @@
  * Builds deploy/tools-release-1.3/manifest.json in the release-1 manifest shape (base/target maps of every theme file
  * with bytes, mode and sha256 of the exact LF bytes stored in git), an explicit delta, and per tool: its own files with
  * hashes and only its lines in the shared files (functions.php include, catalogue entry).
- * Base = a5d4f84 (Codex export redaction fix), whose theme is byte-equal to the tools-release-1.2/2 manifest target
- * (theme_commit of that manifest; the integration/tools-release-1.2 tip 6b7d97c has the same theme).
+ * Base = 838fecc (integration/tools-release-1.2 tip, Codex masking review fix), whose theme is byte-equal to the target of
+ * the tools-release-1.2/2 manifest as updated by Codex (its theme_commit 581c3f0 is not on GitHub; the check below compares
+ * the theme files themselves).
  *   node deploy/tools-release-1.3/build-manifest.cjs [themeCommit] [--check]
  */
 'use strict';
@@ -12,7 +13,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const BASE_COMMIT = 'a5d4f842bfc85f56642e5d332bbccd6db968f2c4';
+const BASE_COMMIT = '838fecc8a817f6fbab776131787ea6f8d6138a46';
 const THEME = 'wp-content/themes/cyberdat/';
 const ROOT = path.join(__dirname, '../..');
 const sh = c => cp.execSync(c, { cwd: ROOT, maxBuffer: 1 << 28 });
