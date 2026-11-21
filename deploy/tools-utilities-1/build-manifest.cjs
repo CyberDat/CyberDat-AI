@@ -60,7 +60,19 @@ const PREVIEW_GROUPS = {
 	'tools-hub-previews-5-7': ['agent-leak-inspector', 'ai-model-bom', 'mitre-atlas-mapper'].map(x => PREVIEW + x + '.svg').concat([PREVIEW + 'README.md']),
 	'tools-release-1.3': ['prompt-injection-test-bench', 'yara-sigma-validator', 'container-hardening-audit'].map(x => PREVIEW + x + '.svg')
 };
-const expectMod = ['functions.php', 'inc/tools-catalog.json', 'inc/tools.php', 'page-templates/tools.php'].concat(...Object.values(PREVIEW_GROUPS)).sort();
+// Owner task 2026-11-21 (blocker of the public launch): secret masking in the exports of tools 2 and 3 on staging.
+const MASK = {
+	'prompt-injection-detector': { tool: 2, title: 'Indirect Prompt Injection Sanitizer & Detector', engine: 'assets/js/prompt-injection-detector/engine.js', inc: 'inc/tool-prompt-injection-detector.php', template: 'template-parts/tools/prompt-injection-detector.php', constant: 'CYBERDAT_PROMPT_DETECTOR_ENGINE', version: '1.0.3' },
+	'lotl-command-analyzer': { tool: 3, title: 'LotL / LOLBAS Command Analyzer', engine: 'assets/js/lotl-analyzer/engine.js', inc: 'inc/tool-lotl-analyzer.php', template: 'template-parts/tools/lotl-command-analyzer.php', constant: 'CYBERDAT_LOTL_ENGINE', version: '1.0.1' }
+};
+const MASK_FILES = [].concat(...Object.values(MASK).map(t => [t.engine, t.inc, t.template]));
+const maskBlock = k => { const s = blob(commit, THEME + k).toString('utf8'); const a = s.indexOf('// ---------------------------------------------------------------- secret masking (shared block)'), b = s.indexOf('// ---------------------------------------------------------------- end of secret masking (shared block)'); return a > 0 && b > a ? s.slice(a, b) : ''; };
+const blocks = Object.values(MASK).map(t => maskBlock(t.engine));
+if (!blocks[0] || blocks[0] !== blocks[1]) { throw new Error('the secret masking block must be present and equal in both engines'); }
+for (const t of Object.values(MASK)) {
+	if (!blob(commit, THEME + t.engine).toString('utf8').includes("const VERSION = '" + t.version + "';") || !blob(commit, THEME + t.inc).toString('utf8').includes('const ' + t.constant + " = '" + t.version + "';")) { throw new Error('engine version ' + t.version + ' expected in ' + t.engine + ' and ' + t.inc); }
+}
+const expectMod = ['functions.php', 'inc/tools-catalog.json', 'inc/tools.php', 'page-templates/tools.php'].concat(MASK_FILES, ...Object.values(PREVIEW_GROUPS)).sort();
 if (modified.join() !== expectMod.join() || removed.length) { throw new Error('unexpected modified/removed files: ' + modified.concat(removed).join(', ')); }
 const fn = blob(commit, THEME + 'functions.php').toString('utf8').split('\n');
 const fnBase = blob(BASE_COMMIT, THEME + 'functions.php').toString('utf8').split('\n');
@@ -96,7 +108,7 @@ const manifest = {
 	theme_commit: commit,
 	install_rule: 'The installer copies the target files as they are and changes no theme file (no prepare step that edits inc/tools.php, inc/tools-catalog.json or any other file). After installation every theme file on staging equals the target map of this manifest, byte for byte. Catalogue statuses and the staging canonical scope are part of the package.',
 	staging_known_differences: { source: 'Codex, 2026-11-21: prepare.py of the 1.2 installer (archive 178eb167…) edited two theme files on staging; staging equals that archive byte for byte. Not verified here (no staging access).', 'inc/tools-catalog.json': 'status planned -> available for agent-leak-inspector, ai-model-bom, mitre-atlas-mapper', 'inc/tools.php': 'cyberdat_tools_staging_canonical(): slug list extended by agent-leak-inspector, ai-model-bom, mitre-atlas-mapper', effect: 'base_sha256 of these two files on staging differs from the base map; both files are replaced as a whole by the target bytes (the target already contains these effects and the statuses of tools 8-10 and the utility).' },
-	note: 'Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility\'s files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility "available" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read "Quick utility" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
+	note: 'Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility\'s files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility "available" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read "Quick utility" instead of Phase/Release, secret masking in the page and exports of tools 2 and 3 (secret_masking: two engines, their version constants and one help text each). hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
 	delta_files: Object.fromEntries(added.concat(modified).sort().map(k => [k, Object.assign({ status: base[k] ? 'modified' : 'added', bytes: target[k].bytes, sha256: target[k].sha256 }, base[k] ? { base_sha256: base[k].sha256 } : {})])),
@@ -114,6 +126,11 @@ const manifest = {
 			}
 		}
 	},
+	secret_masking: {
+		task: 'Owner task 2026-11-21: tools 2 and 3 on staging showed and exported secrets in finding excerpts and quoted commands (blocker of the public launch).',
+		change: 'One shared masking block in both engines (the same block, checked): known formats, JWT, private key blocks, values after credential/password/secret/token/api key/authorization/cookie keys whatever their length, Bearer/Basic, password options (/pass:, /rp, -Password, -u user:password, ConvertTo-SecureString), credentials, secret query values (percent escapes decoded) and token-like path segments in addresses, long opaque values. The whole text is masked before it is cut. Detection runs on the original text and is unchanged (corpus and held-out outputs identical).',
+		tools: Object.fromEntries(Object.entries(MASK).map(([slug, t]) => [slug, { tool: t.tool, title: t.title, engine_version: t.version, masked: slug === 'lotl-command-analyzer' ? 'command line, normalized command, deobfuscation notes, binary as written, heuristic details, decoded commands and their nested analysis (page and JSON report)' : 'finding excerpts, quoted text in details (normalized, decoded, hidden, comment text), decoded fragment previews (page and JSON report)', not_masked: slug === 'lotl-command-analyzer' ? '' : 'the highlighted text and the sanitized copy: they are the complete text the user pasted (the page says so)', files: Object.fromEntries([t.engine, t.inc, t.template].map(k => [k, { bytes: target[k].bytes, sha256: target[k].sha256, base_sha256: base[k].sha256 }])) }]))
+	},
 	hub_previews: Object.fromEntries(Object.entries(PREVIEW_GROUPS).map(([pkg, files]) => [pkg, Object.fromEntries(files.map(k => [k, { bytes: target[k].bytes, sha256: target[k].sha256, base_sha256: base[k].sha256 }]))])),
 	base,
 	target
@@ -121,7 +138,7 @@ const manifest = {
 const file = path.join(__dirname, 'manifest.json');
 if (CHECK) {
 	const current = JSON.parse(fs.readFileSync(file, 'utf8'));
-	const same = JSON.stringify(current.target) === JSON.stringify(target) && JSON.stringify(current.delta) === JSON.stringify(manifest.delta) && JSON.stringify(current.tools) === JSON.stringify(manifest.tools) && JSON.stringify(current.hub_previews) === JSON.stringify(manifest.hub_previews);
+	const same = JSON.stringify(current.target) === JSON.stringify(target) && JSON.stringify(current.delta) === JSON.stringify(manifest.delta) && JSON.stringify(current.tools) === JSON.stringify(manifest.tools) && JSON.stringify(current.hub_previews) === JSON.stringify(manifest.hub_previews) && JSON.stringify(current.secret_masking) === JSON.stringify(manifest.secret_masking);
 	console.log(same ? 'PASS: tools-utilities-1 manifest matches the theme at ' + commit.slice(0, 12) : 'FAIL: tools-utilities-1 manifest is out of date for ' + commit.slice(0, 12));
 	process.exit(same ? 0 : 1);
 }

@@ -11,7 +11,7 @@ tools (owner decision of 2026-11-19).
 | Branch | `integration/tools-utilities-1`, created from `58ed710` (tip of `integration/tools-release-1.3`). On 2026-11-21: `integration/tools-release-1.2` (Codex export redaction fix `6b7d97c`) merged into 1.3 (`198bf49`), the 1.3 package rebuilt over `tools-release-1.2/2` (`e1bff4e`), 1.3 merged here (`df0f51a`, `4060781`); the Codex Hub `feat/tools-hub-cyber-glass` (`0a32f12`, installed on staging) merged here (`b93caf2`); Hub previews `feature/tools-hub-previews` `dfe3ac9`, merge `b96ddbb` |
 | Utility branch | `feature/tools-email-header-analyzer`: `12d01f7` Public Suffix List snapshot, `867bc1f` corpus and held-out set (frozen), `69b3a4a` utility, `d2cc2db` catalogue entry; merge `50e916b`; `386e37c` owner decisions of 2026-11-19 (PSL from publicsuffix.org, "Quick utility" card label, URL confirmed); merge `429e097` |
 | Package | `feature/tools-utilities-1-package`, merged into the integration branch |
-| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7); pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
+| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7), except the secret masking fix of tools 2 and 3 (`fix/tools-mask-pi-lotl-exports` `8ed3a81`, merge `1749a5a`: two engines, their version constants and one help text each, below); pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
 
 ## Install rule (owner decision 2026-11-21)
 
@@ -32,7 +32,7 @@ that patch.
 Base = the theme of `integration/tools-release-1.3` (`e1bff4e`, equal to the 1.3 manifest target) with the Codex Hub on
 staging overlaid (`hub_commit` `0a32f12`; `hub_overlay` lists its 15 theme files; the builder checks that 1.2/1.3 do not
 touch them). `manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 177 → 187 files: 10 added,
-10 modified, 0 removed. Utility: 9 files, its Hub preview, `functions.php`, the catalogue and one Hub template line.
+17 modified, 0 removed. Utility: 9 files, its Hub preview, `functions.php`, the catalogue and one Hub template line.
 Previews of tools 5–10 (6 SVGs and the illustrations README) ship with their own packages (`hub_previews`):
 `node deploy/tools-utilities-1/build-manifest.cjs --check` verifies it. `manifest.json` → `tools.email-header-analyzer`
 lists the utility's own files and only its lines in the shared files:
@@ -46,6 +46,7 @@ lists the utility's own files and only its lines in the shared files:
 | modified | `inc/tools.php` — `cyberdat_tools_staging_canonical()` takes the pages with catalogue status `available` instead of a hand-written slug list; the staging, published-page, `cyberdat_tool_ready` and Rank Math checks are unchanged |
 | added | `assets/images/tools-hub/email-header-analyzer.svg` — Hub card preview (headers only, `"Demo Bank" <a@example.net>` → dmarc=fail, brand in name) |
 | modified | `page-templates/tools.php` (the staging Hub template from `0a32f12`) — one line (66): planned cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
+| modified | secret masking of tools 2 and 3 (`manifest.json` → `secret_masking`): `assets/js/prompt-injection-detector/engine.js` (1.0.3), `inc/tool-prompt-injection-detector.php` (engine constant), `template-parts/tools/prompt-injection-detector.php` (help text under the report button); `assets/js/lotl-analyzer/engine.js` (1.0.1), `inc/tool-lotl-analyzer.php` (engine constant), `template-parts/tools/lotl-command-analyzer.php` (help text). Replace the six files as a whole |
 | other packages | tools 5–7 previews + illustrations README → `deploy/tools-hub-previews-5-7/` (Codex, tools already on staging); tools 8–10 previews → `deploy/tools-release-1.3/hub-previews.json` |
 
 **Hub effect** (owner decision 3, 2026-11-19: keep the card): the hub shows an 11th "Coming soon" card labelled
@@ -121,6 +122,49 @@ mx.google.com result, a message with only a forged result, the Apple relay addre
 engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extra 0), held-out 14/14 → 14/14 (32/32, 0).
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
+
+### Update 2026-11-21 (fifth round: secret masking in tools 2 and 3, blocker of the public launch)
+
+Tools 2 (Indirect Prompt Injection Sanitizer & Detector) and 3 (LotL / LOLBAS Command Analyzer) on staging showed and exported
+secrets: the detector in finding excerpts, the LotL analyzer in the quoted commands. Fix `fix/tools-mask-pi-lotl-exports`
+(`8ed3a81`, merge `1749a5a`):
+
+* **One shared masking block in both engines** (the same text; `tests/tools-mask-pi-lotl.test.cjs` and the builder check it):
+  known formats (AWS, GitHub, GitLab, Slack, Anthropic, OpenAI-style, Google, Hugging Face, Stripe, npm, Azure storage key),
+  JWT, private key blocks from BEGIN to END, values after credential / password / secret / token / api key / x-api-key /
+  access or private key / authorization / auth / csrf / session id / cookie keys whatever their length (`key=value`,
+  `key: value`, JSON, `=>`), Bearer and Basic with or without a key, password options (`/pass:`, `/rp`, `-Password`,
+  `--token=`, `-u user:password`, `ConvertTo-SecureString "…"`), credentials before `@`, secret query and fragment values in
+  addresses (names and values percent-decoded before they are classified; the original span is replaced), token-like address
+  path segments, long opaque values. Base64 that decodes to readable text with spaces (an encoded command, a payload) is
+  content and stays visible; hex hashes, GUIDs, paths and names made of words stay visible.
+* **Mask first, then cut.** The detector finds the secrets of the whole text once and builds every excerpt from it: a secret
+  that crosses the 60-character window or the edge of the match is kept whole and replaced. Quoted text in details (normalized,
+  decoded, hidden and comment text) and the decoded previews are masked before they are cut to 80–200 characters. LotL masks the
+  command line, the normalized command, deobfuscation notes, binaries as written, heuristic details, decoded commands and their
+  nested analysis; decoded commands (4,000 characters) and the address detail (120) are masked before the cut.
+* **Not masked (stated on the page):** the detector's highlighted text and sanitized copy are the complete text the user pasted
+  (the sanitized copy is the tool's product: injection sanitization, not secret redaction). Error messages contain no input
+  text (checked; unchanged). Both tools export JSON only (no Markdown export exists).
+* Detection runs on the original text and is unchanged. Engines: detector 1.0.3, LotL 1.0.1 (PHP constants and the page
+  version line follow). Page help texts: masking is best-effort and can miss a secret, check the report before sharing it.
+  The page texts and the FAQ/documentation (`editorial.json` of both tools, not changed) promise no complete detection (checked).
+* Unicode classes use the u flag (38 literals in the block, checked by a scanner), no look-behind. 1 MB hostile inputs
+  (15 shapes: keyed runs, keys without values, Bearer runs, a 1 MB address, trailing brackets, many addresses and query pairs,
+  broken percent escapes, private key headers, opaque runs, unclosed quotes, options, JWT-like, Base64): slowest 63 ms per
+  engine (limit 1 s). The detector's 10 MB engine test: 5.1 s → 7.7 s (one masking pass over the whole text).
+
+Test `tests/tools-mask-pi-lotl.test.cjs`: 62/62 (values from `tests/lib/synthetic-secrets.cjs`); the same file against the
+engines of `8580ed4`: 49 of 62 fail (the 13 that pass are guards: ordinary text not masked, detection unchanged, error
+messages, timing, page texts). Corpora before → after (outputs byte-identical): detector main 77/87 (88.5 %, medium+ 75/87),
+benign 65: any 10, medium+ 0; held-out 26/30 (86.7 %), benign 25: medium+ 2; RAG 6/6 as expected. LotL main suspicious
+medium+ 34/35 (97.1 %), function correct 31/35, benign medium+ 0/45; held-out 13/15 (86.7 %), function 12/15, benign medium+
+2/15; dependent 9/9. Engine tests: detector 33/33, LotL 20/20. Export surface audit: LotL `secret_visible` true → false.
+
+One regression run (local sandbox): detector Edge 21 / Firefox 13 / WebKit 13, LotL 16 / 10 / 10 — all exit 0, PASS counts as
+before; Hub 174/174 in each of Edge, Firefox and WebKit. On the pages in the three browsers (real worker): synthetic secrets
+pasted into each tool appear neither in the findings / commands list nor in the downloaded JSON report (6/6). PHP tests of all
+eleven pages, the tools contract, catalogue and canonical suites: PASS.
 
 ### Update 2026-11-21 (fourth round: catalogue statuses and staging canonical)
 
