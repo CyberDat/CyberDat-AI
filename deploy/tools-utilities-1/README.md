@@ -155,8 +155,9 @@ secrets: the detector in finding excerpts, the LotL analyzer in the quoted comma
   engine (limit 1 s). The detector's 10 MB engine test: 5.1 s → 7.7 s (one masking pass over the whole text).
 
 Test `tests/tools-mask-pi-lotl.test.cjs`: 62/62 (values from `tests/lib/synthetic-secrets.cjs`); the same file against the
-engines of `8580ed4`: 49 of 62 fail (the 13 that pass are guards: ordinary text not masked, detection unchanged, error
-messages, timing, page texts). Corpora before → after (outputs byte-identical): detector main 77/87 (88.5 %, medium+ 75/87),
+engines and page texts of `8580ed4`: 51 of 62 fail (the 11 that pass are guards: ordinary text not masked, detection
+unchanged, error messages, timing, and the four "no promise" checks — the old texts promised nothing either; the commit
+message of `8ed3a81` says 49, counted before the page-text checks were added). Corpora before → after (outputs byte-identical): detector main 77/87 (88.5 %, medium+ 75/87),
 benign 65: any 10, medium+ 0; held-out 26/30 (86.7 %), benign 25: medium+ 2; RAG 6/6 as expected. LotL main suspicious
 medium+ 34/35 (97.1 %), function correct 31/35, benign medium+ 0/45; held-out 13/15 (86.7 %), function 12/15, benign medium+
 2/15; dependent 9/9. Engine tests: detector 33/33, LotL 20/20. Export surface audit: LotL `secret_visible` true → false.
