@@ -1,7 +1,7 @@
 {
   "schema": "cyberdat-hub-previews/1",
   "package": "tools-hub-previews-5-7",
-  "theme_commit": "b96ddbb376b12e2eb050d461630862b699c13e86",
+  "theme_commit": "e8214699af260d605d7b4220adee29ba6efebcad",
   "hub_commit": "0a32f1234e596c425cda58b096ea1e085147386f",
   "note": "Replace these files in the installed Hub (paths relative to the theme). Decorative 480x260 SVGs, synthetic text only, no scripts or external references; the Hub template and the catalogue are unchanged (the template picks the file by catalogue slug, with alt=\"\" and aria-hidden). Verify base_sha256 on staging before replacing and sha256 after.",
   "files": {

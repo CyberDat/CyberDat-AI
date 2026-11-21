@@ -2,7 +2,7 @@
  * Builds deploy/tools-utilities-1/manifest.json in the release-1 manifest shape (base/target maps of every theme file
  * with bytes, mode and sha256 of the exact LF bytes stored in git), an explicit delta, and for the utility: its own files
  * with hashes and only its lines in the shared files (functions.php include, catalogue entry).
- * Base = what closed staging will run before this package: the theme of integration/tools-release-1.3 at e1bff4e (equal
+ * Base = what closed staging will run before this package: the theme of integration/tools-release-1.3 at 4ee0ada (equal
  * to the tools-release-1.3 manifest target) with the Codex Hub redesign overlaid (feat/tools-hub-cyber-glass 0a32f12, the
  * Hub installed on staging: its theme files that differ from its base 24a333d). The overlay is only valid while 1.2/1.3
  * leave those Hub files untouched; this is checked.
@@ -16,7 +16,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const BASE_COMMIT = 'e1bff4ecdf925745be28e31781c6b4dd2585fd70';
+const BASE_COMMIT = '4ee0adaf7d531152d7f8fe4f93312474b12690b4';
 const HUB_COMMIT = '0a32f1234e596c425cda58b096ea1e085147386f';
 const HUB_FROM = '24a333ddf2f91499b0b693f3810181990f8ec8e4';
 const THEME = 'wp-content/themes/cyberdat/';
