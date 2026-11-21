@@ -81,7 +81,7 @@ $cyberdat_cha_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 				<li><?php esc_html_e( 'Input fields, file names and findings are marked so that the browser’s built-in page translator does not translate them, because translating would send their text to a translation service.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'This tool does not persist data: input, findings and settings are not written to cookies, local storage or the address bar, and the tool resets them when you close or reload the tab. Browser session restore, extensions, the clipboard and downloaded files are outside these controls; this is not secure erasure.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Values that look like secrets are shown masked in findings and checklists, including long random-looking values that are not recognised; masking is best effort.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Values that look like secrets are shown masked in findings and checklists, including long random-looking values that are not recognised, also when they appear in file names, object and container names or error messages. Masking is best effort and does not find every secret.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
 		<section aria-labelledby="cd-cha-limits">

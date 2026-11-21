@@ -18,8 +18,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.0';
-	const RULESET = '2026-11-18.1';
+	const ENGINE = '1.0.1';
+	const RULESET = '2026-11-21.1';
 	const MAX_INPUT_CHARS = 1024 * 1024;
 	const MAX_LINES = 20000;
 	const MAX_DEPTH = 64;

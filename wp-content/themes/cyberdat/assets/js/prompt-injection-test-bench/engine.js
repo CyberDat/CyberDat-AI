@@ -17,7 +17,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.0';
+	const ENGINE = '1.0.1';
 	const LIBRARY_VERSION = '2026-11-21.1';
 	const MAX_RESPONSE_CHARS = 200000;
 	const MAX_TOTAL_CHARS = 5 * 1024 * 1024;

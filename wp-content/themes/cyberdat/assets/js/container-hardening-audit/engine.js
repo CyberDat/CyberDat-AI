@@ -18,7 +18,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.0';
+	const ENGINE = '1.0.1';
 	const RULESET = '2026-11-18.1';
 	const MAX_INPUT_CHARS = 1024 * 1024;
 	const MAX_TOTAL_CHARS = 4 * 1024 * 1024;
@@ -646,7 +646,16 @@
 		return /^\s*(?:FROM|ARG)\s+[^\s:]/iu.test(first) && /^\s*FROM\s+\S/imu.test(text);
 	}
 	/** audit(text, { name, kind: 'auto'|'dockerfile'|'compose'|'kubernetes' }) -> per-file result; never throws for content problems. */
+	/** Masks every user-derived string of a file result (Codex acceptance SEC-06): file, object and container names,
+	 * evidence and error messages. Applied once when a result leaves audit()/auditFiles() and again in exportReport(). */
+	function maskResult(res) {
+		const M = v => (typeof v === 'string' ? maskSecrets(v) : v);
+		return Object.assign({}, res, { file: M(res.file), error: res.error ? Object.assign({}, res.error, { message: M(res.error.message) }) : res.error, findings: (res.findings || []).map(x => Object.assign({}, x, { file: M(x.file), object: M(x.object), container: M(x.container), evidence: M(x.evidence) })) });
+	}
 	function audit(text, opts) {
+		return maskResult(auditRaw(text, opts));
+	}
+	function auditRaw(text, opts) {
 		const o = opts || {};
 		const s = String(text === undefined || text === null ? '' : text);
 		if (s.length > MAX_INPUT_CHARS) { const e = new Error('The file is larger than 1 MB.'); e.code = 'TOO_LARGE'; throw e; }
@@ -694,7 +703,7 @@
 		const out = [];
 		list.forEach((x, i) => {
 			const o = Object.assign({}, opts || {}, { name: x.name || (list.length > 1 ? 'input ' + (i + 1) : 'pasted input'), kind: x.kind, tick });
-			try { out.push(audit(x.text, o)); } catch (e) { if (e.code === 'TIMEOUT') { throw e; } out.push({ engine: ENGINE, ruleset: RULESET, file: nfc(String(o.name)).slice(0, 200), kind: '', kindLabel: '', documents: 0, objects: 0, findings: [], counts: { high: 0, medium: 0, low: 0, info: 0 }, error: { code: e.code || 'FAILED', message: e.message, line: 0 } }); }
+			try { out.push(audit(x.text, o)); } catch (e) { if (e.code === 'TIMEOUT') { throw e; } out.push({ engine: ENGINE, ruleset: RULESET, file: nfc(String(o.name)).slice(0, 200), kind: '', kindLabel: '', documents: 0, objects: 0, findings: [], counts: { high: 0, medium: 0, low: 0, info: 0 }, error: { code: e.code || 'FAILED', message: maskSecrets(e.message), line: 0 } }); out[out.length - 1].file = maskSecrets(out[out.length - 1].file); }
 		});
 		const counts = { high: 0, medium: 0, low: 0, info: 0 };
 		for (const r of out) { for (const k of Object.keys(counts)) { counts[k] += r.counts[k]; } }
@@ -706,6 +715,7 @@
 	function where(f) { return [f.line ? 'line ' + f.line : '', f.document ? 'document ' + f.document : '', f.object, f.container && !f.object.endsWith(' ' + f.container) ? 'container ' + f.container : ''].filter(Boolean).join(' · '); }
 	function exportReport(result, opts) {
 		const o = opts || {};
+		result = Object.assign({}, result, { files: result.files.map(maskResult) });
 		const json = { tool: 'CyberDat Docker & Kubernetes Hardening Audit Generator', engine: ENGINE, ruleset: RULESET, generatedAt: o.timestamp || new Date().toISOString(), note: NOTE, counts: result.counts, files: result.files.map(r => ({ file: r.file, kind: r.kindLabel || null, documents: r.documents, objects: r.objects, error: r.error, counts: r.counts, findings: r.findings })) };
 		const L = ['# Container hardening checklist', '', 'Generated with CyberDat Docker & Kubernetes Hardening Audit Generator ' + ENGINE + ' (rules ' + RULESET + ') on ' + mdEsc(json.generatedAt) + '.', '', '> ' + NOTE, '', '- High: ' + result.counts.high + '; medium: ' + result.counts.medium + '; low: ' + result.counts.low + '; hygiene (info): ' + result.counts.info, ''];
 		for (const r of result.files) {
