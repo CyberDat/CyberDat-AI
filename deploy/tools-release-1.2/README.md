@@ -5,7 +5,15 @@ locally without VPS access. No secrets, passwords or tokens in this package. Thi
 `deploy/tools-leak-inspector/` and `deploy/tools-ai-bom/` for installation; those stay as the history of each tool.
 `deploy/tools-atlas-mapper/` holds the ATLAS data update script and the snapshot provenance (`atlas-snapshot.json`).
 
-## Urgent export remediation — 2026-11-20
+## Current export follow-up — 2026-11-21
+
+Revision **tools-release-1.2/3**, engines **1.0.3**, source parent `838fecc8a817f6fbab776131787ea6f8d6138a46`.
+See [export-followup-20261121/README.md](export-followup-20261121/README.md) for exact scope and executed results.
+The current manifest references a **theme tree SHA**, reachable through the published commit, rather than an unavailable local commit. `theme_commit` is a legacy alias explicitly typed as `tree`; `theme_tree` is authoritative.
+Current hashes are only in `artifact-sha256.json`. No installation occurred.
+Untyped filenames now receive conservative masking; the typed-filename exemption in the historical report below is superseded.
+
+## Historical export remediation — 2026-11-20
 
 Revision `tools-release-1.2/2`; fixed theme source `a5d4f842bfc85f56642e5d332bbccd6db968f2c4`.
 Tests were committed first (`63af024b38ee1d929c5c8efe10a31e3de166b9a3`): before5/20 PASS,15 FAIL; after20/20 PASS.

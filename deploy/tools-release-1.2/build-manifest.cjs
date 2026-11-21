@@ -18,17 +18,20 @@ const ROOT = path.join(__dirname, '../..');
 const sh = c => cp.execSync(c, { cwd: ROOT, maxBuffer: 1 << 28 });
 const CHECK = process.argv.includes('--check');
 const commit = sh('git rev-parse ' + (process.argv.slice(2).find(x => !x.startsWith('--')) || 'HEAD')).toString().trim();
-function tree(rev) {
+function tree(rev, prefix = THEME) {
 	const out = {};
-	for (const line of sh('git ls-tree -r -z ' + rev + ' -- ' + THEME).toString().split('\0').filter(Boolean)) {
+	for (const line of sh('git ls-tree -r -z ' + rev + (prefix ? ' -- ' + prefix : '')).toString().split('\0').filter(Boolean)) {
 		const [meta, p] = line.split('\t');
 		const buf = sh('git cat-file blob ' + meta.split(' ')[2]);
-		out[p.slice(THEME.length)] = { bytes: buf.length, mode: '0644', sha256: crypto.createHash('sha256').update(buf).digest('hex') };
+		out[p.slice(prefix.length)] = { bytes: buf.length, mode: '0644', sha256: crypto.createHash('sha256').update(buf).digest('hex') };
 	}
 	return Object.fromEntries(Object.entries(out).sort(([a], [b]) => (a < b ? -1 : 1)));
 }
 const base = tree(BASE_COMMIT);
-const target = tree(commit);
+const kind = sh('git cat-file -t ' + commit).toString().trim();
+if (!['tree', 'commit'].includes(kind)) { throw new Error('theme reference must be a commit or tree'); }
+const themeTree = kind === 'tree' ? commit : sh('git rev-parse ' + commit + ':' + THEME.replace(/\/$/u, '')).toString().trim();
+const target = tree(themeTree, '');
 const parent = JSON.parse(fs.readFileSync(path.join(ROOT, 'deploy/tools-la-unicode-marks/manifest.json'), 'utf8'));
 if (JSON.stringify(base) !== JSON.stringify(parent.target)) { throw new Error('base theme differs from the tools-la-unicode-marks manifest target'); }
 const release1 = tree(RELEASE1_COMMIT);
@@ -38,12 +41,16 @@ const removed = Object.keys(base).filter(k => !target[k]);
 const modified = Object.keys(target).filter(k => base[k] && base[k].sha256 !== target[k].sha256);
 const manifest = {
 	schema: 'cyberdat-theme-release/1',
-	revision: 'tools-release-1.2/2',
+	revision: 'tools-release-1.2/3',
 	parent_revision: parent.revision,
 	parent_theme_commit: parent.theme_commit,
 	release1_commit: RELEASE1_COMMIT,
 	base_commit: BASE_COMMIT,
-	theme_commit: commit,
+	// Legacy key retained for readers; the explicit type identifies a reachable theme subtree.
+	theme_commit: themeTree,
+	theme_reference_type: 'tree',
+	theme_tree: themeTree,
+	source_base_commit: '838fecc8a817f6fbab776131787ea6f8d6138a46',
 	note: 'Theme delta for release 1.2 tools 5 (System Prompt & Agent Leak Inspector), 6 (AI Model Bill of Materials) and 7 (MITRE ATLAS Attack Vector Mapper, with the MITRE ATLAS 2026.10 data snapshot and its Apache-2.0 license files) over tools-la-unicode-marks/1: new tool files, three functions.php includes, three catalogue descriptions (status planned). cumulative = files that differ from the installed release-1 theme. Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). The separate theme-delta.tar.gz contains only the explicit delta. It is source material, not a full-theme deployment artifact; apply it over a verified current staging snapshot preserving accepted LA Stage1 and the Hub.',
 	counts: { base: Object.keys(base).length, target: Object.keys(target).length, added: added.length, modified: modified.length, removed: removed.length },
 	delta: { added, modified, removed },
@@ -55,7 +62,7 @@ const manifest = {
 const file = path.join(__dirname, 'manifest.json');
 if (CHECK) {
 	const current = JSON.parse(fs.readFileSync(file, 'utf8'));
-	const same = JSON.stringify(current.target) === JSON.stringify(target) && JSON.stringify(current.delta) === JSON.stringify(manifest.delta);
+	const same = current.theme_reference_type === 'tree' && current.theme_tree === themeTree && current.theme_commit === themeTree && JSON.stringify(current.target) === JSON.stringify(target) && JSON.stringify(current.delta) === JSON.stringify(manifest.delta);
 	console.log(same ? 'PASS: tools-release-1.2 manifest matches the theme at ' + commit.slice(0, 12) : 'FAIL: tools-release-1.2 manifest is out of date for ' + commit.slice(0, 12));
 	process.exit(same ? 0 : 1);
 }
