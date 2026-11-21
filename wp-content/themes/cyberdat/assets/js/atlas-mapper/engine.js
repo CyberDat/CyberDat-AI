@@ -16,7 +16,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
 	'use strict';
 
-	const ENGINE = '1.0.0';
+	const ENGINE = '1.0.1';
 	const RULESET = '2026-11-15.1';
 	const MAX_INPUT_CHARS = 100000;
 	const DATA = (typeof module === 'object' && module.exports && typeof require === 'function') ? require('./atlas-data.js') : root.CyberDatAtlasData;
@@ -176,12 +176,24 @@
 				out.push({ kind, start: a, end: b, shown: kind === 'Private key' ? 'BEGIN … PRIVATE KEY' : mask(m[0]) });
 			}
 		}
+		// Password/token assignments are sensitive even when they have no provider prefix or high entropy.
+		const ASSIGN = /([\p{L}\p{N}_.\-]{2,40})["']?[ \t]*[:=][ \t]*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&<>]+)/gu;
+		let assigned;
+		while ((assigned = ASSIGN.exec(s))) {
+			const key = assigned[1].normalize('NFC').toLowerCase().replace(/[_.\-]/gu, '');
+			if (!/^(?:password|passwd|pwd|secret|clientsecret|token|accesstoken|refreshtoken|apikey|xapikey|authorization|credential|credentials|privatekey)$/u.test(key)) { continue; }
+			const quoted = assigned[2][0] === '"' || assigned[2][0] === "'";
+			const value = quoted ? assigned[2].slice(1, -1) : assigned[2];
+			const a = assigned.index + assigned[0].length - assigned[2].length + (quoted ? 1 : 0), b = a + value.length;
+			if (!value || taken(a, b)) { continue; }
+			out.push({ kind: 'assigned secret', start: a, end: b, shown: mask(value) });
+		}
 		const LONG = /[0-9A-Za-z+/=_\-.]{24,}/gu;
 		let m;
 		while ((m = LONG.exec(s))) {
 			const v = m[0], a = m.index, b = a + v.length;
 			if (taken(a, b) || (a > 0 && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b]))) { continue; }
-			if (!/[0-9]/u.test(v) || !/[A-Za-z]/u.test(v) || /^[0-9a-fA-F-]+$/u.test(v) || /^(?:https?|www)/iu.test(v) || entropy(v) < 3.5) { continue; }
+			if (/^(?:https?|www)/iu.test(v)) { continue; }
 			out.push({ kind: 'unrecognized long value', start: a, end: b, shown: mask(v) });
 		}
 		return out.sort((x, y) => x.start - y.start);
@@ -295,11 +307,11 @@
 		const o = opts || {};
 		const items = (selection || []).filter(s => TECH.has(s.id)).map(s => {
 			const t = techniqueView(s.id);
-			return { id: t.id, name: t.name, tactics: t.tactics.map(x => x.id + ' ' + x.name), parent: t.parent ? t.parent.id : null, mitigations: t.mitigations.map(m => ({ id: m.id, name: m.name, via: m.via || undefined })), selectedFrom: String(s.source || ''), note: maskSecrets(String(s.note || '').slice(0, 4000)) };
+			return { id: t.id, name: t.name, tactics: t.tactics.map(x => x.id + ' ' + x.name), parent: t.parent ? t.parent.id : null, mitigations: t.mitigations.map(m => ({ id: m.id, name: m.name, via: m.via || undefined })), selectedFrom: maskSecrets(String(s.source || '')), note: maskSecrets(String(s.note || '')).slice(0, 4000) };
 		});
 		const d = dataInfo();
 		const json = {
-			tool: 'CyberDat MITRE ATLAS Attack Vector Mapper', engine: ENGINE, mappingRules: RULESET, generatedAt: o.timestamp || new Date().toISOString(),
+			tool: 'CyberDat MITRE ATLAS Attack Vector Mapper', engine: ENGINE, mappingRules: RULESET, generatedAt: maskSecrets(String(o.timestamp || new Date().toISOString())),
 			data: { source: 'MITRE ATLAS', release: d.release, releaseDate: d.releaseDate, commit: d.commit, license: d.license, attribution: d.copyright + '. MITRE ATLAS data licensed under the Apache License 2.0. Modified: ' + d.modification },
 			note: 'Candidate techniques for review, not a security assessment and not a complete threat model. Technique names, ids, tactics and mitigations are MITRE ATLAS data; the reasons for proposing them are CyberDat mapping, not an assessment by MITRE. Secrets in notes are masked.',
 			techniques: items

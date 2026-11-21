@@ -16,7 +16,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.0';
+	const ENGINE = '1.0.1';
 	const RULESET = '2026-11-14.1';
 	const SPEC_VERSION = '1.7';
 	const TOOL_NAME = 'CyberDat AI Model Bill of Materials';
@@ -187,13 +187,15 @@
 				taken.push([start, end]);
 			}
 		}
-		// key=value / key: value assignments with a secret-like name inside free text
-		const ASSIGN = /([\p{L}\p{N}_.\-]{2,40})[ \t]*[:=][ \t]*["']?([^\s"',;]{8,})/gu;
+		// Read complete quoted values before JSON/Markdown escaping; unquoted assignments end at delimiters.
+		const ASSIGN = /([\p{L}\p{N}_.\-]{2,40})["']?[ \t]*[:=][ \t]*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&<>]+)/gu;
 		while ((m = ASSIGN.exec(s))) {
-			const vStart = m.index + m[0].length - m[2].length;
-			if (!isSecretName(m[1]) || overlaps(vStart, vStart + m[2].length) || isUrlLike(m[2]) || /^[\p{L}\p{M}]+$/u.test(m[2])) { continue; }
-			out.push({ rule: 'AIBOM-SEC-002', kind: 'value assigned to “' + m[1] + '”', start: vStart, end: vStart + m[2].length, shown: mask(m[2]) });
-			taken.push([vStart, vStart + m[2].length]);
+			const quoted = m[2][0] === '"' || m[2][0] === "'";
+			const value = quoted ? m[2].slice(1, -1) : m[2];
+			const vStart = m.index + m[0].length - m[2].length + (quoted ? 1 : 0);
+			if (!value || !isSecretName(m[1]) || overlaps(vStart, vStart + value.length)) { continue; }
+			out.push({ rule: 'AIBOM-SEC-002', kind: 'value assigned to “' + m[1] + '”', start: vStart, end: vStart + value.length, shown: mask(value) });
+			taken.push([vStart, vStart + value.length]);
 		}
 		if (!(opts && opts.noOpaque)) {
 			const OPAQUE = /[0-9A-Za-z+/=_.\-]{32,}/gu;
@@ -219,6 +221,50 @@
 		let out = s;
 		for (const x of spans) { out = out.slice(0, x.start) + '[' + x.shown + ']' + out.slice(x.end); }
 		return out;
+	}
+
+	/** Conservative export boundary: mask unknown long token-shaped values too, without an entropy exemption. */
+	function maskExportText(text) {
+		const s = str(text), spans = scanText(s).filter(x => x.rule !== 'AIBOM-NET-001');
+		const urls = [...s.matchAll(URL_RE)].map(m => ({ start: m.index, end: m.index + m[0].length, text: m[0] }));
+		for (const u of urls) {
+			const q = u.text.indexOf('?');
+			if (q < 0) { continue; }
+			let offset = q + 1;
+			for (const pair of u.text.slice(offset).split('&')) {
+				const eq = pair.indexOf('='), value = eq < 0 ? '' : pair.slice(eq + 1).split('#')[0];
+				const a = u.start + offset + eq + 1, b = a + value.length;
+				if (/^[0-9A-Za-z+/=_.\-]{32,}$/u.test(value) && !spans.some(x => a < x.end && b > x.start)) { spans.push({ start: a, end: b, shown: mask(value) }); }
+				offset += pair.length + 1;
+			}
+		}
+		const re = /[0-9A-Za-z+/=_.\-]{32,}/gu;
+		let m;
+		while ((m = re.exec(s))) {
+			const a = m.index, b = a + m[0].length;
+			if ((a && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b])) || spans.some(x => a < x.end && b > x.start) || urls.some(u => a >= u.start && b <= u.end)) { continue; }
+			spans.push({ start: a, end: b, shown: mask(m[0]) });
+		}
+		let out = s;
+		for (const x of spans.sort((a, b) => b.start - a.start)) { out = out.slice(0, x.start) + '[' + x.shown + ']' + out.slice(x.end); }
+		return out;
+	}
+	function exportInventory(inventory) {
+		const inv = normalizeInventory(inventory);
+		const walk = v => typeof v === 'string' ? maskExportText(v) : Array.isArray(v) ? v.map(walk) : isObj(v) ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : v;
+		const safe = walk(inv);
+		// Exact source revisions are public identifiers in the typed version fields, not free-text secrets.
+		const revision = v => /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/iu.test(v);
+		if (revision(inv.model.version)) { safe.model.version = inv.model.version; }
+		if (revision(inv.model.baseModel.version)) { safe.model.baseModel.version = inv.model.baseModel.version; }
+		inv.dependencies.forEach((d, i) => { if (revision(d.version)) { safe.dependencies[i].version = d.version; } });
+		// A digest is intentionally public only in the typed weights-hash field; a hex token in free text is not exempt.
+		inv.weights.forEach((w, i) => {
+			if (isDigest(w.hash)) { safe.weights[i].hash = w.hash; }
+			// File names are typed identifiers; keep ordinary names, while existing secret/token checks still apply.
+			safe.weights[i].file = maskSecrets(w.file);
+		});
+		return safe;
 	}
 
 	// ------------------------------------------------------------------ strict JSON reader with lines and duplicate keys
@@ -469,7 +515,7 @@
 	const compact = o => { for (const k of Object.keys(o)) { if (o[k] === undefined) { delete o[k]; } } return o; };
 
 	function toCycloneDX(inventory, opts) {
-		const inv = normalizeInventory(inventory);
+		const inv = exportInventory(inventory);
 		const o = opts || {};
 		const m = inv.model;
 		const refs = [];
@@ -545,7 +591,7 @@
 	// ------------------------------------------------------------------ Markdown export
 	const md = s => str(s).replace(/([\\`*_{}\[\]<>()#+!|~])/gu, '\\$1').replace(/\r?\n/gu, '  \n');
 	function toMarkdown(inventory, findings, opts) {
-		const inv = normalizeInventory(inventory);
+		const inv = exportInventory(inventory);
 		const o = opts || {};
 		const m = inv.model;
 		const L = [];
@@ -873,7 +919,7 @@
 		const sm = summarize(findings);
 		const secrets = findings.filter(f => f.group === 'secrets').length;
 		const markdown = toMarkdown(inv, findings, opts);
-		return { mode: 'build', engine: ENGINE, ruleset: RULESET, level: sm.level, counts: sm.counts, findings, bom, bomText, markdown, bomTextMasked: secrets ? maskSecrets(bomText) : bomText, markdownMasked: secrets ? maskSecrets(markdown) : markdown, structure, secrets, inventory: inv };
+		return { mode: 'build', engine: ENGINE, ruleset: RULESET, level: sm.level, counts: sm.counts, findings, bom, bomText, markdown, bomTextMasked: bomText, markdownMasked: markdown, structure, secrets, inventory: inv };
 	}
 	function buildLabel(k) {
 		const map = { 'model.license': 'Model › License', 'model.version': 'Model › Version', 'model.type': 'Model › Type', 'model.baseModel': 'Model › Base model', 'model.baseModel.version': 'Model › Base model version', 'model.vendor': 'Model › Vendor', 'model.weights': 'Weights files', 'model.datasets': 'Data', 'model.purpose': 'Purpose', 'model.limitations': 'Limitations', 'model.evaluation': 'Evaluation', owner: 'Responsible' };

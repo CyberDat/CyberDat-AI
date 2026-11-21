@@ -34,7 +34,7 @@
 		notes: $('[data-bom-notes]'), groupsWrap: $('[data-bom-groups-wrap]'), groups: $('[data-bom-groups]'), list: $('[data-bom-list]'), more: $('[data-bom-more]'),
 		structureWrap: $('[data-bom-structure-wrap]'), structure: $('[data-bom-structure]'), inventoryWrap: $('[data-bom-inventory-wrap]'), inventory: $('[data-bom-inventory]'),
 		edit: $('[data-bom-edit]'), report: $('[data-bom-report]'), exportWrap: $('[data-bom-export-wrap]'), secretWarning: $('[data-bom-secret-warning]'), secretText: $('[data-bom-secret-text]'),
-		secretAck: $('[data-bom-secret-ack]'), downloadJson: $('[data-bom-download-json]'), downloadMd: $('[data-bom-download-md]'), previewJson: $('[data-bom-preview-json]'), previewMd: $('[data-bom-preview-md]')
+		downloadJson: $('[data-bom-download-json]'), downloadMd: $('[data-bom-download-md]'), previewJson: $('[data-bom-preview-json]'), previewMd: $('[data-bom-preview-md]')
 	};
 
 	let unicodeOk = false;
@@ -263,9 +263,8 @@
 		// Build: export
 		el.exportWrap.hidden = msg.mode !== 'build';
 		if (msg.mode === 'build') {
-			el.secretAck.checked = false;
 			el.secretWarning.hidden = !msg.secrets;
-			el.secretText.textContent = msg.secrets ? plural(msg.secrets, 'value') + ' that look like secrets or credentials ' + (msg.secrets === 1 ? 'was' : 'were') + ' found (see the findings). The preview below shows them masked. Remove them from the form, or confirm to export anyway.' : '';
+			el.secretText.textContent = msg.secrets ? plural(msg.secrets, 'value') + ' that look like secrets or credentials ' + (msg.secrets === 1 ? 'was' : 'were') + ' found (see the findings). Remove secrets from the original source data. The preview and both exported files mask detected secrets and unrecognized long values; review the output before sharing.' : '';
 			syncExport();
 		}
 		el.results.hidden = false;
@@ -275,11 +274,10 @@
 	function syncExport() {
 		const r = state.result;
 		if (!r || r.mode !== 'build') { return; }
-		const blocked = r.secrets > 0 && !el.secretAck.checked;
-		el.downloadJson.disabled = blocked;
-		el.downloadMd.disabled = blocked;
-		el.previewJson.textContent = blocked ? r.bomTextMasked : r.bomText;
-		el.previewMd.textContent = blocked ? r.markdownMasked : r.markdown;
+		el.downloadJson.disabled = false;
+		el.downloadMd.disabled = false;
+		el.previewJson.textContent = r.bomText;
+		el.previewMd.textContent = r.markdown;
 	}
 	function markStale() {
 		if (state.result && !state.stale) { state.stale = true; setStatus('Input changed. Run the check again to update the result.'); }
@@ -301,7 +299,6 @@
 	function exportFile(kind) {
 		const r = state.result;
 		if (!r || r.mode !== 'build') { return; }
-		if (r.secrets > 0 && !el.secretAck.checked) { showError('Confirm the export first: the document contains values that look like secrets.'); el.secretAck.focus(); return; }
 		if (kind === 'json') { download('ai-bom.cdx.json', r.bomText, 'application/vnd.cyclonedx+json'); setStatus('CycloneDX JSON downloaded.'); }
 		else { download('ai-bom.md', r.markdown, 'text/markdown'); setStatus('Markdown downloaded.'); }
 	}
@@ -346,7 +343,6 @@
 	el.reviewClear.addEventListener('click', () => { if (state.running) { cancel(); } el.input.value = ''; el.file.value = ''; state.source = { kind: 'text' }; el.source.textContent = ''; clearResults(); showError(''); setStatus('Cleared. The pasted BOM and the results were removed from this page.'); el.input.focus(); });
 	el.run.addEventListener('click', run);
 	el.cancel.addEventListener('click', () => cancel());
-	el.secretAck.addEventListener('change', syncExport);
 	el.downloadJson.addEventListener('click', () => exportFile('json'));
 	el.downloadMd.addEventListener('click', () => exportFile('md'));
 	el.report.addEventListener('click', downloadReport);
