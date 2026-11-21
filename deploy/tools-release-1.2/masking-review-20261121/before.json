@@ -1,0 +1,160 @@
+{
+  "tests": 32,
+  "pass": 7,
+  "fail": 25,
+  "rows": [
+    {
+      "id": "HASH-known-build-findings",
+      "pass": true
+    },
+    {
+      "id": "HASH-known-markdown",
+      "pass": true
+    },
+    {
+      "id": "HASH-known-review-findings",
+      "pass": true
+    },
+    {
+      "id": "HASH-opaque-build-findings",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "HASH-opaque-markdown",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "HASH-opaque-review-findings",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-Unicode-ключ-known",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-Unicode-ключ-known",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-Unicode-ключ-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-Unicode-ключ-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-Unicode-clé-known",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-Unicode-clé-known",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-Unicode-clé-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-Unicode-clé-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-Unicode-clé-known",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-Unicode-clé-known",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-Unicode-clé-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-Unicode-clé-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-URL-path-known",
+      "pass": true
+    },
+    {
+      "id": "BOM-URL-path-opaque",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-URL-path-with-query-credential",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "BOM-URL-path-with-userinfo",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-URL-query-token",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-URL-query-access_token",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-URL-query-api_key",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-URL-userinfo",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-URL-userinfo-and-query",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-query-fragment-retained",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-harmless-https-preserved",
+      "pass": false,
+      "error": "AssertionError"
+    },
+    {
+      "id": "ATLAS-assignment-key-boundary",
+      "pass": true
+    },
+    {
+      "id": "BOM-public-digest-and-safe-path-preserved",
+      "pass": true
+    },
+    {
+      "id": "Unicode-contract-no-lookbehind",
+      "pass": true
+    }
+  ]
+}

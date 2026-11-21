@@ -1,5 +1,7 @@
 # Task0 — secret-safe exports: remediation report
 
+2026-11-21 follow-up: see [masking review](masking-review-20261121/README.md). Engines1.0.2 fix clipping, Unicode-attached values and URL components; this update is not installed on staging. The final current package checksums are in artifact-sha256.json; older checksums below describe the historical installed revision.
+
 2026-11-20. Branch `fix/tools12-secret-export`, based on `integration/tools-release-1.2` at `2a4cfbe8a7ff94508944eb4fd67a4755ffa8ae2f`.
 
 ## Tests before implementation

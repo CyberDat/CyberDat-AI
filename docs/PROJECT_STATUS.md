@@ -1,8 +1,14 @@
 # CyberDat — Project Status (source of truth)
 
-Last updated: 2026-11-20
+Last updated: 2026-11-21
 Repository: CyberDat/CyberDat-AI
-Current stage: **LA Stage1 owner-accepted; Tools1.2 named export defects fixed/tested; source delta prepared; legacy export-policy gaps remain; no deployment.**
+Current stage: **BOM/ATLAS masking review fixes1.0.2 prepared and regression-tested; no installation in this task. Prior closed-staging1.2 installation remains the last recorded accepted deployment; legacy export-policy gaps remain.**
+
+## BOM/ATLAS masking follow-up —2026-11-21
+
+Local only; GitHub publication pending owner clarification. Four owner-requested review corrections implemented in two engines plus asset constants: redact invalid hash before clipping, Unicode attached long tokens, BOM URL paths, ATLAS query/userinfo with bounded assignment keys. New32/32 and prior20/20 export checks PASS; BOM/ATLAS engines+corpora, Unicode and PHP checks PASS; one targeted3-browser matrix6/6 PASS, Firefox no interception/network completeness UNVERIFIED. The pre-existing BOM held-out19/20 remains unchanged. No tool rule catalogue, ATLAS dataset/license, other tool, staging/WordPress, agent, SQL, systemd, SEO or main change. No full D14. Source/package publication only; any future install needs a separate owner decision. See deploy/tools-release-1.2/masking-review-20261121/README.md.
+
+The previous task recorded a successful1.2 closed-staging installation on2026-11-20; this follow-up does not recheck or alter that runtime. Historical “no deployment” statements below refer to earlier source preparation tasks.
 
 ### Executed acceptance result
 

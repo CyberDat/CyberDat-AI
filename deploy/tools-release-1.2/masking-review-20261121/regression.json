@@ -1,0 +1,42 @@
+[
+  {
+    "suite": "review-regression",
+    "exit": 0,
+    "seconds": 1.429
+  },
+  {
+    "suite": "prior-export-regression",
+    "exit": 0,
+    "seconds": 2.482
+  },
+  {
+    "suite": "bom-engine-and-corpus",
+    "exit": 0,
+    "seconds": 8.219
+  },
+  {
+    "suite": "atlas-engine",
+    "exit": 0,
+    "seconds": 6.664
+  },
+  {
+    "suite": "atlas-corpus",
+    "exit": 0,
+    "seconds": 5.093
+  },
+  {
+    "suite": "unicode",
+    "exit": 0,
+    "seconds": 6.563
+  },
+  {
+    "suite": "bom-php",
+    "exit": 0,
+    "seconds": 0.116
+  },
+  {
+    "suite": "atlas-php",
+    "exit": 0,
+    "seconds": 0.116
+  }
+]
