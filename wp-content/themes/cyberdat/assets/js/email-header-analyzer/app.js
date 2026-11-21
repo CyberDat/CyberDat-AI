@@ -123,7 +123,7 @@
 		el.infoWrap.open = false;
 		const P = r.path;
 		const ext = P.external ? (P.external.label + (P.external.ip && P.external.ip !== P.external.label ? ' [' + P.external.ip + ']' : '')) : '';
-		el.boundary.textContent = !P.hops.length ? 'No Received lines were found.' : P.internal ? 'All steps are inside your organization (' + P.trustedOrgs.join(', ') + ').' : 'Your servers: ' + (P.trustedOrgs.join(', ') || 'unknown') + (P.ownDeclared ? ' (as you entered).' : ' (assumed from the top line; enter your domain to set it).') + (ext ? ' First external server: ' + ext + '.' : '') + (P.totalDelaySec !== null ? ' Total time: ' + number(P.totalDelaySec) + ' s.' : '');
+		el.boundary.textContent = (P.providerBoundary ? 'Trust boundary: ' + P.providerBoundary.host + ' (mailbox provider for your domain). ' : '') + (!P.hops.length ? 'No Received lines were found.' : P.internal ? 'All steps are inside your organization (' + P.trustedOrgs.join(', ') + ').' : 'Your servers: ' + (P.trustedOrgs.join(', ') || 'unknown') + (P.ownDeclared ? ' (as you entered).' : ' (assumed from the top line; enter your domain to set it).') + (ext ? ' First external server: ' + ext + '.' : '') + (P.totalDelaySec !== null ? ' Total time: ' + number(P.totalDelaySec) + ' s.' : ''));
 		el.path.replaceChildren(...P.hops.slice().reverse().map(h => hopItem(h, ext ? 'It received the message from ' + ext + '. Everything in earlier steps was written by servers you cannot verify.' : '')));
 		const A = r.auth;
 		const items = [];

@@ -24,7 +24,7 @@
 	'use strict';
 
 	const ENGINE = '1.0.0';
-	const RULESET = '2026-11-19.1';
+	const RULESET = '2026-11-21.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_HEADER_CHARS = 1024 * 1024;
 	const MAX_HEADERS = 10000;
@@ -71,7 +71,7 @@
 	const BRANDS = [
 		['PayPal', ['paypal'], ['paypal.com', 'paypal.de', 'paypal.me']],
 		['Microsoft', ['microsoft', 'office 365', 'microsoft 365', 'outlook', 'onedrive', 'sharepoint'], ['microsoft.com', 'office.com', 'office365.com', 'outlook.com', 'live.com', 'hotmail.com', 'microsoftonline.com', 'sharepoint.com', 'onmicrosoft.com']],
-		['Apple', ['apple', 'icloud', 'itunes'], ['apple.com', 'icloud.com', 'me.com']],
+		['Apple', ['apple', 'icloud', 'itunes'], ['apple.com', 'icloud.com', 'me.com', 'appleid.com']],
 		['Amazon', ['amazon'], ['amazon.com', 'amazon.de', 'amazon.co.uk', 'amazon.fr', 'amazonses.com', 'amazon.es', 'amazon.it']],
 		['Google', ['google', 'gmail'], ['google.com', 'gmail.com', 'googlemail.com', 'youtube.com']],
 		['DHL', ['dhl'], ['dhl.com', 'dhl.de']],
@@ -89,6 +89,12 @@
 		['Booking.com', ['booking.com'], ['booking.com']]
 	].map(([name, words, domains]) => ({ name, words, domains, label: words[0] }));
 	const PROVIDER_GROUPS = [['google.com', 'gmail.com', 'googlemail.com'], ['outlook.com', 'office365.com', 'microsoft.com', 'hotmail.com', 'live.com', 'exchangelabs.com']];
+	// Mailbox providers that receive mail for a customer's own domain (Google Workspace, Microsoft 365). Kept short on purpose.
+	const MAILBOX_PROVIDERS = [
+		{ name: 'Google', host: /^mx\.google\.com$/u },
+		{ name: 'Microsoft', host: /^(?:[a-z0-9-]+\.)+outlook\.com$/u }
+	];
+	const mailboxProvider = host => { const h = String(host || '').toLowerCase().replace(/\.$/u, ''); return MAILBOX_PROVIDERS.find(p => p.host.test(h)) || null; };
 
 	const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 	const nfc = s => String(s).normalize('NFC');
@@ -576,15 +582,44 @@
 			const first = hops.length && hops[0].by && hops[0].by.host ? hops[0].by.host : (top ? top.by.host : '');
 			T = expandOrgs([orgDomain(first)]);
 		}
-		const trustedHop = i => {
-			const x = hops[i];
-			if (i === 0) { return true; }
-			if (!x.parsed || !x.by) { return false; }
-			if (x.by.host) { return T.has(orgDomain(x.by.host)); }
-			return !!x.by.ip && isInternalIp(x.by.ip);
+		const boundaryOf = TT => {
+			const trustedHop = i => {
+				const x = hops[i];
+				if (i === 0) { return true; }
+				if (!x.parsed || !x.by) { return false; }
+				if (x.by.host) { return TT.has(orgDomain(x.by.host)); }
+				return !!x.by.ip && isInternalIp(x.by.ip);
+			};
+			let bb = hops.length ? 0 : -1;
+			while (bb >= 0 && bb + 1 < hops.length && trustedHop(bb + 1)) { bb++; }
+			return bb;
 		};
-		let b = hops.length ? 0 : -1;
-		while (b >= 0 && b + 1 < hops.length && trustedHop(b + 1)) { b++; }
+		// Results headers trusted by position: above the boundary Received line, or in the contiguous block right after it.
+		const blockAfterOf = bb => { const set = new Set(); const i0 = bb >= 0 ? hops[bb].headerIndex : -1; if (i0 >= 0) { for (let j = i0 + 1; j < H.length && (H[j].key === 'authentication-results' || H[j].key === 'received-spf'); j++) { set.add(j); } } return set; };
+		const positionAt = (bb, idx) => { const i0 = bb >= 0 ? hops[bb].headerIndex : -1; return i0 >= 0 && (idx < i0 || blockAfterOf(bb).has(idx)); };
+		const idIn = (TT, id) => !id || !isHostname(id) || TT.has(orgDomain(id));
+		const arRaw = all('authentication-results').map(parseAuthResults);
+		const rspfRaw = all('received-spf').map(parseReceivedSpf);
+		let b = boundaryOf(T);
+		// Own domain hosted by a mailbox provider (Google Workspace, Microsoft 365): when the topmost external Received line
+		// was written by that provider and nothing above it recorded results, the provider is the trust boundary, provided it
+		// also wrote Authentication-Results in a trusted position. Results lower down that only name the provider stay untrusted.
+		let providerBoundary = null;
+		if (ownOrgs.length && b >= 0 && b + 1 < hops.length) {
+			const nx = hops[b + 1];
+			const pv = nx.parsed && nx.by && nx.by.host ? mailboxProvider(nx.by.host) : null;
+			const hasTrusted = (TT, bb) => arRaw.some(x => positionAt(bb, x.headerIndex) && idIn(TT, x.authservId)) || rspfRaw.some(x => positionAt(bb, x.headerIndex));
+			if (pv && !hasTrusted(T, b)) {
+				const pOrg = orgDomain(nx.by.host);
+				const P = expandOrgs([pOrg]);
+				const T2 = expandOrgs([...T, pOrg]);
+				const b2 = boundaryOf(T2);
+				if (b2 > b && arRaw.some(x => positionAt(b2, x.headerIndex) && (!x.authservId || !isHostname(x.authservId) || P.has(orgDomain(x.authservId))))) {
+					T = T2; b = b2;
+					providerBoundary = { provider: pv.name, host: String(hops[b].by && hops[b].by.host ? hops[b].by.host : nx.by.host).toLowerCase().replace(/\.$/u, '') };
+				}
+			}
+		}
 		hops.forEach((x, i) => { x.trusted = b >= 0 && i <= b; x.boundary = i === b; x.step = hops.length - i; });
 		const bh = b >= 0 ? hops[b] : null;
 		const external = bh && bh.from ? { label: hopLabel(bh.from), host: bh.from.rdns || bh.from.host, helo: bh.from.helo, ip: bh.from.ip, ipClass: bh.from.ip ? ipClass(bh.from.ip) : '' } : null;
@@ -710,7 +745,7 @@
 				subject: subj ? maskSecrets(subj.text).slice(0, 500) : null, date: dateH ? { raw: dateH.value.slice(0, 120), iso: date ? new Date(date.ms).toISOString() : null } : null, messageId: msgId.slice(0, 300),
 				mailer: mailer ? mailer.value.slice(0, 200) : '', originatingIp: xoip ? xoip.value.slice(0, 60) : ''
 			},
-			path: { hops, boundaryIndex: b, trustedOrgs: [...T].filter(Boolean), ownDeclared: ownOrgs.length > 0, external, internal, totalDelaySec: totalSec },
+			path: { hops, boundaryIndex: b, trustedOrgs: [...T].filter(Boolean), ownDeclared: ownOrgs.length > 0, providerBoundary, external, internal, totalDelaySec: totalSec },
 			auth: { results: ar, receivedSpf: rspf, arc: aar, dkimSignatures: dkimSigs, effective: eff, alignment },
 			findings: f, counts
 		};
@@ -740,7 +775,7 @@
 		const walk = v => (typeof v === 'string' ? scrub(v) : Array.isArray(v) ? v.map(walk) : isObj(v) ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : v);
 		const clean = walk(r);
 		if (o.maskRecipients) { clean.summary.to = clean.summary.to.map(a => ({ name: a.name ? '[name]' : '', address: maskRc(a.address), domain: '' })); clean.summary.cc = clean.summary.cc.map(a => ({ name: a.name ? '[name]' : '', address: maskRc(a.address), domain: '' })); }
-		const json = { tool: 'CyberDat Email Header Analyzer', engine: ENGINE, ruleset: RULESET, publicSuffixList: r.psl, generatedAt: o.timestamp || new Date().toISOString(), note: NOTE, masked: { recipients: !!o.maskRecipients, internalIps: !!o.maskInternal, secrets: true }, summary: clean.summary, bodyIgnored: clean.bodyIgnored, notes: clean.notes, path: { boundaryIndex: clean.path.boundaryIndex, trustedOrgs: clean.path.trustedOrgs, external: clean.path.external, internal: clean.path.internal, totalDelaySec: clean.path.totalDelaySec, hops: clean.path.hops.map(h => ({ step: h.step, parsed: h.parsed, trusted: h.trusted, boundary: h.boundary, from: h.from, by: h.by, with: h.with, id: h.id, for: h.for, date: h.dateRaw, delaySec: h.delaySec, ipClass: h.ipClass, raw: h.parsed ? undefined : h.raw })) }, auth: clean.auth, counts: clean.counts, findings: clean.findings };
+		const json = { tool: 'CyberDat Email Header Analyzer', engine: ENGINE, ruleset: RULESET, publicSuffixList: r.psl, generatedAt: o.timestamp || new Date().toISOString(), note: NOTE, masked: { recipients: !!o.maskRecipients, internalIps: !!o.maskInternal, secrets: true }, summary: clean.summary, bodyIgnored: clean.bodyIgnored, notes: clean.notes, path: { boundaryIndex: clean.path.boundaryIndex, trustedOrgs: clean.path.trustedOrgs, providerBoundary: clean.path.providerBoundary, external: clean.path.external, internal: clean.path.internal, totalDelaySec: clean.path.totalDelaySec, hops: clean.path.hops.map(h => ({ step: h.step, parsed: h.parsed, trusted: h.trusted, boundary: h.boundary, from: h.from, by: h.by, with: h.with, id: h.id, for: h.for, date: h.dateRaw, delaySec: h.delaySec, ipClass: h.ipClass, raw: h.parsed ? undefined : h.raw })) }, auth: clean.auth, counts: clean.counts, findings: clean.findings };
 		const S = clean.summary;
 		const L = ['# Email header analysis', '', 'Generated with CyberDat Email Header Analyzer ' + ENGINE + ' (rules ' + RULESET + ') on ' + mdEsc(json.generatedAt) + '.', '', '> ' + NOTE, ''];
 		L.push('- From: ' + (S.from ? mdEsc((S.from.name ? S.from.name + ' ' : '') + '<' + S.from.address + '>') : 'missing'));
@@ -755,7 +790,9 @@
 		if (!warn.length && !info.length) { L.push('No known warning signs matched. This does not mean the message is safe.', ''); }
 		for (const x of warn) { L.push('- **' + x.severity.toUpperCase() + '** ' + x.id + ' — ' + mdEsc(x.title) + (x.evidence ? ': `' + x.evidence.replace(/`/gu, '\'') + '`' : ''), '  - Why: ' + mdEsc(x.explanation), '  - Check next: ' + mdEsc(x.next)); }
 		if (info.length) { L.push('', '### Minor and informational', ''); for (const x of info) { L.push('- ' + x.id + ' — ' + mdEsc(x.title) + (x.evidence ? ': `' + x.evidence.replace(/`/gu, '\'') + '`' : '')); } }
-		L.push('', '## Path (from sender to recipient)', '', '| Step | From | By | Time | Delay | Trust |', '|---|---|---|---|---|---|');
+		L.push('', '## Path (from sender to recipient)', '');
+		if (json.path.providerBoundary) { L.push('Trust boundary: ' + mdEsc(json.path.providerBoundary.host) + ' (mailbox provider for your domain).', ''); }
+		L.push('| Step | From | By | Time | Delay | Trust |', '|---|---|---|---|---|---|');
 		for (const h of json.path.hops.slice().reverse()) { L.push('| ' + h.step + ' | ' + mdEsc(h.parsed ? [h.from && (h.from.rdns || h.from.host || h.from.helo), h.from && h.from.ip].filter(Boolean).join(' ') : 'not parsed: ' + String(h.raw || '').slice(0, 80)) + ' | ' + mdEsc(h.by ? h.by.host || h.by.ip : '') + ' | ' + mdEsc(h.date || '—') + ' | ' + (h.delaySec === null ? '—' : h.delaySec + ' s') + ' | ' + (h.boundary ? 'trust boundary' : h.trusted ? 'your servers' : 'not verifiable') + ' |'); }
 		L.push('', '## Authentication', '');
 		for (const a of clean.auth.results) { L.push('- ' + (a.trusted ? 'Trusted' : 'NOT trusted (' + a.reason + ')') + ' ' + mdEsc(a.header) + (a.authservId ? ' by ' + mdEsc(a.authservId) : '') + ': ' + a.methods.map(m => m.method + '=' + m.result).join(', ')); }
@@ -767,5 +804,5 @@
 	const EXAMPLE_NORMAL = 'Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk9Ex1\n\tfor <bob@example.com>; Wed, 18 Nov 2026 14:02:07 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk9Ex0\n\tfor <bob@example.com>; Wed, 18 Nov 2026 14:02:05 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id; bh=ZXhhbXBsZQ==; b=ZXhhbXBsZQ==\nFrom: =?UTF-8?Q?J=C3=BCrgen_Beispiel?= <juergen@example.org>\nTo: Bob <bob@example.com>\nSubject: Meeting notes\nDate: Wed, 18 Nov 2026 14:02:01 +0100\nMessage-ID: <20261118130201.4711@mail.example.org>\n\n(The message body would be here; it is ignored.)\n';
 	const EXAMPLE_PHISHING = 'Return-Path: <bounce@bulk.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xm1Ab2\n\tfor <bob@example.com>; Wed, 18 Nov 2026 09:15:44 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=softfail smtp.mailfrom=bulk.example.net;\n\tdkim=none;\n\tdmarc=fail header.from=paypa1-secure.example\nReceived: from unknown (unknown [203.0.113.44])\n\tby mx.example.com (Postfix) with ESMTP id 4Xm1Ab1\n\tfor <bob@example.com>; Wed, 18 Nov 2026 09:15:42 +0100 (CET)\nAuthentication-Results: mx.example.com; spf=pass; dkim=pass; dmarc=pass\nReceived: from mail.paypal.example (mail.paypal.example [198.51.100.7])\n\tby relay.bulk.example.net with ESMTP id 77; Wed, 18 Nov 2026 07:10:00 +0000\nFrom: "PayPal Service" <service@paypa1-secure.example>\nReply-To: support@example.net\nTo: bob@example.com\nSubject: =?UTF-8?B?WW91ciBhY2NvdW50IGlzIGxpbWl0ZWQ=?=\nDate: Wed, 18 Nov 2026 09:15:40 +0100\nX-Mailer: PHPMailer 6.9.1\n\n(The message body would be here; it is ignored.)\n';
 
-	return { ENGINE, RULESET, MAX_INPUT_CHARS, MAX_HEADER_CHARS, DEF, BRANDS, loadPSL, orgDomain, toASCII, toUnicode, punyEncode, punyDecode, decodeWords, parseAddresses, parseDate, parseReceived, readHeaders, isIPv4, isIPv6, ipClass, skeleton, analyze, exportReport, findSecrets, maskSecrets, EXAMPLE_NORMAL, EXAMPLE_PHISHING };
+	return { ENGINE, RULESET, MAX_INPUT_CHARS, MAX_HEADER_CHARS, DEF, BRANDS, MAILBOX_PROVIDERS, loadPSL, orgDomain, toASCII, toUnicode, punyEncode, punyDecode, decodeWords, parseAddresses, parseDate, parseReceived, readHeaders, isIPv4, isIPv6, ipClass, skeleton, analyze, exportReport, findSecrets, maskSecrets, EXAMPLE_NORMAL, EXAMPLE_PHISHING };
 }));
