@@ -2,8 +2,8 @@
   "schema": "cyberdat-theme-release/1",
   "revision": "tools-utilities-1/1",
   "parent_revision": "tools-release-1.3/1",
-  "parent_theme_commit": "c906e21c3e93ec107e90bffe4a7991c9b58e0741",
-  "base_commit": "4ee0adaf7d531152d7f8fe4f93312474b12690b4",
+  "parent_theme_commit": "40e246978f4d0923577912035e28cfc53e193917",
+  "base_commit": "835bb53448ea76b207c23f9ac94e8209d1e4f1f0",
   "hub_commit": "0a32f1234e596c425cda58b096ea1e085147386f",
   "hub_overlay": [
     "assets/css/tools-hub.css",
@@ -22,7 +22,7 @@
     "assets/js/tools-filter.js",
     "page-templates/tools.php"
   ],
-  "theme_commit": "e8214699af260d605d7b4220adee29ba6efebcad",
+  "theme_commit": "1798dfaa9323a443bc7f8ab5268ff788250d0955",
   "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility, status planned; the ten entries unchanged), one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release. hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 177,
@@ -683,9 +683,9 @@
       "sha256": "b78892218f9e913ae7d1dd0fb08637f208c6952560237f5719ff6187050d2e14"
     },
     "assets/js/ai-model-bom/engine.js": {
-      "bytes": 77090,
+      "bytes": 77078,
       "mode": "0644",
-      "sha256": "5613d7132fc06c4451589cb1fb58e597ed172ce05dbf8d2b415172b01f3593de"
+      "sha256": "dc0a585154bcd843085866af5a247e3d924f034793450f3286a9c8031cbe650b"
     },
     "assets/js/ai-model-bom/worker.js": {
       "bytes": 3429,
@@ -713,9 +713,9 @@
       "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
     },
     "assets/js/atlas-mapper/engine.js": {
-      "bytes": 33111,
+      "bytes": 33998,
       "mode": "0644",
-      "sha256": "50eda04930e7cc46b9de978a1281e9115a0219391b1cc3a339958b978dda9e41"
+      "sha256": "8a8bc37deaedd6cf3c8a9c46f3fc81d2e8a76a320d5cd6702d9b90a854b63743"
     },
     "assets/js/atlas-mapper/worker.js": {
       "bytes": 2524,
@@ -848,9 +848,9 @@
       "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
     },
     "assets/js/prompt-injection-test-bench/engine.js": {
-      "bytes": 40224,
+      "bytes": 41710,
       "mode": "0644",
-      "sha256": "2be1072d677fb2162fb80740f026287c513b7782ed8418dafeca9c0cb6658410"
+      "sha256": "8e3bd09925249c6bd22996ecfb73c4703682b7483a2ef094389144bfb0be5560"
     },
     "assets/js/prompt-injection-test-bench/worker.js": {
       "bytes": 2432,
@@ -980,12 +980,12 @@
     "inc/tool-ai-model-bom.php": {
       "bytes": 2706,
       "mode": "0644",
-      "sha256": "c460432abf3bfe4338a70aca22b8035b5211b594404bb6a0e3d31240ec8b2c95"
+      "sha256": "e1c254a67de224b12e6899de42ddfdfbb42aa39ed64657f7d8f619d1f8a29029"
     },
     "inc/tool-atlas-mapper.php": {
       "bytes": 3977,
       "mode": "0644",
-      "sha256": "a7a9d2ee13d0dd3cc7721c7dc33200722119e435a98a7a1fcec9b242d9b840a6"
+      "sha256": "57062c968a0f0fa08c4c5d69d3c475503944f4d6f93f509681481e2d84353ae7"
     },
     "inc/tool-container-hardening-audit.php": {
       "bytes": 2775,
@@ -1020,7 +1020,7 @@
     "inc/tool-prompt-injection-test-bench.php": {
       "bytes": 3219,
       "mode": "0644",
-      "sha256": "8d61adb56abcb65f4628dc2283db3504fad417ab2d1629ca7f46f5ff45d26c4f"
+      "sha256": "d77fcae620dcd6a26b8b79ad8b7dd5383d20e928be7a1ecfb61e8a69309d2c6a"
     },
     "inc/tool-security.php": {
       "bytes": 3102,
@@ -1168,9 +1168,9 @@
       "sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
     },
     "template-parts/tools/prompt-injection-test-bench.php": {
-      "bytes": 14211,
+      "bytes": 14378,
       "mode": "0644",
-      "sha256": "590c352864a16892aa07f47b42a67bac9fcda854c049df359da544016cb10308"
+      "sha256": "30e4977648d5e42e6c1d1283bb52f18fc1db4133386ee76ecb9dd4d6c13cd64b"
     },
     "template-parts/tools/yara-sigma-validator.php": {
       "bytes": 14382,
@@ -1580,9 +1580,9 @@
       "sha256": "b78892218f9e913ae7d1dd0fb08637f208c6952560237f5719ff6187050d2e14"
     },
     "assets/js/ai-model-bom/engine.js": {
-      "bytes": 77090,
+      "bytes": 77078,
       "mode": "0644",
-      "sha256": "5613d7132fc06c4451589cb1fb58e597ed172ce05dbf8d2b415172b01f3593de"
+      "sha256": "dc0a585154bcd843085866af5a247e3d924f034793450f3286a9c8031cbe650b"
     },
     "assets/js/ai-model-bom/worker.js": {
       "bytes": 3429,
@@ -1610,9 +1610,9 @@
       "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
     },
     "assets/js/atlas-mapper/engine.js": {
-      "bytes": 33111,
+      "bytes": 33998,
       "mode": "0644",
-      "sha256": "50eda04930e7cc46b9de978a1281e9115a0219391b1cc3a339958b978dda9e41"
+      "sha256": "8a8bc37deaedd6cf3c8a9c46f3fc81d2e8a76a320d5cd6702d9b90a854b63743"
     },
     "assets/js/atlas-mapper/worker.js": {
       "bytes": 2524,
@@ -1775,9 +1775,9 @@
       "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
     },
     "assets/js/prompt-injection-test-bench/engine.js": {
-      "bytes": 40224,
+      "bytes": 41710,
       "mode": "0644",
-      "sha256": "2be1072d677fb2162fb80740f026287c513b7782ed8418dafeca9c0cb6658410"
+      "sha256": "8e3bd09925249c6bd22996ecfb73c4703682b7483a2ef094389144bfb0be5560"
     },
     "assets/js/prompt-injection-test-bench/worker.js": {
       "bytes": 2432,
@@ -1907,12 +1907,12 @@
     "inc/tool-ai-model-bom.php": {
       "bytes": 2706,
       "mode": "0644",
-      "sha256": "c460432abf3bfe4338a70aca22b8035b5211b594404bb6a0e3d31240ec8b2c95"
+      "sha256": "e1c254a67de224b12e6899de42ddfdfbb42aa39ed64657f7d8f619d1f8a29029"
     },
     "inc/tool-atlas-mapper.php": {
       "bytes": 3977,
       "mode": "0644",
-      "sha256": "a7a9d2ee13d0dd3cc7721c7dc33200722119e435a98a7a1fcec9b242d9b840a6"
+      "sha256": "57062c968a0f0fa08c4c5d69d3c475503944f4d6f93f509681481e2d84353ae7"
     },
     "inc/tool-container-hardening-audit.php": {
       "bytes": 2775,
@@ -1952,7 +1952,7 @@
     "inc/tool-prompt-injection-test-bench.php": {
       "bytes": 3219,
       "mode": "0644",
-      "sha256": "8d61adb56abcb65f4628dc2283db3504fad417ab2d1629ca7f46f5ff45d26c4f"
+      "sha256": "d77fcae620dcd6a26b8b79ad8b7dd5383d20e928be7a1ecfb61e8a69309d2c6a"
     },
     "inc/tool-security.php": {
       "bytes": 3102,
@@ -2105,9 +2105,9 @@
       "sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
     },
     "template-parts/tools/prompt-injection-test-bench.php": {
-      "bytes": 14211,
+      "bytes": 14378,
       "mode": "0644",
-      "sha256": "590c352864a16892aa07f47b42a67bac9fcda854c049df359da544016cb10308"
+      "sha256": "30e4977648d5e42e6c1d1283bb52f18fc1db4133386ee76ecb9dd4d6c13cd64b"
     },
     "template-parts/tools/yara-sigma-validator.php": {
       "bytes": 14382,

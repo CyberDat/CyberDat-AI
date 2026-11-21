@@ -107,6 +107,17 @@ engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extr
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
 
+### Update 2026-11-21 (third round)
+
+Merged again: `integration/tools-release-1.2` `b8ff2f3` (Codex second masking fix, files byte-identical) into 1.3 (`865f74d`), the
+Test Bench re-acceptance fix (`173c946`, merge `40e2469`) and the rebuilt 1.3 package (`835bb53`), then 1.3 into this branch (`1798dfa`).
+Manifest base: `integration/tools-release-1.3` `835bb53` plus the staging Hub overlay; the utility files are unchanged.
+One regression run of the affected tools (AI Model BOM, ATLAS Mapper, Test Bench), three browsers: 9/9 runs exit 0, PASS counts as
+before (20 / 12 / 12, 17 / 13 / 13, 17 / 10 / 10, Edge / Firefox / WebKit). Codex tests `tools12-followup-redaction-regression` 34/34,
+`tools12-masking-review-regression` 32/32, `tools12-export-redaction-regression` 20/20. The Email Header Analyzer was not changed
+and not re-run. `inc/tools.php` and `inc/tools-catalog.json` against staging: **not done** — the Codex diff of the staging-only
+changes was not received; nothing was guessed from staging.
+
 ### Update 2026-11-21 (second round)
 
 Merged again: `integration/tools-release-1.2` `838fecc` (Codex BOM/ATLAS masking review) into 1.3 (`47ef75d`), and 1.3 with the
