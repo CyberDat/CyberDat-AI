@@ -8,14 +8,18 @@ tools (owner decision of 2026-11-19).
 
 | Item | Value |
 |---|---|
-| Branch | `integration/tools-utilities-1`, created from `58ed710` (tip of `integration/tools-release-1.3`) |
+| Branch | `integration/tools-utilities-1`, created from `58ed710` (tip of `integration/tools-release-1.3`). On 2026-11-21: `integration/tools-release-1.2` (Codex export redaction fix `6b7d97c`) merged into 1.3 (`198bf49`), the 1.3 package rebuilt over `tools-release-1.2/2` (`e1bff4e`), 1.3 merged here (`df0f51a`, `4060781`); the Codex Hub `feat/tools-hub-cyber-glass` (`0a32f12`, installed on staging) merged here (`b93caf2`); Hub previews `feature/tools-hub-previews` `dfe3ac9`, merge `b96ddbb` |
 | Utility branch | `feature/tools-email-header-analyzer`: `12d01f7` Public Suffix List snapshot, `867bc1f` corpus and held-out set (frozen), `69b3a4a` utility, `d2cc2db` catalogue entry; merge `50e916b`; `386e37c` owner decisions of 2026-11-19 (PSL from publicsuffix.org, "Quick utility" card label, URL confirmed); merge `429e097` |
 | Package | `feature/tools-utilities-1-package`, merged into the integration branch |
-| Not changed | files of the ten tools (byte-identical to the base); `inc/tools.php`, pages, Research/Content/SEO. The hub template changes in one line only (owner decision 3) |
+| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7); `inc/tools.php`, pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
 
-## Delta to apply on top of the release 1.3 theme
+## Delta to apply on top of the release 1.3 theme and the staging Hub
 
-`manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 164 → 173 files: 9 added, 3 modified, 0 removed.
+Base = the theme of `integration/tools-release-1.3` (`e1bff4e`, equal to the 1.3 manifest target) with the Codex Hub on
+staging overlaid (`hub_commit` `0a32f12`; `hub_overlay` lists its 15 theme files; the builder checks that 1.2/1.3 do not
+touch them). `manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 177 → 187 files: 10 added,
+10 modified, 0 removed. Utility: 9 files, its Hub preview, `functions.php`, the catalogue and one Hub template line.
+Previews of tools 5–10 (6 SVGs and the illustrations README) ship with their own packages (`hub_previews`):
 `node deploy/tools-utilities-1/build-manifest.cjs --check` verifies it. `manifest.json` → `tools.email-header-analyzer`
 lists the utility's own files and only its lines in the shared files:
 
@@ -25,7 +29,9 @@ lists the utility's own files and only its lines in the shared files:
 | added | `assets/js/email-header-analyzer/public_suffix_list.dat` (Public Suffix List, unmodified, MPL-2.0), `psl-data.js` (the same bytes as a JS string for the worker), `LICENSE-MPL-2.0.txt` — publish the three together |
 | modified | `functions.php` — one line `require_once __DIR__ . '/inc/tool-email-header-analyzer.php';` after the container audit include |
 | modified | `inc/tools-catalog.json` — one entry appended after the ten tools (`kind: utility`, release `utilities-1`, category Quick Utilities, status `planned`); the ten entries are unchanged. `deploy/tools-release-1/route-catalog.json` stays a byte copy |
-| modified | `page-templates/tools.php` — one line (46): cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
+| added | `assets/images/tools-hub/email-header-analyzer.svg` — Hub card preview (headers only, `"Demo Bank" <a@example.net>` → dmarc=fail, brand in name) |
+| modified | `page-templates/tools.php` (the staging Hub template from `0a32f12`) — one line (66): planned cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
+| other packages | tools 5–7 previews + illustrations README → `deploy/tools-hub-previews-5-7/` (Codex, tools already on staging); tools 8–10 previews → `deploy/tools-release-1.3/hub-previews.json` |
 
 **Hub effect** (owner decision 3, 2026-11-19: keep the card): the hub shows an 11th "Coming soon" card labelled
 "Quick utility" and a Quick Utilities filter button; the ten tool cards are unchanged. The hub tests
@@ -71,7 +77,7 @@ For publication Codex adds the slug to the canonical list in `inc/tools.php`, cr
 
 ### Final regression — all eleven tools, one sequential run
 
-Integration tip `50e916b`; repeated once after the owner decisions at `429e097` with identical PASS counts (33/33 runs exit 0); sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
+Last run 2026-11-21 at `b96ddbb` (after the merges of the Codex export fix, the Hub and the previews): 33/33 runs exit 0, PASS counts identical to the earlier runs at `50e916b` and `429e097`; Log Anonymizer 30 MB: Edge 2.8 s, Firefox 3.2 s, WebKit 27.1 s; sandbox `tests/tools-sandbox-server.py` (Windows 11, Edge via DevTools protocol, Firefox and
 WebKit via Playwright 1.49.1, Node 24.14.1, PHP from the pinned WordPress image). PASS counts, every run exit 0:
 
 | Tool | Edge | Firefox | WebKit |
@@ -88,13 +94,17 @@ WebKit via Playwright 1.49.1, Node 24.14.1, PHP from the pinned WordPress image)
 | Docker & Kubernetes Hardening Audit Generator | 12 | 10 | 10 |
 | Email Header Analyzer | 13 | 10 | 10 |
 
-PHP page tests of all eleven, `tools` and `tools-catalog` suites: PASS. Node tests: all PASS except `d14-remediation`
-(needs the owner-private fixtures) and `release-manifest` (release-1 package count), which fail identically on the base.
+PHP page tests of all eleven, `tools` and `tools-catalog` suites: PASS (`content-admin-menu` and `editorial-sections`, Content area, stop on
+missing staging paths / the production guard in this environment; not touched). Node tests: all PASS, including Codex's
+`tools12-export-redaction-regression` (20/20), `tools-hub-previews` (133/133) and the 1.2/1.3/utilities/preview manifest
+checks, except `d14-remediation` (needs the owner-private fixtures) and `release-manifest` (release-1 package count),
+which fail identically on the base.
 Manifest checks 1.3 and utilities-1 and the PSL `--check` (publicsuffix.org list of 2026-11-17): PASS. After the switch to that list the corpus (50/50) and held-out (14/14) results are unchanged; the hub test checks the Quick utility label (tools-catalog 51 checks).
 
 ### Secrets
 
-`no-token-shaped-strings`: PASS. gitleaks 8.21.2 on the history of every new commit (`58ed710..HEAD`): no leaks; on the
+`no-token-shaped-strings`: PASS (890 files). gitleaks 8.21.2 on the history of every new commit (`58ed710..HEAD`, and on
+2026-11-21 `a7e66b1..HEAD` including the merged Codex commits, and `58ed710..integration/tools-release-1.3`): no leaks; on the
 new utility and test directories: no leaks. Secret-shaped test values come only from `tests/lib/synthetic-secrets.cjs`.
 
 ## Not verified
@@ -105,4 +115,6 @@ new utility and test directories: no leaks. Secret-shaped test values come only 
   Online and on-premises Exchange, mail gateways, Postfix/Exim/Sendmail as receivers, and phishing variants other than the
   owner's spam message. The page Limitations state this (`bee7105`).
 * Received formats of other vendors (Proofpoint, Mimecast, Zimbra, Yandex, Mail.ru, Apple iCloud) were not tested.
-* Nothing installed on staging; the hub with the 11th card was checked only by the PHP render test.
+* Nothing installed on staging. The Hub with the 11th card and the new previews was checked by the PHP render tests and
+  by an offline render with the theme CSS in Edge (1440 and 360 px), not in WordPress. The Codex Hub browser test was
+  not re-run (it needs a private baseline export of the staging Hub).

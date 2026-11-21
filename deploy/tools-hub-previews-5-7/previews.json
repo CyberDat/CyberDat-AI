@@ -1,0 +1,40 @@
+{
+  "schema": "cyberdat-hub-previews/1",
+  "package": "tools-hub-previews-5-7",
+  "theme_commit": "b96ddbb376b12e2eb050d461630862b699c13e86",
+  "hub_commit": "0a32f1234e596c425cda58b096ea1e085147386f",
+  "note": "Replace these files in the installed Hub (paths relative to the theme). Decorative 480x260 SVGs, synthetic text only, no scripts or external references; the Hub template and the catalogue are unchanged (the template picks the file by catalogue slug, with alt=\"\" and aria-hidden). Verify base_sha256 on staging before replacing and sha256 after.",
+  "files": {
+    "assets/images/tools-hub/agent-leak-inspector.svg": {
+      "tool": 5,
+      "slug": "agent-leak-inspector",
+      "status": "modified",
+      "bytes": 2403,
+      "sha256": "6e34f3f005af63233439d3e87778fb119465e217db0bdc7f0a283d2eb8993c62",
+      "base_sha256": "2753e42299ffea708f25494da9e8c5c1cc4c92227cbee1f83ac3b01f93ffefcb"
+    },
+    "assets/images/tools-hub/ai-model-bom.svg": {
+      "tool": 6,
+      "slug": "ai-model-bom",
+      "status": "modified",
+      "bytes": 2286,
+      "sha256": "b8602597cb092eda574090b91efc88342dcc987d53bbcb8611fd752e5e557a10",
+      "base_sha256": "0eaf0570bbefb7be56bcbe83b440e9337f18d38d57623357f83a4c7d7c8d6eaf"
+    },
+    "assets/images/tools-hub/mitre-atlas-mapper.svg": {
+      "tool": 7,
+      "slug": "mitre-atlas-mapper",
+      "status": "modified",
+      "bytes": 2561,
+      "sha256": "3a4d3ff34b2fc0ea36a4579bfa714e2d9e3218b5b4008600b33c0f32a8d8ebb9",
+      "base_sha256": "e5fec7c597efc3ea0d4dc3baea36de89e7bce8f7a23037420e185831db91e1ec"
+    },
+    "assets/images/tools-hub/README.md": {
+      "status": "modified",
+      "note": "illustrations README: sizes and the synthetic-text rule for the new previews",
+      "bytes": 1326,
+      "sha256": "9a5bdde35596f47745278ebd3b60978bdf6fcfdcc449d4ecec8c9a1347f3d318",
+      "base_sha256": "ea75e52edd8ebe1e8d3da81136fbc2f7383d95c5bc71025e85fd43172d0da3fd"
+    }
+  }
+}

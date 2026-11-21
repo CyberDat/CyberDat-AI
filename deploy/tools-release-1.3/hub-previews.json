@@ -1,0 +1,33 @@
+{
+  "schema": "cyberdat-hub-previews/1",
+  "package": "tools-release-1.3 (hub previews)",
+  "theme_commit": "b96ddbb376b12e2eb050d461630862b699c13e86",
+  "hub_commit": "0a32f1234e596c425cda58b096ea1e085147386f",
+  "note": "Replace these files in the installed Hub (paths relative to the theme). Decorative 480x260 SVGs, synthetic text only, no scripts or external references; the Hub template and the catalogue are unchanged (the template picks the file by catalogue slug, with alt=\"\" and aria-hidden). Verify base_sha256 on staging before replacing and sha256 after.",
+  "files": {
+    "assets/images/tools-hub/prompt-injection-test-bench.svg": {
+      "tool": 8,
+      "slug": "prompt-injection-test-bench",
+      "status": "modified",
+      "bytes": 2447,
+      "sha256": "487226439aa2d6b73014bc843ca88d9e14f461458f19b8e52e114b7170727fda",
+      "base_sha256": "264c5df8d4dfc2d4e07ea12800d1f0ad2b6bccd3854c57688067548c8a26e2ae"
+    },
+    "assets/images/tools-hub/yara-sigma-validator.svg": {
+      "tool": 9,
+      "slug": "yara-sigma-validator",
+      "status": "modified",
+      "bytes": 2382,
+      "sha256": "a93ae8a1fb35e6fad82909fefd525ab43460af475e7a9091a929c2e93d9713ea",
+      "base_sha256": "aefe21e26c355cc78b6a60cf61eedd88149edd6aff5da510a45fd73bca33ec6e"
+    },
+    "assets/images/tools-hub/container-hardening-audit.svg": {
+      "tool": 10,
+      "slug": "container-hardening-audit",
+      "status": "modified",
+      "bytes": 2461,
+      "sha256": "0d8dfb0c5e9387962f5adcb585a9148e823e62666b526d0462599636398de41b",
+      "base_sha256": "4d2f31e0fa991b07878e92217533b70c6106d19f017c47c5e1333055fc63460e"
+    }
+  }
+}
