@@ -119,10 +119,12 @@ for (const [name, body, secrets] of CASES) {
 }
 
 // ---------------------------------------------------------------- 2. page markup, script and FAQ
-const tpl = fs.readFileSync(path.join(THEME, 'template-parts/tools/prompt-injection-detector.php'), 'utf8');
-const worker = fs.readFileSync(path.join(THEME, 'assets/js/prompt-injection-detector/worker.js'), 'utf8');
-const app = fs.readFileSync(path.join(THEME, 'assets/js/prompt-injection-detector/app.js'), 'utf8');
-const faq = fs.readFileSync(path.join(__dirname, '../deploy/tools-prompt-injection-detector/editorial.json'), 'utf8');
+// line endings of the working copy (CRLF on Windows checkouts) do not matter
+const readLF = p => fs.readFileSync(p, 'utf8').split(String.fromCharCode(13)).join('');
+const tpl = readLF(path.join(THEME, 'template-parts/tools/prompt-injection-detector.php'));
+const worker = readLF(path.join(THEME, 'assets/js/prompt-injection-detector/worker.js'));
+const app = readLF(path.join(THEME, 'assets/js/prompt-injection-detector/app.js'));
+const faq = readLF(path.join(__dirname, '../deploy/tools-prompt-injection-detector/editorial.json'));
 {
 	const label = (tpl.match(/<label[^>]*>\s*<input[^>]*data-pi-unmask[^>]*>\s*<span>[\s\S]*?<\/span>\s*<\/label>/) || [''])[0];
 	const input = (label.match(/<input[^>]*>/) || [''])[0];
