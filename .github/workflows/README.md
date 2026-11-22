@@ -9,10 +9,16 @@ touched). Both have `permissions: contents: read`, use no repository secrets, ch
 | [`secret-scan.yml`](secret-scan.yml) | **gitleaks**: the full history of the checked-out ref, with [`.gitleaks.toml`](../../.gitleaks.toml) and the baseline [`.gitleaksignore`](../../.gitleaksignore), values redacted; **no-token-shaped-strings** (`tests/no-token-shaped-strings.test.cjs`) |
 | [`fast-tests.yml`](fast-tests.yml) | [`../scripts/fast-tests.sh`](../scripts/fast-tests.sh): every Node test `tests/*.test.cjs` except the skip list below, then `php -l` on every PHP file of `wp-content/themes`, `wp-content/plugins`, `tests` and `preview` (PHP of the runner image) |
 
-Pins: `actions/checkout` v4.2.2 = `11bd71901bbe5b1630ceea73d27597364c9af683`, `actions/setup-node` v4.4.0 =
-`49933ea5288caeca8642d1e84afbd3f7d6820020` (tags resolved on 2026-11-22), gitleaks v8.21.2 as the image
+Pins: `actions/checkout` v5.0.0 = `08c6903cd8c0fde910a37f88322edcfb5dd907a8`, `actions/setup-node` v5.0.0 =
+`a0853c24544627f65ddf259abe73b1d18a591444` (tags resolved on 2026-11-22; v5 runs on Node 24, v4 on the deprecated Node 20), gitleaks v8.21.2 as the image
 `zricethezav/gitleaks@sha256:0e99e8821643ea5b235718642b93bb32486af9c8162c8b8731f7cbdc951a7f46`, run with
-`--network none`. Node 24 (the version the tests are developed with), runner `ubuntu-24.04`.
+`--network none`. Node **24.14.1**, the version the tests are developed and accepted with, runner `ubuntu-24.04`.
+The fast tests check out the full history (`fetch-depth: 0`): the manifest tests read the package base commits.
+
+Why Node is pinned to 24.14.1: on Node 24.22.3 `url.domainToASCII('xn--already.example')` returns the name instead of
+`''`, so `tests/email-header-analyzer-engine.test.cjs` also compares the back conversion, and the engine's `toUnicode`
+decodes the invalid label `xn--already` to control characters instead of leaving it as it is. That is an engine finding
+in `wp-content/` (frozen during the utilities-1 installation), recorded here for a later fix; it is not a CI problem.
 
 ## Skipped in the fast tests (explicit)
 
