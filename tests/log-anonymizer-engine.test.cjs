@@ -157,9 +157,11 @@ category('username', 'USER', [
 	['logon CORP\\heidi succeeded', 'heidi'],
 	['<Data Name="TargetUserName">ivan</Data>', 'ivan'],
 	['Account Name:\t\tjudy', 'judy'],
-	['suser=mallory', 'mallory']
+	['suser=mallory', 'mallory'],
+	// User ID is explicitly sensitive under the structured-field requirements.
+	['userId=12345', '12345']
 ], [
-	'user_agent=Mozilla/5.0', 'userId=12345', 'user_count=7', 'C:\\Users\\Public\\Documents', '/home/', 'HKLM\\Software\\Vendor',
+	'user_agent=Mozilla/5.0', 'user_count=7', 'C:\\Users\\Public\\Documents', '/home/', 'HKLM\\Software\\Vendor',
 	'C:\\Program Files\\Common Files', 'username=-', 'NT AUTHORITY\\SYSTEM'
 ]);
 

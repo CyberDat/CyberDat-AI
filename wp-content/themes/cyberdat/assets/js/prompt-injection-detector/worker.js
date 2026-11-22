@@ -77,6 +77,7 @@ self.onmessage = function (event) {
 		let lastReport = 0;
 		const started = Date.now();
 		const result = self.CyberDatPromptInjectionDetector.analyze(text, msg.options, {
+			maskSanitized: true,
 			onProgress(done, total) {
 				const now = Date.now();
 				if (now - lastReport > 100 || done === total) {

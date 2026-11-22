@@ -55,7 +55,7 @@ ob_start();
 cyberdat_log_anonymizer_render( 2 );
 $html = ob_get_clean();
 check( str_contains( $html, 'data-log-anonymizer' ) && str_contains( $html, 'data-worker-src="https://staging.cyberdat.eu/wp-content/themes/cyberdat/assets/js/log-anonymizer/worker.js?ver=123&#038;ev=123"' ), 'workspace renders with same-origin worker URL' );
-check( 15 === substr_count( $html, 'data-la-category' ), 'all 15 built-in categories rendered as checkboxes' );
+check( 16 === substr_count( $html, 'data-la-category' ), 'all 16 built-in categories rendered as checkboxes' );
 foreach ( array( 'How it works', 'Privacy', 'Limitations of automated analysis', 'Automated anonymization cannot guarantee', 'Contains the original values.' ) as $needle ) {
 	check( str_contains( $html, $needle ), "required block present: $needle" );
 }

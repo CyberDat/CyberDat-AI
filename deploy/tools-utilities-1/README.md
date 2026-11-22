@@ -15,39 +15,39 @@ tools (owner decision of 2026-11-19).
 
 ## Install rule (owner decision 2026-11-21)
 
-**The installer changes no theme file.** It copies the target files of `manifest.json` as they are: no prepare step edits
-`inc/tools.php`, `inc/tools-catalog.json` or any other file. After the installation every theme file on staging equals the
-`target` map of the manifest (= the branch at `theme_commit`) byte for byte; verify with the manifest hashes. Catalogue statuses
-and the staging canonical scope come with the package, so a release never needs a patch on the server.
+**The installer changes no theme file.** It copies the delta files of `manifest.json` as they are: no prepare step edits
+`inc/tools.php`, `inc/tools-catalog.json` or any other file. Before the installation every theme file on staging equals the
+`base` map; after it every theme file equals the `target` map (= the branch at `theme_commit`) byte for byte; verify with the
+manifest hashes. Catalogue statuses and the staging canonical scope come with the package.
 
-Background (Codex, 2026-11-21): the 1.2 installer (`prepare.py`, archive `178eb167…`) had set three catalogue statuses to
-`available` and extended the canonical slug list on staging, so staging differed from GitHub in these two files. The cause is
-removed here instead of copying the patch. Consequence for the installation: on staging the current hashes of these two files
-differ from `base_sha256` in the manifest (they are the `prepare.py` versions, listed in `staging_known_differences`; their
-bytes were not available to me); both files are replaced as a whole by the target bytes, which already contain the effect of
-that patch.
+## Base = the staging theme (revision `tools-utilities-1/2`, 2026-11-22)
 
-## Delta to apply on top of the release 1.3 theme and the staging Hub
+Base = `snapshot/staging-theme-20261122` `cd06239` (Codex: exact snapshot of the staging theme, 159/159 files equal to staging
+by SHA-256), merged into this branch (`c0963b4`). So `base_sha256` of every modified file is the staging version; the former
+`staging_known_differences` and the Hub overlay are gone. Theme 159 → 188 files: **29 added, 22 modified, 0 removed**
+(`manifest.json` → `delta_files`, SHA-256 of the LF bytes in git). `node deploy/tools-utilities-1/build-manifest.cjs --check`
+verifies it; the builder also checks the owner decisions below and that base + delta = target.
 
-Base = the theme of `integration/tools-release-1.3` (`e1bff4e`, equal to the 1.3 manifest target) with the Codex Hub on
-staging overlaid (`hub_commit` `0a32f12`; `hub_overlay` lists its 15 theme files; the builder checks that 1.2/1.3 do not
-touch them). `manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 177 → 187 files: 10 added,
-19 modified, 0 removed. Utility: 9 files, its Hub preview, `functions.php`, the catalogue and one Hub template line.
-Previews of tools 5–10 (6 SVGs and the illustrations README) ship with their own packages (`hub_previews`):
-`node deploy/tools-utilities-1/build-manifest.cjs --check` verifies it. `manifest.json` → `tools.email-header-analyzer`
-lists the utility's own files and only its lines in the shared files:
+Owner decisions per file group (`manifest.json` → `owner_decisions`; fix `2cfbea0`):
+
+| Group | Files | In the delta |
+|---|---|---|
+| A — staging kept | `assets/js/intelligence-live.js`, `intelligence-charts.js`, `threat-analytics.js`, `threat-pulse.js`, `inc/threat-pulse.php`, `template-parts/home/threat-dashboard.php`, `threat-pulse.php`; Log Anonymizer Stage1: `assets/js/log-anonymizer/{app,engine,worker}.js`, `inc/tool-log-anonymizer.php`, `template-parts/tools/log-anonymizer.php` (engine 1.1.0, already contains our Unicode/NFD fixes) | no (checked: equal to staging) |
+| B — our branch | `assets/js/ai-model-bom/engine.js`, `assets/js/atlas-mapper/engine.js`, `inc/tool-ai-model-bom.php`, `inc/tool-atlas-mapper.php` (b8ff2f3); `assets/js/prompt-injection-detector/{app,engine,worker}.js`, `inc/tool-prompt-injection-detector.php`; `assets/js/lotl-analyzer/engine.js`, `inc/tool-lotl-analyzer.php`; `inc/tools-catalog.json`, `inc/tools.php`; previews 5–10; `functions.php` (four includes: tools 8–10 and the utility); `page-templates/tools.php` (the one "Quick utility" line) | yes, 20 files |
+| C — merged | `template-parts/tools/prompt-injection-detector.php`, `lotl-command-analyzer.php`: 3-way merge (base `0a32f12`, the parent of Stage1 `d0cba38`): Stage1 `notranslate`/privacy note + our masking texts and switch; `mcp-security-checker.php` and `inc/assets.php`: the merge equals staging | 2 files |
+| absent on staging | tools 8–10 (release 1.3), the utility (9 files + preview), `assets/images/tools-hub/README.md` | yes, 29 added |
+
+Catalogue: entries 1–7 equal to staging; tools 8–10 `planned` → `available` with their release descriptions; the utility appended.
+`manifest.json` → `release_1_3` (files of tools 8–10), `tools.email-header-analyzer` (the utility's files and shared lines),
+`export_masking_5_6`, `secret_masking`, `sanitized_copy_editorial` (FAQ of tool 2), `hub_previews` (5–7: Codex package, 8–10: 1.3).
 
 | Status | Path |
 |---|---|
 | added | `assets/css/email-header-analyzer.css`, `assets/js/email-header-analyzer/{app,engine,worker}.js`, `inc/tool-email-header-analyzer.php`, `template-parts/tools/email-header-analyzer.php` |
 | added | `assets/js/email-header-analyzer/public_suffix_list.dat` (Public Suffix List, unmodified, MPL-2.0), `psl-data.js` (the same bytes as a JS string for the worker), `LICENSE-MPL-2.0.txt` — publish the three together |
-| modified | `functions.php` — one line `require_once __DIR__ . '/inc/tool-email-header-analyzer.php';` after the container audit include |
-| modified | `inc/tools-catalog.json` — one entry appended after the ten tools (`kind: utility`, release `utilities-1`, category Quick Utilities) and the **final statuses**: tools 1–10 and the utility `available` (owner decision 2026-11-21; only the `status` lines differ, descriptions unchanged). The Hub shows a card as Available only for a published, ready page. `deploy/tools-release-1/route-catalog.json` stays a byte copy |
+| added | tools 8–10: `assets/css/`, `assets/js/<tool>/{app,engine,worker}.js`, `inc/tool-<tool>.php`, `template-parts/tools/<tool>.php` for `prompt-injection-test-bench`, `yara-sigma-validator`, `container-hardening-audit` |
 | modified | `inc/tools.php` — `cyberdat_tools_staging_canonical()` takes the pages with catalogue status `available` instead of a hand-written slug list; the staging, published-page, `cyberdat_tool_ready` and Rank Math checks are unchanged |
-| added | `assets/images/tools-hub/email-header-analyzer.svg` — Hub card preview (headers only, `"Demo Bank" <a@example.net>` → dmarc=fail, brand in name) |
-| modified | `page-templates/tools.php` (the staging Hub template from `0a32f12`) — one line (66): planned cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
-| modified | secret masking of tools 2 and 3 (`manifest.json` → `secret_masking`): `assets/js/prompt-injection-detector/engine.js` (1.0.4), `inc/tool-prompt-injection-detector.php` (engine constant), `template-parts/tools/prompt-injection-detector.php` (help texts, the switch next to the sanitized copy), `assets/js/prompt-injection-detector/app.js` and `worker.js` (masked sanitized copy by default, 2026-11-22); `assets/js/lotl-analyzer/engine.js` (1.0.1), `inc/tool-lotl-analyzer.php` (engine constant), `template-parts/tools/lotl-command-analyzer.php` (help text). Replace the eight files as a whole. Page fields of tool 2: `how_it_works` and `faq` from `deploy/tools-prompt-injection-detector/editorial.json` (`manifest.json` → `sanitized_copy_editorial`) |
-| other packages | tools 5–7 previews + illustrations README → `deploy/tools-hub-previews-5-7/` (Codex, tools already on staging); tools 8–10 previews → `deploy/tools-release-1.3/hub-previews.json` |
+| modified | secret masking of tools 2 and 3 and the masked sanitized copy of tool 2 (`secret_masking`). Page fields of tool 2: `how_it_works` and `faq` from `deploy/tools-prompt-injection-detector/editorial.json` |
 
 **Hub effect** (owner decision 3, 2026-11-19: keep the card): the hub shows an 11th "Coming soon" card labelled
 "Quick utility" and a Quick Utilities filter button; the ten tool cards are unchanged. The hub tests
@@ -122,6 +122,18 @@ mx.google.com result, a message with only a forged result, the Apple relay addre
 engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extra 0), held-out 14/14 → 14/14 (32/32, 0).
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
+
+### Update 2026-11-22 (seventh round: package over the staging snapshot)
+
+Base and owner decisions: see "Base = the staging theme" above. Check: the snapshot theme (`git archive cd06239`) with the
+29 + 22 delta files applied equals the theme at `theme_commit` byte for byte (188 files); no group A file is in the delta.
+One regression run (local sandbox): all eleven tools, 33/33 runs exit 0, PASS counts as before (detector 21 / 13 / 13,
+LotL 16 / 10 / 10, MCP 20 / 11 / 11, Log Anonymizer Stage1 21 / 14 / 14, tools 5–10 and the utility as in the table below);
+Hub 174/174 in Edge, Firefox and WebKit. PHP tests of the eleven pages, `tools`, `tools-catalog` and both canonical suites: PASS.
+Failing after the merge, **not changed here** (owner decision needed): `log-anonymizer-unicode(-marks).test.cjs` (case
+`of-user-eol`: Stage1 masks "of user X" only inside a session record), `tools-stabilization.test.cjs` (frozen pre-Stage1 Log
+Anonymizer digest; fails on Stage1 `d0cba38` too), `analytics-dialog-lifecycle.test.cjs`, `threat-dashboard.test.php`,
+`threat-pulse.test.php` (the staging intelligence/home files are newer than these tests; outside Security Tools).
 
 ### Update 2026-11-22 (sixth round: masked sanitized copy in the detector, owner decision)
 
