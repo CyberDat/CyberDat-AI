@@ -4,7 +4,7 @@
   "base_commit": "cd06239d39e6a81139e7fec843412f86f0de0140",
   "base_ref": "snapshot/staging-theme-20261122",
   "base_note": "Base = the exact staging theme published by Codex on 2026-11-22 (159 files equal to staging by SHA-256). base_sha256 of every modified file is the staging version.",
-  "theme_commit": "2cfbea097c3a5bb144da12f8fdb388252e723a72",
+  "theme_commit": "3082f05e46ea5558fe6262a5817f64a2d62a918c",
   "install_rule": "The installer copies the delta files as they are and changes no theme file (no prepare step that edits inc/tools.php, inc/tools-catalog.json or any other file). Before installing, every theme file on staging equals the base map; after installing, every theme file equals the target map of this manifest, byte for byte. Catalogue statuses and the staging canonical scope are part of the package.",
   "owner_decisions": {
     "date": "2026-11-22",
@@ -244,8 +244,8 @@
     },
     "assets/js/lotl-analyzer/engine.js": {
       "status": "modified",
-      "bytes": 43709,
-      "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c",
+      "bytes": 44116,
+      "sha256": "80e84fc2a1bb44ea75eac9bb92d39f403e383e5b405f724e543decbab53cdcc8",
       "base_sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
     },
     "assets/js/prompt-injection-detector/app.js": {
@@ -256,8 +256,8 @@
     },
     "assets/js/prompt-injection-detector/engine.js": {
       "status": "modified",
-      "bytes": 104397,
-      "sha256": "456542161f4c19dd3ff9840884eca94d1138f5c9c1c47201bb6632dbf4468876",
+      "bytes": 105690,
+      "sha256": "9851ce92cd74e44ce9f850f1ca194ebdac5bbdf99b4da3208dd4ec4ce39384f1",
       "base_sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
     },
     "assets/js/prompt-injection-detector/worker.js": {
@@ -273,8 +273,8 @@
     },
     "assets/js/prompt-injection-test-bench/engine.js": {
       "status": "added",
-      "bytes": 41710,
-      "sha256": "8e3bd09925249c6bd22996ecfb73c4703682b7483a2ef094389144bfb0be5560"
+      "bytes": 43244,
+      "sha256": "361542735484f2347b96c8658e1639b0d9b5f61c0e693e515f12529fea57d362"
     },
     "assets/js/prompt-injection-test-bench/worker.js": {
       "status": "added",
@@ -339,7 +339,7 @@
     "inc/tool-prompt-injection-test-bench.php": {
       "status": "added",
       "bytes": 3219,
-      "sha256": "d77fcae620dcd6a26b8b79ad8b7dd5383d20e928be7a1ecfb61e8a69309d2c6a"
+      "sha256": "b4f178ca4395352d9b8cd7b07dca198748058a060efba7e8f4b86846e2b1b97a"
     },
     "inc/tool-yara-sigma-validator.php": {
       "status": "added",
@@ -409,8 +409,8 @@
           "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
         },
         "assets/js/prompt-injection-test-bench/engine.js": {
-          "bytes": 41710,
-          "sha256": "8e3bd09925249c6bd22996ecfb73c4703682b7483a2ef094389144bfb0be5560"
+          "bytes": 43244,
+          "sha256": "361542735484f2347b96c8658e1639b0d9b5f61c0e693e515f12529fea57d362"
         },
         "assets/js/prompt-injection-test-bench/worker.js": {
           "bytes": 2432,
@@ -418,7 +418,7 @@
         },
         "inc/tool-prompt-injection-test-bench.php": {
           "bytes": 3219,
-          "sha256": "d77fcae620dcd6a26b8b79ad8b7dd5383d20e928be7a1ecfb61e8a69309d2c6a"
+          "sha256": "b4f178ca4395352d9b8cd7b07dca198748058a060efba7e8f4b86846e2b1b97a"
         },
         "template-parts/tools/prompt-injection-test-bench.php": {
           "bytes": 14378,
@@ -666,8 +666,8 @@
         "not_masked": "the highlighted text: it is the complete text the user pasted (the page says so); the sanitized copy only while the user switches on \"Do not mask secrets in the sanitized copy\" (off on every page load, warning shown)",
         "files": {
           "assets/js/prompt-injection-detector/engine.js": {
-            "bytes": 104397,
-            "sha256": "456542161f4c19dd3ff9840884eca94d1138f5c9c1c47201bb6632dbf4468876",
+            "bytes": 105690,
+            "sha256": "9851ce92cd74e44ce9f850f1ca194ebdac5bbdf99b4da3208dd4ec4ce39384f1",
             "base_sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
           },
           "inc/tool-prompt-injection-detector.php": {
@@ -700,8 +700,8 @@
         "not_masked": "",
         "files": {
           "assets/js/lotl-analyzer/engine.js": {
-            "bytes": 43709,
-            "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c",
+            "bytes": 44116,
+            "sha256": "80e84fc2a1bb44ea75eac9bb92d39f403e383e5b405f724e543decbab53cdcc8",
             "base_sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
           },
           "inc/tool-lotl-analyzer.php": {
@@ -2107,9 +2107,9 @@
       "sha256": "0d8b4c6d6300b877cee32c3dbedc9e4705a6a5c86057a2d9b2713c580724a9bd"
     },
     "assets/js/lotl-analyzer/engine.js": {
-      "bytes": 43709,
+      "bytes": 44116,
       "mode": "0644",
-      "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c"
+      "sha256": "80e84fc2a1bb44ea75eac9bb92d39f403e383e5b405f724e543decbab53cdcc8"
     },
     "assets/js/lotl-analyzer/lolbas-data.js": {
       "bytes": 387900,
@@ -2147,9 +2147,9 @@
       "sha256": "d335cb807c2582c8fab7261d64517a6e61663dfd578d5eafa508db52dcacd49d"
     },
     "assets/js/prompt-injection-detector/engine.js": {
-      "bytes": 104397,
+      "bytes": 105690,
       "mode": "0644",
-      "sha256": "456542161f4c19dd3ff9840884eca94d1138f5c9c1c47201bb6632dbf4468876"
+      "sha256": "9851ce92cd74e44ce9f850f1ca194ebdac5bbdf99b4da3208dd4ec4ce39384f1"
     },
     "assets/js/prompt-injection-detector/worker.js": {
       "bytes": 3774,
@@ -2162,9 +2162,9 @@
       "sha256": "1b6d79c7264aa899642cddb62ae03f83f87a1d557c0bacc224f68afc46438826"
     },
     "assets/js/prompt-injection-test-bench/engine.js": {
-      "bytes": 41710,
+      "bytes": 43244,
       "mode": "0644",
-      "sha256": "8e3bd09925249c6bd22996ecfb73c4703682b7483a2ef094389144bfb0be5560"
+      "sha256": "361542735484f2347b96c8658e1639b0d9b5f61c0e693e515f12529fea57d362"
     },
     "assets/js/prompt-injection-test-bench/worker.js": {
       "bytes": 2432,
@@ -2339,7 +2339,7 @@
     "inc/tool-prompt-injection-test-bench.php": {
       "bytes": 3219,
       "mode": "0644",
-      "sha256": "d77fcae620dcd6a26b8b79ad8b7dd5383d20e928be7a1ecfb61e8a69309d2c6a"
+      "sha256": "b4f178ca4395352d9b8cd7b07dca198748058a060efba7e8f4b86846e2b1b97a"
     },
     "inc/tool-security.php": {
       "bytes": 3102,
