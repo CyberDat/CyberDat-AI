@@ -83,6 +83,10 @@ const SYNTH = Object.freeze({
 	ASSIGNED_SECRET: ['Sup3', 'rS3c', 'retV', 'alue9'].join(''),
 	ASSIGNED_PLAIN: ['Abcd', 'efgh', '1234'].join(''),
 	ASSIGNED_PLAIN_2: ['abcd', 'efgh', '12345'].join(''),
+	// Space-separated values without a key, the shape of the Codex B02 fixtures (new synthetic values, not Codex's):
+	// 23 characters = 14 lower, 4 upper, 3 digits, 2 "_"; 21 characters = 12 lower, 4 upper, 3 digits, 2 "_"
+	UNKEYED_NAMED: ['Fake', 'name', '_Test', 'val', '_Xy', 'Q', '123'].join(''),
+	UNKEYED_PASSWORD: ['Fake', 'pass', '_Test', 'wd', '_Z', 'Q', '456'].join(''),
 	PI_BENIGN_JWT:['eyJ', 'hbGciOiJ', 'IUzI1NiI', 'sInR5cCI', '6IkpXVCJ', '9.eyJzdW', 'IiOiIxMj', 'M0In0.c2', 'lnbmF0dX', 'Jl'].join(''),
 });
 
