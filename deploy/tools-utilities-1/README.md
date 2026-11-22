@@ -123,6 +123,18 @@ engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extr
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
 
+### Update 2026-11-22 (seventh round: package over the staging snapshot)
+
+Base and owner decisions: see "Base = the staging theme" above. Check: the snapshot theme (`git archive cd06239`) with the
+29 + 22 delta files applied equals the theme at `theme_commit` byte for byte (188 files); no group A file is in the delta.
+One regression run (local sandbox): all eleven tools, 33/33 runs exit 0, PASS counts as before (detector 21 / 13 / 13,
+LotL 16 / 10 / 10, MCP 20 / 11 / 11, Log Anonymizer Stage1 21 / 14 / 14, tools 5–10 and the utility as in the table below);
+Hub 174/174 in Edge, Firefox and WebKit. PHP tests of the eleven pages, `tools`, `tools-catalog` and both canonical suites: PASS.
+Failing after the merge, **not changed here** (owner decision needed): `log-anonymizer-unicode(-marks).test.cjs` (case
+`of-user-eol`: Stage1 masks "of user X" only inside a session record), `tools-stabilization.test.cjs` (frozen pre-Stage1 Log
+Anonymizer digest; fails on Stage1 `d0cba38` too), `analytics-dialog-lifecycle.test.cjs`, `threat-dashboard.test.php`,
+`threat-pulse.test.php` (the staging intelligence/home files are newer than these tests; outside Security Tools).
+
 ### Update 2026-11-22 (sixth round: masked sanitized copy in the detector, owner decision)
 
 The detector's sanitized copy is usually pasted into an LLM; until now it was the complete text. Fix
