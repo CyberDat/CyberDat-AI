@@ -30,7 +30,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.3';
+	const VERSION = '1.0.4';
 	const RULESET_VERSION = '2026-11-14.1';
 	const MAX_INPUT_CHARS = 20 * 1024 * 1024;
 	const MAX_FINDINGS = 2000;
@@ -1113,7 +1113,9 @@
 
 	/**
 	 * Analyze text. Options: normalizeNFKC, removeInvisible, neutralize ('high' |
-	 * 'medium' | 'low' | 'none'), previewChars. hooks.onProgress(done, total).
+	 * 'medium' | 'low' | 'none'), previewChars. hooks.onProgress(done, total). hooks.maskSanitized: also build the
+	 * masked sanitized copy (sanitized.masked: text, secrets, diff) that the page shows by default; without it the result
+	 * is exactly as before (frozen output contracts).
 	 */
 	function analyze(input, options, hooks) {
 		const text = String(input == null ? '' : input);
@@ -1432,7 +1434,7 @@
 		});
 
 		// 9. Sanitized copy
-		const sanitized = sanitize(text, runs, norm.edits, findings, opts);
+		const sanitized = sanitize(text, runs, norm.edits, findings, opts, !!(hooks && hooks.maskSanitized));
 		progress(total);
 
 		return {
@@ -1474,7 +1476,7 @@
 	 * Edits: removal of invisible characters (not legitimate uses), NFKC changes,
 	 * and replacement of flagged passages with a visible marker.
 	 */
-	function sanitize(text, runs, normEdits, findings, opts) {
+	function sanitize(text, runs, normEdits, findings, opts, withMasked) {
 		const edits = [];
 		if (opts.removeInvisible) {
 			for (const run of runs) {
@@ -1533,6 +1535,7 @@
 		// Diff preview: unchanged runs and changes, bounded.
 		const limit = opts.previewChars || 200000;
 		const diff = [];
+		const removedText = [];
 		let shown = 0;
 		pos = 0;
 		for (const e of merged) {
@@ -1545,6 +1548,7 @@
 			}
 			const removed = text.slice(e.start, e.end);
 			diff.push({ t: 'c', kind: e.kind, del: clip(visible(removed), 4000), ins: e.replacement, ids: e.ids });
+			removedText.push(removed);
 			shown += Math.min(removed.length, 4000) + e.replacement.length;
 			pos = e.end;
 		}
@@ -1552,7 +1556,46 @@
 			diff.push({ t: 's', v: text.slice(pos, pos + (limit - shown)) });
 			shown += Math.min(text.length - pos, limit - shown);
 		}
-		return { text: output, changes: byKind, totalChanges: merged.length, diff, diffTruncated: pos < text.length && shown >= limit };
+		// Secret masking runs after sanitization, on the finished copy, so the sanitizer and detection are not affected.
+		// The page shows the masked copy by default; the complete copy stays available behind an explicit switch.
+		const result = { text: output, changes: byKind, totalChanges: merged.length, diff, diffTruncated: pos < text.length && shown >= limit };
+		if (withMasked) {
+			const secrets = findSecrets(output);
+			result.masked = { text: maskSecrets(output, secrets), secrets: secrets.length, diff: maskDiff(diff, removedText, secrets) };
+		}
+		return result;
+	}
+
+	/**
+	 * The change view of the masked copy. Unchanged runs and inserted text are positions in the sanitized copy: a secret
+	 * found there (spans of findSecrets on the whole copy) is shown once, where it starts, as an inserted mask, even when
+	 * it crosses an edit such as a removed invisible character. Removed text is masked on its own before it is cut.
+	 */
+	function maskDiff(diff, removedText, spans) {
+		const out = [];
+		let o = 0, i = 0, c = 0;
+		for (const part of diff) {
+			const str = part.t === 's' ? part.v : part.ins;
+			const end = o + str.length;
+			const segs = [];
+			let k = o;
+			while (i < spans.length && spans[i].end <= o) { i++; }
+			for (let j = i; j < spans.length && spans[j].start < end; j++) {
+				const x = spans[j];
+				if (x.start > k) { segs.push({ v: str.slice(k - o, x.start - o) }); }
+				if (x.start >= o) { segs.push({ m: '[' + x.kind + ': ' + x.shown + ']' }); }
+				k = Math.max(k, Math.min(x.end, end));
+			}
+			if (k < end) { segs.push({ v: str.slice(k - o) }); }
+			if (part.t === 's') {
+				for (const g of segs) { out.push(g.m ? { t: 'c', kind: 'secret', del: '', ins: g.m, ids: [] } : { t: 's', v: g.v }); }
+			} else {
+				out.push({ t: 'c', kind: part.kind, del: clip(visible(maskSecrets(removedText[c])), 4000), ins: segs.map(g => g.m || g.v).join(''), ids: part.ids });
+				c++;
+			}
+			o = end;
+		}
+		return out;
 	}
 
 	/** Original text with non-overlapping finding spans for the highlighted view. */
@@ -1582,6 +1625,6 @@
 		RULES: ALL_RULES.map(r => ({ id: r.id, group: r.group, severity: r.severity, title: r.title, explanation: r.explain })),
 		defaultOptions,
 		analyze,
-		_internal: { findSecrets, maskSecrets, normalize, scanInvisible, scanText, findEncoded, deobfuscateLine, isMention, isNegated, visible, sentenceBounds, TEXT_RULES, TEXT_EXTENSIONS, decodeBase64, readable }
+		_internal: { findSecrets, maskSecrets, maskDiff, normalize, scanInvisible, scanText, findEncoded, deobfuscateLine, isMention, isNegated, visible, sentenceBounds, TEXT_RULES, TEXT_EXTENSIONS, decodeBase64, readable }
 	};
 }));

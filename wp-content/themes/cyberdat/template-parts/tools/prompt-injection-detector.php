@@ -107,12 +107,18 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 			<p class="cd-la-help" id="cd-pi-diff-help"><?php esc_html_e( 'Removed text is struck through, inserted text is underlined. Each change starts with “−” (removed) and “+” (inserted) for screen readers and high-contrast modes.', 'cyberdat' ); ?></p>
 			<pre class="cd-la-preview cd-pi-diff" tabindex="0" role="region" aria-labelledby="cd-pi-diff-title" aria-describedby="cd-pi-diff-help" data-pi-diff></pre>
 			<p class="cd-la-help" data-pi-diff-truncated hidden></p>
+			<p class="cd-la-help" id="cd-pi-mask-help"><?php esc_html_e( 'Secrets are masked in the sanitized copy by default, after sanitization: known token formats, values after keys such as password, token or api_key, Bearer and Basic credentials, private keys, passwords in command options, credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the copy before you pass it to an AI assistant. Copy and Download take the version shown above.', 'cyberdat' ); ?></p>
+			<label class="cd-la-check notranslate" translate="no">
+				<input type="checkbox" autocomplete="off" aria-describedby="cd-pi-mask-help" data-pi-unmask>
+				<span><?php esc_html_e( 'Do not mask secrets in the sanitized copy', 'cyberdat' ); ?></span>
+			</label>
+			<p class="cd-la-callout cd-la-callout--warning notranslate" translate="no" data-pi-unmask-warning hidden><strong><?php esc_html_e( 'Secrets are not masked.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Any secret in your text stays in the sanitized copy you copy or download, and an AI assistant you paste it into will receive it.', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<button type="button" class="cd-la-button cd-la-button--primary" data-pi-copy><?php esc_html_e( 'Copy sanitized copy', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-download><?php esc_html_e( 'Download sanitized copy', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-report><?php esc_html_e( 'Download findings (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The findings report contains short excerpts of your text. In the excerpts, the details and the report, common secret forms are masked on a best-effort basis: known token formats, values after keys such as password, token or api_key, Bearer and Basic credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the report before you share it. The highlighted text and the sanitized copy are your complete text and are not masked. The report is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The findings report contains short excerpts of your text. In the excerpts, the details and the report, common secret forms are masked on a best-effort basis: known token formats, values after keys such as password, token or api_key, Bearer and Basic credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the report before you share it. The report is always masked, whatever the switch above is set to. The highlighted text is your complete text and is not masked. The report is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 
@@ -130,7 +136,7 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 					</ul>
 				</li>
 				<li><?php esc_html_e( 'Every finding has a rule id, a severity, its line and column and an explanation. Phrases that are quoted or given as examples ("phrases like …") are still reported, with low severity.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'The sanitized copy is secondary: it removes invisible characters, applies NFKC and replaces flagged passages with a visible marker, and every change is listed so you can check it.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The sanitized copy is secondary: it removes invisible characters, applies NFKC and replaces flagged passages with a visible marker, and every change is listed so you can check it. After that, values that look like secrets are masked unless you switch masking off.', 'cyberdat' ); ?></li>
 			</ol>
 			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s', 'cyberdat' ), esc_html( $cyberdat_pi['engine_version'] ), esc_html( $cyberdat_pi['ruleset'] ) ); ?></p>
 		</section>
