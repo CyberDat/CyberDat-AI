@@ -28,6 +28,9 @@ function cyberdat_theme_enqueue_assets() {
   wp_enqueue_style('cyberdat-analytics',get_theme_file_uri('/assets/css/threat-analytics.css'),array('cyberdat-threat-dashboard'),cyberdat_theme_asset_version('/assets/css/threat-analytics.css'));
   wp_enqueue_script('cyberdat-analytics',get_theme_file_uri('/assets/js/threat-analytics.js'),array('cyberdat-intelligence-charts'),cyberdat_theme_asset_version('/assets/js/threat-analytics.js'),array('strategy'=>'defer','in_footer'=>true));
  }
+ if ((is_front_page() || $intelligence) && function_exists('cdta_staging') && cdta_staging()) {
+  wp_enqueue_script('cyberdat-intelligence-live',get_theme_file_uri('/assets/js/intelligence-live.js'),$intelligence?array('cyberdat-analytics'):array('cyberdat-threat-pulse'),cyberdat_theme_asset_version('/assets/js/intelligence-live.js'),array('strategy'=>'defer','in_footer'=>true));
+ }
 	wp_enqueue_script(
 		'cyberdat-navigation',
 		get_theme_file_uri( '/assets/js/navigation.js' ),

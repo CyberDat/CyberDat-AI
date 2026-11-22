@@ -7,9 +7,9 @@
  * Invariants:
  *  - Replacement spans never contain line breaks, so the number of lines and
  *    every delimiter outside a replaced value are preserved.
- *  - Every regular expression is line-local (no \s that could cross lines)
- *    and uses bounded quantifiers to keep scanning close to linear time.
- *    The only multi-line detector (private keys) is bounded to 64 KiB.
+ *  - Key matching is bounded; scalar/CSV readers scan forward linearly.
+ *    CSV replacements retain raw framing and complete logical records.
+ *    Private-key block lookahead is bounded to 64 KiB.
  */
 (function (root, factory) {
 	'use strict';
@@ -22,8 +22,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.3';
-	const RULESET_VERSION = '2026-11-14.3';
+	const VERSION = '1.1.0';
+	const RULESET_VERSION = '2026-11-15.2';
 	const CHUNK_CHARS = 1 << 20;
 	const MAX_KEY_BLOCK = 65536;
 	const MAX_CUSTOM_RULES = 20;
@@ -43,6 +43,7 @@
 		{ id: 'username', name: 'Usernames', prefix: 'USER' },
 		{ id: 'personName', name: 'Names in explicit person/contact fields', prefix: 'PERSON' },
 		{ id: 'phone', name: 'Telephone numbers in explicit contact fields', prefix: 'PHONE' },
+		{ id: 'identifier', name: 'Identifiers and personal fields', prefix: 'ID' },
 		{ id: 'host', name: 'Hostnames and domains', prefix: 'HOST' },
 		{ id: 'card', name: 'Payment card numbers (Luhn-checked)', prefix: 'CARD' },
 		{ id: 'ssn', name: 'US Social Security numbers', prefix: 'SSN' },
@@ -61,7 +62,9 @@
 	const OCTET = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)';
 	const IPV4_SOURCE = '(?:' + OCTET + '\\.){3}' + OCTET;
 	const IPV4_EXACT = new RegExp('^' + IPV4_SOURCE + '$');
-	const EMAIL_EXACT = /^[A-Za-z0-9._%+-]{1,64}@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,8}[A-Za-z]{2,63}$/;
+	const EMAIL_LOCAL = String.raw`[\p{L}\p{N}\p{M}._%+\-]{1,64}`;
+	const EMAIL_DOMAIN = String.raw`(?:[\p{L}\p{N}](?:[\p{L}\p{N}\p{M}-]{0,61}[\p{L}\p{N}\p{M}])?\.){1,8}(?:xn--[A-Za-z0-9-]{2,59}|[\p{L}][\p{L}\p{M}]{1,62})`;
+	const EMAIL_EXACT = new RegExp('^'+EMAIL_LOCAL+'@'+EMAIL_DOMAIN+'$', 'u');
 	const LABEL_LIKE = /^(?:REDACTED_[A-Z0-9_]+|[A-Z][A-Z0-9_]{1,40}_\d{1,9})$/;
 	const PLACEHOLDER_VALUES = new Set(['', '-', '--', '*', 'null', 'nil', 'none', 'undefined', 'true', 'false', 'redacted', '[redacted]', '<redacted>', '(redacted)', '[filtered]', 'filtered', 'n/a', 'na', '<hidden>', 'hidden', 'masked', '[masked]']);
 
@@ -185,30 +188,53 @@
 
 	// ------------------------------------------------------ key classification
 
-	const KEY_EXCLUDED_SUFFIX = /(?:count|type|types|length|len|size|expiresin|expiresat|expires|expiry|expiration|ttl|limit|timeout|policy|policies|hint|required|enabled|disabled|reset|url|uri|endpoint|file|path|format|algorithm|alg|version|min|max|usage|used|status|valid|validity|age|changed|changedat|updated|updatedat|lastset|strength|prompt|field|header|location|store|provider|issuer|scope|scopes|method|mode|kind|rotation|attempts|failures|retries|duration|created|createdat|lifetime|refreshed)$/;
-	const SECRET_KEY = /(?:password|passwd|passphrase|pwd|secret|token|apikey|accesskey|authkey|privatekey|credential|sessionid|sessid|accountkey|sharedaccesskey|connectionstring|signature|xapikey|clientkey|masterkey|encryptionkey|signingkey|webhooksecret)/;
-	const SECRET_KEY_EXACT = /^(?:pass|pw|dbpass|userpass|adminpass|rootpass|sig|otp|cvv|cvc)$/;
-	const KEY_EXCLUDED_PREFIX = /^(?:max|min|num|total|count)/;
-	// "secret_name", "token_id", "api_key_arn" name a secret; they do not contain one.
-	const SECRET_KEY_NOT_VALUE = /(?:name|names|id|ids|arn|ref|label|alias|description|desc|owner)$/;
-	const USER_KEY = /(?:user|username|usr|uname|login|loginname|logonname|account|accountname|acct|owner|principal|samaccountname|upn|userprincipalname|actor|requester|initiator|benutzer|benutzername)$/;
-	const HOST_KEY = /(?:host|hostname|servername|computer|computername|machinename|nodename|workstation|workstationname|devicename|dvchost|shost|dhost|fqdn|domainname|vhost|sni)$/;
-
+	// These tables are the single source for classification and its UI description.
+	const KEY_RULES = {
+		metadata: 'count type types length len size expiresin expiresat expires expiry expiration ttl limit timeout policy policies hint required enabled disabled reset url uri endpoint file path format algorithm alg version min max usage used status valid validity age changed changedat updated updatedat lastset strength prompt field header location store provider issuer scope scopes method mode kind rotation attempts failures retries duration created createdat lifetime refreshed active inactive rotated region service date time'.split(' '),
+		secretWords: 'password passwd passphrase pwd secret token credential credentials signature'.split(' '),
+		secretCompounds: 'apikey accesskey authkey privatekey sessionid sessid accountkey sharedaccesskey connectionstring xapikey clientkey masterkey encryptionkey signingkey webhooksecret'.split(' '),
+		secretExact: 'pass pw dbpass userpass adminpass rootpass sig otp cvv cvc sid csrf xsrf pin'.split(' '),
+		secretReferences: 'name names id ids arn ref label alias description desc owner'.split(' '),
+		users: 'user username usr uname login loginname logonname account accountname acct owner principal samaccountname upn userprincipalname actor requester initiator benutzer benutzername suser ruser duser'.split(' '),
+		names: 'personname fullname contactname customername displayname firstname lastname givenname familyname surname'.split(' '),
+		phones: ['phone','phonenumber','telephone','telephonenumber','mobilenumber','tel','mobile','cell','fax', ...['contact','customer','mobile','home','work'].flatMap(p=>['phone','phonenumber','telephone','telephonenumber'].map(n=>p+n))],
+		identifiers: 'customerid accountid tenantid orgid organizationid clientid deviceid memberid subscriberid imei awsaccountid'.split(' '),
+		personal: 'address street streetaddress postalcode postcode zipcode dob dateofbirth birthdate birthday iban accountnumber bankaccount'.split(' '),
+		hosts: 'host hostname servername computer computername machinename nodename workstation workstationname devicename dvchost shost dhost fqdn domainname vhost sni rhost'.split(' '),
+		localized: {username:['benutzer','benutzername','anmeldename','пользователь','имяпользователя','логин'],secret:['passwort','kennwort','пароль'],phone:['telefon','телефон'],personName:['vorname','nachname','имя','фамилия','фио']}
+	};
+	function keyWords(key) {
+		return key.normalize('NFC').replace(/([\p{Lu}])([\p{Lu}][\p{Ll}])/gu,'$1 $2')
+			.replace(/([\p{Ll}\p{N}])([\p{Lu}])/gu,'$1 $2').toLowerCase().split(/[^\p{L}\p{N}\p{M}]+/u).filter(Boolean);
+	}
 	function classifyKey(key) {
-		const k = key.toLowerCase().replace(/[^a-z0-9]/g, '');
-		if (!k || k.length > 64) { return null; }
-		if ((KEY_EXCLUDED_SUFFIX.test(k) || KEY_EXCLUDED_PREFIX.test(k) || /tokens$/.test(k)) && !/(?:sessionid|sessid)$/.test(k)) { return null; }
-		const namesSecret = SECRET_KEY_NOT_VALUE.test(k) && !/(?:sessionid|sessid)$/.test(k);
-		if ((SECRET_KEY.test(k) && !namesSecret) || SECRET_KEY_EXACT.test(k)) { return 'secret'; }
-		if (/^(?:personname|fullname|contactname|customername|displayname)$/.test(k)) { return 'personName'; }
-		if (/^(?:(?:contact|customer|mobile|home|work)?(?:phone|telephone)(?:number)?|mobilenumber|tel)$/.test(k)) { return 'phone'; }
-		if (USER_KEY.test(k)) { return 'username'; }
-		if (HOST_KEY.test(k)) { return 'host'; }
+		const words=keyWords(key), k=words.join(''), last=words[words.length-1];
+		if (!k || k.length>64) return null;
+		if (KEY_RULES.metadata.includes(last) || KEY_RULES.metadata.includes(words.slice(-2).join('')) || ['max','min','num','total','count'].includes(words[0])) return null;
+		for (const [category,names] of Object.entries(KEY_RULES.localized)) if(names.includes(k))return category;
+		if(KEY_RULES.identifiers.includes(k)||KEY_RULES.personal.includes(k))return 'identifier';
+		if(KEY_RULES.names.includes(k))return 'personName';
+		if(KEY_RULES.phones.includes(k))return 'phone';
+		const session=/^(?:sessionid|sessid)$/.test(words.slice(-2).join(''))||/^(?:sessionid|sessid)$/.test(last);
+		let compound=false;for(let n=1;n<=3;n++)if(KEY_RULES.secretCompounds.includes(words.slice(-n).join('')))compound=true;
+		if((KEY_RULES.secretWords.some(w=>words.includes(w))||compound||KEY_RULES.secretExact.includes(k)) && (!KEY_RULES.secretReferences.includes(last)||session))return 'secret';
+		if(k==='userid'||k==='uid'||KEY_RULES.users.includes(last)||KEY_RULES.users.includes(words.slice(-2).join(''))||KEY_RULES.users.includes(words.slice(-3).join('')))return 'username';
+		if(KEY_RULES.hosts.includes(last)||KEY_RULES.hosts.includes(words.slice(-2).join('')))return 'host';
 		return null;
+	}
+	function fieldType(key) {
+		const k=keyWords(key).join(''), c=classifyKey(key);
+		if(c==='secret')return /password|passwd|passphrase|pwd|passwort|kennwort|пароль/.test(k)?'password':/apikey|xapikey|accesskey/.test(k)?'api_key':/token|csrf|xsrf|sid/.test(k)?'token':'secret';
+		if(c==='username')return undefined;
+		if(c==='identifier')return KEY_RULES.personal.includes(k)?'personal':'identifier';
+		return undefined;
 	}
 
 	// -------------------------------------------------------------- detectors
 	// Each detector scans one chunk and calls emit(start, end, category, prefix, value, norm).
+
+	const SPACED_KEY_SOURCE = String.raw`(?:User[ \t]{1,8}(?:name|ID)|API[ \t]{1,8}Key|Access[ \t]{1,8}Token|Auth[ \t]{1,8}Token|Client[ \t]{1,8}Secret|Private[ \t]{1,8}Key|(?:Full|Person|First|Last|Given|Family|Contact|Customer|Display)[ \t]{1,8}name|(?:Street[ \t]{1,8}address|Date[ \t]{1,8}of[ \t]{1,8}birth)|Имя[ \t]{1,8}пользователя)`;
+	const CONTEXT_KEY_SOURCE = String.raw`(?:${SPACED_KEY_SOURCE}|[\p{L}\p{N}_][\p{L}\p{N}\p{M}_.-]{0,63})`;
 
 	const RE = {
 		privateKeyBegin: /-----BEGIN ((?:[A-Z0-9]+ ){0,4})PRIVATE KEY( BLOCK)?-----/g,
@@ -235,15 +261,15 @@
 		],
 		url: /(?<![A-Za-z0-9+.-])([A-Za-z][A-Za-z0-9+.-]{1,15}):\/\/(?:([^\s:@\/?#"'<>]{1,128})(?::([^\s@\/?#"'<>]{0,256}))?@)?(\[[0-9A-Fa-f:.]{2,45}\]|[^\s\/:?#"'<>\[\](),;]{1,253})/gd,
 		cookie: /(?<![A-Za-z0-9_-])(Set-Cookie|Cookie)(["']?)[ \t]{0,8}:[ \t]{0,8}/gi,
-		kv: /(?<![A-Za-z0-9_.-])(["']?)([A-Za-z0-9_][A-Za-z0-9_.-]{0,63})\1[ \t]{0,8}(?:=>|:=|[:=])[ \t]{0,8}(?:"((?:[^"\\\r\n]|\\.){0,4096})"|'([^'\r\n]{0,4096})'|([^\s"',;&|<>{}\[\]()]{1,4096}))/gd,
+		kv: new RegExp(String.raw`(?<![\p{L}\p{N}\p{M}_.-])(["']?)(${CONTEXT_KEY_SOURCE})\1[ \t]{0,8}(?:=>|:=|[:=])[ \t]{0,8}(?:"((?:[^"\\\r\n]|\\.){0,4096})"|'([^'\r\n]{0,4096})'|([^\s"',;&|<>{}\[\]()]{1,4096}))`, 'gdiu'),
 		xml: /<([A-Za-z][A-Za-z0-9_.-]{0,63})(?:[ \t][^<>\r\n]{0,256})?>([^<\r\n]{1,4096})<\/\1>/gd,
 		xmlData: /<Data[ \t]+Name=["']([A-Za-z0-9_]{1,64})["'][ \t]*>([^<\r\n]{1,1024})<\/Data>/gd,
 		winText: /(?<![A-Za-z])(Account Name|Account Domain|Workstation Name|Source Workstation|Computer Name|User Name|Logon Account|Client Name|Caller User Name|Target User Name|Target Server Name|Client Address)[ \t]{0,8}:[ \t]{1,16}([^\s]{1,256})/gd,
 		card: /(?<![\d.-])\d(?:[ -]?\d){12,18}(?![\d])(?!-\d)/g,
 		ssn: /(?<![\d-])(?!000|666|9\d\d)\d{3}-(?!00)\d{2}-(?!0000)\d{4}(?![\d-])/g,
 		// URL-encoded form in query strings: bob%40example.com.
-		emailEncoded: /(?<![A-Za-z0-9._%+-])[A-Za-z0-9._+-]{1,64}%40(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,8}[A-Za-z]{2,63}(?![A-Za-z0-9-])/gi,
-		email: /(?<![A-Za-z0-9._%+-])[A-Za-z0-9._%+-]{1,64}@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,8}[A-Za-z]{2,63}(?![A-Za-z0-9-])/g,
+		emailEncoded: new RegExp(String.raw`(^|[^\p{L}\p{N}\p{M}._%+-])(`+EMAIL_LOCAL+'%40'+EMAIL_DOMAIN+')','giu'),
+		email: new RegExp(String.raw`(^|[^\p{L}\p{N}\p{M}._%+-])(`+EMAIL_LOCAL+'@'+EMAIL_DOMAIN+')','gu'),
 		ipv6: /(?<![0-9A-Za-z_:.])(?=[0-9A-Fa-f:]{0,39}:[0-9A-Fa-f]{0,4}:)[0-9A-Fa-f:]{2,39}(?:(?<=:)(?:\d{1,3}\.){3}\d{1,3})?(?:%[0-9A-Za-z._-]{1,32})?(?![0-9A-Za-z_:]|\.\d)/g,
 		ipv4: new RegExp('(?<![\\d.])(?<!\\d\\.)' + IPV4_SOURCE + '(?!\\d|\\.\\d)', 'g'),
 		// "version 1.2.3.4", "app_version=1.2.3.4", "{"version":"1.2.3.4"", "v1.2.3.4".
@@ -261,7 +287,7 @@
 			// User names may contain any letters (Cyrillic, umlauts): Unicode classes with the u flag.
 			// \p{M} after the first character: decomposed (NFD) names such as "jo" + U+0308 + "rg".
 			/\bby ([\p{L}\p{N}._-][\p{L}\p{M}\p{N}._-]{0,63})\(uid=\d{1,10}\)/gdu,
-			/\bof user ([\p{L}\p{N}_][\p{L}\p{M}\p{N}._-]{0,63}?)\.?(?=[ \t]|$)/gmdu,
+			/(?:^|[ \t:])(?:Removed|New|Started|Closed|Stopped) session [\p{L}\p{N}._-]{1,32} of user ([\p{L}\p{N}_][\p{L}\p{M}\p{N}._-]{0,63}?)\.?(?=[ \t]|$)/gmidu,
 			/\bnew (?:user|group): name=([^,\s]{1,64})/gd,
 			/\bpassword changed for ([^\s()\[\];,'"]{1,64})/gd,
 			// Apache httpd auth modules: "user bob not found", "user bob: authentication failure".
@@ -281,11 +307,11 @@
 		fqdn: /(?<![A-Za-z0-9_@.-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.){1,126}[A-Za-z]{2,63}\.?(?![A-Za-z0-9_-]|\.[A-Za-z0-9])/g
 	};
 
-	// Scan keys first: parsing up to4096 value characters for every unrelated
-	// "ab:" in a long line otherwise repeats the same work. The exact original
-	// value grammar is retained and is applied only at recognized key positions.
-	const KV_HEAD_RE = /(?<![A-Za-z0-9_.-])(["']?)([A-Za-z0-9_][A-Za-z0-9_.-]{0,63})\1[ \t]{0,8}(?:=>|:=|[:=])[ \t]{0,8}/gd;
-	const KV_VALUE_RE = new RegExp(RE.kv.source, 'dy');
+	// Scan keys first. Recognized scalar fields use a linear reader; the bounded
+	// legacy grammar is retained only to enter unknown quoted containers.
+	const KV_HEAD_RE = new RegExp(String.raw`(?<![\p{L}\p{N}\p{M}_.-])(["']?)(${CONTEXT_KEY_SOURCE})\1[ \t]{0,8}(?:=>|:=|[:=])[ \t]{0,8}`, 'gdiu');
+	const KV_VALUE_RE = new RegExp(RE.kv.source, 'diyu');
+	const KV_NEXT_SPACED_RE = new RegExp(String.raw`^${SPACED_KEY_SOURCE}=(?!=|$)`, 'i');
 
 	const DOMAIN_USER_EXCLUDED = /^(?:HKLM|HKCU|HKCR|HKU|HKCC|HKEY_[A-Z_]+|BUILTIN|NT|AUTHORITY|SERVICE|APPPOOL|SYSTEM32|SYSWOW64|WINDOWS)$/;
 	const USER_STOPWORDS = new Set(['in', 'of', 'the', 'a', 'an', 'and', 'or', 'to', 'with', 'from', 'by', 'for', 'is', 'not', 'on', 'at', 'input', 'name', 'id']);
@@ -428,6 +454,27 @@
 		}
 	}
 
+	function detectEmails(text,emit) {
+		for(const re of [RE.emailEncoded,RE.email]){re.lastIndex=0;let m;while((m=re.exec(text))!==null){
+			const start=m.index+m[1].length,value=m[2],end=start+value.length;
+			if(/^[\p{L}\p{N}\p{M}-]/u.test(text.slice(end,end+2)))continue;
+			const norm=value.replace(/%40/i,'@').normalize('NFC').toLowerCase();emit(start,end,'email','EMAIL',value,norm);
+		}}
+	}
+
+	function ibanValid(value){
+		const n=value.replace(/ /g,'').toUpperCase();if(!/^[A-Z]{2}\d{2}[A-Z0-9]{11,30}$/.test(n))return false;
+		let remainder=0;for(const ch of n.slice(4)+n.slice(0,4)){const digits=/[A-Z]/.test(ch)?String(ch.charCodeAt(0)-55):ch;for(const d of digits)remainder=(remainder*10+Number(d))%97;}return remainder===1;
+	}
+	function detectIdentifiers(text,emit){
+		const arn=/arn:aws(?:-[a-z]+){0,3}:[a-z0-9-]{1,63}:[a-z0-9-]{0,63}:(\d{12}):/gd;let m;
+		while((m=arn.exec(text))!==null)emit(m.indices[1][0],m.indices[1][1],'identifier','AWS_ACCOUNT',m[1],m[1]);
+		for(const re of [/[A-Za-z]{2}\d{2}[A-Za-z0-9]{11,30}/g,/[A-Za-z]{2}\d{2}(?: [A-Za-z0-9]{4}){2,7}(?: [A-Za-z0-9]{1,4})?/g]){
+			re.lastIndex=0;while((m=re.exec(text))!==null){if(/[\p{L}\p{N}\p{M}]$/u.test(text.slice(Math.max(0,m.index-2),m.index))||/^[\p{L}\p{N}\p{M}]/u.test(text.slice(m.index+m[0].length,m.index+m[0].length+2))||!ibanValid(m[0]))continue;emit(m.index,m.index+m[0].length,'identifier','IBAN',m[0],m[0].replace(/ /g,'').toUpperCase());}
+		}
+	}
+	function detectSids(text,emit){const re=/S-1-\d{1,20}(?:-\d{1,10}){3,15}/g;let m;while((m=re.exec(text))!==null){if(/[\p{L}\p{N}-]$/u.test(text.slice(Math.max(0,m.index-2),m.index))||/^[\p{L}\p{N}-]/u.test(text.slice(m.index+m[0].length,m.index+m[0].length+2)))continue;emit(m.index,m.index+m[0].length,'username','SID',m[0],m[0]);}}
+
 	function hostToken(raw) {
 		return raw.replace(/\.$/, '');
 	}
@@ -492,7 +539,7 @@
 				const value = p[2].replace(/[ \t]+$/, '');
 				if (!value || isPlaceholder(value)) { continue; }
 				const valueStart = start + p.index + p[0].length - p[2].length;
-				emit(valueStart, valueStart + value.length, 'secret', 'COOKIE', value, value);
+				emit(valueStart, valueStart + value.length, 'secret', 'SECRET', value, value,undefined,'cookie');
 			}
 		}
 	}
@@ -501,8 +548,11 @@
 		if (value == null) { return; }
 		const category = classifyKey(key);
 		if (!category) { return; }
+		const type=fieldType(key), baseEmit=emit;emit=(...args)=>baseEmit(...args,undefined,type);
 		const trimmed = value.replace(/[ \t]+$/, '');
 		if (!trimmed || isPlaceholder(trimmed)) { return; }
+		if(category==='username' && keyWords(key).join('')==='uid' && /^\d+$/.test(trimmed))return;
+		if(category==='identifier'){emit(start,start+trimmed.length,'identifier',KEY_RULES.personal.includes(keyWords(key).join(''))?'PII':'ID',trimmed,trimmed);return;}
 		// sudo/env "PWD=/home/alice" is the working directory, not a password.
 		if (category === 'secret' && /^pwd$/i.test(key.replace(/[^A-Za-z]/g, '')) && /^(?:\/|~|[A-Za-z]:[\\\/])/.test(trimmed)) { return; }
 		if (category === 'personName') {
@@ -528,7 +578,7 @@
 		if (/^(?:bearer|basic|digest|token|negotiate|ntlm)$/i.test(trimmed)) { return; }
 		if (category === 'secret') {
 			emit(start, start + trimmed.length, 'secret', 'SECRET', trimmed, trimmed);
-		} else if (trimmed.length <= 128) {
+		} else if (trimmed.length <= 128 || key.toLowerCase().replace(/[^a-z0-9]/g, '') === 'userid') {
 			emit(start, start + trimmed.length, 'username', 'USER', trimmed, trimmed);
 		}
 	}
@@ -582,7 +632,24 @@
 		}
 	}
 
-	function detectKeyValues(text, emit) {
+	/** Linear scalar reader: no value-length truncation or regex recursion. */
+	function readKeyValue(text, start) {
+		const quote = text[start] === '"' || text[start] === "'" ? text[start] : '';
+		let at = start + (quote ? 1 : 0);
+		const valueStart = at;
+		while (at < text.length) {
+			const ch = text[at];
+			if (ch === '\r' || ch === '\n') { break; }
+			if (quote) {
+				if (ch === quote) { break; }
+				if (ch === '\\' && at + 1 < text.length && text[at + 1] !== '\r' && text[at + 1] !== '\n') { at += 2; continue; }
+			} else if (/[\s"',;&|<>{}\[\]()]/.test(ch)) { break; }
+			at++;
+		}
+		return { start: valueStart, end: at, next: at + (quote && text[at] === quote ? 1 : 0), quoted: !!quote };
+	}
+
+	function detectKeyValues(text, emit, enabled) {
 		KV_HEAD_RE.lastIndex = 0;
 		let head, m;
 		while ((head = KV_HEAD_RE.exec(text)) !== null) {
@@ -600,24 +667,45 @@
 				}
 				continue;
 			}
-			KV_VALUE_RE.lastIndex = head.index;
-			m = KV_VALUE_RE.exec(text);
-			if (!m) { continue; }
-			KV_HEAD_RE.lastIndex = KV_VALUE_RE.lastIndex;
-			const key = m[2];
-			const group = m[3] != null ? 3 : (m[4] != null ? 4 : 5);
-			if (m[group] == null || m[group] === '') { continue; }
-			const valueStart = m.indices[group][0];
-			const separator = text.slice(m.indices[2][1], valueStart);
-			// "ruser= rhost=x" / "new user: name=x": an empty value followed by the next key=value pair.
-			const nextPair = group === 5 && /[ \t]$/.test(separator) && /^[A-Za-z_][A-Za-z0-9_.-]{0,63}=(?!=|$)/.test(m[group]);
-			// PAM "pam_unix(passwd:chauthtok)" is service:module, not key: value.
-			const pamPair = /:/.test(separator) && m.index > 0 && text[m.index - 1] === '(';
-			if (!nextPair && !pamPair) {
-				emitClassified(emit, key, m[group], valueStart);
+			const key = head[2], category = classifyKey(key);
+			if(category==='personName'){
+				const from=KV_HEAD_RE.lastIndex, quote=text[from]==='"'||text[from]==="'"?text[from]:'';let start=from+(quote?1:0),end=start;
+				while(end<text.length&&end-start<=160){const ch=text[end];if(quote?ch===quote:/[,;&|\t\r\n]/.test(ch))break;end++;}
+				let value=text.slice(start,end);
+				if(!quote && /[?&]/.test(text[head.index-1]||'')){const stop=value.search(/[ \t]/);if(stop>=0){value=value.slice(0,stop);end=start+value.length;}}
+				if(!quote){const next=/[ ]+[\p{L}\p{N}_][\p{L}\p{N}\p{M}_.-]{0,63}[ \t]{0,8}(?:=>|:=|[:=])/u.exec(value);if(next){value=value.slice(0,next.index);end=start+value.length;}}
+				if(value.length<=128)emitClassified(emit,key,value,start);
+				KV_HEAD_RE.lastIndex=Math.max(head.index+1,start);continue;
 			}
-			// Continue scanning inside the value so nested pairs are still found.
-			KV_HEAD_RE.lastIndex = m.indices[group][0];
+
+			const credential = category === 'secret' || key.toLowerCase().replace(/[^a-z0-9]/g, '') === 'userid';
+			KV_VALUE_RE.lastIndex = head.index;
+			const legacy = KV_VALUE_RE.exec(text);
+			let token;
+			if (legacy) {
+				const group = legacy[3] != null ? 3 : legacy[4] != null ? 4 : 5;
+				token = { start: legacy.indices[group][0], end: legacy.indices[group][1], next: KV_VALUE_RE.lastIndex, quoted: group !== 5 };
+				if (credential && ((group === 5 && token.end - token.start === 4096) || (group === 4 && text[token.end - 1] === '\\') || token.start < KV_HEAD_RE.lastIndex)) {
+					const complete = readKeyValue(text, KV_HEAD_RE.lastIndex);
+					if (complete.end - complete.start > 4096 || (group === 4 && text[token.end - 1] === '\\')) { token = complete; }
+				}
+			} else if (credential) {
+				token = readKeyValue(text, KV_HEAD_RE.lastIndex);
+				if (token.end - token.start <= 4096) { continue; }
+			} else { continue; }
+			if (token.end === token.start) { continue; }
+			const value = text.slice(token.start, token.end);
+			const separator = text.slice(head.indices[2][1], token.start);
+			const nextPair = !token.quoted && /[ \t]$/.test(separator) && (/^[A-Za-z_][A-Za-z0-9_.-]{0,63}=(?!=|$)/.test(value) || KV_NEXT_SPACED_RE.test(text.slice(token.start, token.start + 128)));
+			const pamPair = /:/.test(separator) && head.index > 0 && text[head.index - 1] === '(';
+			const jsonScalar = !token.quoted && head[1] === '"' && /^"[ \t]*:[ \t]*$/.test(separator) && /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(value);
+			if (!nextPair && !pamPair) {
+				emitClassified(jsonScalar ? ((a,b,c,d,e,f,g,type) => emit(a,b,c,d,e,f,true,type)) : emit, key, value, token.start);
+			}
+			// An enabled credential context owns its complete scalar. Rescanning
+			// nested "password=" strings inside it would be quadratic on long input.
+			KV_HEAD_RE.lastIndex = !nextPair && !pamPair && token.end - token.start > 4096 && enabled[category] && (category === 'secret' || category === 'username')
+				? Math.max(head.index + 1, token.end - 128) : token.start;
 		}
 		let re = RE.xml;
 		re.lastIndex = 0;
@@ -720,7 +808,7 @@
 			try {
 				re = new RegExp(pattern, 'g' + (rule.caseInsensitive ? 'i' : ''));
 			} catch (e) {
-				errors.push({ index, field: 'pattern', message: 'Invalid regular expression: ' + String(e.message).replace(/^Invalid regular expression: /, '') });
+				errors.push({ index, field: 'pattern', message: 'Invalid regular expression. Review the pattern syntax.' });
 				return;
 			}
 			if (re.test('')) {
@@ -763,32 +851,68 @@
 		};
 	}
 
-	/** Split one CSV/TSV line; returns [{ value, start }] with offsets of the unquoted value, or null if malformed. */
-	function splitDelimited(line, delimiter) {
+	/** Parse raw CSV offsets, never reserialize the document. Quotes/newlines stay in place. */
+	function readDelimitedRecord(text, from, delimiter, limit) {
 		const fields = [];
-		let i = 0;
-		while (i <= line.length) {
-			if (line[i] === '"') {
-				let j = i + 1;
-				while (j < line.length) {
-					if (line[j] === '"' && line[j + 1] === '"') { j += 2; continue; }
-					if (line[j] === '"') { break; }
-					j++;
+		const stop = limit == null ? text.length : Math.min(limit, text.length);
+		let at = from;
+		while (at <= stop) {
+			let start = at;
+			while (start < stop && (text[start] === ' ' || (delimiter !== '\t' && text[start] === '\t'))) { start++; }
+			const quoted = text[start] === '"';
+			let end, next;
+			if (quoted) {
+				start++;
+				end = start;
+				while (end < stop) {
+					if (text[end] === '"') {
+						if (text[end + 1] === '"') { end += 2; continue; }
+						break;
+					}
+					end++;
 				}
-				if (j >= line.length) { return null; }
-				fields.push({ value: line.slice(i + 1, j), start: i + 1 });
-				i = j + 1;
-				if (i < line.length && line[i] !== delimiter) { return null; }
-				i++;
+				if (end >= stop) { return null; }
+				next = end + 1;
+				while (next < stop && (text[next] === ' ' || (delimiter !== '\t' && text[next] === '\t'))) { next++; }
 			} else {
-				let j = line.indexOf(delimiter, i);
-				if (j === -1) { j = line.length; }
-				fields.push({ value: line.slice(i, j), start: i });
-				i = j + 1;
+				next = at;
+				while (next < stop && text[next] !== delimiter && text[next] !== '\r' && text[next] !== '\n') {
+					if (text[next] === '"') { return null; }
+					next++;
+				}
+				end = next;
+				while (end > start && (text[end - 1] === ' ' || (delimiter !== '\t' && text[end - 1] === '\t'))) { end--; }
 			}
+			if (next === stop && stop < text.length) { return null; }
+			if (next < stop && text[next] !== delimiter && text[next] !== '\r' && text[next] !== '\n') { return null; }
+			fields.push({ start, end, quoted });
 			if (fields.length > 512) { return null; }
+			if (text[next] === delimiter) { at = next + 1; continue; }
+			let after = next;
+			if (text[after] === '\r') { after++; }
+			if (text[after] === '\n') { after++; }
+			return { fields, end: next, next: after };
 		}
-		return fields;
+		return null;
+	}
+
+	function csvFieldValue(text, field) {
+		const raw = text.slice(field.start, field.end);
+		return field.quoted ? raw.replace(/""/g, '"') : raw;
+	}
+
+	// Keep established ordinary-log labels/options. Typed CSV labels are subtypes
+	// within the existing username/secret groups, including their totals and map.
+	function csvColumn(header) {
+		const name=header.trim();let category=/^[\p{L}_][\p{L}\p{N}\p{M}_ .\t-]{0,127}$/u.test(name)?classifyKey(name):null;
+		const k=keyWords(name).join('');if(/[ \t]/.test(name)&&!['userid','accesstoken','authtoken','clientsecret',...KEY_RULES.users,...KEY_RULES.names,...KEY_RULES.phones,...KEY_RULES.secretWords,...KEY_RULES.secretCompounds,...KEY_RULES.secretExact,...KEY_RULES.identifiers,...KEY_RULES.personal,...KEY_RULES.hosts,...Object.values(KEY_RULES.localized).flat()].includes(k))category=null;
+		return {name,category};
+	}
+
+	function csvFormatError() {
+		const error = new Error('The recognized CSV table has an invalid record or inconsistent column count. No output was produced. Review the CSV structure.');
+		error.code = 'CSV_FORMAT';
+		return error;
 	}
 
 	function countChar(text, code) {
@@ -812,50 +936,63 @@
 		const stats = {};
 		for (const id of CATEGORY_IDS) { stats[id] = { replacements: 0, unique: 0 }; }
 		const warnings = { multilineCustom: 0 };
+		const fieldStats = {};
 
-		// CSV/TSV with a header row: classify columns by header name exactly like key=value keys.
-		// Decided once from the first two lines of the input; header line itself is never masked.
-		let csv = null;
-		let csvDecided = false;
-		let csvHeaderPending = false;
-		function decideCsv(text) {
-			csvDecided = true;
-			const lines = text.split('\n', 3).map(l => l.replace(/\r$/, ''));
-			if (lines.length < 2) { return; }
-			for (const d of [',', '\t', ';']) {
-				const head = splitDelimited(lines[0], d);
-				if (!head || head.length < 2 || !head.every(h => /^[A-Za-z_][A-Za-z0-9_ .-]{0,63}$/.test(h.value))) { continue; }
-				const second = splitDelimited(lines[1], d);
-				if (!second || second.length !== head.length) { continue; }
-				const columns = head.map(h => h.value);
-				if (columns.some(name => classifyKey(name))) {
-					csv = { delimiter: d, columns };
-					csvHeaderPending = true;
+		let csvTables=null, chunkOffset=0, csvRanges=[],csvRegions=[];
+		function planCsv(text){
+			csvTables=[];let pos=text.charCodeAt(0)===0xFEFF?1:0;
+			while(pos<text.length){let selected=null;
+				const physicalEnd=lineEndFrom(text,pos), heading=text.slice(pos,Math.min(physicalEnd,pos+MAX_KEY_BLOCK));
+				if(!/[,;\t]/.test(heading)||/[=\[\]{}:]/.test(heading)){pos=physicalEnd+(text.startsWith('\r\n',physicalEnd)?2:1);continue;}
+				for(const delimiter of [',','\t',';']){
+					const head=readDelimitedRecord(text,pos,delimiter,pos+MAX_KEY_BLOCK);if(!head||head.fields.length<2)continue;
+					const columns=head.fields.map(f=>csvColumn(csvFieldValue(text,f)));
+					if(columns.some(c=>c.name.length>128||/[=\[\]{}\r\n\0:]/.test(c.name))||!columns.some(c=>c.category))continue;
+					// Each heading must look like a name, not ordinary prose with commas.
+
+					const second=head.next<text.length?readDelimitedRecord(text,head.next,delimiter):null;
+					if(second&&second.fields.length!==columns.length)continue;
+					if(!second&&head.next<text.length)continue;
+					let end=head.next,at=head.next;
+					while(at<text.length){if(text[at]==='\r'||text[at]==='\n')break;const row=readDelimitedRecord(text,at,delimiter);if(!row||row.fields.length!==columns.length)break;end=row.next;at=row.next;}
+					selected={start:pos,headerEnd:head.next,end,delimiter,columns};break;
 				}
-				return;
+				if(selected){csvTables.push(selected);pos=selected.end;}else{const end=lineEndFrom(text,pos);pos=end+(text.startsWith('\r\n',end)?2:1);}
 			}
 		}
-		function detectCsv(text, emit) {
-			if (!csvDecided) { decideCsv(text); }
-			if (!csv) { return; }
-			let pos = 0;
-			while (pos < text.length) {
-				let end = text.indexOf('\n', pos);
-				if (end === -1) { end = text.length; }
-				const line = text.slice(pos, end).replace(/\r$/, '');
-				if (csvHeaderPending) {
-					csvHeaderPending = false;
-				} else {
-					const fields = splitDelimited(line, csv.delimiter);
-					if (fields && fields.length === csv.columns.length) {
-						fields.forEach((f, i) => emitClassified(emit, csv.columns[i], f.value, pos + f.start));
-					}
+		function csvChunkCut(text,from,chunkChars){
+			if(!csvTables)planCsv(text);let cut=nextCut(text,from,chunkChars);
+			for(const table of csvTables){if(cut<=table.headerEnd||cut>=table.end)continue;let pos=Math.max(from,table.headerEnd);while(pos<cut){const row=readDelimitedRecord(text,pos,table.delimiter);if(!row)break;pos=row.next;}cut=Math.max(cut,pos);}
+			return cut;
+		}
+		function detectCsv(text,emit){
+			if(!csvTables)planCsv(text);csvRanges=[];csvRegions=[];const values=[];
+			for(const table of csvTables){if(table.end<=chunkOffset||table.start>=chunkOffset+text.length)continue;
+				csvRanges.push({start:Math.max(0,table.start-chunkOffset),end:Math.min(text.length,table.end-chunkOffset)});
+				let pos=Math.max(table.headerEnd-chunkOffset,0);
+				while(pos<Math.min(text.length,table.end-chunkOffset)){
+					const row=readDelimitedRecord(text,pos,table.delimiter);if(!row||row.fields.length!==table.columns.length)break;
+					row.fields.forEach((field,i)=>{csvRegions.push(field);values.push({field,column:table.columns[i]});});pos=row.next;
 				}
-				pos = end + 1;
 			}
+			for(const {field,column}of values){const value=csvFieldValue(text,field);if(!value)continue;
+				if(['secret','username','identifier'].includes(column.category)){
+					const fullEmit=(a,b,cat,prefix,original,norm,scalar,type)=>{const pieces=/[^\r\n]+/g,raw=text.slice(field.start,field.end);let m;while((m=pieces.exec(raw))!==null)emit(field.start+m.index,field.start+m.index+m[0].length,cat,prefix,value,norm,false,type);};
+					emitClassified(fullEmit,column.name,value,field.start);
+				}else emitClassified(emit,column.name,text.slice(field.start,field.end),field.start);
+			}
+		}
+		function csvSpanAllowed(text,start,end){
+			const region=csvRanges.find(r=>start<r.end&&end>r.start);if(!region)return true;
+			let low=0,high=csvRegions.length;while(low<high){const mid=(low+high)>>>1;if(csvRegions[mid].start<=start)low=mid+1;else high=mid;}
+			const field=csvRegions[low-1];if(!field||start<field.start||end>field.end)return false;
+			if(!field.quoted)return true;
+			for(const at of [start,end]){if(at<=field.start||at>=field.end||text[at-1]!=='"'||text[at]!=='"')continue;let first=at-1;while(first>field.start&&text[first-1]==='"')first--;if((at-first)%2)return false;}return true;
 		}
 
 		const detectors = [
+			// Explicit scalar credentials take precedence over patterns inside them.
+			['*', (t, e) => detectKeyValues(t, e, enabled)],
 			['custom', (t, e) => detectCustom(t, e, compiled.rules, warnings)],
 			['privateKey', detectPrivateKeys],
 			['jwt', (t, e) => detectSimple(RE.jwt, t, e, 'jwt', 'JWT')],
@@ -864,16 +1001,13 @@
 			['apiKey', detectApiKeys],
 			['*', detectUrls],
 			['secret', detectCookies],
-			['*', detectKeyValues],
 			['*', detectContacts],
 			['secret', detectCef],
-			['*', detectCsv],
 			['card', (t, e) => detectSimple(RE.card, t, e, 'card', 'CARD', v => cardValid(v), v => v.replace(/\D/g, ''))],
 			['ssn', (t, e) => detectSimple(RE.ssn, t, e, 'ssn', 'SSN')],
-			['email', (t, e) => {
-				detectSimple(RE.emailEncoded, t, e, 'email', 'EMAIL', null, v => v.replace(/%40/i, '@').toLowerCase());
-				detectSimple(RE.email, t, e, 'email', 'EMAIL', null, v => v.toLowerCase());
-			}],
+			['email', detectEmails],
+			['identifier', detectIdentifiers],
+			['username', detectSids],
 			['ipv6', (t, e) => detectSimple(RE.ipv6, t, e, 'ipv6', 'IPV6', v => isIPv6(v), v => v.toLowerCase())],
 			['ipv4', (t, e) => detectIPv4(t, e, options)],
 			['mac', (t, e) => {
@@ -885,8 +1019,9 @@
 			['host', detectHostContext]
 		];
 
-		function labelFor(prefix, category, norm, value) {
-			const key = prefix + '\u0000' + norm;
+		function labelFor(prefix, category, norm, value, type) {
+			if(category==='secret')prefix='SECRET';
+			const key = category + '\u0000' + norm;
 			let entry = entries.get(key);
 			if (!entry) {
 				const n = (counters.get(prefix) || 0) + 1;
@@ -895,6 +1030,7 @@
 				entries.set(key, entry);
 				stats[category].unique++;
 			}
+			if(type){const typed=fieldStats[type]||(fieldStats[type]={category,replacements:0,unique:0});if(!entry.types)entry.types=new Set();if(!entry.types.has(type)){typed.unique++;entry.types.add(type);}typed.replacements++;}
 			entry.occurrences++;
 			stats[category].replacements++;
 			return entry.label;
@@ -902,21 +1038,23 @@
 
 		/**
 		 * Process one chunk that starts and ends on a line boundary.
+		 * CSV callers use session.nextCut() to retain complete logical records.
 		 * Returns { output, spans } where spans are [outStart, outEnd, category] in the chunk output.
 		 */
 		function processChunk(text, wantSpans) {
 			const covered = new Uint8Array(text.length);
 			const accepted = [];
-			const emit = (start, end, category, prefix, value, norm) => {
-				if (!enabled[category] || end <= start || start < 0 || end > text.length) { return; }
+			const emit = (start, end, category, prefix, value, norm, jsonScalar, fieldType) => {
+				if (!enabled[category] || end <= start || start < 0 || end > text.length || !csvSpanAllowed(text, start, end)) { return; }
 				for (let i = start; i < end; i++) {
 					if (covered[i]) { return; }
 					const c = text.charCodeAt(i);
 					if (c === 10 || c === 13) { return; }
 				}
 				covered.fill(1, start, end);
-				accepted.push({ start, end, category, prefix, value, norm });
+				accepted.push({ start, end, category, prefix, value, norm, jsonScalar, fieldType });
 			};
+			detectCsv(text, emit);
 			for (const [category, detector] of detectors) {
 				if (category !== '*' && !enabled[category]) { continue; }
 				detector(text, emit);
@@ -930,25 +1068,27 @@
 				const before = text.slice(pos, span.start);
 				parts.push(before);
 				outLen += before.length;
-				const label = labelFor(span.prefix, span.category, span.norm, span.value);
+				const rawLabel = labelFor(span.prefix, span.category, span.norm, span.value, span.fieldType);
+				const label = span.jsonScalar ? '"' + rawLabel + '"' : rawLabel;
 				parts.push(label);
 				if (spans) { spans.push([outLen, outLen + label.length, span.category]); }
 				outLen += label.length;
 				pos = span.end;
 			}
 			parts.push(text.slice(pos));
+			chunkOffset+=text.length;
 			return { output: parts.join(''), spans };
 		}
 
 		function result() {
 			const map = [];
 			for (const entry of entries.values()) {
-				map.push({ label: entry.label, category: entry.category, original: entry.original, occurrences: entry.occurrences });
+				map.push(Object.assign({ label: entry.label, category: entry.category, original: entry.original, occurrences: entry.occurrences },entry.types?{fieldTypes:[...entry.types].sort()}:{}));
 			}
-			return { stats, map, warnings: Object.assign({}, warnings) };
+			return { stats, map, fieldStats: Object.keys(fieldStats).length ? fieldStats : undefined, warnings: Object.assign({}, warnings) };
 		}
 
-		return { options, processChunk, result };
+		return { options, processChunk, result, nextCut: csvChunkCut };
 	}
 
 	/** Split at line boundaries near CHUNK_CHARS without cutting a private key block. */
@@ -971,7 +1111,7 @@
 
 	/**
 	 * Anonymize a full text. callbacks.onProgress(done, total) is called per chunk.
-	 * Returns { output, stats, map, preview: { text, spans, truncated }, lines, warnings }.
+	 * Returns { output, stats, fieldStats, map, preview: { text, spans, truncated }, lines, warnings }.
 	 */
 	function anonymize(text, rawOptions, callbacks) {
 		if (typeof text !== 'string') { throw new TypeError('Input must be a string.'); }
@@ -985,7 +1125,7 @@
 		let outOffset = 0;
 		let from = 0;
 		while (from < text.length) {
-			const cut = nextCut(text, from, chunkChars);
+			const cut = session.nextCut(text, from, chunkChars);
 			const wantSpans = outOffset < previewChars;
 			const { output, spans } = session.processChunk(text.slice(from, cut), wantSpans);
 			if (wantSpans) {
@@ -1012,6 +1152,7 @@
 		return {
 			output,
 			stats: res.stats,
+			fieldStats: res.fieldStats,
 			map: res.map,
 			warnings: res.warnings,
 			lines: linesIn + (text.length && !text.endsWith('\n') ? 1 : 0),
@@ -1027,6 +1168,6 @@
 		compileCustomRules,
 		anonymize,
 		createSession,
-		_internal: { isIPv4, isNonIdentifyingIPv4, isIPv6, isPrivateIPv4, luhnValid, cardValid, hostValid, classifyKey, nextCut, MAX_KEY_BLOCK }
+		_internal: { isIPv4, isNonIdentifyingIPv4, isIPv6, isPrivateIPv4, luhnValid, cardValid, hostValid, classifyKey, keyWords, fieldType, KEY_RULES, ibanValid, nextCut, MAX_KEY_BLOCK }
 	};
 }));

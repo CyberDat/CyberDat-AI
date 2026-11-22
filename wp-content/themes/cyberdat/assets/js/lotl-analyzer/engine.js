@@ -32,7 +32,7 @@
 }(typeof self !== 'undefined' ? self : this, function (DATA) {
 	'use strict';
 
-	const VERSION = '1.0.1';
+	const VERSION = '1.0.0';
 	const RULESET_VERSION = '2026-11-13.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_LINE_CHARS = 32768;
@@ -343,188 +343,6 @@
 		return out;
 	}
 
-	// ---------------------------------------------------------------- secret masking (shared block)
-	// The same block is in the Prompt Injection Detector and the LotL Command Analyzer engines (a test checks that both copies
-	// are equal). It masks what the page shows and what the reports contain; detection always runs on the original text.
-	// The whole text is masked first and cut afterwards, so a secret is never cut into a piece that is no longer recognised.
-	// Pattern-based: it hides common forms, it cannot promise to find every secret. Unicode classes use the u flag, there is no
-	// look-behind, every repeated part is bounded or runs over a single class, and every character is covered at most once.
-	const SECRET_FORMATS = [
-		['AWS access key ID', /(?:AKIA|ASIA|ABIA|ACCA)[A-Z0-9]{16}/gu], ['GitHub token', /gh[pousr]_[0-9A-Za-z]{30,255}/gu],
-		['GitHub fine-grained token', /github_pat_[0-9A-Za-z_]{40,255}/gu], ['GitLab token', /glpat-[0-9A-Za-z_-]{20,255}/gu],
-		['Slack token', /xox[abposr]-[0-9A-Za-z-]{10,255}/gu], ['Slack webhook', /hooks\.slack\.com\/services\/[0-9A-Za-z_/]{8,255}/gu],
-		['Anthropic API key', /sk-ant-[0-9A-Za-z_-]{20,255}/gu], ['OpenAI-style API key', /sk-(?:proj-|svcacct-|admin-)?[0-9A-Za-z_-]{20,255}/gu],
-		['Google API key', /AIza[0-9A-Za-z_-]{35}/gu], ['Hugging Face token', /hf_[0-9A-Za-z]{30,255}/gu], ['Stripe key', /[rsp]k_(?:live|test)_[0-9A-Za-z]{10,255}/gu],
-		['npm token', /npm_[0-9A-Za-z]{36}/gu], ['JSON Web Token', /eyJ[0-9A-Za-z_-]{10,8000}\.eyJ[0-9A-Za-z_-]{2,8000}\.[0-9A-Za-z_-]{0,8000}/gu],
-		['Azure storage key', /AccountKey=[0-9A-Za-z+/]{40,200}={0,2}/gu]
-	];
-	const PEM_BEGIN = /-----BEGIN[ A-Z0-9_-]{0,100}PRIVATE KEY(?: BLOCK)?-----/gu;
-	const PEM_END = /-----END[ A-Z0-9_-]{0,100}PRIVATE KEY(?: BLOCK)?-----/uy;
-	const SECRET_TOKEN_CHAR = /[\p{L}\p{N}\p{M}_]/u;
-	// key = value, key: value, "key": "value", key => value, "key is value" after a credential, password, secret, token, api key,
-	// access/private key, authorization, auth, csrf, session id or cookie key: the value is masked whatever its length.
-	// An auth scheme (Bearer, Basic, Token) before the value is skipped so that the value itself is masked.
-	const SECRET_KEYED = /(?:credentials?|passwords?|passwort|passwd|passphrase|pwd|пароль|secret|token|api[_.\- ]?key|x[_.\-]?api[_.\-]?key|access[_.\-]?key(?:[_.\-]?id)?|private[_.\-]?key|authorization|auth|csrf|session[_.\-]?(?:id|key)?|cookie)["'”»“]?[ \t]{0,20}(?:=>|=|:|[ \t](?:is|ist|—|-)[ \t])[ \t]{0,20}(?:(?:bearer|basic|token)[ \t]{1,20})?("(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|“[^”\n]{0,500}”|«[^»\n]{0,500}»|„[^“\n]{0,500}“|[^\s"',;)\]}<>]{1,4000})/giu;
-	/** An HTTP auth scheme with its credential, also without a key name (Bearer …, Basic …). */
-	const SECRET_BEARER = /(?:bearer|basic)[ \t]{1,20}([A-Za-z0-9._~+/=-]{6,4000})/giu;
-	/** Command-line options that take a password or token: /pass:…, /rp …, -Password …, --token=…, -ApiKey … */
-	const SECRET_OPTION = /(?:^|[\s"'(])(?:--?|\/)(?:password|passwd|passphrase|pwd|pass|rp|secret|token|access[_-]?token|api[_-]?key|client[_-]?secret)(?::|=|[ \t]{1,20})("(?:[^"\\\n]|\\.){0,500}"|'(?:[^'\\\n]|\\.){0,500}'|[^\s"'|&;<>]{1,4000})/giu;
-	/** curl -u user:password, --user, --proxy-user: the part after the first colon. */
-	const SECRET_USER_OPTION = /(?:^|[\s"'(])(?:-u|-U|--user|--proxy-user)(?:=|[ \t]{1,20})("[^"\n]{1,500}"|'[^'\n]{1,500}'|[^\s"'|&;<>]{1,4000})/gu;
-	/** ConvertTo-SecureString "plain text" -AsPlainText: the plain-text password. */
-	const SECRET_SECURESTRING = /ConvertTo-SecureString[ \t]{1,20}(?:-String[ \t]{1,20})?("(?:[^"\\\n]|\\.){1,500}"|'(?:[^'\\\n]|\\.){1,500}')/giu;
-	const SECRET_URL = /(?:https?|wss?|ftps?|sftp|ssh|smb|git\+https?|git\+ssh|s3|gs|hf):\/\/[^\s"'<>`]{1,4000}/giu;
-	const SECRET_LONG = /[0-9A-Za-z+/=_\-.~]{24,4000}/gu;
-	const SECRET_PARAM_NAMES = new Set(['password', 'passwd', 'passphrase', 'pwd', 'pass', 'secret', 'clientsecret', 'token', 'accesstoken', 'refreshtoken', 'idtoken', 'authtoken', 'sessiontoken', 'securitytoken', 'apikey', 'xapikey', 'key', 'accesskey', 'accesskeyid', 'privatekey', 'auth', 'authorization', 'sig', 'signature', 'credential', 'credentials', 'session', 'sessionid', 'sid', 'csrf', 'csrftoken', 'xsrftoken', 'cookie', 'xamzsignature', 'xamzcredential', 'xamzsecuritytoken', 'xgoogsignature', 'xgoogcredential']);
-	const secretParamName = n => { const k = n.toLowerCase().replace(/[^a-z0-9]/gu, ''); return SECRET_PARAM_NAMES.has(k) || /(?:password|secret|token|apikey|privatekey|signature)$/u.test(k); };
-	function secretShown(v) { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
-	function secretEntropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
-	function percentDecode(s) {
-		if (s.indexOf('%') < 0 && s.indexOf('+') < 0) { return s; }
-		const t = s.replace(/\+/gu, ' ');
-		try { return decodeURIComponent(t); } catch (e) { return t.replace(/%([0-9A-Fa-f]{2})/gu, (m, h) => String.fromCharCode(parseInt(h, 16))); }
-	}
-	/** Base64 that decodes to readable text with spaces (an encoded command, a payload) is content, not a random key. */
-	function readableBase64(v) {
-		if (v.length % 4 === 1 || !/^[A-Za-z0-9+/]+={0,2}$/u.test(v) || typeof atob !== 'function') { return false; }
-		let b;
-		try { b = atob(v.length % 4 ? v + '='.repeat(4 - (v.length % 4)) : v); } catch (e) { return false; }
-		let printable = 0, zeroOdd = 0, spaces = 0;
-		for (let i = 0; i < b.length; i++) { const c = b.charCodeAt(i); if ((c >= 32 && c < 127) || c === 9 || c === 10 || c === 13) { printable++; } if (c === 32) { spaces++; } if (c === 0 && i % 2 === 1) { zeroOdd++; } }
-		const utf16 = zeroOdd >= b.length / 2 - 1;
-		return spaces > 0 && (utf16 || printable >= b.length * 0.95);
-	}
-	/** A random-looking value: letters and digits, not hex, not a path or a name made of words, high character entropy. */
-	function tokenLike(v, min) {
-		if (v.length < min || !/\p{N}/u.test(v) || !/\p{L}/u.test(v) || /^[0-9A-Fa-f-]+$/u.test(v) || secretEntropy(v) < 3.5) { return false; }
-		const parts = v.split(/[-_./~+=]/u).filter(Boolean);
-		// a part made of letters then digits (python3, Framework64) or digits then letters is a word, not a token
-		return !parts.every(p => p.length <= 4 || /^(?:\p{L}+\p{N}*|\p{N}+\p{L}*)$/u.test(p));
-	}
-	/** Secret spans in a text: [{ kind, start, end, shown }], sorted and not overlapping. */
-	function findSecrets(text) {
-		const s = String(text === undefined || text === null ? '' : text);
-		const out = [];
-		if (!s) { return out; }
-		const cov = new Uint8Array(s.length), inUrl = new Uint8Array(s.length);
-		const taken = (a, b) => { for (let i = a; i < b; i++) { if (cov[i]) { return true; } } return false; };
-		const put = (kind, a, b, value) => { if (b <= a || taken(a, b)) { return; } cov.fill(1, a, b); out.push({ kind, start: a, end: b, shown: secretShown(value === undefined ? s.slice(a, b) : value) }); };
-		let m;
-		// Private key blocks: from BEGIN to END when END follows within 20,000 characters, otherwise the header line.
-		PEM_BEGIN.lastIndex = 0;
-		let endAt = -2;
-		while ((m = PEM_BEGIN.exec(s))) {
-			if (endAt !== -1 && endAt < m.index) { endAt = s.indexOf('-----END', m.index + m[0].length); }
-			let b = m.index + m[0].length;
-			if (endAt >= 0 && endAt - m.index < 20000) { PEM_END.lastIndex = endAt; const e = PEM_END.exec(s); if (e) { b = endAt + e[0].length; } }
-			if (!taken(m.index, b)) { cov.fill(1, m.index, b); out.push({ kind: 'Private key', start: m.index, end: b, shown: 'BEGIN … PRIVATE KEY' }); }
-			PEM_BEGIN.lastIndex = b;
-		}
-		// Addresses: credentials before @, secret or token-like query and fragment values (percent escapes decoded before
-		// they are classified; the original span is replaced), token-like path segments.
-		SECRET_URL.lastIndex = 0;
-		while ((m = SECRET_URL.exec(s))) {
-			// trailing punctuation is not part of the address (a loop: a regular expression anchored at the end is quadratic)
-			let len = m[0].length;
-			while (len > 1 && ').,;:!?]}*'.indexOf(m[0][len - 1]) >= 0) { len--; }
-			const u = m[0].slice(0, len);
-			const start = m.index, scheme = u.indexOf('://') + 3;
-			inUrl.fill(1, start, start + u.length);
-			let i = scheme;
-			while (i < u.length && u[i] !== '/' && u[i] !== '?' && u[i] !== '#') { i++; }
-			const at = u.lastIndexOf('@', i);
-			if (at >= scheme && u.slice(scheme, at).indexOf(':') >= 0) { put('credentials in the address', start + scheme, start + at); }
-			let q = u.indexOf('?', i), h = u.indexOf('#', i);
-			if (q < 0) { q = u.length; }
-			if (h < 0) { h = u.length; }
-			const pathEnd = Math.min(q, h);
-			let k = i;
-			for (const seg of u.slice(i, pathEnd).split('/')) {
-				const d = percentDecode(seg);
-				if (tokenLike(d, 20) && !readableBase64(d)) { put('token in the address', start + k, start + k + seg.length, d); }
-				k += seg.length + 1;
-			}
-			for (const [from, to] of [[q + 1, h], [h + 1, u.length]]) {
-				if (from > u.length || to <= from) { continue; }
-				let p = from;
-				for (const pair of u.slice(from, to).split(/[&;]/u)) {
-					const eq = pair.indexOf('=');
-					if (eq > 0 && eq < pair.length - 1) {
-						const name = percentDecode(pair.slice(0, eq)), raw = pair.slice(eq + 1), value = percentDecode(raw);
-						const a = start + p + eq + 1, b = a + raw.length;
-						const known = SECRET_FORMATS.some(([, re]) => { re.lastIndex = 0; return re.test(value); });
-						if (secretParamName(name)) { put('secret in the address (' + name.slice(0, 40) + ')', a, b, value); }
-						else if (known || (tokenLike(value, 20) && !readableBase64(value))) { put('token in the address', a, b, value); }
-					}
-					p += pair.length + 1;
-				}
-			}
-			SECRET_URL.lastIndex = start + Math.max(u.length, 1);
-		}
-		for (const [kind, re] of SECRET_FORMATS) {
-			re.lastIndex = 0;
-			while ((m = re.exec(s))) {
-				const a = m.index, b = a + m[0].length;
-				if (a > 0 && SECRET_TOKEN_CHAR.test(s[a - 1]) && kind !== 'Azure storage key') { continue; }
-				put(kind, a, b);
-			}
-		}
-		for (const RE of [SECRET_KEYED, SECRET_BEARER, SECRET_OPTION, SECRET_USER_OPTION, SECRET_SECURESTRING]) {
-			RE.lastIndex = 0;
-			while ((m = RE.exec(s))) {
-				const v = m[1];
-				let a = m.index + m[0].length - v.length, b = a + v.length;
-				if (v[0] === '"' || v[0] === '\'' || v[0] === '“' || v[0] === '«' || v[0] === '„') { a += 1; b -= 1; }
-				if (RE === SECRET_USER_OPTION) { const c = s.indexOf(':', a); if (c < 0 || c >= b - 1) { continue; } a = c + 1; }
-				// a value that is already a masked marker, or a variable or placeholder, stays as it is
-				if (b <= a || /^\[|…|••••/u.test(s.slice(a, b))) { continue; }
-				put('value of a secret field', a, b);
-			}
-		}
-		SECRET_LONG.lastIndex = 0;
-		while ((m = SECRET_LONG.exec(s))) {
-			const v = m[0], a = m.index, b = a + v.length;
-			if ((a > 0 && SECRET_TOKEN_CHAR.test(s[a - 1])) || (b < s.length && SECRET_TOKEN_CHAR.test(s[b])) || /^(?:https?|www)/iu.test(v) || inUrl[a] || inUrl[b - 1]) { continue; }
-			if (!tokenLike(v, 24) || readableBase64(v.replace(/[.~_-]+$/u, ''))) { continue; }
-			put('unrecognized long value', a, b);
-		}
-		return out.sort((x, y) => x.start - y.start);
-	}
-	/** Text with every recognised secret replaced by its kind and a masked fragment (one pass: linear in the text). */
-	function maskSecrets(text, spans) {
-		const s = String(text === undefined || text === null ? '' : text);
-		const parts = [];
-		let k = 0;
-		for (const x of spans || findSecrets(s)) { parts.push(s.slice(k, x.start), '[' + x.kind + ': ' + x.shown + ']'); k = x.end; }
-		parts.push(s.slice(k));
-		return parts.join('');
-	}
-	/** Masked text cut to max characters (masking first, then cutting). */
-	const maskedClip = (text, max) => { const t = maskSecrets(text); return t.length > max ? t.slice(0, max) + '…' : t; };
-	// ---------------------------------------------------------------- end of secret masking (shared block)
-
-	/**
-	 * Mask every piece of the user's text in one analysed command before it is shown or exported: the command line, the
-	 * normalized command, deobfuscation notes, binary names as written, heuristic details and decoded commands (also those
-	 * analysed inside). Decoded commands and long addresses are masked first and cut afterwards.
-	 */
-	function maskResult(r, done) {
-		if (!r || done.has(r)) { return r; }
-		done.add(r);
-		r.original = maskSecrets(r.original);
-		if (r.normalized) { r.normalized = maskSecrets(r.normalized); }
-		r.deobfuscation = r.deobfuscation.map(n => maskSecrets(n));
-		for (const b of r.binaries) { if (!done.has(b)) { done.add(b); b.as = maskSecrets(b.as); } }
-		for (const h of r.heuristics) { if (!done.has(h)) { done.add(h); h.details = h.details.map(d => maskedClip(d, h.id === 'LOT-H-011' ? 120 : 4000)); } }
-		for (const d of r.decoded) {
-			if (done.has(d)) { continue; }
-			done.add(d);
-			d.text = maskedClip(d.text, 4000);
-			maskResult(d.analysis, done);
-		}
-		return r;
-	}
-
 	// ---------------------------------------------------------------- analysis of one command
 	function analyzeCommand(original, depth) {
 		const extracted = extractCommand(original);
@@ -624,7 +442,7 @@
 					if (decoded) {
 						addH('LOT-H-001', 'decoded ' + decoded.length + ' characters');
 						const inner = depth < MAX_DECODE_DEPTH ? analyzeCommand(decoded, depth + 1) : null;
-						result.decoded.push({ kind: 'PowerShell -EncodedCommand (Base64, UTF-16LE)', text: decoded, analysis: inner });
+						result.decoded.push({ kind: 'PowerShell -EncodedCommand (Base64, UTF-16LE)', text: decoded.length > 4000 ? decoded.slice(0, 4000) + '…' : decoded, analysis: inner });
 					} else {
 						addH('LOT-H-001', 'value is not valid Base64 of UTF-16LE text', 'low');
 					}
@@ -644,14 +462,14 @@
 		for (const m of text.matchAll(/FromBase64String\(\s*['"]([A-Za-z0-9+/=]{8,20000})['"]\s*\)/g)) {
 			let d = decodeUtf16Base64(m[1]);
 			if (!d) { try { d = atob(m[1]); if (/[^\x09\x0A\x0D\x20-\x7E]/.test(d)) { d = null; } } catch (e) { d = null; } }
-			if (d) { result.decoded.push({ kind: 'FromBase64String literal', text: d, analysis: depth < MAX_DECODE_DEPTH ? analyzeCommand(d, depth + 1) : null }); }
+			if (d) { result.decoded.push({ kind: 'FromBase64String literal', text: d.length > 4000 ? d.slice(0, 4000) + '…' : d, analysis: depth < MAX_DECODE_DEPTH ? analyzeCommand(d, depth + 1) : null }); }
 		}
 		if (/(?:^|[\s"'(])(?:java|vb)script:/i.test(text)) { addH('LOT-H-008', (text.match(/(?:java|vb)script:/i) || [''])[0]); }
 		if (WRITABLE_RE.test(text)) { addH('LOT-H-009', (text.match(WRITABLE_RE) || [''])[0]); }
 		const ads = text.match(ADS_RE);
 		if (ads && !/^[a-z]:/i.test(ads[0]) && !/(?:https?|ftp):/i.test(text.slice(Math.max(0, ads.index - 8), ads.index + ads[0].length))) { addH('LOT-H-010', ads[0].trim()); }
 		const url = text.match(URL_RE) || text.match(UNC_RE);
-		if (url) { addH('LOT-H-011', url[0].trim()); }
+		if (url) { addH('LOT-H-011', url[0].trim().slice(0, 120)); }
 		if (!heur.has('LOT-H-001') && B64_ARG_RE.test(text)) { addH('LOT-H-013', ''); }
 		if (de.notes.length) { addH('LOT-H-006', de.notes.join('; ')); }
 
@@ -684,8 +502,7 @@
 			const line = lines[i];
 			if (!line.trim()) { continue; }
 			if (counts.commands >= MAX_COMMANDS) { counts.skipped++; continue; }
-			// detection runs on the original line; what is kept for the page and the report is masked
-			const r = maskResult(analyzeCommand(line, 0), new WeakSet());
+			const r = analyzeCommand(line, 0);
 			r.line = i + 1;
 			counts.commands++;
 			counts.bySeverity[r.severity]++;
@@ -712,6 +529,6 @@
 		DATA_META: DATA.meta,
 		HEURISTICS: Object.keys(HEURISTICS).map(id => ({ id, severity: HEURISTICS[id].severity, title: HEURISTICS[id].title, explanation: HEURISTICS[id].explain })),
 		analyze,
-		_internal: { findSecrets, maskSecrets, tokenize, deobfuscate, signature, extractCommand, decodeUtf16Base64, analyzeCommand, byName }
+		_internal: { tokenize, deobfuscate, signature, extractCommand, decodeUtf16Base64, analyzeCommand, byName }
 	};
 }));

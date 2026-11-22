@@ -57,8 +57,6 @@
 		changes: $('[data-pi-changes]'),
 		diff: $('[data-pi-diff]'),
 		diffTruncated: $('[data-pi-diff-truncated]'),
-		unmask: $('[data-pi-unmask]'),
-		unmaskWarning: $('[data-pi-unmask-warning]'),
 		copy: $('[data-pi-copy]'),
 		download: $('[data-pi-download]'),
 		report: $('[data-pi-report]')
@@ -399,20 +397,9 @@
 		el.highlightTruncated.textContent = preview.truncated ? 'The highlighted view shows the first ' + number(preview.shownChars) + ' of ' + number(total) + ' characters. The findings list covers the whole text.' : '';
 	}
 
-	/**
-	 * The version of the sanitized copy that is on screen: masked by default, the complete copy only while the switch
-	 * “Do not mask secrets in the sanitized copy” is on. Copy and Download always take this version.
-	 */
-	function shownCopy() {
-		const s = state.result.sanitized;
-		return el.unmask.checked ? { text: s.text, diff: s.diff, masked: false } : { text: s.masked.text, diff: s.masked.diff, masked: true };
-	}
-
 	function renderDiff(sanitized) {
 		const fragment = document.createDocumentFragment();
-		const copy = shownCopy();
-		el.unmaskWarning.hidden = !el.unmask.checked;
-		for (const part of copy.diff) {
+		for (const part of sanitized.diff) {
 			if (part.t === 's') { fragment.appendChild(document.createTextNode(part.v)); continue; }
 			const wrap = node('span', 'cd-pi-change cd-pi-change--' + part.kind);
 			if (part.del) {
@@ -431,13 +418,9 @@
 		el.diffTruncated.hidden = !sanitized.diffTruncated;
 		el.diffTruncated.textContent = sanitized.diffTruncated ? 'The change view shows the beginning of the text only. Copy and Download include the complete sanitized copy.' : '';
 		const c = sanitized.changes;
-		const secrets = sanitized.masked.secrets;
-		el.changes.textContent = (sanitized.totalChanges
+		el.changes.textContent = sanitized.totalChanges
 			? number(sanitized.totalChanges) + ' changes: ' + plural(c.flag, 'flagged passage') + ' replaced, ' + plural(c.invisible, 'run') + ' of invisible characters removed, ' + plural(c.nfkc, 'character sequence') + ' normalized.'
-			: 'No changes by sanitization: apart from masking, the sanitized copy is identical to your text.')
-			+ (copy.masked
-				? ' ' + (secrets ? plural(secrets, 'value') + ' that look like secrets masked.' : 'No value that looks like a secret was found to mask.')
-				: ' Secrets are not masked in this copy' + (secrets ? ' (' + plural(secrets, 'value') + ' that look like secrets).' : '.'));
+			: 'No changes: the sanitized copy is identical to your text.';
 	}
 
 	function renderResult(msg) {
@@ -522,9 +505,8 @@
 
 	function copyResult() {
 		if (!state.result) { return; }
-		const copy = shownCopy();
-		const text = copy.text;
-		const done = ok => setStatus(ok ? 'Sanitized copy copied to the clipboard (' + formatBytes(text.length) + (copy.masked ? ', secrets masked' : ', secrets not masked') + '). It is still untrusted text.' : 'Copying was blocked by the browser. Use “Download sanitized copy” instead.');
+		const text = state.result.sanitized.text;
+		const done = ok => setStatus(ok ? 'Sanitized copy copied to the clipboard (' + formatBytes(text.length) + '). It is still untrusted text.' : 'Copying was blocked by the browser. Use “Download sanitized copy” instead.');
 		if (navigator.clipboard && window.isSecureContext) {
 			navigator.clipboard.writeText(text).then(() => done(true), () => done(copyFallback(text)));
 		} else {
@@ -566,8 +548,6 @@
 		el.changes.textContent = '';
 		el.results.hidden = true;
 		el.sanitized.hidden = true;
-		el.unmask.checked = false;
-		el.unmaskWarning.hidden = true;
 		showError('');
 		// The worker keeps nothing between jobs, so it is not recreated (that would re-request its script).
 		setStatus('Cleared. Input and results were removed from this page.');
@@ -610,17 +590,10 @@
 	el.copy.addEventListener('click', copyResult);
 	el.download.addEventListener('click', () => {
 		if (!state.result) { return; }
-		const copy = shownCopy();
-		saveFile(copy.text, outputName('sanitized'), 'text/plain;charset=utf-8');
-		setStatus('Download started: ' + outputName('sanitized') + (copy.masked ? ' (secrets masked).' : ' (secrets not masked).'));
+		saveFile(state.result.sanitized.text, outputName('sanitized'), 'text/plain;charset=utf-8');
+		setStatus('Download started: ' + outputName('sanitized') + '.');
 	});
 	el.report.addEventListener('click', downloadReport);
-	// Masking of the sanitized copy is a view of the finished result: switching it needs no new analysis.
-	el.unmask.addEventListener('change', () => {
-		if (state.result) { renderDiff(state.result.sanitized); }
-		else { el.unmaskWarning.hidden = !el.unmask.checked; }
-		setStatus(el.unmask.checked ? 'Secrets are not masked in the sanitized copy. Copy and Download now include them.' : 'Secrets are masked in the sanitized copy again.');
-	});
 	el.findings.addEventListener('click', event => {
 		const button = event.target.closest('[data-pi-show]');
 		if (button && !button.disabled) { showInText(button.getAttribute('data-pi-show')); }
@@ -629,10 +602,6 @@
 		if (event.key === 'Escape' && state.running) { cancel(); }
 		if (event.key === 'Enter' && (event.ctrlKey || event.metaKey) && event.target === el.input) { event.preventDefault(); run(); }
 	});
-
-	// The switch is off on every page load: browsers that restore form fields on reload must not bring it back.
-	el.unmask.checked = false;
-	el.unmaskWarning.hidden = true;
 
 	// Create the worker up front so that analysis itself triggers no request at all.
 	createWorker();

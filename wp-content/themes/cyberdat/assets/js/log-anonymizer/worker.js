@@ -92,6 +92,7 @@ self.onmessage = function (event) {
 			jobId,
 			output: result.output,
 			stats: result.stats,
+			fieldStats: result.fieldStats,
 			map: result.map,
 			warnings: result.warnings,
 			lines: result.lines,
@@ -102,6 +103,18 @@ self.onmessage = function (event) {
 			elapsedMs: Date.now() - started
 		});
 	} catch (error) {
-		self.postMessage({ type: 'error', jobId, code: error.code || 'FAILED', message: String(error.message || error), details: error.details || null });
+		const messages = {
+			CUSTOM_RULE: 'Custom rules are invalid. Review their syntax and labels.',
+			TOO_LARGE: 'The input is larger than 50 MB. Split it into smaller parts.',
+			BINARY: 'This looks like a binary file. Only plain-text logs (UTF-8 or UTF-16 with BOM) are supported.',
+			STRUCTURE: 'Structure check failed. No output was produced.',
+			CSV_FORMAT: 'The recognized CSV table has an invalid record or inconsistent column count. No output was produced. Review the CSV structure.'
+		};
+		const code = error && Object.prototype.hasOwnProperty.call(messages, error.code) ? error.code : 'FAILED';
+		const details = code === 'CUSTOM_RULE' && Array.isArray(error.details) ? error.details.slice(0, 20).map(item => ({
+			index: Number.isInteger(item.index) && item.index >= 0 && item.index <= 20 ? item.index : 0,
+			field: item.field === 'label' ? 'label' : 'pattern', message: 'Invalid custom rule. Review its syntax and label.'
+		})) : null;
+		self.postMessage({ type: 'error', jobId, code, message: messages[code] || 'Local processing failed. No output was produced.', details });
 	}
 };

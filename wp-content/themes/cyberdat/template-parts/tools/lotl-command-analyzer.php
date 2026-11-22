@@ -21,7 +21,7 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 		<section class="cd-la-panel" aria-labelledby="cd-lotl-step-input">
 			<h2 id="cd-lotl-step-input" class="cd-la-step"><span aria-hidden="true">1</span> <?php esc_html_e( 'Add command lines', 'cyberdat' ); ?></h2>
 			<label class="cd-la-label" for="cd-lotl-input"><?php esc_html_e( 'Command lines, one per line', 'cyberdat' ); ?></label>
-			<textarea id="cd-lotl-input" class="cd-la-input" rows="10" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-lotl-input-help cd-lotl-source" data-lotl-input></textarea>
+			<textarea id="cd-lotl-input" class="notranslate cd-la-input" rows="10" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-lotl-input-help cd-lotl-source" data-lotl-input translate="no"></textarea>
 			<p id="cd-lotl-input-help" class="cd-la-help"><?php esc_html_e( 'Paste process command lines from an alert, EDR or Sysmon event. Log records with a CommandLine field (JSON or key: value) are recognized and the field is extracted. You can also load a text, CSV or JSON export (UTF-8 or UTF-16 with BOM, up to 5 MB).', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<label class="cd-la-file">
@@ -31,7 +31,7 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-lotl-sample><?php esc_html_e( 'Load examples', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--ghost" data-lotl-clear><?php esc_html_e( 'Clear everything', 'cyberdat' ); ?></button>
 			</div>
-			<p id="cd-lotl-source" class="cd-la-source" aria-live="polite" data-lotl-source></p>
+			<p id="cd-lotl-source" class="notranslate cd-la-source" aria-live="polite" data-lotl-source translate="no"></p>
 		</section>
 
 		<div class="cd-la-actions">
@@ -39,13 +39,13 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 			<button type="button" class="cd-la-button cd-la-button--ghost" data-lotl-cancel hidden><?php esc_html_e( 'Cancel', 'cyberdat' ); ?></button>
 			<progress class="cd-la-progress" max="100" value="0" aria-label="<?php esc_attr_e( 'Analysis progress', 'cyberdat' ); ?>" data-lotl-progress hidden></progress>
 		</div>
-		<p class="cd-la-status" role="status" aria-live="polite" data-lotl-status></p>
-		<div class="cd-la-callout cd-la-callout--error" role="alert" data-lotl-error hidden></div>
+		<p class="notranslate cd-la-status" role="status" aria-live="polite" data-lotl-status translate="no"></p>
+		<div class="notranslate cd-la-callout cd-la-callout--error" role="alert" data-lotl-error hidden translate="no"></div>
 
-		<section class="cd-la-panel cd-la-results" aria-labelledby="cd-lotl-step-results" data-lotl-results hidden>
+		<section class="notranslate cd-la-panel cd-la-results" aria-labelledby="cd-lotl-step-results" data-lotl-results hidden translate="no">
 			<h2 id="cd-lotl-step-results" class="cd-la-step" tabindex="-1"><span aria-hidden="true">2</span> <?php esc_html_e( 'Review the analysis', 'cyberdat' ); ?></h2>
 			<p class="cd-lotl-verdict" data-lotl-verdict></p>
-			<p class="cd-la-summary" data-lotl-summary></p>
+			<p class="notranslate cd-la-summary" data-lotl-summary translate="no"></p>
 			<div class="cd-la-table-wrap" data-lotl-categories-wrap hidden>
 				<table class="cd-la-table">
 					<caption><?php esc_html_e( 'Documented LOLBAS functions matched', 'cyberdat' ); ?></caption>
@@ -60,7 +60,7 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 			<div class="cd-la-row">
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-lotl-report><?php esc_html_e( 'Download analysis (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The report contains your command lines. On this page and in the report, common secret forms are masked on a best-effort basis: known token formats, values after keys such as password or token, passwords given as options (/pass:, /rp, -Password, -u user:password, ConvertTo-SecureString), Bearer and Basic credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the report before you share it. The report is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The report contains your command lines. It is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 
@@ -88,6 +88,7 @@ $cyberdat_lotl_commit = $cyberdat_lotl['data']['commit'];
 		<p><a href="<?php echo esc_url( $cyberdat_lotl['source_url'] ); ?>" rel="noopener noreferrer"><?php esc_html_e( 'Corresponding source: complete theme and LotL code', 'cyberdat' ); ?></a> · <a href="<?php echo esc_url( $cyberdat_lotl['upstream_source_url'] ); ?>" rel="noopener noreferrer"><?php esc_html_e( 'Pinned upstream YAML source archive', 'cyberdat' ); ?></a> · <a href="<?php echo esc_url( $cyberdat_lotl['notice_url'] ); ?>"><?php esc_html_e( 'Original LOLBAS and MITRE notices', 'cyberdat' ); ?></a></p>
 <section aria-labelledby="cd-lotl-privacy">
 			<h2 id="cd-lotl-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
+			<p><?php esc_html_e( 'This tool asks the browser not to translate entered text, but cannot prevent extensions and translators from reading the page.', 'cyberdat' ); ?></p>
 			<ul>
 				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The LOLBAS data is part of this page, so no request is made to GitHub or any other service, and the page’s Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>

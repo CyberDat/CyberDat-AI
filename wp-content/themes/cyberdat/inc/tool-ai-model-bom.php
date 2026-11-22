@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_BOM_SLUG = 'ai-model-bom';
-const CYBERDAT_BOM_ENGINE = '1.0.3';
+const CYBERDAT_BOM_ENGINE = '1.0.1';
 const CYBERDAT_BOM_RULESET = '2026-11-14.1';
 const CYBERDAT_BOM_SPEC_VERSION = '1.7';
 

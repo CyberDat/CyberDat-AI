@@ -18,7 +18,7 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 		<section class="cd-la-panel" aria-labelledby="cd-la-step-input">
 			<h2 id="cd-la-step-input" class="cd-la-step"><span aria-hidden="true">1</span> <?php esc_html_e( 'Add your log', 'cyberdat' ); ?></h2>
 			<label class="cd-la-label" for="cd-la-input"><?php esc_html_e( 'Log text', 'cyberdat' ); ?></label>
-			<textarea id="cd-la-input" class="cd-la-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-la-input-help cd-la-source" data-la-input></textarea>
+			<textarea id="cd-la-input" class="notranslate cd-la-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-la-input-help cd-la-source" data-la-input translate="no"></textarea>
 			<p id="cd-la-input-help" class="cd-la-help"><?php esc_html_e( 'Paste log lines or load a plain-text file (UTF-8 or UTF-16 with BOM, up to 50 MB). Files larger than 1 MB are processed in the background without being shown here.', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<label class="cd-la-file">
@@ -28,7 +28,7 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-la-sample><?php esc_html_e( 'Load sample log', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--ghost" data-la-clear><?php esc_html_e( 'Clear everything', 'cyberdat' ); ?></button>
 			</div>
-			<p id="cd-la-source" class="cd-la-source" aria-live="polite" data-la-source></p>
+			<p id="cd-la-source" class="notranslate cd-la-source" aria-live="polite" data-la-source translate="no"></p>
 		</section>
 
 		<section class="cd-la-panel" aria-labelledby="cd-la-step-options">
@@ -53,7 +53,7 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 				<legend><?php esc_html_e( 'Replacement labels', 'cyberdat' ); ?></legend>
 				<label class="cd-la-check">
 					<input type="radio" name="cd-la-mode" value="stable" checked data-la-mode>
-					<span><?php esc_html_e( 'Stable labels — the same value always gets the same label, so you can still follow it through the log', 'cyberdat' ); ?> <code class="cd-la-example">IPV4_1, IPV4_2</code></span>
+					<span><?php esc_html_e( 'Stable labels — the same value in the same category gets the same label within one run', 'cyberdat' ); ?> <code class="cd-la-example">IPV4_1, IPV4_2</code></span>
 				</label>
 				<label class="cd-la-check">
 					<input type="radio" name="cd-la-mode" value="generic" data-la-mode>
@@ -76,12 +76,12 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 					<li class="cd-la-rule">
 						<div class="cd-la-rule__field">
 							<label class="cd-la-label" data-la-for="pattern"><?php esc_html_e( 'Pattern (regular expression)', 'cyberdat' ); ?></label>
-							<input type="text" class="cd-la-text" spellcheck="false" autocomplete="off" autocapitalize="off" maxlength="1000" placeholder="EMP-\d{5}" data-la-rule-pattern>
+							<input type="text" class="notranslate cd-la-text" spellcheck="false" autocomplete="off" autocapitalize="off" maxlength="1000" placeholder="EMP-\d{5}" data-la-rule-pattern translate="no">
 							<p class="cd-la-field-error" data-la-rule-error="pattern" hidden></p>
 						</div>
 						<div class="cd-la-rule__field cd-la-rule__field--label">
 							<label class="cd-la-label" data-la-for="label"><?php esc_html_e( 'Label', 'cyberdat' ); ?></label>
-							<input type="text" class="cd-la-text" spellcheck="false" autocomplete="off" autocapitalize="characters" maxlength="32" placeholder="EMPLOYEE_ID" data-la-rule-label>
+							<input type="text" class="notranslate cd-la-text" spellcheck="false" autocomplete="off" autocapitalize="characters" maxlength="32" placeholder="EMPLOYEE_ID" data-la-rule-label translate="no">
 							<p class="cd-la-field-error" data-la-rule-error="label" hidden></p>
 						</div>
 						<label class="cd-la-check cd-la-rule__case"><input type="checkbox" data-la-rule-case> <span><?php esc_html_e( 'Ignore case', 'cyberdat' ); ?></span></label>
@@ -96,30 +96,30 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 			<button type="button" class="cd-la-button cd-la-button--ghost" data-la-cancel hidden><?php esc_html_e( 'Cancel', 'cyberdat' ); ?></button>
 			<progress class="cd-la-progress" max="100" value="0" aria-label="<?php esc_attr_e( 'Anonymization progress', 'cyberdat' ); ?>" data-la-progress hidden></progress>
 		</div>
-		<p class="cd-la-status" role="status" aria-live="polite" data-la-status></p>
-		<div class="cd-la-callout cd-la-callout--error" role="alert" data-la-error hidden></div>
+		<p class="notranslate cd-la-status" role="status" aria-live="polite" data-la-status translate="no"></p>
+		<div class="notranslate cd-la-callout cd-la-callout--error" role="alert" data-la-error hidden translate="no"></div>
 
-		<section class="cd-la-panel cd-la-results" aria-labelledby="cd-la-step-results" data-la-results hidden>
+		<section class="notranslate cd-la-panel cd-la-results" aria-labelledby="cd-la-step-results" data-la-results hidden translate="no">
 			<h2 id="cd-la-step-results" class="cd-la-step" tabindex="-1"><span aria-hidden="true">3</span> <?php esc_html_e( 'Review the result', 'cyberdat' ); ?></h2>
-			<p class="cd-la-summary" data-la-summary></p>
-			<ul class="cd-la-notes" data-la-notes hidden></ul>
+			<p class="notranslate cd-la-summary" data-la-summary translate="no"></p>
+			<ul class="notranslate cd-la-notes" data-la-notes hidden translate="no"></ul>
 			<div class="cd-la-table-wrap">
 				<table class="cd-la-table">
 					<caption><?php esc_html_e( 'Replacements by category', 'cyberdat' ); ?></caption>
 					<thead><tr><th scope="col"><?php esc_html_e( 'Category', 'cyberdat' ); ?></th><th scope="col"><?php esc_html_e( 'Replaced', 'cyberdat' ); ?></th><th scope="col"><?php esc_html_e( 'Unique values', 'cyberdat' ); ?></th></tr></thead>
-					<tbody data-la-stats></tbody>
+					<tbody data-la-stats translate="no" class="notranslate"></tbody>
 				</table>
 			</div>
 			<h3 class="cd-la-subheading" id="cd-la-preview-title"><?php esc_html_e( 'Preview', 'cyberdat' ); ?></h3>
 			<p class="cd-la-help" id="cd-la-preview-help"><?php esc_html_e( 'Replaced values are highlighted. Everything that is not highlighted is unchanged — read it carefully.', 'cyberdat' ); ?></p>
-			<pre class="cd-la-preview" tabindex="0" role="region" aria-labelledby="cd-la-preview-title" aria-describedby="cd-la-preview-help" data-la-preview></pre>
+			<pre class="notranslate cd-la-preview" tabindex="0" role="region" aria-labelledby="cd-la-preview-title" aria-describedby="cd-la-preview-help" data-la-preview translate="no"></pre>
 			<p class="cd-la-help" data-la-truncated hidden></p>
 			<div class="cd-la-row">
 				<button type="button" class="cd-la-button cd-la-button--primary" data-la-copy><?php esc_html_e( 'Copy result', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-la-download><?php esc_html_e( 'Download result', 'cyberdat' ); ?></button>
 			</div>
 
-			<div class="cd-la-map">
+			<div class="notranslate cd-la-map" translate="no">
 				<h3 class="cd-la-subheading"><?php esc_html_e( 'Replacement map', 'cyberdat' ); ?></h3>
 				<p class="cd-la-callout cd-la-callout--warning" id="cd-la-map-warning"><strong><?php esc_html_e( 'Contains the original values.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'The map lists every label next to the secret or personal value it replaced. Keep it private and never send it together with the anonymized log.', 'cyberdat' ); ?></p>
 				<label class="cd-la-check cd-la-check--standalone"><input type="checkbox" data-la-map-ack aria-describedby="cd-la-map-warning"> <span><?php esc_html_e( 'I understand that the map contains sensitive original values', 'cyberdat' ); ?></span></label>
@@ -135,12 +135,13 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 				<li><?php esc_html_e( 'Your text or file is read by a background worker inside this browser tab, so large logs do not freeze the page.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Versioned detection rules scan each line for the categories you selected. Payment card numbers must pass the Luhn checksum; IPv6 and IPv4 candidates are validated, not just pattern-matched.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Only the detected values are replaced. Line breaks, delimiters, field names and timestamps stay where they were, and the tool refuses to produce output if the number of lines would change.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'With stable labels, the same value receives the same label everywhere in one run, so you can still correlate events without revealing the value.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'With stable labels, the same value within the same category receives the same label throughout one run, including supported log, query, JSON and CSV contexts.', 'cyberdat' ); ?></li>
 			</ol>
 			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s', 'cyberdat' ), esc_html( $cyberdat_la['engine_version'] ), esc_html( $cyberdat_la['ruleset'] ) ); ?></p>
 		</section>
 		<section aria-labelledby="cd-la-privacy">
 			<h2 id="cd-la-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
+			<p><?php esc_html_e( 'This tool asks the browser not to translate entered text, but cannot prevent extensions and translators from reading the page.', 'cyberdat' ); ?></p>
 			<ul>
 				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The page has no server endpoint for your data, and its Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its two static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
@@ -152,11 +153,12 @@ $cyberdat_la = cyberdat_log_anonymizer_config();
 		<section aria-labelledby="cd-la-limits">
 			<h2 id="cd-la-limits"><?php esc_html_e( 'Limitations of automated analysis', 'cyberdat' ); ?></h2>
 			<ul>
-				<li><?php esc_html_e( 'Names and telephone numbers are masked only in recognized, explicitly labeled person/contact fields. Arbitrary prose, unknown field names and unsupported formats can be missed. Review names and phone numbers manually before sharing.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Detection is pattern-based. Secrets without a recognizable format or key name (for example a bare random string) and street addresses are not detected.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Names and telephone numbers are masked only in recognized, explicitly labeled person/contact fields. Supported explicit keys include English, German and Russian names. Arbitrary prose, unknown field names and unsupported formats can be missed. Review names and phone numbers manually before sharing.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'CSV, TSV and semicolon-separated tables can appear within a log. A recognized header needs at least two columns; a blank line or a different column count ends the table. Unknown columns are not inferred as credentials. Quoting and line endings are retained. Usernames use USER labels; credentials use SECRET labels, with field types listed in statistics and the replacement map.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Detection is pattern-based. Secrets without a recognizable format or key name (for example a bare random string), bare S3 bucket names and values under unknown keys can be missed. Addresses and other personal fields are masked only under supported explicit keys.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Hostnames are found from URLs, known key names, syslog headers and a list of top-level domains. Single-word hostnames outside those contexts are missed.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Four-part numbers such as 1.2.3.4 are treated as IPv4 addresses unless a version keyword precedes them. Some identifiers may be masked unnecessarily.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Values split across lines, encoded (Base64, URL-encoding inside other values) or in binary formats are not reliably detected. US SSNs are only detected in the 123-45-6789 format.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Values split across lines, encoded (Base64, URL-encoding inside other values) or in binary formats are not reliably detected. US SSNs require the hyphenated format. Additional formats include checksum-valid IBANs, domain-style Windows SIDs and account identifiers in supported AWS ARNs; arbitrary twelve-digit numbers remain unchanged.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Stable labels are consistent within one run only. Labels and their order can reveal how many distinct users or hosts appear.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>

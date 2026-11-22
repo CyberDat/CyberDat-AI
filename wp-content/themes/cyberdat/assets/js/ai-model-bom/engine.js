@@ -16,7 +16,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.3';
+	const ENGINE = '1.0.1';
 	const RULESET = '2026-11-14.1';
 	const SPEC_VERSION = '1.7';
 	const TOOL_NAME = 'CyberDat AI Model Bill of Materials';
@@ -134,13 +134,7 @@
 		const host = hostport.replace(/:\d+$/u, '').replace(/^\[|\]$/gu, '').toLowerCase();
 		return { scheme: m[1].toLowerCase(), userinfo, host, hostport, path: m[3], query: m[4] || '', fragment: m[5] || '' };
 	}
-	const maskUrlPath = path => path.replace(/[\p{L}\p{N}\p{M}+=_.\-]{32,}/gu, value => exportTokenLike(value) ? '[' + mask(value) + ']' : value);
 	const isLocal = h => h === 'localhost' || h === '::1' || /^127\.\d+\.\d+\.\d+$/u.test(h) || h.endsWith('.localhost');
-	// Preserve ordinary long Unicode words; glued credentials still match their format or token digits.
-	function exportTokenLike(value) {
-		if (/^\p{ASCII}+$/u.test(value) || /\p{N}/u.test(value)) { return true; }
-		return SECRET_PATTERNS.some(([, re]) => { re.lastIndex = 0; return re.test(value); });
-	}
 	function entropy(s) {
 		const c = new Map();
 		for (const ch of s) { c.set(ch, (c.get(ch) || 0) + 1); }
@@ -162,10 +156,9 @@
 			const u = m[0].replace(/[).,;\]]+$/u, '');
 			const p = urlParts(u);
 			if (!p) { continue; }
-			const safePath = maskUrlPath(p.path);
 			const start = m.index, end = m.index + u.length;
 			if (p.userinfo.indexOf(':') > 0 && p.userinfo.length > p.userinfo.indexOf(':') + 1) {
-				out.push({ rule: 'AIBOM-SEC-001', kind: 'password in the address', start, end, shown: p.scheme + '://' + mask(p.userinfo.slice(0, p.userinfo.indexOf(':'))) + ':••••@' + p.hostport + safePath });
+				out.push({ rule: 'AIBOM-SEC-001', kind: 'password in the address', start, end, shown: p.scheme + '://' + mask(p.userinfo.slice(0, p.userinfo.indexOf(':'))) + ':••••@' + p.hostport + p.path });
 				taken.push([start, end]);
 			} else if (p.query) {
 				for (const pair of p.query.slice(1).split('&')) {
@@ -175,13 +168,13 @@
 					let dec = name;
 					try { dec = decodeURIComponent(name); } catch (e) { /* keep raw */ }
 					if (value.length >= 6 && isSecretName(dec)) {
-						out.push({ rule: 'AIBOM-SEC-001', kind: 'key in the address (' + dec + ')', start, end, shown: p.scheme + '://' + p.hostport + safePath + '?' + dec + '=' + mask(value) });
+						out.push({ rule: 'AIBOM-SEC-001', kind: 'key in the address (' + dec + ')', start, end, shown: p.scheme + '://' + p.hostport + p.path + '?' + dec + '=' + mask(value) });
 						taken.push([start, end]);
 						break;
 					}
 				}
 			}
-			if (p.scheme === 'http' && !isLocal(p.host)) { out.push({ rule: 'AIBOM-NET-001', kind: 'http address', start, end, shown: 'http://' + p.hostport + (safePath.length > 40 ? safePath.slice(0, 40) + '…' : safePath) }); }
+			if (p.scheme === 'http' && !isLocal(p.host)) { out.push({ rule: 'AIBOM-NET-001', kind: 'http address', start, end, shown: 'http://' + p.hostport + (p.path.length > 40 ? p.path.slice(0, 40) + '…' : p.path) }); }
 		}
 		for (const [kind, re] of SECRET_PATTERNS) {
 			re.lastIndex = 0;
@@ -195,7 +188,7 @@
 			}
 		}
 		// Read complete quoted values before JSON/Markdown escaping; unquoted assignments end at delimiters.
-		const ASSIGN = /([\p{L}\p{N}\p{M}_.\-]{2,40})["']?[ \t]*[:=][ \t]*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&<>]+)/gu;
+		const ASSIGN = /([\p{L}\p{N}_.\-]{2,40})["']?[ \t]*[:=][ \t]*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&<>]+)/gu;
 		while ((m = ASSIGN.exec(s))) {
 			const quoted = m[2][0] === '"' || m[2][0] === "'";
 			const value = quoted ? m[2].slice(1, -1) : m[2];
@@ -205,15 +198,15 @@
 			taken.push([vStart, vStart + value.length]);
 		}
 		if (!(opts && opts.noOpaque)) {
-			const OPAQUE = /[\p{L}\p{N}\p{M}+/=_.\-]{32,}/gu;
+			const OPAQUE = /[0-9A-Za-z+/=_.\-]{32,}/gu;
 			while ((m = OPAQUE.exec(s))) {
 				const v = m[0], start = m.index, end = start + v.length;
 				if ((start > 0 && TOKEN_CHAR.test(s[start - 1])) || (end < s.length && TOKEN_CHAR.test(s[end]))) { continue; }
 				if (overlaps(start, end) || HEX.test(v.replace(/[-_.]/gu, '')) || s.slice(Math.max(0, start - 3), start).indexOf('://') >= 0) { continue; }
 				if (taken.some(([x, y]) => start >= x && end <= y)) { continue; }
 				const inUrl = [...s.matchAll(URL_RE)].some(u => start >= u.index && end <= u.index + u[0].length);
-				if (inUrl || !/\p{N}/u.test(v) || !/\p{L}/u.test(v) || entropy(v) < 3.5 || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(v)) { continue; }
-				const digits = (v.match(/\p{N}/gu) || []).length, upper = (v.match(/\p{Lu}/gu) || []).length, lower = (v.match(/\p{Ll}/gu) || []).length;
+				if (inUrl || !/[0-9]/u.test(v) || !/[A-Za-z]/u.test(v) || entropy(v) < 3.5 || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(v)) { continue; }
+				const digits = (v.match(/[0-9]/gu) || []).length, upper = (v.match(/[A-Z]/gu) || []).length, lower = (v.match(/[a-z]/gu) || []).length;
 				if (digits < 3 || (upper === 0 && lower > 0 && digits < 6)) { continue; }
 				out.push({ rule: 'AIBOM-SEC-003', kind: 'unrecognized long value', start, end, shown: mask(v) });
 				taken.push([start, end]);
@@ -232,15 +225,7 @@
 
 	/** Conservative export boundary: mask unknown long token-shaped values too, without an entropy exemption. */
 	function maskExportText(text) {
-		// Redact long path components before credential spans can absorb the whole address.
-		const s = str(text).replace(URL_RE, url => {
-			const p = urlParts(url);
-			if (!p || !p.path) { return url; }
-			const start = url.indexOf(p.path, url.indexOf('://') + 3);
-			const path = maskUrlPath(p.path);
-			return url.slice(0, start) + path + url.slice(start + p.path.length);
-		});
-		const spans = scanText(s).filter(x => x.rule !== 'AIBOM-NET-001');
+		const s = str(text), spans = scanText(s).filter(x => x.rule !== 'AIBOM-NET-001');
 		const urls = [...s.matchAll(URL_RE)].map(m => ({ start: m.index, end: m.index + m[0].length, text: m[0] }));
 		for (const u of urls) {
 			const q = u.text.indexOf('?');
@@ -249,15 +234,15 @@
 			for (const pair of u.text.slice(offset).split('&')) {
 				const eq = pair.indexOf('='), value = eq < 0 ? '' : pair.slice(eq + 1).split('#')[0];
 				const a = u.start + offset + eq + 1, b = a + value.length;
-				if (/^[\p{L}\p{N}\p{M}+/=_.\-]{32,}$/u.test(value) && exportTokenLike(value) && !spans.some(x => a < x.end && b > x.start)) { spans.push({ start: a, end: b, shown: mask(value) }); }
+				if (/^[0-9A-Za-z+/=_.\-]{32,}$/u.test(value) && !spans.some(x => a < x.end && b > x.start)) { spans.push({ start: a, end: b, shown: mask(value) }); }
 				offset += pair.length + 1;
 			}
 		}
-		const re = /[\p{L}\p{N}\p{M}+/=_.\-]{32,}/gu;
+		const re = /[0-9A-Za-z+/=_.\-]{32,}/gu;
 		let m;
 		while ((m = re.exec(s))) {
 			const a = m.index, b = a + m[0].length;
-			if (!exportTokenLike(m[0]) || (a && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b])) || spans.some(x => a < x.end && b > x.start) || urls.some(u => a >= u.start && b <= u.end)) { continue; }
+			if ((a && TOKEN_CHAR.test(s[a - 1])) || (b < s.length && TOKEN_CHAR.test(s[b])) || spans.some(x => a < x.end && b > x.start) || urls.some(u => a >= u.start && b <= u.end)) { continue; }
 			spans.push({ start: a, end: b, shown: mask(m[0]) });
 		}
 		let out = s;
@@ -276,8 +261,8 @@
 		// A digest is intentionally public only in the typed weights-hash field; a hex token in free text is not exempt.
 		inv.weights.forEach((w, i) => {
 			if (isDigest(w.hash)) { safe.weights[i].hash = w.hash; }
-			// File names use the same conservative output boundary as every other free-text export field.
-			safe.weights[i].file = maskExportText(w.file);
+			// File names are typed identifiers; keep ordinary names, while existing secret/token checks still apply.
+			safe.weights[i].file = maskSecrets(w.file);
 		});
 		return safe;
 	}
@@ -418,7 +403,7 @@
 	// ------------------------------------------------------------------ rules
 	function finding(id, location, evidence, extra) {
 		const r = RULES[id];
-		return Object.assign({ rule: id, group: r[0], severity: r[1], title: r[2], explanation: r[3], fix: r[4], location: location ? maskExportText(location) : '', evidence: evidence ? maskExportText(evidence) : '' }, extra || {});
+		return Object.assign({ rule: id, group: r[0], severity: r[1], title: r[2], explanation: r[3], fix: r[4], location: location ? maskSecrets(location) : '', evidence: evidence ? maskSecrets(evidence) : '' }, extra || {});
 	}
 	/**
 	 * Gaps and risks of one canonical inventory. ctx.where(field) maps a logical field to a location label
@@ -454,7 +439,7 @@
 		}
 		inv.weights.forEach((w, n) => {
 			const label = w.file || ('weights file ' + (n + 1));
-			if (!isDigest(w.hash)) { push('AIBOM-WGT-001', 'weights.' + n + '.hash', clean(w.hash) ? label + ': ' + maskExportText(w.hash).slice(0, 24) : label); }
+			if (!isDigest(w.hash)) { push('AIBOM-WGT-001', 'weights.' + n + '.hash', clean(w.hash) ? label + ': ' + w.hash.slice(0, 24) : label); }
 			else if (['MD5', 'SHA-1'].indexOf(normAlg(w.hashAlg) || DIGEST_LENGTHS[w.hash.length]) >= 0) { push('AIBOM-WGT-003', 'weights.' + n + '.hashAlg', label + ': ' + (normAlg(w.hashAlg) || DIGEST_LENGTHS[w.hash.length])); }
 			if (isPickle(w.file, w.format)) { push('AIBOM-WGT-002', 'weights.' + n + '.format', label + (clean(w.format) ? ' (' + w.format + ')' : '')); }
 			if (isMissing(w.source)) { push('AIBOM-WGT-004', 'weights.' + n + '.source', label); }
@@ -919,7 +904,7 @@
 		const sm = summarize(findings);
 		progress(5, 5);
 		const shownStructure = structure.slice(0, 2000).map(x => Object.assign({}, x, { location: maskSecrets(x.location), message: maskSecrets(x.message) }));
-		return { mode: 'review', engine: ENGINE, ruleset: RULESET, level: sm.level, counts: Object.assign(sm.counts, { models: models.length, weights: inv.weights.length, datasets: inv.datasets.length, dependencies: inv.dependencies.length, apis: inv.deployment.apis.length, structure: structure.length }), findings, structure: shownStructure, notes, inventory: inv, inventoryView: exportInventory(inv), modelNames: models.map(m => maskExportText(m.model.name)), specVersion: sv };
+		return { mode: 'review', engine: ENGINE, ruleset: RULESET, level: sm.level, counts: Object.assign(sm.counts, { models: models.length, weights: inv.weights.length, datasets: inv.datasets.length, dependencies: inv.dependencies.length, apis: inv.deployment.apis.length, structure: structure.length }), findings, structure: shownStructure, notes, inventory: inv, inventoryView: maskDeep(normalizeInventory(inv)), modelNames: models.map(m => maskSecrets(m.model.name)), specVersion: sv };
 	}
 	const maskDeep = v => (typeof v === 'string' ? maskSecrets(v) : Array.isArray(v) ? v.map(maskDeep) : isObj(v) ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, maskDeep(x)])) : v);
 	function nearestLine(lines, p) { let q = p; while (q) { q = q.slice(0, q.lastIndexOf('/')); if (lines.has(q)) { return lines.get(q); } } return lines.get('') || 1; }

@@ -19,7 +19,9 @@
  if (typeof module !== 'undefined' && module.exports) module.exports = { period, points, selection };
  if (typeof document === 'undefined') return;
  const ns = 'http://www.w3.org/2000/svg';
+ const initialized=new WeakSet();const initialize=()=>{
  document.querySelectorAll('[data-threat-pulse="2.1"]').forEach(root => {
+  if(initialized.has(root))return;initialized.add(root);
   let periodModel; try { periodModel = JSON.parse(root.dataset.pulsePeriods); } catch (_) { return; }
   if (!periodModel || !periodModel.periods) return;
   const tooltip = root.querySelector('[data-pulse-tooltip]');
@@ -76,4 +78,5 @@
    }));
   }
  });
+ };initialize();document.addEventListener('cyberdat:intelligence-updated',initialize);
 }());

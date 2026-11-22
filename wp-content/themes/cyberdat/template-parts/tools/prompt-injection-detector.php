@@ -19,7 +19,7 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 		<section class="cd-la-panel" aria-labelledby="cd-pi-step-input">
 			<h2 id="cd-pi-step-input" class="cd-la-step"><span aria-hidden="true">1</span> <?php esc_html_e( 'Add the untrusted text', 'cyberdat' ); ?></h2>
 			<label class="cd-la-label" for="cd-pi-input"><?php esc_html_e( 'Text to analyze', 'cyberdat' ); ?></label>
-			<textarea id="cd-pi-input" class="cd-la-input cd-pi-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-pi-input-help cd-pi-source" data-pi-input></textarea>
+			<textarea id="cd-pi-input" class="notranslate cd-la-input cd-pi-input" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" data-lt-active="false" aria-describedby="cd-pi-input-help cd-pi-source" data-pi-input translate="no"></textarea>
 			<p id="cd-pi-input-help" class="cd-la-help"><?php esc_html_e( 'Paste text that an AI assistant or agent would read: a web page (HTML source works best), an email, a document, search results or tool output. You can also load a plain-text file (UTF-8 or UTF-16 with BOM, up to 20 MB). Files larger than 1 MB are analyzed in the background without being shown here.', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<label class="cd-la-file">
@@ -29,7 +29,7 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-sample><?php esc_html_e( 'Load example', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--ghost" data-pi-clear><?php esc_html_e( 'Clear everything', 'cyberdat' ); ?></button>
 			</div>
-			<p id="cd-pi-source" class="cd-la-source" aria-live="polite" data-pi-source></p>
+			<p id="cd-pi-source" class="notranslate cd-la-source" aria-live="polite" data-pi-source translate="no"></p>
 			<p class="cd-la-callout cd-la-callout--warning cd-pi-large" data-pi-large hidden></p>
 		</section>
 
@@ -61,14 +61,14 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 			<button type="button" class="cd-la-button cd-la-button--ghost" data-pi-cancel hidden><?php esc_html_e( 'Cancel', 'cyberdat' ); ?></button>
 			<progress class="cd-la-progress" max="100" value="0" aria-label="<?php esc_attr_e( 'Analysis progress', 'cyberdat' ); ?>" data-pi-progress hidden></progress>
 		</div>
-		<p class="cd-la-status" role="status" aria-live="polite" data-pi-status></p>
-		<div class="cd-la-callout cd-la-callout--error" role="alert" data-pi-error hidden></div>
+		<p class="notranslate cd-la-status" role="status" aria-live="polite" data-pi-status translate="no"></p>
+		<div class="notranslate cd-la-callout cd-la-callout--error" role="alert" data-pi-error hidden translate="no"></div>
 
-		<section class="cd-la-panel cd-la-results" aria-labelledby="cd-pi-step-results" data-pi-results hidden>
+		<section class="notranslate cd-la-panel cd-la-results" aria-labelledby="cd-pi-step-results" data-pi-results hidden translate="no">
 			<h2 id="cd-pi-step-results" class="cd-la-step" tabindex="-1"><span aria-hidden="true">3</span> <?php esc_html_e( 'Review the findings', 'cyberdat' ); ?></h2>
 			<p class="cd-pi-verdict" data-pi-verdict></p>
-			<p class="cd-la-summary" data-pi-summary></p>
-			<ul class="cd-la-notes" data-pi-notes hidden></ul>
+			<p class="notranslate cd-la-summary" data-pi-summary translate="no"></p>
+			<ul class="notranslate cd-la-notes" data-pi-notes hidden translate="no"></ul>
 			<div class="cd-la-table-wrap">
 				<table class="cd-la-table cd-pi-table">
 					<caption><?php esc_html_e( 'Findings by rule group and severity', 'cyberdat' ); ?></caption>
@@ -95,7 +95,7 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 
 			<h3 class="cd-la-subheading" id="cd-pi-highlight-title"><?php esc_html_e( 'Text with findings highlighted', 'cyberdat' ); ?></h3>
 			<p class="cd-la-help" id="cd-pi-highlight-help"><?php esc_html_e( 'Invisible characters inside findings are shown as ⟨U+…⟩. Text that is not highlighted was not flagged, which does not mean it was checked as safe.', 'cyberdat' ); ?></p>
-			<pre class="cd-la-preview cd-pi-preview" tabindex="0" role="region" aria-labelledby="cd-pi-highlight-title" aria-describedby="cd-pi-highlight-help" data-pi-highlight></pre>
+			<pre class="notranslate cd-la-preview cd-pi-preview" tabindex="0" role="region" aria-labelledby="cd-pi-highlight-title" aria-describedby="cd-pi-highlight-help" data-pi-highlight translate="no"></pre>
 			<p class="cd-la-help" data-pi-highlight-truncated hidden></p>
 		</section>
 
@@ -105,20 +105,14 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 			<p class="cd-la-summary" data-pi-changes></p>
 			<h3 class="cd-la-subheading" id="cd-pi-diff-title"><?php esc_html_e( 'Changes: before and after', 'cyberdat' ); ?></h3>
 			<p class="cd-la-help" id="cd-pi-diff-help"><?php esc_html_e( 'Removed text is struck through, inserted text is underlined. Each change starts with “−” (removed) and “+” (inserted) for screen readers and high-contrast modes.', 'cyberdat' ); ?></p>
-			<pre class="cd-la-preview cd-pi-diff" tabindex="0" role="region" aria-labelledby="cd-pi-diff-title" aria-describedby="cd-pi-diff-help" data-pi-diff></pre>
+			<pre class="notranslate cd-la-preview cd-pi-diff" tabindex="0" role="region" aria-labelledby="cd-pi-diff-title" aria-describedby="cd-pi-diff-help" data-pi-diff translate="no"></pre>
 			<p class="cd-la-help" data-pi-diff-truncated hidden></p>
-			<p class="cd-la-help" id="cd-pi-mask-help"><?php esc_html_e( 'Secrets are masked in the sanitized copy by default, after sanitization: known token formats, values after keys such as password, token or api_key, Bearer and Basic credentials, private keys, passwords in command options, credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the copy before you pass it to an AI assistant. Copy and Download take the version shown above.', 'cyberdat' ); ?></p>
-			<label class="cd-la-check notranslate" translate="no">
-				<input type="checkbox" autocomplete="off" aria-describedby="cd-pi-mask-help" data-pi-unmask>
-				<span><?php esc_html_e( 'Do not mask secrets in the sanitized copy', 'cyberdat' ); ?></span>
-			</label>
-			<p class="cd-la-callout cd-la-callout--warning notranslate" translate="no" data-pi-unmask-warning hidden><strong><?php esc_html_e( 'Secrets are not masked.', 'cyberdat' ); ?></strong> <?php esc_html_e( 'Any secret in your text stays in the sanitized copy you copy or download, and an AI assistant you paste it into will receive it.', 'cyberdat' ); ?></p>
 			<div class="cd-la-row">
 				<button type="button" class="cd-la-button cd-la-button--primary" data-pi-copy><?php esc_html_e( 'Copy sanitized copy', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-download><?php esc_html_e( 'Download sanitized copy', 'cyberdat' ); ?></button>
 				<button type="button" class="cd-la-button cd-la-button--secondary" data-pi-report><?php esc_html_e( 'Download findings (JSON)', 'cyberdat' ); ?></button>
 			</div>
-			<p class="cd-la-help"><?php esc_html_e( 'The findings report contains short excerpts of your text. In the excerpts, the details and the report, common secret forms are masked on a best-effort basis: known token formats, values after keys such as password, token or api_key, Bearer and Basic credentials, keys and tokens in addresses, long random-looking values. Masking is pattern-based and can miss a secret: check the report before you share it. The report is always masked, whatever the switch above is set to. The highlighted text is your complete text and is not masked. The report is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
+			<p class="cd-la-help"><?php esc_html_e( 'The findings report contains short excerpts of your text. It is created in your browser and saved only where you choose.', 'cyberdat' ); ?></p>
 		</section>
 	</div>
 
@@ -136,12 +130,13 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 					</ul>
 				</li>
 				<li><?php esc_html_e( 'Every finding has a rule id, a severity, its line and column and an explanation. Phrases that are quoted or given as examples ("phrases like …") are still reported, with low severity.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'The sanitized copy is secondary: it removes invisible characters, applies NFKC and replaces flagged passages with a visible marker, and every change is listed so you can check it. After that, values that look like secrets are masked unless you switch masking off.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'The sanitized copy is secondary: it removes invisible characters, applies NFKC and replaces flagged passages with a visible marker, and every change is listed so you can check it.', 'cyberdat' ); ?></li>
 			</ol>
 			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s', 'cyberdat' ), esc_html( $cyberdat_pi['engine_version'] ), esc_html( $cyberdat_pi['ruleset'] ) ); ?></p>
 		</section>
 		<section aria-labelledby="cd-pi-privacy">
 			<h2 id="cd-pi-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
+			<p><?php esc_html_e( 'This tool asks the browser not to translate entered text, but cannot prevent extensions and translators from reading the page.', 'cyberdat' ); ?></p>
 			<ul>
 				<li><?php esc_html_e( 'This tool does not transmit the text you enter. The page has no server endpoint for your data, it does not call any AI model or external service, and its Content Security Policy blocks scripts on this page from opening network connections.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'If you select Cancel (or processing times out), the background worker is restarted and the browser downloads its two static script files again from this site. Those requests contain no part of your input.', 'cyberdat' ); ?></li>
