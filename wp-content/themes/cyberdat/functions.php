@@ -20,10 +20,6 @@ require_once __DIR__ . '/inc/tool-mcp-checker.php';
 require_once __DIR__ . '/inc/tool-leak-inspector.php';
 require_once __DIR__ . '/inc/tool-ai-model-bom.php';
 require_once __DIR__ . '/inc/tool-atlas-mapper.php';
-require_once __DIR__ . '/inc/tool-prompt-injection-test-bench.php';
-require_once __DIR__ . '/inc/tool-yara-sigma-validator.php';
-require_once __DIR__ . '/inc/tool-container-hardening-audit.php';
-require_once __DIR__ . '/inc/tool-email-header-analyzer.php';
 
 require_once __DIR__ . '/inc/intelligence-charts.php';
 

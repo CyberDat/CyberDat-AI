@@ -25,7 +25,7 @@ function cyberdat_pulse_signal($feed,$now){
  return $rows[0]??null;
 }
 function cyberdat_pulse_sync($data,$source){
- $h=$data['source_health'][$source]??[];$at=(int)($h['last_success']??0);
+ $h=$data['source_health'][$source]??[];$at=cdra_source_response_at($data,$source);
  $specs=function_exists('cdra_sources')?cdra_sources():[];$fresh=$specs[$source]['fresh']??($source==='kev'?12*3600:6*3600);$now=time();
  $interrupted=($h['job']??'')==='Running'&&$now-($h['last_attempt']??0)>180;
  $status=!empty($h['last_error'])||$interrupted?'Sync Error':($at>($data['generated_at']??0)?'Projection pending':($at&&$now-$at<=$fresh&&$now-($data['generated_at']??0)<=$fresh?'Fresh':'Stale'));

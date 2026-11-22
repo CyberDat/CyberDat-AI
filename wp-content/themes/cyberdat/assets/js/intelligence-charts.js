@@ -12,13 +12,17 @@
  if (typeof module !== 'undefined' && module.exports) module.exports = { lineModel };
  if (typeof document === 'undefined') return;
  const make = (tag, attrs) => { const node = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, String(v))); return node; };
+ const cards=new WeakSet(),lines=new WeakSet();
+ const initialize=()=>{
  document.querySelectorAll('.td-chart-card').forEach(card => {
+  if(cards.has(card))return;cards.add(card);
   const tooltip = card.querySelector('[data-chart-tooltip]');
   const show = text => { if (tooltip) tooltip.textContent = text; };
   ['pointerover', 'focusin', 'click'].forEach(name => card.addEventListener(name, event => { const target = event.target.closest('[data-tooltip]'); if (target) show(target.dataset.tooltip); }));
   card.addEventListener('keydown', event => { if (event.key === 'Escape') show('Focus, tap or hover a chart mark to inspect its value.'); });
  });
  document.querySelectorAll('[data-chart-line]').forEach(chart => {
+  if(lines.has(chart))return;lines.add(chart);
   try {
    const series = JSON.parse(chart.dataset.series), svg = chart.querySelector('svg'), plot = chart.querySelector('[data-chart-plot]');
    let model = lineModel(series, 30);
@@ -46,4 +50,5 @@
    chart.dataset.enhancement = 'unavailable';
   }
  });
+ };initialize();document.addEventListener('cyberdat:intelligence-updated',initialize);
 })();

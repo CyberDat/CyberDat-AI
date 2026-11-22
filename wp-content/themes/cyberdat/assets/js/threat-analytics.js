@@ -7,8 +7,9 @@
  };
  if(typeof module!=='undefined'&&module.exports)module.exports={selectionLabel};
  if(typeof document==='undefined')return;
+ const initialized=new WeakSet();const initialize=()=>{
  const root=document.querySelector('[data-analytics-endpoint]'), dialog=document.querySelector('[data-analytics-dialog]');
- if(!root||!dialog||!dialog.showModal)return;
+ if(!root||!dialog||!dialog.showModal||initialized.has(root))return;initialized.add(root);
  const endpoint=new URL(root.dataset.analyticsEndpoint,location.href);if(endpoint.origin!==location.origin)return;
  const form=dialog.querySelector('form'), list=dialog.querySelector('[data-ta-results]'), status=dialog.querySelector('[data-ta-status]'), refresh=dialog.querySelector('[data-ta-refresh]');
  let selected=null,page=1,pages=0,revision='',trigger=null,controller=null,serial=0;
@@ -68,11 +69,13 @@
  root.addEventListener('click',activate);
  root.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)&&event.target.matches('.td-chart-point,[data-drill-group]')){event.preventDefault();activate(event);}});
  // Dynamic SVG line points remain keyboard-operable after period redraws.
- const decorate=()=>root.querySelectorAll('.td-chart-point').forEach(n=>{n.setAttribute('role','button');n.setAttribute('aria-haspopup','dialog');});decorate();new MutationObserver(decorate).observe(root,{childList:true,subtree:true});
+ const decorate=()=>root.querySelectorAll('.td-chart-point').forEach(n=>{n.setAttribute('role','button');n.setAttribute('aria-haspopup','dialog');});decorate();const observer=new MutationObserver(decorate);observer.observe(root,{childList:true,subtree:true});
+ const before=event=>{if(event.detail?.root.contains(root)){serial++;controller?.abort();observer.disconnect();document.removeEventListener('cyberdat:intelligence-before-update',before);}};document.addEventListener('cyberdat:intelligence-before-update',before);
  form.addEventListener('submit',event=>{event.preventDefault();page=1;load();});
  dialog.querySelectorAll('[data-ta-page]').forEach(button=>button.addEventListener('click',()=>{page+=button.dataset.taPage==='next'?1:-1;load();}));
  refresh.addEventListener('click',()=>{page=1;revision='';load();});
  dialog.querySelector('[data-ta-close]').addEventListener('click',()=>dialog.close());
  // A queued close from the previous view must not cancel a newly reopened dialog.
  dialog.addEventListener('close',()=>{if(dialog.open)return;serial++;controller?.abort();trigger?.focus();});
+ };initialize();document.addEventListener('cyberdat:intelligence-updated',initialize);
 })();

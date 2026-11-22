@@ -184,7 +184,7 @@
 		showError('');
 		if (!file) { return; }
 		if (file.size > MAX_BYTES) {
-			showError('“' + file.name + '” is ' + formatBytes(file.size) + '. The maximum is 50 MB — split the file and process the parts separately.');
+			showError('The file is ' + formatBytes(file.size) + '. The maximum is 50 MB — split the file and process the parts separately.');
 			el.file.value = '';
 			return;
 		}
@@ -284,7 +284,7 @@
 					const re = new RegExp(pattern, 'g' + (caseInsensitive ? 'i' : ''));
 					if (re.test('')) { patternError = 'This pattern matches an empty string. Make it match at least one character.'; }
 				} catch (e) {
-					patternError = 'This is not a valid regular expression: ' + String(e.message).replace(/^Invalid regular expression: /, '');
+					patternError = 'This is not a valid regular expression. Review the pattern syntax.';
 				}
 			}
 			if (!LABEL_RE.test(label) || /^REDACTED_/.test(label)) {
@@ -447,6 +447,12 @@
 		if (msg.encoding !== 'utf-8') { notes.push('The file was decoded as ' + msg.encoding.toUpperCase() + '. Downloads are saved as UTF-8.'); }
 		if (msg.invalidBytes) { notes.push('Some bytes were not valid text and appear as “�”. Check that the file encoding is UTF-8.'); }
 		if (msg.warnings && msg.warnings.multilineCustom) { notes.push(number(msg.warnings.multilineCustom) + ' custom-rule matches spanning several lines were skipped to keep the log structure.'); }
+		if (msg.fieldStats) {
+			const breakdown = [['username', 'Username fields'], ['password', 'Password fields'], ['token', 'Token fields'], ['api_key', 'API key fields'], ['secret', 'Secret fields'], ['identifier', 'Identifier fields'], ['personal', 'Personal fields']]
+				.filter(([key]) => msg.fieldStats[key] && msg.fieldStats[key].replacements)
+				.map(([key, label]) => label + ': ' + number(msg.fieldStats[key].replacements));
+			if (breakdown.length) { notes.push(breakdown.join('; ') + '. Included in the category totals.'); }
+		}
 		if (!totals.total) { notes.push('No values were replaced. This does not mean the log is free of sensitive data.'); }
 		el.notes.replaceChildren(...notes.map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
 		el.notes.hidden = notes.length === 0;
