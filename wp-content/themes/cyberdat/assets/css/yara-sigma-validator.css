@@ -1,0 +1,40 @@
+/* YARA/Sigma Rule Validator & Converter — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-ysv-state { margin: 0; color: var(--cd-muted); font-size: .875rem; }
+.cd-ysv-step-title { font-weight: inherit; }
+.cd-ysv-kinds { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; margin: 1rem 0 0; padding: .6rem 1rem; border: 1px solid var(--cd-border); border-radius: .5rem; }
+.cd-ysv-kinds legend { padding: 0 .35rem; }
+.cd-ysv-kind { display: flex; align-items: center; gap: .5rem; min-height: 44px; cursor: pointer; }
+.cd-ysv-kind input { width: 1.15rem; height: 1.15rem; accent-color: var(--cd-accent); }
+.cd-ysv-kind input:focus-visible, .cd-la-check input:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-ysv-convert { margin-top: 1rem; }
+.cd-ysv-convert summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; }
+.cd-ysv-convert summary:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-ysv-select { display: block; min-height: 44px; margin-bottom: .75rem; }
+.cd-ysv-convert .cd-la-input { white-space: pre-wrap; min-height: 6rem; }
+.cd-ysv-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start: 4px solid var(--cd-secondary); border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-ysv-verdict--error { border-inline-start-color: #ff8fa3; }
+.cd-ysv-verdict--error strong { color: #ffb3c0; }
+.cd-ysv-verdict--warning { border-inline-start-color: var(--cd-warning); }
+.cd-ysv-verdict--warning strong { color: var(--cd-warning); }
+.cd-ysv-notes { margin: .5rem 0; padding-inline-start: 1.2rem; color: var(--cd-muted); font-size: .9rem; }
+.cd-ysv-findings { display: grid; gap: .5rem; margin: .75rem 0 1rem; padding: 0; list-style: none; }
+.cd-ysv-finding { min-width: 0; padding: .6rem .75rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-inline-start-width: 3px; border-radius: .4rem; font-size: .9rem; }
+.cd-ysv-finding--error { border-inline-start-color: #ff8fa3; }
+.cd-ysv-finding--warning { border-inline-start-color: var(--cd-warning); }
+.cd-ysv-finding--info { border-inline-start-color: var(--cd-secondary); }
+.cd-ysv-finding p { margin: .3rem 0 0; overflow-wrap: anywhere; }
+.cd-ysv-finding__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 !important; }
+.cd-ysv-code { font: .8125rem/1.6 var(--cd-mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--cd-text); }
+.cd-ysv-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-ysv-label { font-weight: 600; }
+.cd-ysv-sev { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; }
+.cd-ysv-sev--error { background: #4f1f2a; color: #ffd0d9; }
+.cd-ysv-sev--warning { background: #4a3a14; color: #ffe2a6; }
+.cd-ysv-sev--info { background: #173a52; color: #cfe8ff; }
+.cd-ysv-query { margin-top: .75rem; }
+.cd-ysv-query__title { margin: 0 0 .35rem; font-size: .95rem; overflow-wrap: anywhere; }
+.cd-ysv-pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.cd-ysv-pre:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-ysv-conv-error { color: #ffd0d9; }
+@media (max-width: 30rem) { .cd-ysv-finding { padding: .55rem; } }
+@media (forced-colors: active) { .cd-ysv-sev { forced-color-adjust: none; outline: 1px solid CanvasText; } }

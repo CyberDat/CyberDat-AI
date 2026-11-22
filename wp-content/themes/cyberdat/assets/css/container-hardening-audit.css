@@ -1,0 +1,35 @@
+/* Docker & Kubernetes Hardening Audit Generator — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-cha-state { margin: 0; color: var(--cd-muted); font-size: .875rem; }
+.cd-cha-step-title { font-weight: inherit; }
+.cd-cha-select { display: block; min-height: 44px; margin-bottom: .75rem; }
+.cd-cha-file { display: block; min-height: 44px; max-width: 100%; padding: .5rem 0; color: var(--cd-text); }
+.cd-cha-file:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-cha-filelist { margin: .25rem 0 .75rem; padding-inline-start: 1.2rem; color: var(--cd-muted); font-size: .9rem; overflow-wrap: anywhere; }
+.cd-cha-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start: 4px solid var(--cd-secondary); border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-cha-verdict--high { border-inline-start-color: #ff8fa3; }
+.cd-cha-verdict--high strong { color: #ffb3c0; }
+.cd-cha-verdict--medium { border-inline-start-color: var(--cd-warning); }
+.cd-cha-verdict--medium strong { color: var(--cd-warning); }
+.cd-cha-file-out { margin-top: 1.25rem; }
+.cd-cha-file-title { margin: 0 0 .35rem; font-size: 1.05rem; overflow-wrap: anywhere; }
+.cd-cha-findings { display: grid; gap: .5rem; margin: .5rem 0 1rem; padding: 0; list-style: none; }
+.cd-cha-finding { min-width: 0; padding: .6rem .75rem; background: var(--cd-bg); border: 1px solid var(--cd-border); border-inline-start-width: 3px; border-radius: .4rem; font-size: .9rem; }
+.cd-cha-finding--high { border-inline-start-color: #ff8fa3; }
+.cd-cha-finding--medium { border-inline-start-color: var(--cd-warning); }
+.cd-cha-finding--low { border-inline-start-color: #9fb3ff; }
+.cd-cha-finding--info { border-inline-start-color: var(--cd-secondary); }
+.cd-cha-finding p { margin: .3rem 0 0; overflow-wrap: anywhere; }
+.cd-cha-finding__head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0 !important; }
+.cd-cha-code { font: .8125rem/1.6 var(--cd-mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--cd-text); }
+.cd-cha-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-cha-label { font-weight: 600; }
+.cd-cha-sev { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; }
+.cd-cha-sev--high { background: #4f1f2a; color: #ffd0d9; }
+.cd-cha-sev--medium { background: #4a3a14; color: #ffe2a6; }
+.cd-cha-sev--low { background: #26305a; color: #dde4ff; }
+.cd-cha-sev--info { background: #173a52; color: #cfe8ff; }
+.cd-cha-hygiene summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; }
+.cd-cha-hygiene summary:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-cha-file-error { color: #ffd0d9; }
+@media (max-width: 30rem) { .cd-cha-finding { padding: .55rem; } }
+@media (forced-colors: active) { .cd-cha-sev { forced-color-adjust: none; outline: 1px solid CanvasText; } }

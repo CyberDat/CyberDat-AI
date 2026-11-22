@@ -1,0 +1,29 @@
+/* LLM Prompt Injection Test Bench — additions to the shared .cd-la workspace (tools-common.css). */
+.cd-pitb-state { margin: 0; color: var(--cd-muted); font-size: .875rem; }
+.cd-pitb-step-title { font-weight: inherit; }
+.cd-pitb-label { margin: .75rem 0 0; }
+.cd-pitb-label__text { margin: 0; overflow-wrap: anywhere; font-family: var(--cd-mono); font-size: .875rem; }
+.cd-pitb-tests { display: grid; gap: .75rem; margin: .75rem 0; padding: 0; list-style: none; }
+.cd-pitb-test { min-width: 0; padding: .75rem .9rem; background: var(--cd-surface); border: 1px solid var(--cd-border); border-inline-start: 3px solid var(--cd-accent); border-radius: .5rem; }
+.cd-pitb-test__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .6rem; margin: 0; font-size: 1rem; }
+.cd-pitb-test p { margin: .35rem 0; overflow-wrap: anywhere; }
+.cd-pitb-id { font: .8125rem/1.5 var(--cd-mono); color: var(--cd-accent); }
+.cd-pitb-muted { color: var(--cd-muted); font-size: .875rem; }
+.cd-pitb-input { max-height: 14rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.cd-pitb-input:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-pitb-response { display: block; width: 100%; min-height: 4.5rem; margin-bottom: .25rem; resize: vertical; }
+.cd-pitb-test .cd-la-button { margin: .4rem 0 .6rem; }
+.cd-pitb-bulk { margin: .5rem 0 1rem; }
+.cd-pitb-bulk summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; }
+.cd-pitb-bulk summary:focus-visible { outline: 2px solid var(--cd-accent); outline-offset: 2px; }
+.cd-pitb-bulk .cd-la-input { white-space: pre-wrap; min-height: 8rem; }
+.cd-pitb-verdict { margin: 0 0 .5rem; padding: .8rem 1rem; border: 1px solid var(--cd-border); border-inline-start: 4px solid var(--cd-secondary); border-radius: .5rem; background: var(--cd-surface); line-height: 1.55; }
+.cd-pitb-verdict--hit { border-inline-start-color: #ff8fa3; }
+.cd-pitb-verdict--hit strong { color: #ffb3c0; }
+.cd-pitb-table td.cd-pitb-frag { white-space: normal; overflow-wrap: anywhere; min-width: 14rem; font-size: .8125rem; }
+.cd-pitb-row--triggered .cd-pitb-result { color: #ffb3c0; font-weight: 700; }
+.cd-pitb-row--no-response .cd-pitb-result { color: var(--cd-muted); }
+@media (max-width: 30rem) {
+	.cd-pitb-test { padding: .6rem; }
+	.cd-pitb-test .cd-la-button { width: 100%; }
+}

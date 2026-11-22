@@ -89,10 +89,10 @@
     "title": "LLM Prompt Injection Test Bench",
     "slug": "prompt-injection-test-bench",
     "url": "/tools/prompt-injection-test-bench/",
-    "status": "planned",
+    "status": "available",
     "category": "AI Security",
     "category_slug": "ai-security",
-    "description": "Planned generator of prompt-injection test cases for authorized testing; no paid API calls.",
+    "description": "Build canary-based prompt-injection tests for your own LLM application, run them yourself and check the responses locally. Every test asks only for a harmless, verifiable action; for authorized testing.",
     "icon_path": "M9 3h6 M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"
   },
   {
@@ -101,10 +101,10 @@
     "title": "YARA/Sigma Rule Validator & Converter",
     "slug": "yara-sigma-validator",
     "url": "/tools/yara-sigma-validator/",
-    "status": "planned",
+    "status": "available",
     "category": "Detection Engineering",
     "category_slug": "detection",
-    "description": "Planned local validation and conversion of detection rules.",
+    "description": "Check Sigma and YARA rules for syntax and quality problems and convert Sigma rules to Splunk SPL, Microsoft KQL or Elastic Lucene, locally in your browser. Static checks only.",
     "icon_path": "M5 4h14v16H5Z M8 9l2 2 4-4 M8 15h8"
   },
   {
@@ -113,10 +113,23 @@
     "title": "Docker & Kubernetes Hardening Audit Generator",
     "slug": "container-hardening-audit",
     "url": "/tools/container-hardening-audit/",
-    "status": "planned",
+    "status": "available",
     "category": "Cloud & Containers",
     "category_slug": "cloud",
-    "description": "Planned hardening checklist generator for container configurations.",
+    "description": "Check Dockerfiles, Docker Compose files and Kubernetes manifests against hardening rules locally in your browser and get a Markdown or JSON checklist. Static checks only; your files are not changed.",
     "icon_path": "M3 10h18v8H3Z M6 6h4v4H6Z M10 6h4v4h-4Z M14 6h4v4h-4Z"
+  },
+  {
+    "release": "utilities-1",
+    "phase": 4,
+    "kind": "utility",
+    "title": "Email Header Analyzer",
+    "slug": "email-header-analyzer",
+    "url": "/tools/email-header-analyzer/",
+    "status": "available",
+    "category": "Quick Utilities",
+    "category_slug": "utilities",
+    "description": "Paste email headers to see where a message really came from, which authentication checks it passed and what looks suspicious, locally in your browser. No DNS or reputation lookups; the message body is ignored.",
+    "icon_path": "M3 6h18v12H3Z M3 6l9 7 9-7"
   }
 ]

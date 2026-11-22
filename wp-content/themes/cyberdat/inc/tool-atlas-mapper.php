@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_ATL_SLUG = 'mitre-atlas-mapper';
-const CYBERDAT_ATL_ENGINE = '1.0.1';
+const CYBERDAT_ATL_ENGINE = '1.0.3';
 const CYBERDAT_ATL_RULESET = '2026-11-15.1';
 const CYBERDAT_ATL_DATA_RELEASE = '2026.10';
 const CYBERDAT_ATL_DATA_DATE = '2026-10-28';

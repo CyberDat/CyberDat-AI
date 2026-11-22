@@ -63,7 +63,7 @@ while ( have_posts() ) :
                             <div class="tools-card-copy">
                                 <h3><?php if ( $url ) : ?><a class="tools-card-link" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $tool['title'] ); ?></a><?php else : ?><?php echo esc_html( $tool['title'] ); ?><?php endif; ?></h3>
                                 <p class="tools-card-description"><?php echo esc_html( $tool['description'] ); ?></p>
-                                <div class="tools-card-footer"><?php if ( $url ) : ?><span class="tools-card-action" aria-hidden="true"><?php esc_html_e( 'Open tool', 'cyberdat' ); ?><span class="tools-card-arrow">↗</span></span><?php else : ?><p class="tools-card-release"><?php printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); ?></p><?php endif; ?></div>
+                                <div class="tools-card-footer"><?php if ( $url ) : ?><span class="tools-card-action" aria-hidden="true"><?php esc_html_e( 'Open tool', 'cyberdat' ); ?><span class="tools-card-arrow">↗</span></span><?php else : ?><p class="tools-card-release"><?php if ( isset( $tool['kind'] ) && 'utility' === $tool['kind'] ) : esc_html_e( 'Quick utility', 'cyberdat' ); else : printf( esc_html__( 'Phase %1$d · Release %2$s', 'cyberdat' ), (int) $tool['phase'], esc_html( $tool['release'] ) ); endif; ?></p><?php endif; ?></div>
                             </div>
                         </article>
                     <?php endforeach; ?>
