@@ -22,7 +22,7 @@
     "assets/js/tools-filter.js",
     "page-templates/tools.php"
   ],
-  "theme_commit": "1749a5a9bc3eb7f75e64819a42f2eb257642e9d5",
+  "theme_commit": "747b6efb72e20a4e79c85da1dd412b328f30415c",
   "install_rule": "The installer copies the target files as they are and changes no theme file (no prepare step that edits inc/tools.php, inc/tools-catalog.json or any other file). After installation every theme file on staging equals the target map of this manifest, byte for byte. Catalogue statuses and the staging canonical scope are part of the package.",
   "staging_known_differences": {
     "source": "Codex, 2026-11-21: prepare.py of the 1.2 installer (archive 178eb167…) edited two theme files on staging; staging equals that archive byte for byte. Not verified here (no staging access).",
@@ -30,12 +30,12 @@
     "inc/tools.php": "cyberdat_tools_staging_canonical(): slug list extended by agent-leak-inspector, ai-model-bom, mitre-atlas-mapper",
     "effect": "base_sha256 of these two files on staging differs from the base map; both files are replaced as a whole by the target bytes (the target already contains these effects and the statuses of tools 8-10 and the utility)."
   },
-  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility \"available\" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release, secret masking in the page and exports of tools 2 and 3 (secret_masking: two engines, their version constants and one help text each). hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
+  "note": "Theme delta for quick utility 1 (Email Header Analyzer) over tools-release-1.3/1 plus the Codex Hub on staging (hub_commit; hub_overlay lists its files): the utility's files and its Hub preview (including the unmodified Public Suffix List data file, its JS carrier and the MPL-2.0 license text, which must be published together), one functions.php include, one catalogue entry appended (kind utility) and the final statuses: tools 1-10 and the utility \"available\" (the ten entries otherwise unchanged), inc/tools.php: the staging canonical takes its pages from the catalogue (status available) instead of a slug list, one line of the staging Hub template so that utility cards read \"Quick utility\" instead of Phase/Release, secret masking in the page and exports of tools 2 and 3 (secret_masking: two engines, their version constants and one help text each; for the detector also app.js and worker.js: the sanitized copy is masked by default, with a switch to show the complete copy; sanitized_copy_editorial: the FAQ text). hub_previews also lists the redrawn previews of tools 5-10 by the package that ships them (base_sha256 = staging Hub version). Hashes are of the LF bytes in git (git -c core.autocrlf=false archive). No archive is built here: Codex builds and seals the archive with its own release tooling.",
   "counts": {
     "base": 177,
     "target": 187,
     "added": 10,
-    "modified": 17,
+    "modified": 19,
     "removed": 0
   },
   "delta": {
@@ -60,7 +60,9 @@
       "assets/images/tools-hub/prompt-injection-test-bench.svg",
       "assets/images/tools-hub/yara-sigma-validator.svg",
       "assets/js/lotl-analyzer/engine.js",
+      "assets/js/prompt-injection-detector/app.js",
       "assets/js/prompt-injection-detector/engine.js",
+      "assets/js/prompt-injection-detector/worker.js",
       "functions.php",
       "inc/tool-lotl-analyzer.php",
       "inc/tool-prompt-injection-detector.php",
@@ -161,11 +163,23 @@
       "sha256": "010d7ca9bb0cfaefbbe63a4e91f7f06c42399cb66e37a6d3a9a27cf37096b34c",
       "base_sha256": "794991b7ec5475d27c2775b473fc3316adb4bd935fa5f822e1f67870cfbe652a"
     },
+    "assets/js/prompt-injection-detector/app.js": {
+      "status": "modified",
+      "bytes": 27457,
+      "sha256": "d335cb807c2582c8fab7261d64517a6e61663dfd578d5eafa508db52dcacd49d",
+      "base_sha256": "17eacf1b6bf5aa4890fc7a6e326189c0d77a82c473833b47aacc460c6f11be37"
+    },
     "assets/js/prompt-injection-detector/engine.js": {
       "status": "modified",
-      "bytes": 102264,
-      "sha256": "a6a18d0d9c28b9c6d1460266fded6b70e67aff3da25d8cf2d58ee59bd77ae68d",
+      "bytes": 104397,
+      "sha256": "456542161f4c19dd3ff9840884eca94d1138f5c9c1c47201bb6632dbf4468876",
       "base_sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
+    },
+    "assets/js/prompt-injection-detector/worker.js": {
+      "status": "modified",
+      "bytes": 3774,
+      "sha256": "3d343086969da32d627c49501c6af4693648cd629c985ade9939633c9fe6a74f",
+      "base_sha256": "70e8c6271f9078966f2daccdc8da8515d98c342de916df6acd70e24ee0b33e14"
     },
     "functions.php": {
       "status": "modified",
@@ -187,7 +201,7 @@
     "inc/tool-prompt-injection-detector.php": {
       "status": "modified",
       "bytes": 4456,
-      "sha256": "791d874a7947ba4db8397585826c1c4c4ae49e0375ee5d816dd8275dc0a6e3f4",
+      "sha256": "01666f45b4f2dae2a7df8e4d46c9e08a0918b7605bbee78340fe88fb46f81e77",
       "base_sha256": "4011e8aedd05daf751e2766e7e1ea1cac6c467541e182b1eabe68678713e49c8"
     },
     "inc/tools-catalog.json": {
@@ -221,8 +235,8 @@
     },
     "template-parts/tools/prompt-injection-detector.php": {
       "status": "modified",
-      "bytes": 17039,
-      "sha256": "74b16d93447ff9f0b5044e82e9528c7c5a1739b8c8dcd3b38df16d14f7253e1c",
+      "bytes": 18317,
+      "sha256": "1ad17635f103f898a9df26dedaab494d9d1f082336903091c7ed0c676467d1b5",
       "base_sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
     }
   },
@@ -355,24 +369,34 @@
       "prompt-injection-detector": {
         "tool": 2,
         "title": "Indirect Prompt Injection Sanitizer & Detector",
-        "engine_version": "1.0.3",
-        "masked": "finding excerpts, quoted text in details (normalized, decoded, hidden, comment text), decoded fragment previews (page and JSON report)",
-        "not_masked": "the highlighted text and the sanitized copy: they are the complete text the user pasted (the page says so)",
+        "engine_version": "1.0.4",
+        "masked": "finding excerpts, quoted text in details (normalized, decoded, hidden, comment text), decoded fragment previews (page and JSON report); the sanitized copy by default (on screen, Copy and Download; masked after sanitization)",
+        "not_masked": "the highlighted text: it is the complete text the user pasted (the page says so); the sanitized copy only while the user switches on \"Do not mask secrets in the sanitized copy\" (off on every page load, warning shown)",
         "files": {
           "assets/js/prompt-injection-detector/engine.js": {
-            "bytes": 102264,
-            "sha256": "a6a18d0d9c28b9c6d1460266fded6b70e67aff3da25d8cf2d58ee59bd77ae68d",
+            "bytes": 104397,
+            "sha256": "456542161f4c19dd3ff9840884eca94d1138f5c9c1c47201bb6632dbf4468876",
             "base_sha256": "648b64c94898eebee9f75fc080dd8c586976fdd1a5cad7f316b5f155f8ec11eb"
           },
           "inc/tool-prompt-injection-detector.php": {
             "bytes": 4456,
-            "sha256": "791d874a7947ba4db8397585826c1c4c4ae49e0375ee5d816dd8275dc0a6e3f4",
+            "sha256": "01666f45b4f2dae2a7df8e4d46c9e08a0918b7605bbee78340fe88fb46f81e77",
             "base_sha256": "4011e8aedd05daf751e2766e7e1ea1cac6c467541e182b1eabe68678713e49c8"
           },
           "template-parts/tools/prompt-injection-detector.php": {
-            "bytes": 17039,
-            "sha256": "74b16d93447ff9f0b5044e82e9528c7c5a1739b8c8dcd3b38df16d14f7253e1c",
+            "bytes": 18317,
+            "sha256": "1ad17635f103f898a9df26dedaab494d9d1f082336903091c7ed0c676467d1b5",
             "base_sha256": "a625fd3ce2862be46da4efa346b45f1ab1cabbee0682c54962be0440fe70c3ae"
+          },
+          "assets/js/prompt-injection-detector/app.js": {
+            "bytes": 27457,
+            "sha256": "d335cb807c2582c8fab7261d64517a6e61663dfd578d5eafa508db52dcacd49d",
+            "base_sha256": "17eacf1b6bf5aa4890fc7a6e326189c0d77a82c473833b47aacc460c6f11be37"
+          },
+          "assets/js/prompt-injection-detector/worker.js": {
+            "bytes": 3774,
+            "sha256": "3d343086969da32d627c49501c6af4693648cd629c985ade9939633c9fe6a74f",
+            "base_sha256": "70e8c6271f9078966f2daccdc8da8515d98c342de916df6acd70e24ee0b33e14"
           }
         }
       },
@@ -401,6 +425,16 @@
         }
       }
     }
+  },
+  "sanitized_copy_editorial": {
+    "path": "deploy/tools-prompt-injection-detector/editorial.json",
+    "fields": [
+      "how_it_works",
+      "faq"
+    ],
+    "change": "describe the masked sanitized copy and the switch (owner decision 2026-11-22); set by Codex on the existing page meta",
+    "bytes": 6069,
+    "sha256": "6225354519996451ecee4693e70873c24dc2ac958fd22e5596f4dc229dbca530"
   },
   "hub_previews": {
     "tools-hub-previews-5-7": {
@@ -1902,19 +1936,19 @@
       "sha256": "7b12ff855922fe81e2c502608795755dbee64a194c64c89c302fd38a725bae66"
     },
     "assets/js/prompt-injection-detector/app.js": {
-      "bytes": 25686,
+      "bytes": 27457,
       "mode": "0644",
-      "sha256": "17eacf1b6bf5aa4890fc7a6e326189c0d77a82c473833b47aacc460c6f11be37"
+      "sha256": "d335cb807c2582c8fab7261d64517a6e61663dfd578d5eafa508db52dcacd49d"
     },
     "assets/js/prompt-injection-detector/engine.js": {
-      "bytes": 102264,
+      "bytes": 104397,
       "mode": "0644",
-      "sha256": "a6a18d0d9c28b9c6d1460266fded6b70e67aff3da25d8cf2d58ee59bd77ae68d"
+      "sha256": "456542161f4c19dd3ff9840884eca94d1138f5c9c1c47201bb6632dbf4468876"
     },
     "assets/js/prompt-injection-detector/worker.js": {
-      "bytes": 3750,
+      "bytes": 3774,
       "mode": "0644",
-      "sha256": "70e8c6271f9078966f2daccdc8da8515d98c342de916df6acd70e24ee0b33e14"
+      "sha256": "3d343086969da32d627c49501c6af4693648cd629c985ade9939633c9fe6a74f"
     },
     "assets/js/prompt-injection-test-bench/app.js": {
       "bytes": 15913,
@@ -2094,7 +2128,7 @@
     "inc/tool-prompt-injection-detector.php": {
       "bytes": 4456,
       "mode": "0644",
-      "sha256": "791d874a7947ba4db8397585826c1c4c4ae49e0375ee5d816dd8275dc0a6e3f4"
+      "sha256": "01666f45b4f2dae2a7df8e4d46c9e08a0918b7605bbee78340fe88fb46f81e77"
     },
     "inc/tool-prompt-injection-test-bench.php": {
       "bytes": 3219,
@@ -2247,9 +2281,9 @@
       "sha256": "b62148ee9f45fec0e41da9225ca517b76618dde734fa42c65bb32ee249a7751b"
     },
     "template-parts/tools/prompt-injection-detector.php": {
-      "bytes": 17039,
+      "bytes": 18317,
       "mode": "0644",
-      "sha256": "74b16d93447ff9f0b5044e82e9528c7c5a1739b8c8dcd3b38df16d14f7253e1c"
+      "sha256": "1ad17635f103f898a9df26dedaab494d9d1f082336903091c7ed0c676467d1b5"
     },
     "template-parts/tools/prompt-injection-test-bench.php": {
       "bytes": 14378,

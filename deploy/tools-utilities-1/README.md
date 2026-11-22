@@ -11,7 +11,7 @@ tools (owner decision of 2026-11-19).
 | Branch | `integration/tools-utilities-1`, created from `58ed710` (tip of `integration/tools-release-1.3`). On 2026-11-21: `integration/tools-release-1.2` (Codex export redaction fix `6b7d97c`) merged into 1.3 (`198bf49`), the 1.3 package rebuilt over `tools-release-1.2/2` (`e1bff4e`), 1.3 merged here (`df0f51a`, `4060781`); the Codex Hub `feat/tools-hub-cyber-glass` (`0a32f12`, installed on staging) merged here (`b93caf2`); Hub previews `feature/tools-hub-previews` `dfe3ac9`, merge `b96ddbb` |
 | Utility branch | `feature/tools-email-header-analyzer`: `12d01f7` Public Suffix List snapshot, `867bc1f` corpus and held-out set (frozen), `69b3a4a` utility, `d2cc2db` catalogue entry; merge `50e916b`; `386e37c` owner decisions of 2026-11-19 (PSL from publicsuffix.org, "Quick utility" card label, URL confirmed); merge `429e097` |
 | Package | `feature/tools-utilities-1-package`, merged into the integration branch |
-| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7), except the secret masking fix of tools 2 and 3 (`fix/tools-mask-pi-lotl-exports` `8ed3a81`, merge `1749a5a`: two engines, their version constants and one help text each, below); pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
+| Not changed | files of the ten tools (byte-identical to the base, including the Codex fix of tools 6 and 7), except the secret masking fix of tools 2 and 3 (`fix/tools-mask-pi-lotl-exports` `8ed3a81`, merge `1749a5a`: two engines, their version constants and one help text each, below) and the masked sanitized copy of tool 2 (`fix/tools-pi-sanitized-mask` `544439d` and `2ef24aa`, merges `92fe70a` and `747b6ef`: also the detector's `app.js` and `worker.js`, below); pages, Research/Content/SEO, `docs/PROJECT_STATUS.md` (kept byte-identical in the Hub merge). The staging Hub template changes in one line only (owner decision 3) |
 
 ## Install rule (owner decision 2026-11-21)
 
@@ -32,7 +32,7 @@ that patch.
 Base = the theme of `integration/tools-release-1.3` (`e1bff4e`, equal to the 1.3 manifest target) with the Codex Hub on
 staging overlaid (`hub_commit` `0a32f12`; `hub_overlay` lists its 15 theme files; the builder checks that 1.2/1.3 do not
 touch them). `manifest.json` → `delta_files` (SHA-256 of the LF bytes in git). Theme 177 → 187 files: 10 added,
-17 modified, 0 removed. Utility: 9 files, its Hub preview, `functions.php`, the catalogue and one Hub template line.
+19 modified, 0 removed. Utility: 9 files, its Hub preview, `functions.php`, the catalogue and one Hub template line.
 Previews of tools 5–10 (6 SVGs and the illustrations README) ship with their own packages (`hub_previews`):
 `node deploy/tools-utilities-1/build-manifest.cjs --check` verifies it. `manifest.json` → `tools.email-header-analyzer`
 lists the utility's own files and only its lines in the shared files:
@@ -46,7 +46,7 @@ lists the utility's own files and only its lines in the shared files:
 | modified | `inc/tools.php` — `cyberdat_tools_staging_canonical()` takes the pages with catalogue status `available` instead of a hand-written slug list; the staging, published-page, `cyberdat_tool_ready` and Rank Math checks are unchanged |
 | added | `assets/images/tools-hub/email-header-analyzer.svg` — Hub card preview (headers only, `"Demo Bank" <a@example.net>` → dmarc=fail, brand in name) |
 | modified | `page-templates/tools.php` (the staging Hub template from `0a32f12`) — one line (66): planned cards with `kind: utility` read "Quick utility" instead of "Phase · Release"; all other cards render as before |
-| modified | secret masking of tools 2 and 3 (`manifest.json` → `secret_masking`): `assets/js/prompt-injection-detector/engine.js` (1.0.3), `inc/tool-prompt-injection-detector.php` (engine constant), `template-parts/tools/prompt-injection-detector.php` (help text under the report button); `assets/js/lotl-analyzer/engine.js` (1.0.1), `inc/tool-lotl-analyzer.php` (engine constant), `template-parts/tools/lotl-command-analyzer.php` (help text). Replace the six files as a whole |
+| modified | secret masking of tools 2 and 3 (`manifest.json` → `secret_masking`): `assets/js/prompt-injection-detector/engine.js` (1.0.4), `inc/tool-prompt-injection-detector.php` (engine constant), `template-parts/tools/prompt-injection-detector.php` (help texts, the switch next to the sanitized copy), `assets/js/prompt-injection-detector/app.js` and `worker.js` (masked sanitized copy by default, 2026-11-22); `assets/js/lotl-analyzer/engine.js` (1.0.1), `inc/tool-lotl-analyzer.php` (engine constant), `template-parts/tools/lotl-command-analyzer.php` (help text). Replace the eight files as a whole. Page fields of tool 2: `how_it_works` and `faq` from `deploy/tools-prompt-injection-detector/editorial.json` (`manifest.json` → `sanitized_copy_editorial`) |
 | other packages | tools 5–7 previews + illustrations README → `deploy/tools-hub-previews-5-7/` (Codex, tools already on staging); tools 8–10 previews → `deploy/tools-release-1.3/hub-previews.json` |
 
 **Hub effect** (owner decision 3, 2026-11-19: keep the card): the hub shows an 11th "Coming soon" card labelled
@@ -123,6 +123,42 @@ engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extr
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
 
+### Update 2026-11-22 (sixth round: masked sanitized copy in the detector, owner decision)
+
+The detector's sanitized copy is usually pasted into an LLM; until now it was the complete text. Fix
+`fix/tools-pi-sanitized-mask` (`544439d`, merge `92fe70a`; test line endings `2ef24aa`, merge `747b6ef`):
+
+* **Masked by default, after sanitization.** The same shared masking block as for excerpts and the report (known formats,
+  JWT, private keys, values after secret keys whatever their length, Bearer/Basic, password options, credentials, secret
+  query values with percent escapes decoded and token-like path segments in addresses, long opaque values) runs on the
+  finished sanitized copy. Sanitization and detection are unchanged: the engine (1.0.4) builds the masked copy and its
+  change view only when the worker asks for it (`hooks.maskSanitized`); without the hook `analyze()` returns exactly the
+  former result, so the frozen stabilization digests (`tests/tools-stabilization.test.cjs`) still hold. In the masked change
+  view a secret is shown once as an inserted mask, also when it crosses an edit (an invisible character removed inside a
+  token); removed passages are masked before they are cut to 4,000 characters.
+* **Switch** "Do not mask secrets in the sanitized copy" next to the copy: off on every page load (not stored; `autocomplete="off"`
+  and reset by the script, because Firefox restores form fields on reload), `translate="no"` on the switch and on its warning
+  "Secrets are not masked. …". Copy and Download take the version on screen. The JSON report never contained the copy and
+  stays masked whatever the switch says. The highlighted original text is unchanged.
+* **Texts:** help text next to the copy, the report help text, the last "How it works" item and the FAQ/`how_it_works` in
+  `deploy/tools-prompt-injection-detector/editorial.json` (new question "Are secrets masked in the sanitized copy?") describe
+  the behaviour and the switch; masking "can miss a secret", no promise of complete detection. New strings: COPY-REVIEW.
+
+Test `tests/prompt-injection-detector-sanitized-mask.test.cjs` (values from `tests/lib/synthetic-secrets.cjs`): 35/35 engine,
+page and FAQ checks (one per form of secret, the split token, masked removals, unchanged complete copy, analyze without the
+hook unchanged, worker, switch markup, Copy/Download from the screen, report, texts; ReDoS: masking the sanitized copy of 1 MB
+hostile input, 10 shapes, slowest 114 ms, limit 1 s) — 31 of 35 fail on `b879796` (the 4 that pass are guards); with a
+sandbox URL another 24 browser checks in Edge, Firefox and WebKit (masked by default, Copy = Download = screen, switch on:
+complete copy with the warning, report still masked, switch reset after a reload): 24/24. Corpora before → after: the
+corpus test output is byte-identical (detector main 77/87, 88.5 %, medium+ 75/87; benign 65: any 10, medium+ 0; held-out
+26/30, benign 25: medium+ 2; RAG 6/6), and the complete engine result of all 211 corpus, held-out and RAG texts under three
+option sets (633 runs) is identical to `b879796` apart from the new masked copy (which differs from the complete copy in 24
+runs). 10 MB analysis in the worker path: 5.2 s → 5.6 s. Engine 33/33, `tools-mask-pi-lotl` 62/62, stabilization PASS.
+Export surface audit: its "sanitized text" row stays `secret_visible: true` because it inspects the whole `sanitized`
+object, which still holds the complete copy for the switch; the masked copy shown by default exposes none of its three
+probe values (checked with the same probe). One regression run (local sandbox): detector Edge 21 / Firefox 13 / WebKit 13,
+exit 0, as before; Hub 174/174 in each browser. PHP tests: as before (see below).
+
 ### Update 2026-11-21 (fifth round: secret masking in tools 2 and 3, blocker of the public launch)
 
 Tools 2 (Indirect Prompt Injection Sanitizer & Detector) and 3 (LotL / LOLBAS Command Analyzer) on staging showed and exported
@@ -143,7 +179,7 @@ secrets: the detector in finding excerpts, the LotL analyzer in the quoted comma
   decoded, hidden and comment text) and the decoded previews are masked before they are cut to 80–200 characters. LotL masks the
   command line, the normalized command, deobfuscation notes, binaries as written, heuristic details, decoded commands and their
   nested analysis; decoded commands (4,000 characters) and the address detail (120) are masked before the cut.
-* **Not masked (stated on the page):** the detector's highlighted text and sanitized copy are the complete text the user pasted
+* **Not masked (stated on the page; the sanitized copy changed on 2026-11-22, see above):** the detector's highlighted text and sanitized copy are the complete text the user pasted
   (the sanitized copy is the tool's product: injection sanitization, not secret redaction). Error messages contain no input
   text (checked; unchanged). Both tools export JSON only (no Markdown export exists).
 * Detection runs on the original text and is unchanged. Engines: detector 1.0.3, LotL 1.0.1 (PHP constants and the page
