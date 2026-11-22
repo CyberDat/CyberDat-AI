@@ -1,0 +1,5 @@
+# Shell scripts of CI and of the optional pre-commit hook must keep LF in every checkout (bash on Windows too).
+/.github/** text eol=lf
+/tools/**/*.sh text eol=lf
+/.gitleaks.toml text eol=lf
+/.gitleaksignore text eol=lf
