@@ -14,8 +14,13 @@ function digestResults(engine,method,items){const h=crypto.createHash('sha256');
 if(method==='anonymize')for(const k of ['personName','phone']){assert.deepEqual(r.stats[k],{replacements:0,unique:0});delete r.stats[k];}
 if(method==='analyze'){assert.equal(r.ruleset,'2026-11-14.1');r.ruleset='2026-11-11.1';}
 h.update(JSON.stringify(r)+'\n');}return h.digest('hex');}
+// 2026-11-22, owner decision: the Log Anonymizer part is checked against the accepted Stage1 version (d0cba38 = staging
+// snapshot cd06239, engine 1.1.0; Firefox manual check, D14 30/30) instead of the frozen pre-Stage1 digest
+// (baseline.json contracts.la.sha256 = 4164372a..., kept unchanged). Recomputed with digestResults() on the same 4006 inputs.
+// The other tools in this test still use the frozen baseline.
+const LA_STAGE1_SHA256='ea772d4fa843554a2202cdd2eb9ab16c65dc1e756298c7f1932b5eb4d06107c1';
 const v=vectors();
-check('4006 log cases preserve the frozen pre-stabilization output, map, counts, warnings and preview',()=>{assert.equal(v.la.length,frozen.contracts.la.cases);assert.equal(digestResults(la,'anonymize',v.la),frozen.contracts.la.sha256);});
+check('4006 log cases preserve the accepted Stage1 output, map, counts, warnings and preview',()=>{assert.equal(v.la.length,frozen.contracts.la.cases);assert.equal(digestResults(la,'anonymize',v.la),LA_STAGE1_SHA256);});
 check('245 Unicode/injection cases preserve findings, severity, offsets, counts, normalization and sanitized text',()=>{assert.equal(v.pi.length,frozen.contracts.pi.cases);assert.equal(digestResults(pi,'analyze',v.pi),frozen.contracts.pi.sha256);});
 check('every Injection text signature/flag and rule descriptor remains identical',()=>{const rules=JSON.stringify(pi._internal.TEXT_RULES.map(r=>({...r,re:r.re.toString()})));assert.equal(crypto.createHash('sha256').update(rules).digest('hex'),frozen.pi_rules_sha256);});
 check('cached invisible metadata retains per-run emoji/word context and fresh per-call offsets',()=>{const runs=pi._internal.scanInvisible('a\u200db 👩\u200d👩');assert.equal(runs.length,2);assert.equal(runs[0].legit,false);assert.equal(runs[1].legit,true);assert.notEqual(runs[0].start,runs[1].start);assert.equal(pi._internal.scanInvisible('👩\u200d👩')[0].legit,true);assert.equal(pi._internal.scanInvisible('a\u200db')[0].legit,false);});
