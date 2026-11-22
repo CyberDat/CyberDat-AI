@@ -26,6 +26,12 @@ for($i=0;$i<40;$i++){$rows[]=row('nvd','TEST-'.$i,5.5,'3.1');}$m2=cdra_dashboard
 function cyberdat_research_dashboard(){return $GLOBALS['model'];}
 function __($s,$domain=''){return $s;}function esc_html__($s,$d=''){return htmlspecialchars($s,ENT_QUOTES,'UTF-8');}function esc_html_e($s,$d=''){echo esc_html__($s);}function esc_html($s){return htmlspecialchars((string)$s,ENT_QUOTES,'UTF-8');}function esc_attr($s){return esc_html($s);}function esc_url($s){return esc_attr($s);}function cyberdat_intelligence_url(){return 'https://staging.cyberdat.eu/threat-intelligence/';}function home_url($s){return 'https://staging.cyberdat.eu'.$s;}function number_format_i18n($s){return number_format($s);}function selected($a,$b){if($a===$b){echo ' selected';}}
 require_once __DIR__.'/../wp-content/themes/cyberdat/inc/intelligence-charts.php';
+// Stubs 2026-11-22 for the staging home parts (snapshot cd06239): rest_url(); cdra_source_response_at() and cdra_coverage_label()
+// come from a plugin version installed on staging and not in this repository: stubbed with the previous source_health last_success
+// semantics and an empty coverage label. Expectations unchanged.
+if(!function_exists('rest_url')){function rest_url($p=''){return 'https://staging.cyberdat.eu/wp-json/'.ltrim($p,'/');}}
+if(!function_exists('cdra_source_response_at')){function cdra_source_response_at($d,$s){return (int)($d['source_health'][$s]['last_success']??0);}}
+if(!function_exists('cdra_coverage_label')){function cdra_coverage_label($d,$s){return '';}}
 function get_template_part($part,$name=null,$args=[]){require __DIR__.'/../wp-content/themes/cyberdat/'.$part.'.php';}
 $GLOBALS['model']=$m;$_GET=[];ob_start();require __DIR__.'/../wp-content/themes/cyberdat/template-parts/home/threat-dashboard.php';$html=ob_get_clean();
 check(substr_count($html,'data-kpi=')===6,'six real source-labelled KPI cards rendered');

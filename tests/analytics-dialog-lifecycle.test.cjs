@@ -1,3 +1,5 @@
+/* Stub 2026-11-22: document add/removeEventListener and MutationObserver.disconnect, used by the staging threat-analytics.js
+ * (intelligence-updated re-initialisation); expectations unchanged. */
 /* Execute actual theme JS with a queued native close event and abortable fetches. No DOM library or network. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../wp-content/themes/cyberdat/assets/js/threat-analytics.js'),'utf8');
@@ -13,7 +15,7 @@ async function exercise(code){
  const dialog=new Element('dialog'),root=new Element('root');root.dataset={analyticsEndpoint:'https://staging.cyberdat.eu/wp-json/cyberdat-analytics/v1/records',analyticsRevision:'revision',analyticsGenerated:'1'};
  const form=new Element('form');form.elements={q:{value:''},sort:{value:'date_desc'}};form.reset=()=>{form.elements.q.value='';form.elements.sort.value='date_desc';};
  const nodes={'form':form,'[data-ta-results]':new Element(),'[data-ta-status]':new Element(),'[data-ta-refresh]':new Element('refresh'),'[data-ta-title]':new Element(),'[data-ta-close]':new Element('close-button'),'[data-ta-page-label]':new Element(),'[data-ta-page=previous]':new Element(),'[data-ta-page=next]':new Element()};
- const context={URL,AbortController,DOMException,setTimeout,clearTimeout,console,location:{origin:'https://staging.cyberdat.eu',href:'https://staging.cyberdat.eu/threat-intelligence/'},MutationObserver:class{observe(){}},document:{querySelector:s=>s==='[data-analytics-endpoint]'?root:s==='[data-analytics-dialog]'?dialog:null,createElement:kind=>new Element(kind)}};
+ const context={URL,AbortController,DOMException,setTimeout,clearTimeout,console,location:{origin:'https://staging.cyberdat.eu',href:'https://staging.cyberdat.eu/threat-intelligence/'},MutationObserver:class{observe(){}disconnect(){}},document:{querySelector:s=>s==='[data-analytics-endpoint]'?root:s==='[data-analytics-dialog]'?dialog:null,createElement:kind=>new Element(kind),addEventListener(){},removeEventListener(){}}};
  context.fetch=(url,options)=>new Promise((resolve,reject)=>{const request={filter:new URL(url).searchParams.get('value'),signal:options.signal,resolve:()=>resolve({ok:true,status:200,json:async()=>({items:[],total:0,pages:0,page:1,revision:'revision',generated_at:1,filter:{date:'',days:'all'}})})};pending.push(request);options.signal.addEventListener('abort',()=>reject(new DOMException('cancelled','AbortError')),{once:true});});
  vm.runInNewContext(code,context);
  function choose(value){const mark=new Element('mark');mark.dataset={drillGroup:'severity',drillValue:value};mark.closest=selector=>selector==='.td-chart-point'?null:mark;handlers.get('root:click')({target:mark});return mark;}
