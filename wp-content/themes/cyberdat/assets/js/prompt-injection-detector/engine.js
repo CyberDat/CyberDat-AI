@@ -928,7 +928,7 @@
 	const SECRET_LONG = /[0-9A-Za-z+/=_\-.~]{24,4000}/gu;
 	const SECRET_PARAM_NAMES = new Set(['password', 'passwd', 'passphrase', 'pwd', 'pass', 'secret', 'clientsecret', 'token', 'accesstoken', 'refreshtoken', 'idtoken', 'authtoken', 'sessiontoken', 'securitytoken', 'apikey', 'xapikey', 'key', 'accesskey', 'accesskeyid', 'privatekey', 'auth', 'authorization', 'sig', 'signature', 'credential', 'credentials', 'session', 'sessionid', 'sid', 'csrf', 'csrftoken', 'xsrftoken', 'cookie', 'xamzsignature', 'xamzcredential', 'xamzsecuritytoken', 'xgoogsignature', 'xgoogcredential']);
 	const secretParamName = n => { const k = n.toLowerCase().replace(/[^a-z0-9]/gu, ''); return SECRET_PARAM_NAMES.has(k) || /(?:password|secret|token|apikey|privatekey|signature)$/u.test(k); };
-	function secretShown(v) { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
+	function secretShown(v) { const t = String(v); if (t.length <= 8) { return '••••'; } const c = [...t]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
 	function secretEntropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
 	function percentDecode(s) {
 		if (s.indexOf('%') < 0 && s.indexOf('+') < 0) { return s; }
@@ -1028,8 +1028,10 @@
 				if (v[0] === '"' || v[0] === '\'' || v[0] === '“' || v[0] === '«' || v[0] === '„') { a += 1; b -= 1; }
 				if (RE === SECRET_USER_OPTION) { const c = s.indexOf(':', a); if (c < 0 || c >= b - 1) { continue; } a = c + 1; }
 				// a value that is already a masked marker, or a variable or placeholder, stays as it is
-				if (b <= a || /^\[|…|••••/u.test(s.slice(a, b))) { continue; }
-				put('value of a secret field', a, b);
+				if (b <= a) { continue; }
+				const val = s.slice(a, b);
+				if (val[0] === '[' || val.indexOf('…') >= 0 || val.indexOf('••••') >= 0) { continue; }
+				put('value of a secret field', a, b, val);
 			}
 		}
 		SECRET_LONG.lastIndex = 0;
@@ -1046,7 +1048,9 @@
 		const s = String(text === undefined || text === null ? '' : text);
 		const parts = [];
 		let k = 0;
-		for (const x of spans || findSecrets(s)) { parts.push(s.slice(k, x.start), '[' + x.kind + ': ' + x.shown + ']'); k = x.end; }
+		// consecutive spans of the same kind and masked form share one marker string (fewer allocations on many short values)
+		let kind = null, shown = null, marker = '';
+		for (const x of spans || findSecrets(s)) { if (x.kind !== kind || x.shown !== shown) { kind = x.kind; shown = x.shown; marker = '[' + kind + ': ' + shown + ']'; } parts.push(s.slice(k, x.start), marker); k = x.end; }
 		parts.push(s.slice(k));
 		return parts.join('');
 	}
@@ -1571,26 +1575,34 @@
 	 * found there (spans of findSecrets on the whole copy) is shown once, where it starts, as an inserted mask, even when
 	 * it crosses an edit such as a removed invisible character. Removed text is masked on its own before it is cut.
 	 */
+	// Masked-secret changes carry no finding ids: one shared, frozen empty list instead of one array per marker.
+	const NO_IDS = Object.freeze([]);
 	function maskDiff(diff, removedText, spans) {
 		const out = [];
 		let o = 0, i = 0, c = 0;
+		// The removed text of an edit is usually one of a few strings (invisible characters, NFKC forms): mask each distinct
+		// string once (the masked result depends only on the string).
+		const removedMasked = new Map();
+		const maskRemoved = r => { const key = String(r === undefined || r === null ? '' : r); let v = removedMasked.get(key); if (v === undefined) { v = clip(visible(maskSecrets(key)), 4000); removedMasked.set(key, v); } return v; };
+		// consecutive spans of the same kind and masked form share one marker string
+		let mKind = null, mShown = null, mText = '';
+		const markerOf = x => { if (x.kind !== mKind || x.shown !== mShown) { mKind = x.kind; mShown = x.shown; mText = '[' + mKind + ': ' + mShown + ']'; } return mText; };
 		for (const part of diff) {
-			const str = part.t === 's' ? part.v : part.ins;
+			const plain = part.t === 's';
+			const str = plain ? part.v : part.ins;
 			const end = o + str.length;
-			const segs = [];
+			let ins = '';
 			let k = o;
 			while (i < spans.length && spans[i].end <= o) { i++; }
 			for (let j = i; j < spans.length && spans[j].start < end; j++) {
 				const x = spans[j];
-				if (x.start > k) { segs.push({ v: str.slice(k - o, x.start - o) }); }
-				if (x.start >= o) { segs.push({ m: '[' + x.kind + ': ' + x.shown + ']' }); }
+				if (x.start > k) { const v = str.slice(k - o, x.start - o); if (plain) { out.push({ t: 's', v }); } else { ins += v; } }
+				if (x.start >= o) { const mk = markerOf(x); if (plain) { out.push({ t: 'c', kind: 'secret', del: '', ins: mk, ids: NO_IDS }); } else { ins += mk; } }
 				k = Math.max(k, Math.min(x.end, end));
 			}
-			if (k < end) { segs.push({ v: str.slice(k - o) }); }
-			if (part.t === 's') {
-				for (const g of segs) { out.push(g.m ? { t: 'c', kind: 'secret', del: '', ins: g.m, ids: [] } : { t: 's', v: g.v }); }
-			} else {
-				out.push({ t: 'c', kind: part.kind, del: clip(visible(maskSecrets(removedText[c])), 4000), ins: segs.map(g => g.m || g.v).join(''), ids: part.ids });
+			if (k < end) { const v = str.slice(k - o); if (plain) { out.push({ t: 's', v }); } else { ins += v; } }
+			if (!plain) {
+				out.push({ t: 'c', kind: part.kind, del: maskRemoved(removedText[c]), ins, ids: part.ids });
 				c++;
 			}
 			o = end;

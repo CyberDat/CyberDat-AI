@@ -377,7 +377,7 @@
 	const SECRET_LONG = /[0-9A-Za-z+/=_\-.~]{24,4000}/gu;
 	const SECRET_PARAM_NAMES = new Set(['password', 'passwd', 'passphrase', 'pwd', 'pass', 'secret', 'clientsecret', 'token', 'accesstoken', 'refreshtoken', 'idtoken', 'authtoken', 'sessiontoken', 'securitytoken', 'apikey', 'xapikey', 'key', 'accesskey', 'accesskeyid', 'privatekey', 'auth', 'authorization', 'sig', 'signature', 'credential', 'credentials', 'session', 'sessionid', 'sid', 'csrf', 'csrftoken', 'xsrftoken', 'cookie', 'xamzsignature', 'xamzcredential', 'xamzsecuritytoken', 'xgoogsignature', 'xgoogcredential']);
 	const secretParamName = n => { const k = n.toLowerCase().replace(/[^a-z0-9]/gu, ''); return SECRET_PARAM_NAMES.has(k) || /(?:password|secret|token|apikey|privatekey|signature)$/u.test(k); };
-	function secretShown(v) { const c = [...String(v)]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
+	function secretShown(v) { const t = String(v); if (t.length <= 8) { return '••••'; } const c = [...t]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
 	function secretEntropy(s) { const m = new Map(); for (const ch of s) { m.set(ch, (m.get(ch) || 0) + 1); } let e = 0; for (const n of m.values()) { const p = n / s.length; e -= p * Math.log2(p); } return e; }
 	function percentDecode(s) {
 		if (s.indexOf('%') < 0 && s.indexOf('+') < 0) { return s; }
@@ -477,8 +477,10 @@
 				if (v[0] === '"' || v[0] === '\'' || v[0] === '“' || v[0] === '«' || v[0] === '„') { a += 1; b -= 1; }
 				if (RE === SECRET_USER_OPTION) { const c = s.indexOf(':', a); if (c < 0 || c >= b - 1) { continue; } a = c + 1; }
 				// a value that is already a masked marker, or a variable or placeholder, stays as it is
-				if (b <= a || /^\[|…|••••/u.test(s.slice(a, b))) { continue; }
-				put('value of a secret field', a, b);
+				if (b <= a) { continue; }
+				const val = s.slice(a, b);
+				if (val[0] === '[' || val.indexOf('…') >= 0 || val.indexOf('••••') >= 0) { continue; }
+				put('value of a secret field', a, b, val);
 			}
 		}
 		SECRET_LONG.lastIndex = 0;
@@ -495,7 +497,9 @@
 		const s = String(text === undefined || text === null ? '' : text);
 		const parts = [];
 		let k = 0;
-		for (const x of spans || findSecrets(s)) { parts.push(s.slice(k, x.start), '[' + x.kind + ': ' + x.shown + ']'); k = x.end; }
+		// consecutive spans of the same kind and masked form share one marker string (fewer allocations on many short values)
+		let kind = null, shown = null, marker = '';
+		for (const x of spans || findSecrets(s)) { if (x.kind !== kind || x.shown !== shown) { kind = x.kind; shown = x.shown; marker = '[' + kind + ': ' + shown + ']'; } parts.push(s.slice(k, x.start), marker); k = x.end; }
 		parts.push(s.slice(k));
 		return parts.join('');
 	}

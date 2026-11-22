@@ -17,7 +17,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const ENGINE = '1.0.2';
+	const ENGINE = '1.0.3';
 	const LIBRARY_VERSION = '2026-11-21.1';
 	const MAX_RESPONSE_CHARS = 200000;
 	const MAX_TOTAL_CHARS = 5 * 1024 * 1024;
@@ -316,6 +316,22 @@
 			if (b <= a || taken(a, b) || /^\[|…|••••/u.test(s.slice(a, b)) || (keep && keep.some(k => s.slice(a, b).toUpperCase().indexOf(k) >= 0))) { continue; }
 			put({ kind: 'value of a secret field', start: a, end: b, shown: mask(s.slice(a, b)) });
 		}
+		}
+		// A separate word of 16+ characters from [A-Za-z0-9_-] with lower case, upper case and digits is masked without a key
+		// (Codex B02/B-H3/B-H4, 2026-11-22: space-separated values next to a canary). Only whole words between spaces, quotes or
+		// brackets: parts of paths, URLs and assignments are left to the rules above. Not masked: the set's canaries and label
+		// (any case, with any separator), pure hex (hashes) and GUIDs, words without digits.
+		const MIXED = /[A-Za-z0-9_-]{16,500}/gu;
+		const LEFT = /[\s"'`(\[{<,;]/u, RIGHT = /[\s"'`)\]}>,;.!?:]/u;
+		while ((m = MIXED.exec(s))) {
+			const v = m[0], a = m.index, b = a + v.length;
+			if ((a > 0 && !LEFT.test(s[a - 1])) || (b < s.length && !RIGHT.test(s[b])) || (s[b] === '.' && b + 1 < s.length && !/\s/u.test(s[b + 1])) || (s[b] === ':' && b + 1 < s.length && !/\s/u.test(s[b + 1]))) { continue; }
+			if (!/[a-z]/u.test(v) || !/[A-Z]/u.test(v) || !/[0-9]/u.test(v) || /^[0-9a-fA-F-]+$/u.test(v) || taken(a, b)) { continue; }
+			const up = v.toUpperCase();
+			if ((keep && keep.some(k => up.indexOf(k) >= 0)) || /^(?:CANARY|LABEL)[-_]?[0-9A-F]{8}$/u.test(up)) { continue; }
+			// A base64 payload of this tool's own tests carries a canary of the set (as in the long-value rule above).
+			if (keep && keep.length && /^[A-Za-z0-9]+$/u.test(v)) { const d = b64decode(v + '='.repeat((4 - v.length % 4) % 4)).toUpperCase(); if (d && keep.some(k => d.indexOf(k) >= 0)) { continue; } }
+			put({ kind: 'value that looks like a secret', start: a, end: b, shown: mask(v) });
 		}
 		return out.sort((x, y) => x.start - y.start);
 	}

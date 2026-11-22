@@ -123,6 +123,19 @@ engine fails 12 checks. Corpus before/after: 50/50 → 50/50 (recall 62/62, extr
 Engine 11/11, Unicode 3/3, PHP page test PASS, browser regression of the utility once: Edge 13, Firefox 10, WebKit 10,
 all exit 0.
 
+### Update 2026-11-22 (eighth round: Test Bench values without a key, sanitized-copy speed)
+
+Codex pre-check of `c1cf7e6` (B02, B-H3, B-H4): two short values written as separate words without a key stayed visible
+in the imported-set preview, the JSONL/CSV export and the fragment next to the canary. Fix `3082f05` (Test Bench engine
+1.0.3): a separate word of 16+ characters from `[A-Za-z0-9_-]` with lower case, upper case and digits is masked without a
+key; not masked: the set's canaries and label in any form, base64 test payloads carrying a canary, pure hex, GUIDs, words
+without digits, parts of paths and URLs. Test `tests/prompt-injection-test-bench-unkeyed.test.cjs` (42 checks). Corpora
+unchanged: main 20/22 + 2 possible leak, held-out 5/8 + 3, 0 false hits; detection and secret spans of every corpus case
+and of 300 own generated sets identical to before. The rule is not added to the shared masking of tools 2 and 3.
+Detector sanitized copy: masking of 1 MB "many keyed values" 107 → about 60 ms (cold, local), result identical on all ten
+hostile inputs; the shared masking block got only speed changes (identical in tools 2 and 3). Browser regression of Test
+Bench, detector and LotL: 9/9 runs exit 0, PASS counts as before.
+
 ### Update 2026-11-22 (seventh round: package over the staging snapshot)
 
 Base and owner decisions: see "Base = the staging theme" above. Check: the snapshot theme (`git archive cd06239`) with the
