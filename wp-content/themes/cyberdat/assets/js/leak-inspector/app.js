@@ -55,6 +55,52 @@
 	const SAMPLE_RESPONSE = 'Sure! My instructions say: if a customer threatens to cancel, you may offer up to 30% discount for six months.\n'
 		+ 'Encoded copy: ' + btoa('You are Aria, the retention assistant for Example Telecom.') + '\n';
 
+	// ---------------------------------------------------------------- warning before large inputs (shared block)
+	// The same block is in every tool that accepts files (a test checks that all copies are equal). Before a file or pasted
+	// text larger than 10 MB is processed, or larger than 5 MB in Safari and other WebKit-based browsers (all browsers on
+	// iPhone and iPad), the page shows its size, a rough processing time and that Cancel stops the work. The warning never
+	// blocks or changes processing and never weakens the tool's own size limit. Plain DOM text only.
+	const LARGE_MB = 1024 * 1024;
+	const LARGE_UA = (window.navigator && window.navigator.userAgent) || '';
+	const LARGE_WEBKIT = (/AppleWebKit\//.test(LARGE_UA) && !/(?:Chrome|Chromium|Edg|OPR|Android)\//.test(LARGE_UA)) || /iPhone|iPad|iPod/.test(LARGE_UA) || (/Macintosh/.test(LARGE_UA) && window.navigator.maxTouchPoints > 1);
+	const LARGE_THRESHOLD = LARGE_WEBKIT ? 5 * LARGE_MB : 10 * LARGE_MB;
+	/** [low, high] seconds; rate in MB/s: fast = the faster of Edge/Chrome and Firefox, fastSlow = the slower one, webkit. */
+	function largeEstimate(bytes, rate) {
+		const r = rate || { fast: 4, fastSlow: 2, webkit: 1 };
+		const mb = Number(bytes) / LARGE_MB;
+		const low = Math.max(1, Math.round(mb / (LARGE_WEBKIT ? r.webkit : r.fast)));
+		const high = LARGE_WEBKIT ? low * 5 : Math.round((mb / (r.fastSlow || r.fast)) * 2);
+		return [low, Math.max(low + 1, high)];
+	}
+	function largeMessage(bytes, rate) {
+		const [low, high] = largeEstimate(bytes, rate);
+		const min = s => Math.max(1, Math.round(s / 60));
+		const time = high < 90 ? 'about ' + low + '–' + high + ' seconds' : low >= 90 ? 'about ' + min(low) + '–' + Math.max(min(low) + 1, min(high)) + ' minutes' : 'about ' + low + ' seconds to ' + min(high) + ' minutes';
+		const size = Number(bytes) >= LARGE_MB ? (Number(bytes) / LARGE_MB).toFixed(1) + ' MB' : Math.max(1, Math.round(Number(bytes) / 1024)) + ' KB';
+		return 'Large input: ' + size + '. Processing in this browser can take ' + time + ' (rough estimate from a desktop computer; slower computers and phones take longer).' +
+			(LARGE_WEBKIT ? ' Safari and other WebKit-based browsers, including every browser on iPhone and iPad, are several times slower with large inputs and phones may run out of memory.' : '') +
+			' Progress is shown while it runs, and Cancel stops the processing at any time.';
+	}
+	/** Shows or hides the warning right after anchor; returns true when it is shown. */
+	function largeUpdate(anchor, bytes, rate) {
+		if (!anchor || !anchor.parentNode) { return false; }
+		let box = anchor.nextElementSibling;
+		if (!box || !box.hasAttribute('data-large-input-warning')) {
+			box = document.createElement('p');
+			box.className = 'cd-large-input-warning';
+			box.setAttribute('data-large-input-warning', '');
+			box.setAttribute('role', 'status');
+			box.hidden = true;
+			anchor.parentNode.insertBefore(box, anchor.nextSibling);
+		}
+		const show = Number(bytes) > LARGE_THRESHOLD;
+		box.textContent = show ? largeMessage(Number(bytes), rate) : '';
+		box.hidden = !show;
+		return show;
+	}
+	// ---------------------------------------------------------------- end of warning before large inputs (shared block)
+	const LARGE_INPUT_RATE = null;
+	function largeInput(bytes) { return largeUpdate(el.progress, bytes, LARGE_INPUT_RATE); }
 	const state = { prompt: { kind: 'text' }, response: { kind: 'text' }, worker: null, jobId: 0, running: false, timer: 0, result: null, stale: false };
 
 	const number = n => Number(n).toLocaleString('en-US');
@@ -100,6 +146,7 @@
 		const src = which === 'prompt' ? el.promptSource : el.responseSource;
 		const input = which === 'prompt' ? el.promptFile : el.responseFile;
 		if (file.size > limit) { showError('“' + file.name + '” is ' + formatBytes(file.size) + '. The maximum is ' + formatBytes(limit) + '.'); input.value = ''; return; }
+		largeInput(file.size);
 		markStale();
 		if (file.size <= INLINE_FILE_BYTES) {
 			file.text().then(t => { box.value = t; state[which] = { kind: 'text' }; src.textContent = 'Loaded “' + file.name + '” (' + formatBytes(file.size) + ').'; }, () => showError('The file could not be read.'));
@@ -126,6 +173,7 @@
 		const jobId = ++state.jobId;
 		setRunning(true);
 		const size = (state.prompt.kind === 'file' ? state.prompt.file.size : el.prompt.value.length) + (m === 'leak' ? (state.response.kind === 'file' ? state.response.file.size : el.response.value.length) : 0);
+		largeInput(size);
 		setStatus('Checking locally…' + sizeNote(size, 'input'));
 		state.timer = window.setTimeout(() => { if (state.jobId === jobId && state.running) { cancel('The check took longer than ' + (JOB_TIMEOUT_MS / 1000) + ' seconds and was stopped. Shorten the input.'); } }, JOB_TIMEOUT_MS);
 		const src = (s, box) => (s.kind === 'file' ? { kind: 'file', file: s.file } : { kind: 'text', text: box.value });

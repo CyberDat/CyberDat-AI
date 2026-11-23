@@ -22,7 +22,7 @@ const timed = fn => { const t = process.hrtime.bigint(); const r = fn(); return 
 
 // ---------------------------------------------------------------- metadata
 check('versions and the seven groups are exported', () => {
-	assert.equal(engine.VERSION, '1.0.4');
+	assert.equal(engine.VERSION, '1.0.5');
 	assert.equal(engine.RULESET_VERSION, '2026-11-14.1');
 	assert.deepEqual(engine.GROUPS.map(g => g.id), ['role', 'override', 'exfiltration', 'hidden', 'encoded', 'obfuscation', 'extraction']);
 });

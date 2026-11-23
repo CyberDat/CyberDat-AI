@@ -16,8 +16,8 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
 	'use strict';
 
-	const ENGINE = '1.0.3';
-	const RULESET = '2026-11-15.1';
+	const ENGINE = '1.0.4';
+	const RULESET = '2026-11-23.1';
 	const MAX_INPUT_CHARS = 100000;
 	const DATA = (typeof module === 'object' && module.exports && typeof require === 'function') ? require('./atlas-data.js') : root.CyberDatAtlasData;
 
@@ -100,13 +100,18 @@
 	// start of a word (stems: "poison" also matches "poisoned"); a trailing "$" means the whole word; spaces and hyphens
 	// between words of a phrase are interchangeable. "unless": a more specific rule that, when proposed, replaces this one.
 	const RULES = [
-		{ id: 'MAP-01', technique: 'AML.T0051.000', strong: ['direct prompt injection', 'direkte prompt injection', 'прям промпт инъекц', 'прям инъекц промпт'], generic: ['prompt injection', 'promptinjection', 'prompt injektion', 'промпт инъекц'], groups: [['ignor', 'disregard', 'missacht', 'игнорир', 'пренебре', 'persuad', 'überred', 'уговор', 'talked into', 'tricked'], ['instruction', 'anweisung', 'инструкц', 'rules$', 'regeln', 'правил']], unless: ['MAP-02', 'MAP-18', 'MAP-28'] },
-		{ id: 'MAP-02', technique: 'AML.T0051.001', strong: ['indirect prompt injection', 'indirekte prompt injection', 'косвенн промпт инъекц', 'косвенн инъекц'], groups: [['hidden instruction', 'embedded instruction', 'instructions for the model', 'instructions to the model', 'versteckte anweisung', 'anweisungen an das modell', 'anweisungen für das modell', 'скрыт инструкц', 'скрыт команд', 'спрятан команд', 'спрятаны команд', 'команды для ии', 'инструкции для модели'], ['web page', 'webpage', 'website', 'document', 'pdf$', 'email', 'e mail', 'mail$', 'upload', 'retriev', 'webseite', 'dokument', 'datei', 'hochgeladen', 'страниц', 'сайт', 'документ', 'письм', 'файл']] },
+		{ id: 'MAP-01', technique: 'AML.T0051.000', strong: ['direct prompt injection', 'direkte prompt injection', 'прям промпт инъекц', 'прям инъекц промпт'], generic: ['prompt injection', 'promptinjection', 'prompt injektion', 'промпт инъекц'], groups: [['ignor', 'disregard', 'missacht', 'игнорир', 'пренебре', 'persuad', 'überred', 'уговор', 'talked into', 'tricked'], ['instruction', 'anweisung', 'инструкц', 'rules$', 'regeln', 'правил']], unless: ['MAP-02', 'MAP-18', 'MAP-28', 'MAP-33'] },
+		{ id: 'MAP-02', technique: 'AML.T0051.001', strong: ['indirect prompt injection', 'indirekte prompt injection', 'косвенн промпт инъекц', 'косвенн инъекц'], groups: [['hidden instruction', 'embedded instruction', 'instructions for the model', 'instructions to the model', 'versteckte anweisung', 'anweisungen an das modell', 'anweisungen für das modell', 'скрыт инструкц', 'скрыт команд', 'спрятан команд', 'спрятаны команд', 'команды для ии', 'инструкции для модели'], ['web page', 'webpage', 'website', 'document', 'pdf$', 'email', 'e mail', 'mail$', 'upload', 'retriev', 'webseite', 'dokument', 'datei', 'hochgeladen', 'страниц', 'сайт', 'документ', 'письм', 'файл']],
+			alts: [[['retriev', 'fetched', 'downloaded', 'scraped', 'crawled', 'pasted', 'uploaded', 'imported', 'web page', 'webpage', 'website', 'document', 'pdf$', 'email', 'e mail', 'ticket', 'search result', 'tool output', 'abgerufen', 'heruntergeladen', 'hochgeladen', 'eingefügt', 'webseite', 'dokument', 'datei', 'загруж', 'скачан', 'извлеч', 'найден', 'вставлен', 'страниц', 'сайт', 'документ', 'файл', 'письм'],
+				['told the', 'instructing the', 'instructed the', 'ordered the', 'commanded the', 'directed the', 'wies den', 'wies das', 'wies die', 'forderte den', 'forderte das', 'befahl', 'befehl an', 'anweisung an', 'велел', 'приказал', 'потребовал от', 'велела', 'приказала'],
+				['ignor', 'disregard', 'abandon', 'drop', 'discard', 'forget', 'override', 'missacht', 'verwerf', 'vergiss', 'vergessen', 'aufzugeben', 'übergeh', 'игнорир', 'забы', 'отброс', 'наруш', 'пренебре'],
+				['rule', 'instruction', 'guideline', 'polic', 'regel', 'anweisung', 'vorgabe', 'richtlini', 'правил', 'инструкц', 'указани', 'ограничен']]] },
 		{ id: 'MAP-03', technique: 'AML.T0054', strong: ['jailbreak', 'jail break', 'джейлбрейк', 'джейлбрейк'], groups: [['bypass', 'circumvent', 'umgeh', 'обош', 'обход'], ['guardrail', 'restriction', 'safety filter', 'einschränkung', 'schutzmechanism', 'ограничени']] },
-		{ id: 'MAP-04', technique: 'AML.T0069.002', groups: [['system prompt', 'systemprompt', 'system instructions', 'системн промпт', 'системн инструкц'], ['reveal', 'disclos', 'leak', 'expos', 'dump', 'preisgeg', 'verrat', 'offengeleg', 'раскры', 'утек', 'утечк', 'выдал']] },
+		{ id: 'MAP-04', technique: 'AML.T0069.002', groups: [['system prompt', 'systemprompt', 'system instructions', 'systemanweisung', 'системн промпт', 'системн инструкц'], ['reveal', 'disclos', 'leak', 'expos', 'dump', 'extract', 'obtain', 'print', 'repeat', 'exfiltrat', 'word for word', 'verbatim', 'preisgeg', 'verrat', 'offengeleg', 'ausgelesen', 'auslesen', 'ausgegeben', 'extrahier', 'erbeutet', 'wörtlich', 'раскры', 'утек', 'утечк', 'выдал', 'вытащ', 'извлек', 'получил', 'выудил', 'дословн']],
+			alts: [[['system prompt', 'systemprompt', 'system instructions', 'systemanweisung', 'системн промпт', 'системн инструкц'], ['recover', 'reconstruct', 'wiederhergestellt', 'rekonstru', 'восстанов'], ['reply', 'replies', 'response', 'answer', 'output', 'antwort', 'ausgabe', 'ответ', 'вывод']]] },
 		{ id: 'MAP-05', technique: 'AML.T0077', groups: [['markdown image', 'markdown bild', 'render', 'image url', 'bild url', 'изображен', 'картинк'], ['exfiltrat', 'external server', 'externen server', 'внешн сервер', 'carried', 'übertrag', 'передал', 'утек']] },
 		{ id: 'MAP-06', technique: 'AML.T0070', strong: ['rag poisoning', 'отравлен индекс', 'отравление rag'], groups: [['rag$', 'retrieval', 'knowledge base', 'wissensdatenbank', 'wiki$', 'база знаний', 'базу знаний', 'индекс', 'vector store', 'vektordatenbank'], ['poison', 'vergift', 'отравл', 'false', 'falsch', 'ложн', 'manipul', 'planted', 'eingeschleust', 'подброс', 'edited']] },
-		{ id: 'MAP-07', technique: 'AML.T0020', strong: ['data poisoning', 'отравлен данных', 'отравление обучающ'], groups: [['training data', 'training set', 'training dataset', 'trainingsdaten', 'trainingsdatensatz', 'обучающ', 'обучен выборк', 'annotat', 'labels'], ['poison', 'vergift', 'отравл', 'manipul', 'mislabel', 'испорч', 'tamper', 'намеренно']] },
+		{ id: 'MAP-07', technique: 'AML.T0020', strong: ['data poisoning', 'отравлен данных', 'отравление обучающ'], groups: [['training data', 'training set', 'training dataset', 'training example', 'training sample', 'fine tuning data', 'fine tuning dataset', 'finetuning data', 'trainingsdaten', 'trainingsdatensatz', 'trainingsbeispiel', 'lerndaten', 'feintuning', 'обучающ', 'обучен выборк', 'набор для обучен', 'данн для обучен', 'данн для дообучен', 'выборк для обучен', 'annotat', 'labels'], ['poison', 'vergift', 'отравл', 'manipul', 'mislabel', 'испорч', 'tamper', 'намеренно', 'corrupt', 'slipped', 'verfälscht', 'eingeschleust', 'подмеш', 'искаж', 'неверно размечен', 'умышленно']] },
 		{ id: 'MAP-08', technique: 'AML.T0043.004', strong: ['backdoor', 'back door', 'hintertür', 'бэкдор', 'trigger phrase', 'trigger wort', 'триггер фраз'] },
 		{ id: 'MAP-09', technique: 'AML.T0005.001', strong: ['model extraction', 'model stealing', 'model theft', 'modelldiebstahl', 'model extraktion', 'кража модел', 'извлечен модел'], groups: [['quer', 'abfrage', 'запрос'], ['copy of the model', 'clone', 'replicat', 'nachgebaut', 'nachbau', 'клон', 'копию модел']] },
 		{ id: 'MAP-10', technique: 'AML.T0137.003', groups: [['training data', 'trainingsdaten', 'обучающ', 'memoriz', 'memoris', 'auswendig'], ['verbatim', 'wörtlich', 'дословн', 'reproduc', 'regurgit']] },
@@ -115,14 +120,18 @@
 		{ id: 'MAP-13', technique: 'AML.T0029', strong: ['denial of service', 'dos attack', 'ddos', 'отказ в обслуживан', 'dienstverweigerung'], groups: [['overload', 'überlast', 'перегруз', 'flood', 'exhaust'], ['server', 'service', 'dienst', 'сервис', 'сервер', 'inference', 'endpoint']] },
 		{ id: 'MAP-14', technique: 'AML.T0034', strong: ['cost harvesting', 'llmjacking', 'denial of wallet'], groups: [['bill$', 'invoice', 'rechnung', 'kosten', 'costs', 'счёт', 'счет', 'стоимост', 'расход'], ['jump', 'spike', 'rose$', 'stieg', 'explod', 'вырос', 'increase', 'fache', 'десятки', 'zwanzigfach', 'zehnfach']] },
 		{ id: 'MAP-15', technique: 'AML.T0011.000', strong: ['pickle', 'torch.load', 'joblib'] },
-		{ id: 'MAP-16', technique: 'AML.T0010.003', groups: [['model hub', 'hugging face', 'huggingface', 'model repository', 'model registry', 'modell hub', 'реестр модел', 'хаб модел'], ['malicious', 'bösartig', 'вредонос', 'look alike', 'typosquat', 'fake', 'gefälscht', 'поддельн', 'compromis']] },
+		{ id: 'MAP-16', technique: 'AML.T0010.003', groups: [['model hub', 'hugging face', 'huggingface', 'model repository', 'model registry', 'modell hub', 'реестр модел', 'хаб модел'], ['malicious', 'bösartig', 'вредонос', 'look alike', 'typosquat', 'fake', 'gefälscht', 'поддельн', 'compromis']],
+			alts: [[['model', 'checkpoint', 'pretrained weights', 'model weights', 'modell', 'gewichte', 'модел', 'веса модел', 'весов модел'], ['hub$', 'model hub', 'registry', 'repositor', 'hugging face', 'huggingface', 'upstream', 'registr', 'реестр', 'репозитор', 'хаб'], ['tampered', 'trojan', 'backdoored', 'poisoned', 'malicious', 'compromis', 'manipul', 'präpariert', 'bösartig', 'троян', 'вредонос', 'скомпрометир', 'подмен']],
+				[['model', 'checkpoint', 'pretrained weights', 'model weights', 'modell', 'gewichte', 'модел', 'веса модел', 'весов модел'], ['hub$', 'model hub', 'registry', 'repositor', 'hugging face', 'huggingface', 'upstream', 'registr', 'реестр', 'репозитор', 'хаб'], ['swapped', 'replaced', 'ersetzt', 'ausgetauscht', 'заменил', 'заменен', 'заменён'], ['attacker', 'payload', 'trojan', 'malicious', 'angreifer', 'präpariert', 'злоумышленник', 'троян']]] },
 		{ id: 'MAP-17', technique: 'AML.T0010.001', groups: [['package', 'paket', 'пакет', 'dependenc', 'abhängigkeit', 'зависимост', 'library', 'библиотек', 'pypi$', 'npm$'], ['malicious', 'compromis', 'bösartig', 'kompromittiert', 'вредонос', 'скомпрометир', 'backdoored', 'typosquat']], unless: ['MAP-25'] },
 		{ id: 'MAP-18', technique: 'AML.T0110.000', strong: ['tool poisoning', 'tool vergiftung', 'отравлен инструмент'], groups: [['tool description', 'tool beschreibung', 'описание инструмент', 'tool definition', 'mcp$'], ['hidden', 'versteckt', 'скрыт', 'instruction', 'anweisung', 'указани', 'poison', 'vergift']] },
-		{ id: 'MAP-19', technique: 'AML.T0053', groups: [['agent', 'агент'], ['tool', 'werkzeug', 'инструмент', 'calling', 'invok', 'aufgerufen', 'вызва', 'payment', 'zahlung', 'платеж', 'платёж']], unless: ['MAP-18', 'MAP-23'] },
+		{ id: 'MAP-19', technique: 'AML.T0053', groups: [['agent', 'агент'], ['tool', 'werkzeug', 'инструмент', 'calling', 'invok', 'aufgerufen', 'вызва', 'payment', 'zahlung', 'платеж', 'платёж']], unless: ['MAP-18', 'MAP-23', 'MAP-33'] },
 		{ id: 'MAP-20', technique: 'AML.T0101', groups: [['agent', 'агент', 'assistant', 'assistent', 'ассистент'], ['delet', 'gelöscht', 'lösch', 'удал', 'wiped', 'destroy', 'zerstört', 'уничтож']] },
-		{ id: 'MAP-21', technique: 'AML.T0086', groups: [['agent', 'агент'], ['send', 'sent$', 'forward', 'gesendet', 'weitergeleitet', 'отправ', 'переслал'], ['outside', 'external', 'extern', 'внешн', 'attacker', 'angreifer', 'злоумышленник']] },
+		{ id: 'MAP-21', technique: 'AML.T0086', groups: [['agent', 'агент'], ['send', 'sent$', 'forward', 'exfiltrat', 'leak', 'push', 'upload', 'transmit', 'posted', 'gesendet', 'geschickt', 'schickte', 'weitergeleitet', 'übermittel', 'hochgeladen', 'lud$', 'ausgeleitet', 'exfiltriert', 'отправ', 'переслал', 'слил', 'выгрузил', 'выгруж', 'передал', 'эксфильтр'], ['outside', 'external', 'extern', 'fremd', 'внешн', 'attacker', 'angreifer', 'злоумышленник']] },
 		{ id: 'MAP-22', technique: 'AML.T0055', groups: [['api key', 'api schlüssel', 'ключ api', 'api ключ', 'api token', 'secret key', 'access key', 'zugangsschlüssel'], ['commit', 'github', 'repositor', 'репозитор', 'public', 'öffentlich', 'публичн', 'frontend', 'klartext', 'plain text', 'cleartext', 'открыт', 'expos', 'leak', 'stolen', 'gestohlen', 'украден', 'утек']], secrets: true },
-		{ id: 'MAP-23', technique: 'AML.T0083', groups: [['agent configuration', 'agent config', 'agentenkonfiguration', 'конфигурац агент', 'mcp config', 'mcp konfiguration'], ['password', 'passwort', 'пароль', 'credential', 'zugangsdaten', 'учетн', 'учётн', 'token', 'secret', 'key$']] },
+		{ id: 'MAP-23', technique: 'AML.T0083', groups: [['agent configuration', 'agent config', 'agentenkonfiguration', 'конфигурац агент', 'mcp config', 'mcp konfiguration'], ['password', 'passwort', 'пароль', 'credential', 'zugangsdaten', 'учетн', 'учётн', 'token', 'secret', 'key$']],
+			alts: [[['agent', 'агент'], ['settings', 'config', 'definition', 'profile', 'manifest', 'einstellung', 'konfiguration', 'profil', 'настройк', 'конфиг', 'профил'], ['password', 'passwort', 'пароль', 'парол', 'credential', 'zugangsdaten', 'учетн', 'учётн', 'token', 'токен', 'secret', 'key$', 'schlüssel', 'geheim', 'ключ', 'секрет']],
+				[['agentenprofil', 'agenteneinstellung', 'agentenkonfig', 'agentendefinition'], ['password', 'passwort', 'credential', 'zugangsdaten', 'token', 'secret', 'key$', 'schlüssel', 'geheim']]] },
 		{ id: 'MAP-24', technique: 'AML.T0088', strong: ['deepfake', 'deep fake', 'дипфейк'] },
 		{ id: 'MAP-25', technique: 'AML.T0060', strong: ['slopsquatting'], groups: [['hallucinat', 'halluzin', 'галлюцин', 'did not exist', 'nicht existier', 'не существ'], ['package', 'paket', 'пакет', 'library', 'bibliothek', 'библиотек', 'registered', 'registriert', 'зарегистр']] },
 		{ id: 'MAP-26', technique: 'AML.T0080.000', strong: ['memory poisoning', 'gedächtnisvergiftung', 'отравлен памят'], groups: [['memory', 'gedächtnis', 'langzeitgedächtnis', 'памят'], ['stored', 'gespeichert', 'speichert', 'сохран', 'poison', 'vergift', 'отравл', 'later sessions', 'dauerhaft', 'persist', 'последующ']] },
@@ -131,7 +140,12 @@
 		{ id: 'MAP-29', technique: 'AML.T0092', groups: [['chat history', 'chatverlauf', 'conversation history', 'истори чата', 'истори переписк'], ['modif', 'manipul', 'altered', 'verändert', 'изменен', 'подмен']] },
 		{ id: 'MAP-30', technique: 'AML.T0085.000', groups: [['rag$', 'retrieval', 'knowledge base', 'wissensdatenbank', 'база знаний', 'базы знаний'], ['confidential', 'vertraulich', 'конфиденц', 'should not see', 'nicht sehen', 'не должен', 'unauthori', 'unberechtigt', 'без доступа']], unless: ['MAP-06'] },
 		{ id: 'MAP-31', technique: 'AML.T0137.002', strong: ['model inversion', 'modellinversion', 'инверси модел'], groups: [['reconstruct', 'rekonstru', 'восстанов'], ['face', 'gesicht', 'лиц', 'training', 'обучающ']] },
-		{ id: 'MAP-32', technique: 'AML.T0052.000', groups: [['phishing', 'фишинг', 'spearphishing', 'spear phishing'], ['llm$', 'language model', 'sprachmodell', 'языков модел', 'chatgpt', 'generated by', 'generiert', 'сгенерир', 'ai generated', 'ki generiert']] }
+		{ id: 'MAP-32', technique: 'AML.T0052.000', groups: [['phishing', 'фишинг', 'spearphishing', 'spear phishing'], ['llm$', 'language model', 'sprachmodell', 'языков модел', 'chatgpt', 'generated by', 'generiert', 'сгенерир', 'ai generated', 'ki generiert']] },
+		// A malicious or compromised tool that steers the agent, without saying which part of the tool (parent technique).
+		{ id: 'MAP-33', technique: 'AML.T0110', groups: [['tool', 'plugin', 'werkzeug', 'fremdwerkzeug', 'fremdtool', 'инструмент', 'mcp$', 'mcp server'], ['malicious', 'compromis', 'poisoned', 'manipulated', 'tampered', 'rogue', 'trojan', 'bösartig', 'kompromittiert', 'manipuliert', 'vergiftet', 'präpariert', 'вредонос', 'скомпрометир', 'подменён', 'подменен', 'отравлен', 'манипулир'], ['persuad', 'convinc', 'manipulated the agent', 'tricked', 'steered', 'caused the agent', 'made the agent', 'override', 'überred', 'brachte den', 'brachte das', 'steuerte', 'убедил', 'заставил', 'вынудил', 'склонил']], unless: ['MAP-18'] },
+		{ id: 'MAP-34', technique: 'AML.T0082', groups: [['rag$', 'rag system', 'retrieval', 'knowledge base', 'wissensdatenbank', 'wiki$', 'wiki pages', 'index$', 'indiz', 'vector store', 'vektordatenbank', 'база знаний', 'базе знаний', 'базы знаний', 'индекс', 'проиндекс'], ['password', 'passwort', 'passwört', 'credential', 'zugangsdaten', 'zugangsschlüssel', 'api key', 'access key', 'secret key', 'token', 'парол', 'учетн', 'учётн', 'токен', 'ключ доступ', 'ключи доступ'], ['retriev', 'returned', 'answer', 'response', 'pulled', 'asking', 'query', 'queries', 'output', 'abgerufen', 'abrufen', 'antwort', 'ausgab', 'ausgegeben', 'lieferte', 'nachfrage', 'fragen', 'выдавал', 'выдал', 'ответ', 'запрос', 'получить', 'извлеч']] },
+		// The agent's context or conversation changed so that later turns follow it (parent technique; persistent memory: MAP-26).
+		{ id: 'MAP-35', technique: 'AML.T0080', groups: [['context', 'conversation memory', 'chat memory', 'kontext', 'gesprächskontext', 'контекст', 'память диалог'], ['inject', 'planted', 'poison', 'manipul', 'altered', 'tamper', 'changed', 'false', 'veränder', 'vergift', 'eingeschleust', 'подмен', 'внедр', 'отравл', 'изменил', 'ложн'], ['later', 'future', 'subsequent', 'following', 'next turn', 'spätere', 'künftig', 'folgende', 'nachfolgend', 'последующ', 'дальнейш', 'будущ', 'следующ']], unless: ['MAP-26', 'MAP-29'] }
 	];
 
 	// ------------------------------------------------------------------ text helpers (Unicode)
@@ -146,9 +160,55 @@
 		const body = words.map((w, i) => w + (i < words.length - 1 || !whole ? W + '*' : '')).join('[\\s\\-]{1,3}');
 		return new RegExp('(?:^|[^\\p{L}\\p{N}\\p{M}])(' + body + ')(?!' + W + ')', 'gu');
 	}
-	const COMPILED = RULES.map(r => ({ rule: r, strong: (r.strong || []).map(termRe), generic: (r.generic || []).map(termRe), groups: (r.groups || []).map(g => g.map(termRe)) }));
+	const COMPILED = RULES.map(r => ({ rule: r, strong: (r.strong || []).map(termRe), generic: (r.generic || []).map(termRe), groups: (r.groups || []).map(g => g.map(termRe)), alts: (r.alts || []).map(a => a.map(g => g.map(termRe))) }));
+	// ------------------------------------------------------------------ negation (EN, DE, RU)
+	// A term is not evidence when its own clause denies it: a negation word up to six words before it ("no prompt
+	// injection", "keine Prompt-Injection", "не раскрыл системный промпт"; "without"/"ohne"/"без" only for the next word),
+	// or a denial after it ("… was not observed", "… wurde nicht festgestellt", "… не было"). A clause ends at . ; : ! ? ( )
+	// a comma or a joining word (and, but, und, aber, и, но, а …), so "no hesitation, revealed …" is not denied. A negation
+	// in front of a verb of noticing or stopping keeps the event ("did not stop the jailbreak", "не заметил инъекцию").
+	const CLAUSE_BREAK = /[.;:!?()\n,]|(?:^|\s)(?:and|or|but|however|while|whereas|und|oder|aber|jedoch|sondern|и|или|но|а|однако|зато)(?=\s)/gu;
+	const NEG_WORD = /^(?:no|not|never|none|neither|nor|cannot|kein|keine|keinen|keiner|keines|keinem|nicht|nie|niemals|weder|нет|не|ни|никогда|никак|without|ohne|без)$/u;
+	const NEG_ONE_WORD = /^(?:without|ohne|без)$/u;
+	const NEG_SKIP = /^(?:a|an|the|any|eine|einen|einer|ein|jede|jeden|jeglich\p{L}*|любого|любой|какого)$/u;
+	const NEG_KEEP_EVENT = /^(?:detect\p{L}*|catch\p{L}*|caught|stop\p{L}*|prevent\p{L}*|block\p{L}*|notic\p{L}*|flag\p{L}*|spot\p{L}*|recogni\p{L}*|filter\p{L}*|erkann\p{L}*|erkenn\p{L}*|bemerk\p{L}*|verhindert\p{L}*|gestoppt|stoppt\p{L}*|blockiert\p{L}*|aufgehalten|обнаружил\p{L}*|заметил\p{L}*|остановил\p{L}*|предотвратил\p{L}*|заблокировал\p{L}*|распознал\p{L}*|поймал\p{L}*|only|longer|nur|только)$/u;
+	const NEG_AFTER = /^(?:\S+\s+){0,5}?(?:(?:was|were|is|are|has been|have been)\s+(?:not|never)\s+(?:found|observed|detected|seen|present|confirmed|identified|involved|reported)|did\s+not\s+(?:occur|happen|take\s+place)|(?:was|were)\s+ruled\s+out|gab\s+es\s+(?:nicht|keine?n?)|(?:wurde|wurden|ist|sind|war|waren)\s+(?:nicht|nie)\s+(?:festgestellt|gefunden|beobachtet|erkannt|nachgewiesen|aufgetreten|bestätigt)|(?:wurde|wurden)\s+ausgeschlossen|lag(?:en)?\s+nicht\s+vor|не\s+(?:было|был|была|были|обнаружен\p{L}*|выявлен\p{L}*|наблюдал\p{L}*|зафиксирован\p{L}*|подтвержден\p{L}*|подтверждён\p{L}*|установлен\p{L}*)|отсутствовал\p{L}*|исключен\p{L}*)(?![\p{L}\p{N}])/u;
+	function clauseBefore(text, start) {
+		const from = Math.max(0, start - 120);
+		const seg = text.slice(from, start);
+		let cut = 0, m;
+		CLAUSE_BREAK.lastIndex = 0;
+		while ((m = CLAUSE_BREAK.exec(seg))) { cut = m.index + m[0].length; }
+		return seg.slice(cut);
+	}
+	function clauseAfter(text, end) {
+		const seg = text.slice(end, end + 120);
+		CLAUSE_BREAK.lastIndex = 0;
+		const m = CLAUSE_BREAK.exec(seg);
+		return m ? seg.slice(0, m.index) : seg;
+	}
+	function negated(text, start, end) {
+		const words = clauseBefore(text, start).split(/[\s\-–—"'«»„“”]+/u).map(w => w.replace(/n't$/u, ' not').trim()).join(' ').split(/\s+/u).filter(Boolean).slice(-6);
+		for (let i = words.length - 1; i >= 0; i--) {
+			if (!NEG_WORD.test(words[i])) { continue; }
+			const after = words.slice(i + 1);
+			if (after.slice(0, 2).some(w => NEG_KEEP_EVENT.test(w))) { continue; }
+			if (NEG_ONE_WORD.test(words[i])) { const rest = after.filter(w => !NEG_SKIP.test(w)); if (rest.length) { continue; } }
+			return true;
+		}
+		return NEG_AFTER.test(clauseAfter(text, end).trim());
+	}
+	/** First occurrence of any term of the list that its clause does not deny; '' when there is none. */
 	function firstMatch(text, list) {
-		for (const re of list) { re.lastIndex = 0; const m = re.exec(text); if (m) { return m[1]; } }
+		for (const re of list) {
+			re.lastIndex = 0;
+			let m, n = 0;
+			while ((m = re.exec(text)) && n++ < 200) {
+				const a = m.index + m[0].length - m[1].length;
+				if (!negated(text, a, a + m[1].length)) { return m[1]; }
+				if (!m[0].length) { re.lastIndex++; }
+			}
+		}
 		return '';
 	}
 
@@ -300,11 +360,16 @@
 		const hits = new Map();
 		COMPILED.forEach((c, i) => {
 			const words = [];
-			for (const re of c.strong) { re.lastIndex = 0; const m = re.exec(t); if (m) { words.push(m[1]); break; } }
+			{ const w = firstMatch(t, c.strong); if (w) { words.push(w); } }
 			let generic = '';
 			if (!words.length && c.generic.length) { generic = firstMatch(t, c.generic); }
 			if (!words.length && c.groups.length) {
 				const g = c.groups.map(list => firstMatch(t, list));
+				if (g.every(Boolean)) { words.push(...g); }
+			}
+			for (const alt of c.alts) {
+				if (words.length) { break; }
+				const g = alt.map(list => firstMatch(t, list));
 				if (g.every(Boolean)) { words.push(...g); }
 			}
 			if (!words.length && c.rule.secrets && secrets.some(s => s.kind !== 'unrecognized long value')) { words.push('[' + secrets.find(s => s.kind !== 'unrecognized long value').kind + ']'); }

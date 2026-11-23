@@ -48,6 +48,8 @@
 .cd-la-callout--privacy { border-inline-start-color: var(--cd-accent); }
 .cd-la-callout--warning { border-inline-start-color: var(--cd-warning); }
 .cd-la-callout--warning strong { color: var(--cd-warning); }
+/* Warning before large inputs (shared block "warning before large inputs" in the tool scripts) */
+.cd-large-input-warning { margin: .5rem 0 0; padding: .5rem .75rem; border-inline-start: 3px solid var(--cd-warning); color: var(--cd-text, inherit); font-size: .875rem; line-height: 1.6; }
 .cd-la-callout--error { border-color: #7a3434; border-inline-start-color: #ff8f8f; background: #2a1517; color: #ffd6d6; }
 
 .cd-la-summary { margin: 0 0 .75rem; }

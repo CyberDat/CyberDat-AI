@@ -111,6 +111,7 @@ $cyberdat_atl_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 			<h2 id="cd-atl-limits"><?php esc_html_e( 'Limitations', 'cyberdat' ); ?></h2>
 			<ul>
 				<li><?php esc_html_e( 'Mapping is done by rules and keywords. It misses what is described in other words or in another language, and it can propose a technique because a word appears in an unrelated sense.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'A word that its own clause denies, such as “there was no prompt injection” or the same in German or Russian, does not lead to a technique. Only simple negations close to the word are recognized: a denial far away in a long sentence, double negations or lists like “no A, B or C” can still be read wrongly, so check every candidate.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'The result is a list of candidates for review. It is not a security assessment, not a complete threat model and not a statement about coverage of MITRE ATLAS.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'System-profile rules cover eight common properties. Techniques that depend on details not captured by these properties are not proposed.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'The ATLAS data is a snapshot of one release and is not updated automatically. Mitigations shown “via” a parent technique are linked by ATLAS to the parent, not to the sub-technique.', 'cyberdat' ); ?></li>

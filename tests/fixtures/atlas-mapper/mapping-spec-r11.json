@@ -1,0 +1,9 @@
+{
+  "_note": "Supplement to the frozen mapping spec of 2026-11-15 (mapping-spec.json, unchanged): finding rules added in round 11 (2026-11-23) for the classes of the Codex 1.2 acceptance misses. Parent techniques are proposed when the text does not say which part of the tool or context was poisoned; the sub-techniques MAP-18 (AML.T0110.000) and MAP-26 (AML.T0080.000) stay for the specific wording. Technique ids exist in MITRE ATLAS 2026.10.",
+  "atlasRelease": "2026.10",
+  "findingRules": [
+    { "id": "MAP-33", "technique": "AML.T0110", "meaning": "a malicious or compromised tool steers the agent (tool poisoning, part not named)" },
+    { "id": "MAP-34", "technique": "AML.T0082", "meaning": "credentials in RAG or knowledge-base content returned through answers" },
+    { "id": "MAP-35", "technique": "AML.T0080", "meaning": "the agent's context or conversation changed so that later turns follow it" }
+  ]
+}
