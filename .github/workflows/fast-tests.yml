@@ -1,0 +1,32 @@
+# Fast tests without browsers, private fixtures or staging: Node tests of the engines and the other offline
+# Node tests, then PHP lint (php -l). The skip list is explicit in .github/scripts/fast-tests.sh and in README.md here.
+# Actions are pinned by commit SHA. No repository secrets are used.
+name: Fast tests
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  fast-tests:
+    name: Node tests and PHP lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          # the manifest tests read older commits (git ls-tree / cat-file of the package bases)
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Node 24.14.1
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: '24.14.1'
+      - name: Node tests and PHP lint (PHP of the runner image)
+        run: bash .github/scripts/fast-tests.sh

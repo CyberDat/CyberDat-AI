@@ -1,0 +1,53 @@
+# gitleaks baseline: historical findings that were reviewed on 2026-11-22 and are not real secrets.
+# One fingerprint per line (commit:file:rule:line). Only these exact positions are ignored: a new commit, or a new
+# line in the same file, is reported again. Review: .github/workflows/README.md.
+
+# 1f3b41c: synthetic test value (tests/lib/synthetic-secrets.cjs values or non-functional placeholder)
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:curl-auth-header:93
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:gcp-api-key:108
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:generic-api-key:124
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:github-pat:103
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:gitlab-pat:111
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:jwt:85
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:private-key:137
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:private-key:138
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:private-key:139
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:private-key:140
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:private-key:251
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:tests/log-anonymizer-engine.test.cjs:private-key:263
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js:github-pat:68
+1f3b41c3f2f82db48a615eddc8a16b25f45b8a18:wp-content/themes/cyberdat/assets/js/log-anonymizer/app.js:jwt:66
+
+# 21a967a: SHA-256 file hash in a package manifest (key name in a file name), not a secret
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:157
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:205
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:207
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:26
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:39
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/upstream-source-manifest.json:generic-api-key:151
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/upstream-source-manifest.json:generic-api-key:199
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/upstream-source-manifest.json:generic-api-key:20
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/upstream-source-manifest.json:generic-api-key:201
+21a967a458870519c7355aa319e96395a6db10d1:deploy/tools-lotl-analyzer/upstream-source-manifest.json:generic-api-key:33
+
+# 4c6ddb6: synthetic test value (tests/lib/synthetic-secrets.cjs values or non-functional placeholder)
+4c6ddb6ee833b2d0e95f893a79704457cab43451:tests/independent-eval/templates/log-anonymizer.json:generic-api-key:7
+
+# 731c9cd: SHA-256 file hash in a package manifest (key name in a file name), not a secret
+731c9cd1557c828520abce059eeced36f65d3141:deploy/tools-release-1/protected-files.json:generic-api-key:28
+
+# 7520e32: synthetic test value (tests/lib/synthetic-secrets.cjs values or non-functional placeholder)
+7520e325c9ae71148e6a465d0f252cacde66eb03:tests/tools-release-1.2-unicode.test.cjs:generic-api-key:48
+
+# 93a729a: synthetic test value (tests/lib/synthetic-secrets.cjs values or non-functional placeholder)
+93a729ab67b9d8592ebd1e625a5743cc9fb46040:tests/leak-inspector-unicode.test.cjs:generic-api-key:29
+
+# 9bbae3d: SHA-256 file hash in a package manifest (key name in a file name), not a secret
+9bbae3df04a44be3ca25193eb0da00b237571e67:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:157
+9bbae3df04a44be3ca25193eb0da00b237571e67:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:205
+9bbae3df04a44be3ca25193eb0da00b237571e67:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:207
+9bbae3df04a44be3ca25193eb0da00b237571e67:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:26
+9bbae3df04a44be3ca25193eb0da00b237571e67:deploy/tools-lotl-analyzer/lolbas-snapshot.json:generic-api-key:39
+
+# d0df9ca: SHA-256 file hash in a package manifest (key name in a file name), not a secret
+d0df9ca3698336ea0ee770c00821f04adeaf61af:deploy/content-0.9.0-stage1.1/acceptance-2026-11-11.json:generic-api-key:48

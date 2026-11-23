@@ -1,0 +1,20 @@
+# gitleaks configuration (gitleaks v8.21.2): the default rules plus one path allowlist.
+#
+# Allowed by PATH only, never by value:
+#   - tests/lib/synthetic-secrets.cjs: the single source of synthetic token-shaped test values;
+#   - tests/fixtures/: test fixtures built from those values (corpora, held-out sets, logs).
+# Nothing real is allowed. Historical commits that contain synthetic values outside these paths are listed by
+# fingerprint (commit:file:rule:line) in .gitleaksignore, so the full-history scan passes on the old history but
+# reports every new finding, also one in an old file.
+
+title = "CyberDat secret scan"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Synthetic test values and test fixtures (by path)"
+paths = [
+  '''(^|/)tests/lib/synthetic-secrets\.cjs$''',
+  '''(^|/)tests/fixtures/''',
+]
