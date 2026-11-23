@@ -32,7 +32,7 @@
 }(typeof self !== 'undefined' ? self : this, function (DATA) {
 	'use strict';
 
-	const VERSION = '1.0.1';
+	const VERSION = '1.0.2';
 	const RULESET_VERSION = '2026-11-13.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_LINE_CHARS = 32768;
@@ -375,6 +375,11 @@
 	const SECRET_SECURESTRING = /ConvertTo-SecureString[ \t]{1,20}(?:-String[ \t]{1,20})?("(?:[^"\\\n]|\\.){1,500}"|'(?:[^'\\\n]|\\.){1,500}')/giu;
 	const SECRET_URL = /(?:https?|wss?|ftps?|sftp|ssh|smb|git\+https?|git\+ssh|s3|gs|hf):\/\/[^\s"'<>`]{1,4000}/giu;
 	const SECRET_LONG = /[0-9A-Za-z+/=_\-.~]{24,4000}/gu;
+	// A separate word of 16 to 500 characters from letters, digits, "_" and "-" with lower case, upper case and digits is masked
+	// without a key (the rule of the Prompt Injection Test Bench 1.0.3). Words are separated by space, quotes, brackets, commas
+	// or semicolons; a part of a path, an address or a dotted name is not a separate word.
+	const SECRET_UNKEYED = /[A-Za-z0-9_-]{16,500}/gu;
+	const SECRET_WORD_LEFT = /[\s"'`(\[{<,;]/u, SECRET_WORD_RIGHT = /[\s"'`)\]}>,;.!?:]/u;
 	const SECRET_PARAM_NAMES = new Set(['password', 'passwd', 'passphrase', 'pwd', 'pass', 'secret', 'clientsecret', 'token', 'accesstoken', 'refreshtoken', 'idtoken', 'authtoken', 'sessiontoken', 'securitytoken', 'apikey', 'xapikey', 'key', 'accesskey', 'accesskeyid', 'privatekey', 'auth', 'authorization', 'sig', 'signature', 'credential', 'credentials', 'session', 'sessionid', 'sid', 'csrf', 'csrftoken', 'xsrftoken', 'cookie', 'xamzsignature', 'xamzcredential', 'xamzsecuritytoken', 'xgoogsignature', 'xgoogcredential']);
 	const secretParamName = n => { const k = n.toLowerCase().replace(/[^a-z0-9]/gu, ''); return SECRET_PARAM_NAMES.has(k) || /(?:password|secret|token|apikey|privatekey|signature)$/u.test(k); };
 	function secretShown(v) { const t = String(v); if (t.length <= 8) { return '••••'; } const c = [...t]; return c.length <= 8 ? '••••' : c.slice(0, 4).join('') + '… (' + c.length + ' characters)'; }
@@ -489,6 +494,17 @@
 			if ((a > 0 && SECRET_TOKEN_CHAR.test(s[a - 1])) || (b < s.length && SECRET_TOKEN_CHAR.test(s[b])) || /^(?:https?|www)/iu.test(v) || inUrl[a] || inUrl[b - 1]) { continue; }
 			if (!tokenLike(v, 24) || readableBase64(v.replace(/[.~_-]+$/u, ''))) { continue; }
 			put('unrecognized long value', a, b);
+		}
+		// Values without a key. Not hex (hashes), GUIDs, words without digits, and not base64 that decodes to readable text:
+		// an encoded command or payload is material of the analysis, not a secret.
+		SECRET_UNKEYED.lastIndex = 0;
+		while ((m = SECRET_UNKEYED.exec(s))) {
+			const v = m[0], a = m.index, b = a + v.length;
+			if ((a > 0 && !SECRET_WORD_LEFT.test(s[a - 1])) || (b < s.length && !SECRET_WORD_RIGHT.test(s[b])) || inUrl[a]) { continue; }
+			if ((s[b] === '.' || s[b] === ':') && b + 1 < s.length && !/\s/u.test(s[b + 1])) { continue; }
+			if (!/[a-z]/u.test(v) || !/[A-Z]/u.test(v) || !/[0-9]/u.test(v) || /^[0-9A-Fa-f-]+$/u.test(v)) { continue; }
+			if (readableBase64(v) || readableBase64(v.replace(/-/gu, '+').replace(/_/gu, '/'))) { continue; }
+			put('value that looks like a secret', a, b);
 		}
 		return out.sort((x, y) => x.start - y.start);
 	}
