@@ -14,9 +14,15 @@ permissions:
 
 jobs:
   fast-tests:
-    name: Node tests and PHP lint
+    name: Node ${{ matrix.node }} tests and PHP lint
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # 24.14.1: the version the tests were developed and accepted with (reproducible);
+        # 24: the current Node 24 release, so a change of the runtime (like domainToASCII in 24.22) is seen at once
+        node: ['24.14.1', '24']
     steps:
       - name: Check out
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -24,9 +30,10 @@ jobs:
           # the manifest tests read older commits (git ls-tree / cat-file of the package bases)
           fetch-depth: 0
           persist-credentials: false
-      - name: Node 24.14.1
+      - name: Node ${{ matrix.node }}
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: '24.14.1'
+          node-version: ${{ matrix.node }}
+          check-latest: true
       - name: Node tests and PHP lint (PHP of the runner image)
         run: bash .github/scripts/fast-tests.sh

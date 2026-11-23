@@ -10,6 +10,7 @@ SKIP=(
 	'-browser\.test\.cjs$|needs Playwright browsers and a running page (local sandbox or staging)'
 	'-xbrowser\.test\.cjs$|needs Playwright browsers and a running page (local sandbox or staging)'
 	'^tests/d14-remediation\.test\.cjs$|needs the owner-private frozen fixture directory (argument)'
+	'^tests/log-anonymizer-stage1-frozen\.test\.cjs$|needs the owner-private frozen Stage1 baseline and a fresh report (two arguments; from the staging snapshot cd06239)'
 	'^tests/release-manifest\.test\.cjs$|checks the frozen release-1 theme (125 files, POSIX modes) against the installed release-1 package; the integration theme has moved on since (fails on 2f72379 as well)'
 )
 
@@ -29,7 +30,7 @@ for f in tests/*.test.cjs; do
 	fi
 	ran=$((ran + 1))
 done
-echo "Node tests: $((ran - fail))/$ran passed, $skipped skipped"
+echo "Node tests ($(node --version)): $((ran - fail))/$ran passed, $skipped skipped"
 
 lint_fail=0; lint_n=0
 while IFS= read -r -d '' p; do

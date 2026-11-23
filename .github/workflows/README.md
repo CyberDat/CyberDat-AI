@@ -12,28 +12,36 @@ touched). Both have `permissions: contents: read`, use no repository secrets, ch
 Pins: `actions/checkout` v5.0.0 = `08c6903cd8c0fde910a37f88322edcfb5dd907a8`, `actions/setup-node` v5.0.0 =
 `a0853c24544627f65ddf259abe73b1d18a591444` (tags resolved on 2026-11-22; v5 runs on Node 24, v4 on the deprecated Node 20), gitleaks v8.21.2 as the image
 `zricethezav/gitleaks@sha256:0e99e8821643ea5b235718642b93bb32486af9c8162c8b8731f7cbdc951a7f46`, run with
-`--network none`. Node **24.14.1**, the version the tests are developed and accepted with, runner `ubuntu-24.04`.
-The fast tests check out the full history (`fetch-depth: 0`): the manifest tests read the package base commits.
+`--network none`. Runner `ubuntu-24.04`. The fast tests check out the full history (`fetch-depth: 0`): the manifest
+tests read the package base commits.
 
-Why Node is pinned to 24.14.1: on Node 24.22.3 `url.domainToASCII('xn--already.example')` returns the name instead of
-`''`, so `tests/email-header-analyzer-engine.test.cjs` also compares the back conversion, and the engine's `toUnicode`
-decodes the invalid label `xn--already` to control characters instead of leaving it as it is. That is an engine finding
-in `wp-content/` (frozen during the utilities-1 installation), recorded here for a later fix; it is not a CI problem.
+Node: a matrix of two versions since 2026-11-23, both must pass (`fail-fast: false`):
+
+* **24.14.1**, the version the tests were developed and accepted with, so a result stays reproducible;
+* **24** (`check-latest`), the current Node 24 release, so a change of the runtime is seen on the next push and not
+  only when somebody updates Node.
+
+History: until 2026-11-23 only 24.14.1 ran. On Node 24.22.3 `url.domainToASCII('xn--already.example')` returns the
+name instead of `''`, so `tests/email-header-analyzer-engine.test.cjs` also compared the back conversion and showed that
+the engine's `toUnicode` decoded the invalid label `xn--already` to control characters (U+0080…U+009F). Fixed in the
+engine (Email Header Analyzer rules `2026-11-23.1`: strict punycode, an invalid label stays in ASCII and is named in
+EHA-LOOK-001; `tests/email-header-analyzer-idn-strict.test.cjs`), so the pin alone is no longer needed.
 
 ## Skipped in the fast tests (explicit)
 
 | Tests | Why |
 |---|---|
-| `tests/*-browser.test.cjs` (14) | Playwright browsers and a running page (local sandbox `tests/tools-sandbox-server.py` or staging) |
+| `tests/*-browser.test.cjs` (15) | Playwright browsers and a running page (local sandbox `tests/tools-sandbox-server.py` or staging) |
 | `tests/*-xbrowser.test.cjs` (11) | the same, Firefox and WebKit |
 | `tests/d14-remediation.test.cjs` | the owner-private frozen fixture directory (passed as an argument; not in the repository) |
+| `tests/log-anonymizer-stage1-frozen.test.cjs` | the owner-private frozen Stage1 baseline and a fresh report (two arguments; came with the staging snapshot `cd06239`) |
 | `tests/release-manifest.test.cjs` | checks the frozen release-1 theme (125 files, POSIX modes) of the installed release-1 package; the integration theme has more files since, so it fails on `2f72379` as well |
 | `tests/*.test.php`, `tests/*.test.py` | not part of this workflow (PHP is linted only); several need WordPress, Content/Research data or staging |
 | `tests/*.cjs` without `.test.` (`tools-export-surface-audit.cjs`, `email-header-analyzer-independent.cjs`, …) | diagnostics and runners for the owner's independent sets, not tests |
 
 The skip list lives in `fast-tests.sh` (`SKIP=( pattern|reason )`) and is printed in the job log line by line.
 Local run before the first push (2026-11-22, Node 24, PHP 8.4 of the pinned WordPress image): Node 54/54 passed, 27 skipped;
-PHP lint 142/142.
+PHP lint 142/142. Local run on utilities-1 after the merge (2026-11-23, Node 24.14.1): Node 58/58 passed, 29 skipped.
 
 ## gitleaks configuration and baseline
 
