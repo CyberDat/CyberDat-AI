@@ -33,7 +33,13 @@ console.log('  total: positives ' + sum('tp') + '/' + sum('pos') + ', false posi
 if (process.argv.includes('--details')) { for (const r of rows) { console.log('    ' + r); } }
 module.exports = { per };
 if (require.main === module && !process.argv.includes('--no-guard')) {
+	// the new rules stay linear: 1 MB sentences without punctuation that repeat the trigger words (negated and not)
+	for (const t of ['без согласия не нужно отправляй переписку внешнему ', 'не отключай фильтр безопасности и не отправляй файлы ', 'never send files to external partners silently ', 'downloaded files never take precedence over admin rules ']) {
+		const s = Date.now(); engine.audit(t.repeat(Math.ceil((1 << 20) / t.length)).slice(0, 1 << 20)); const ms = Date.now() - s;
+		console.log((ms < 3000 ? 'PASS' : 'FAIL') + ': 1 MB without punctuation (' + t.trim().split(' ').slice(0, 3).join(' ') + ' …) in ' + ms + ' ms');
+		if (ms >= 3000) { process.exitCode = 1; }
+	}
 	const ok = Object.values(per).every(p => p.tp / p.pos >= 0.8 && p.fpGroup <= 1);
 	console.log(ok ? 'PASS: every class finds >= 80% of its positives with at most one false positive' : 'FAIL: a class below 80% or with more than one false positive');
-	process.exitCode = ok ? 0 : 1;
+	if (!ok || process.exitCode) { process.exitCode = 1; }
 }

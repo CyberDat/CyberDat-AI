@@ -42,7 +42,9 @@ for (const [k, p] of Object.entries(spec.properties)) {
 	for (const x of p.techniques) { used.add(x.technique); }
 }
 assert.deepEqual(Object.keys(e.PROPERTIES), Object.keys(spec.properties));
-assert.deepEqual(e.RULES.map(r => [r.id, r.technique]), spec.findingRules.map(r => [r.id, r.technique]));
+// round 11: rules added after the frozen spec are listed in mapping-spec-r11.json (the frozen file is unchanged)
+const specR11 = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/atlas-mapper/mapping-spec-r11.json'), 'utf8'));
+assert.deepEqual(e.RULES.map(r => [r.id, r.technique]), spec.findingRules.concat(specR11.findingRules).map(r => [r.id, r.technique]));
 for (const r of e.RULES) { used.add(r.technique); for (const u of r.unless || []) { assert.ok(e.RULES.some(x => x.id === u), r.id + ' unless ' + u); } }
 const missing = [...used].filter(id => !TECH.has(id));
 assert.deepEqual(missing, [], 'mapping refers to techniques that are not in the snapshot (removed or renamed upstream?)');

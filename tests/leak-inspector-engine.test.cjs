@@ -24,6 +24,7 @@ check('rule catalogue: every rule has a group, title, explanation and fix, and e
 		for (const c of s.audit.benign.concat(s.audit.risky)) { for (const x of engine.audit(c.text).findings) { seen.add(x.rule); } }
 		for (const p of s.leak.pairs) { for (const x of engine.leakCheck(s.leak[p.prompt], expand(p.response)).findings) { seen.add(x.rule); } }
 	}
+	for (const c of JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/leak-inspector/heldout-r11.json'), 'utf8')).cases) { for (const x of engine.audit(c.text).findings) { seen.add(x.rule); } }
 	for (const x of engine.audit('Confidential: internal only. Card 4111 1111 1111 1111.').findings) { seen.add(x.rule); }
 	assert.deepEqual(Object.keys(engine.RULES).filter(id => !seen.has(id)), []);
 });
