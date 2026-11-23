@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 const CYBERDAT_EHA_SLUG = 'email-header-analyzer';
 const CYBERDAT_EHA_ENGINE = '1.0.0';
-const CYBERDAT_EHA_RULESET = '2026-11-21.1';
+const CYBERDAT_EHA_RULESET = '2026-11-23.1';
 const CYBERDAT_EHA_PSL_DATE = '2026-11-17';
 const CYBERDAT_EHA_PSL_SHA256 = '809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71';
 

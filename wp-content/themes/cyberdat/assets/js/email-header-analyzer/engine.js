@@ -24,7 +24,7 @@
 	'use strict';
 
 	const ENGINE = '1.0.0';
-	const RULESET = '2026-11-21.1';
+	const RULESET = '2026-11-23.1';
 	const MAX_INPUT_CHARS = 5 * 1024 * 1024;
 	const MAX_HEADER_CHARS = 1024 * 1024;
 	const MAX_HEADERS = 10000;
@@ -186,9 +186,34 @@
 	function toASCII(domain) {
 		return String(domain || '').trim().replace(/[.。．｡]+$/u, '').split(/[.。．｡]/u).map(l => { const x = nfc(l).toLowerCase(); if (/^[\x00-\x7f]*$/u.test(x)) { return x; } try { return 'xn--' + punyEncode(x); } catch (e) { return x; } }).join('.');
 	}
-	function toUnicode(domain) {
-		return String(domain || '').split('.').map(l => { if (!/^xn--/iu.test(l)) { return l; } try { return punyDecode(l.slice(4).toLowerCase()); } catch (e) { return l; } }).join('.');
+	// A label that is not valid punycode for a domain name is never turned into Unicode: decoding error, an empty or all-ASCII
+	// result, control, format, private-use, surrogate, noncharacter, space or other invisible characters, a leading combining
+	// mark, a dot, hyphen rules, not NFC lower case, or a result that does not convert back to the same label. Such a label is
+	// shown as it is (ASCII) and reported as invalid. The engine's own strict decoder is used everywhere (no URL or
+	// domainToUnicode of the runtime), so Node and every browser give the same result.
+	const IDN_BAD = /[\p{Cc}\p{Cf}\p{Cs}\p{Co}\p{Zs}\p{Zl}\p{Zp}\u034f\u115f\u1160\u17b4\u17b5\u180b-\u180f\u3164\ufe00-\ufe0f\ufeff\uffa0\ufff0-\ufffb\ufdd0-\ufdef\ufffe\uffff\u{1fffe}\u{1ffff}\u{2fffe}\u{2ffff}\u{3fffe}\u{3ffff}\u{e0000}-\u{e0fff}.\u3002\uff0e\uff61]/u;
+	function decodeLabel(label) {
+		const a = String(label).toLowerCase();
+		if (a.length > 63 || !/^xn--[a-z0-9-]+$/u.test(a)) { return null; }
+		let u;
+		try { u = punyDecode(a.slice(4)); } catch (e) { return null; }
+		if (!u || /^[\x00-\x7f]*$/u.test(u) || IDN_BAD.test(u) || /^\p{M}/u.test(u) || /^-|-$/u.test(u) || /^..--/u.test(u) || u !== nfc(u).toLowerCase()) { return null; }
+		let back;
+		try { back = 'xn--' + punyEncode(u); } catch (e) { return null; }
+		return back === a ? u : null;
 	}
+	/** Returns { unicode, invalid }: the display form of a domain and its xn-- labels that are not valid punycode. */
+	function idnInfo(domain) {
+		const invalid = [];
+		const unicode = String(domain || '').split('.').map(l => {
+			if (!/^xn--/iu.test(l)) { return l; }
+			const u = decodeLabel(l);
+			if (u === null) { invalid.push(l); return l; }
+			return u;
+		}).join('.');
+		return { unicode, invalid };
+	}
+	function toUnicode(domain) { return idnInfo(domain).unicode; }
 
 	// ------------------------------------------------------------------ Public Suffix List
 	const PSL = { exact: new Set(), wild: new Set(), exc: new Set(), loaded: false, meta: null };
@@ -703,7 +728,15 @@
 		}
 		const idDomains = [from && from.domain, replyTo && replyTo.domain, returnPath && domainOfAddr(returnPath)].filter(Boolean);
 		const puny = idDomains.find(d => d.split('.').some(l => l.startsWith('xn--')));
-		if (puny) { add('EHA-LOOK-001', puny + ' = ' + toUnicode(puny)); }
+		if (puny) {
+			// every punycode sender domain is listed; an invalid label stays in ASCII and is named, so the alphabet check below
+			// cannot pass it silently
+			const shown = [...new Set(idDomains.filter(d => d.split('.').some(l => l.startsWith('xn--'))))].map(d => {
+				const x = idnInfo(d);
+				return d + (x.unicode !== d ? ' = ' + x.unicode : '') + (x.invalid.length ? ' (invalid punycode label' + (x.invalid.length > 1 ? 's ' : ' ') + x.invalid.join(', ') + ': not decoded, shown in ASCII; alphabets not checked)' : '');
+			});
+			add('EHA-LOOK-001', shown.join('; '));
+		}
 		const mixed = idDomains.find(d => toUnicode(d).split('.').some(l => scriptsOf(l).size > 1));
 		if (mixed) { add('EHA-LOOK-002', toUnicode(mixed) + ' (' + toUnicode(mixed).split('.').map(l => [...scriptsOf(l)].join('+')).filter(x => x.includes('+')).join(', ') + ')'); }
 		for (const d of [from && from.domain, replyTo && replyTo.domain].filter(Boolean)) {
@@ -804,5 +837,5 @@
 	const EXAMPLE_NORMAL = 'Return-Path: <alice@example.org>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xk9Ex1\n\tfor <bob@example.com>; Wed, 18 Nov 2026 14:02:07 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=pass smtp.mailfrom=example.org;\n\tdkim=pass header.d=example.org header.s=s2026;\n\tdmarc=pass header.from=example.org\nReceived: from mail.example.org (mail.example.org [198.51.100.10])\n\tby mx.example.com (Postfix) with ESMTPS id 4Xk9Ex0\n\tfor <bob@example.com>; Wed, 18 Nov 2026 14:02:05 +0100 (CET)\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.org; s=s2026;\n\th=from:to:subject:date:message-id; bh=ZXhhbXBsZQ==; b=ZXhhbXBsZQ==\nFrom: =?UTF-8?Q?J=C3=BCrgen_Beispiel?= <juergen@example.org>\nTo: Bob <bob@example.com>\nSubject: Meeting notes\nDate: Wed, 18 Nov 2026 14:02:01 +0100\nMessage-ID: <20261118130201.4711@mail.example.org>\n\n(The message body would be here; it is ignored.)\n';
 	const EXAMPLE_PHISHING = 'Return-Path: <bounce@bulk.example.net>\nDelivered-To: bob@example.com\nReceived: from mx.example.com (mx.example.com [192.0.2.25])\n\tby imap.example.com (Postfix) with ESMTPS id 4Xm1Ab2\n\tfor <bob@example.com>; Wed, 18 Nov 2026 09:15:44 +0100 (CET)\nAuthentication-Results: mx.example.com;\n\tspf=softfail smtp.mailfrom=bulk.example.net;\n\tdkim=none;\n\tdmarc=fail header.from=paypa1-secure.example\nReceived: from unknown (unknown [203.0.113.44])\n\tby mx.example.com (Postfix) with ESMTP id 4Xm1Ab1\n\tfor <bob@example.com>; Wed, 18 Nov 2026 09:15:42 +0100 (CET)\nAuthentication-Results: mx.example.com; spf=pass; dkim=pass; dmarc=pass\nReceived: from mail.paypal.example (mail.paypal.example [198.51.100.7])\n\tby relay.bulk.example.net with ESMTP id 77; Wed, 18 Nov 2026 07:10:00 +0000\nFrom: "PayPal Service" <service@paypa1-secure.example>\nReply-To: support@example.net\nTo: bob@example.com\nSubject: =?UTF-8?B?WW91ciBhY2NvdW50IGlzIGxpbWl0ZWQ=?=\nDate: Wed, 18 Nov 2026 09:15:40 +0100\nX-Mailer: PHPMailer 6.9.1\n\n(The message body would be here; it is ignored.)\n';
 
-	return { ENGINE, RULESET, MAX_INPUT_CHARS, MAX_HEADER_CHARS, DEF, BRANDS, MAILBOX_PROVIDERS, loadPSL, orgDomain, toASCII, toUnicode, punyEncode, punyDecode, decodeWords, parseAddresses, parseDate, parseReceived, readHeaders, isIPv4, isIPv6, ipClass, skeleton, analyze, exportReport, findSecrets, maskSecrets, EXAMPLE_NORMAL, EXAMPLE_PHISHING };
+	return { ENGINE, RULESET, MAX_INPUT_CHARS, MAX_HEADER_CHARS, DEF, BRANDS, MAILBOX_PROVIDERS, loadPSL, orgDomain, toASCII, toUnicode, idnInfo, punyEncode, punyDecode, decodeWords, parseAddresses, parseDate, parseReceived, readHeaders, isIPv4, isIPv6, ipClass, skeleton, analyze, exportReport, findSecrets, maskSecrets, EXAMPLE_NORMAL, EXAMPLE_PHISHING };
 }));

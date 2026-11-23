@@ -113,6 +113,6 @@ check(!ids(r).includes('EHA-LOOK-003'), 'privaterelay.appleid.com is not a looka
 check(E.BRANDS.find(b => b.name === 'Apple').domains.join() === 'apple.com,icloud.com,me.com,appleid.com', 'Apple domains: appleid.com added, nothing else changed');
 r = E.analyze(relay.replace('privaterelay.appleid.com', 'appleid-support.example.net').replace('Example Shop', 'Apple Support'), { own: 'example.com', now: NOW });
 check(ids(r).includes('EHA-FROM-002'), 'a display name claiming Apple on a foreign domain is still flagged');
-check(E.MAILBOX_PROVIDERS.length === 2 && E.RULESET === '2026-11-21.1', 'provider list stays short (Google, Microsoft); ruleset 2026-11-21.1');
+check(E.MAILBOX_PROVIDERS.length === 2 && E.RULESET === '2026-11-23.1', 'provider list stays short (Google, Microsoft); ruleset 2026-11-23.1');
 console.log(failed ? failed + ' check(s) failed' : 'PASS: provider trust boundary and Apple relay checks');
 process.exit(failed ? 1 : 0);
