@@ -83,6 +83,52 @@
 		'internal call from 10.20.30.40 to 192.168.1.10:5432 at 10:20:30 trace=4bf92f3577b34da6a3ce929d0e0e4736'
 	].join('\n') + '\n';
 
+	// ---------------------------------------------------------------- warning before large inputs (shared block)
+	// The same block is in every tool that accepts files (a test checks that all copies are equal). Before a file or pasted
+	// text larger than 10 MB is processed, or larger than 5 MB in Safari and other WebKit-based browsers (all browsers on
+	// iPhone and iPad), the page shows its size, a rough processing time and that Cancel stops the work. The warning never
+	// blocks or changes processing and never weakens the tool's own size limit. Plain DOM text only.
+	const LARGE_MB = 1024 * 1024;
+	const LARGE_UA = (window.navigator && window.navigator.userAgent) || '';
+	const LARGE_WEBKIT = (/AppleWebKit\//.test(LARGE_UA) && !/(?:Chrome|Chromium|Edg|OPR|Android)\//.test(LARGE_UA)) || /iPhone|iPad|iPod/.test(LARGE_UA) || (/Macintosh/.test(LARGE_UA) && window.navigator.maxTouchPoints > 1);
+	const LARGE_THRESHOLD = LARGE_WEBKIT ? 5 * LARGE_MB : 10 * LARGE_MB;
+	/** [low, high] seconds; rate in MB/s: fast = the faster of Edge/Chrome and Firefox, fastSlow = the slower one, webkit. */
+	function largeEstimate(bytes, rate) {
+		const r = rate || { fast: 4, fastSlow: 2, webkit: 1 };
+		const mb = Number(bytes) / LARGE_MB;
+		const low = Math.max(1, Math.round(mb / (LARGE_WEBKIT ? r.webkit : r.fast)));
+		const high = LARGE_WEBKIT ? low * 5 : Math.round((mb / (r.fastSlow || r.fast)) * 2);
+		return [low, Math.max(low + 1, high)];
+	}
+	function largeMessage(bytes, rate) {
+		const [low, high] = largeEstimate(bytes, rate);
+		const min = s => Math.max(1, Math.round(s / 60));
+		const time = high < 90 ? 'about ' + low + '–' + high + ' seconds' : low >= 90 ? 'about ' + min(low) + '–' + Math.max(min(low) + 1, min(high)) + ' minutes' : 'about ' + low + ' seconds to ' + min(high) + ' minutes';
+		const size = Number(bytes) >= LARGE_MB ? (Number(bytes) / LARGE_MB).toFixed(1) + ' MB' : Math.max(1, Math.round(Number(bytes) / 1024)) + ' KB';
+		return 'Large input: ' + size + '. Processing in this browser can take ' + time + ' (rough estimate from a desktop computer; slower computers and phones take longer).' +
+			(LARGE_WEBKIT ? ' Safari and other WebKit-based browsers, including every browser on iPhone and iPad, are several times slower with large inputs and phones may run out of memory.' : '') +
+			' Progress is shown while it runs, and Cancel stops the processing at any time.';
+	}
+	/** Shows or hides the warning right after anchor; returns true when it is shown. */
+	function largeUpdate(anchor, bytes, rate) {
+		if (!anchor || !anchor.parentNode) { return false; }
+		let box = anchor.nextElementSibling;
+		if (!box || !box.hasAttribute('data-large-input-warning')) {
+			box = document.createElement('p');
+			box.className = 'cd-large-input-warning';
+			box.setAttribute('data-large-input-warning', '');
+			box.setAttribute('role', 'status');
+			box.hidden = true;
+			anchor.parentNode.insertBefore(box, anchor.nextSibling);
+		}
+		const show = Number(bytes) > LARGE_THRESHOLD;
+		box.textContent = show ? largeMessage(Number(bytes), rate) : '';
+		box.hidden = !show;
+		return show;
+	}
+	// ---------------------------------------------------------------- end of warning before large inputs (shared block)
+	const LARGE_INPUT_RATE = { fast: 6.3, fastSlow: 2.5, webkit: 1.0 }; // MB/s, Edge / Firefox / WebKit, 12 MB synthetic file, 2026-11-23
+	function largeInput(bytes) { return largeUpdate(el.progress, bytes, LARGE_INPUT_RATE); }
 	const state = {
 		source: { kind: 'text' },
 		fileName: '',
@@ -177,7 +223,7 @@
 	const ua = navigator.userAgent || '';
 	const webkitOnly = (/AppleWebKit\//.test(ua) && !/(?:Chrome|Chromium|Edg|OPR|Android)\//.test(ua)) || /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
 	function webkitNote(bytes) {
-		return webkitOnly && bytes > WEBKIT_NOTE_BYTES ? ' Safari and other WebKit-based browsers (all browsers on iPhone and iPad) process large inputs much more slowly; 30 MB took about 23 seconds in tests and phones may run out of memory. If it takes too long, select Cancel and split the file or use a desktop browser.' : '';
+		return webkitOnly && bytes > WEBKIT_NOTE_BYTES ? ' Safari and other WebKit-based browsers (all browsers on iPhone and iPad) process large inputs several times more slowly, and phones may run out of memory; the estimate next to the Anonymize button gives a rough time. If it takes too long, select Cancel and split the file or use a desktop browser.' : '';
 	}
 
 	function loadFile(file) {
@@ -188,6 +234,7 @@
 			el.file.value = '';
 			return;
 		}
+		largeInput(file.size);
 		const loadId = ++state.fileLoadId;
 		state.fileName = file.name;
 		markStale();
@@ -345,6 +392,7 @@
 		const jobId = ++state.jobId;
 		const source = state.source.kind === 'file' ? { kind: 'file', file: state.source.file } : { kind: 'text', text: el.input.value };
 		setRunning(true);
+		largeInput(state.source.kind === 'file' ? state.source.file.size : el.input.value.length);
 		setStatus('Anonymizing locally…' + webkitNote(state.source.kind === 'file' ? state.source.file.size : el.input.value.length));
 		state.timer = window.setTimeout(() => {
 			if (state.jobId === jobId && state.running) {
