@@ -20,7 +20,36 @@ tools (owner decision of 2026-11-19).
 `base` map; after it every theme file equals the `target` map (= the branch at `theme_commit`) byte for byte; verify with the
 manifest hashes. Catalogue statuses and the staging canonical scope come with the package.
 
-## Base = the staging theme (revision `tools-utilities-1/2`, 2026-11-22)
+## Revision `tools-utilities-1/3` (2026-11-23): Email Header Analyzer strict punycode — current
+
+Revision 2 (below) is installed: Codex, 2026-11-23, 188/188 theme files equal to `7b9bee5`. So the base of revision 3 is
+`7b9bee5` (the staging theme). Theme 188 → 188 files: **0 added, 2 modified, 0 removed**, Email Header Analyzer only
+(the builder refuses any other file):
+
+| File | Change |
+|---|---|
+| `assets/js/email-header-analyzer/engine.js` | strict punycode; rules `2026-11-21.1` → `2026-11-23.1`; engine `1.0.0` unchanged |
+| `inc/tool-email-header-analyzer.php` | `CYBERDAT_EHA_RULESET = '2026-11-23.1'` (shown on the page) |
+
+What changed (found while setting up CI: on Node 24.22 the engine's `toUnicode` decoded the invalid label `xn--already` to
+control characters U+0080…U+009F):
+
+* an `xn--` label is decoded only when the result is valid for a domain name: no decoding error, not empty or all-ASCII, no
+  control, format (zero-width, bidi), private-use, surrogate, noncharacter, space or other invisible characters, no leading
+  combining mark, hyphen rules, NFC lower case, and the result converts back to the same label;
+* otherwise the label is shown as it is, in ASCII, and named in the EHA-LOOK-001 evidence: `xn--already.example (invalid
+  punycode label xn--already: not decoded, shown in ASCII; alphabets not checked)`. EHA-LOOK-001 now lists every punycode
+  sender domain (From, Reply-To, Return-Path); for valid ones the evidence is as before (`xn--mnchen-3ya.de = münchen.de`).
+  EHA-LOOK-002 neither fails nor reports a false alphabet mix for an invalid label;
+* no new finding ids, the frozen `rules.json` catalogue is unchanged; the engine's own decoder is used everywhere (no
+  `URL`/`domainToUnicode` of the runtime), checked equal in Node 24.14.1, Node 24.22.3, Edge, Firefox and WebKit.
+
+Results: main corpus 50/50 and held-out set 14/14 unchanged; owner's independent set 10/11 before and after (set sha256
+`9a76e028…`, details identical apart from the ruleset). Test: `tests/email-header-analyzer-idn-strict.test.cjs`.
+`node deploy/tools-utilities-1/build-manifest.cjs --check` verifies the manifest; revision 2 is recorded in
+`manifest.json` → `previous_revision` and in git history (`15d6d76`).
+
+## Base = the staging theme (revision `tools-utilities-1/2`, 2026-11-22) — installed 2026-11-23
 
 Base = `snapshot/staging-theme-20261122` `cd06239` (Codex: exact snapshot of the staging theme, 159/159 files equal to staging
 by SHA-256), merged into this branch (`c0963b4`). So `base_sha256` of every modified file is the staging version; the former
