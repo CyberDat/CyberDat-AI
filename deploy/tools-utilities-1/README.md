@@ -20,7 +20,34 @@ tools (owner decision of 2026-11-19).
 `base` map; after it every theme file equals the `target` map (= the branch at `theme_commit`) byte for byte; verify with the
 manifest hashes. Catalogue statuses and the staging canonical scope come with the package.
 
-## Revision `tools-utilities-1/3` (2026-11-23): Email Header Analyzer strict punycode — current
+## Revision `tools-utilities-1/4` (2026-11-23): remaining functional items — current
+
+Revision 3 is installed (staging = `73d99a4`), so the base of revision 4 is `73d99a4`. Theme 188 → 188 files: **0 added,
+20 modified, 0 removed** (`manifest.json` → `items`; the builder refuses any other file and checks that both shared blocks
+are equal in every copy, the versions in engines and PHP, and that the ATLAS 2026.10 data is unchanged):
+
+| Item | Files | Change |
+|---|---|---|
+| `leak_atlas` | Leak Inspector and ATLAS mapper engines, version constants, the two page templates | Leak Inspector 1.0.1 / rules 2026-11-23.1: data sent out without consent (LKI-TOOL-002), external content above the operator’s rules (LKI-INP-002), safety checks off or refusals forbidden (LKI-PRT-003), hidden concessions and percentages in words (LKI-BIZ-001), payments and deletions without confirmation in more forms (LKI-AUT-001). ATLAS 1.0.4 / mapping 2026-11-23.1: negation handling; MAP-02/04/07/16/21/23 wider; new MAP-33 (AML.T0110), MAP-34 (AML.T0082), MAP-35 (AML.T0080). Page texts: COPY-REVIEW.md |
+| `large_input` | the scripts of the nine tools that accept files, `tools-common.css` | warning before inputs over 10 MB (5 MB in WebKit): size, rough time, Cancel; processing and limits unchanged |
+| `unkeyed_mask` | Prompt Injection Detector and LotL engines, version constants | values without a key in the shared masking block (detector 1.0.5, LotL 1.0.2); all corpus outputs byte-identical |
+
+Page meta: `editorial-r4.json` (Leak Inspector `documentation` and `faq`: the leak check compares words, not meaning; Codex
+sets the two fields). Not included: Log Anonymizer Strict Mode (owner decision: after the launch).
+
+Own held-out sets, written and committed (`8a73689`) before any rule change and not edited after:
+`tests/fixtures/leak-inspector/heldout-r11.json` (sha256 `b970eec14e0b2845…`) and
+`tests/fixtures/atlas-mapper/heldout-r11.json` (`84601548bc9bb492…`). Results NOT INDEPENDENT:
+
+| Set | Before | After |
+|---|---|---|
+| Leak Inspector held-out r11 (6 classes) | 0/37, 0 FP | 37/37, 0 FP |
+| ATLAS held-out r11 (10 classes) | 9/61, 7 FP | 61/61, 1 FP (hard negative `rc-n-ru-2`) |
+| Leak Inspector corpus / held-out | 27/27, 12/12 · 7/7, 4/5; 0 medium+ FP | the same (one extra LKI-BIZ-001 on the risky case `hr-biz-ru`) |
+| ATLAS corpus / held-out | 55/55 exact, 7/7 benign · 14/14, 3/3 | identical byte for byte |
+| Detector and LotL corpora (539 outputs incl. the masked copy) | — | identical byte for byte |
+
+## Revision `tools-utilities-1/3` (2026-11-23): Email Header Analyzer strict punycode — installed
 
 Revision 2 (below) is installed: Codex, 2026-11-23, 188/188 theme files equal to `7b9bee5`. So the base of revision 3 is
 `7b9bee5` (the staging theme). Theme 188 → 188 files: **0 added, 2 modified, 0 removed**, Email Header Analyzer only
