@@ -29,6 +29,7 @@ function cyberdat_pulse_sync($data,$source){
  $specs=function_exists('cdra_sources')?cdra_sources():[];$fresh=$specs[$source]['fresh']??($source==='kev'?12*3600:6*3600);$now=time();
  $interrupted=($h['job']??'')==='Running'&&$now-($h['last_attempt']??0)>180;
  $status=!empty($h['last_error'])||$interrupted?'Sync Error':($at>($data['generated_at']??0)?'Projection pending':($at&&$now-$at<=$fresh&&$now-($data['generated_at']??0)<=$fresh?'Fresh':'Stale'));
+ if($source==='nvd'){$status=cdra_nvd_freshness_status($data,$now);}
  return ['at'=>$at?gmdate('Y-m-d H:i',$at).' UTC':__('Not available','cyberdat'),'status'=>$status];
 }
 function cyberdat_pulse_spark($series,$days,$label,$source){
