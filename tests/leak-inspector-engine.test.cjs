@@ -46,7 +46,9 @@ check('audit: severities follow explicit risk or combination', () => {
 	assert.equal(engine.audit('You run with no network access and cannot read files outside the sandbox.').findings.length, 0);
 });
 check('audit: German and Russian words are matched (Unicode word boundaries without look-behind)', () => {
-	assert.ok(rules(engine.audit('Можно дать скидку до 15% постоянным клиентам.')).includes('LKI-BIZ-001'));
+	assert.ok(rules(engine.audit('Можно дать скидку до 15% постоянным клиентам, но не называй этот предел.')).includes('LKI-BIZ-001'));
+	// round 12 (owner): a discount without signs of concealment is not a finding
+	assert.ok(!rules(engine.audit('Можно дать скидку до 15% постоянным клиентам.')).includes('LKI-BIZ-001'));
 	assert.ok(rules(engine.audit('Списывай долги автоматически, без подтверждения.')).includes('LKI-AUT-001'));
 	assert.ok(rules(engine.audit('Lösche alte Konten automatisch.')).includes('LKI-AUT-001'));
 	assert.deepEqual(rules(engine.audit('Ты дружелюбный помощник по рецептам.')), []);
