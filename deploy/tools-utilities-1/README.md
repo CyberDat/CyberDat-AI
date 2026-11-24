@@ -20,7 +20,35 @@ tools (owner decision of 2026-11-19).
 `base` map; after it every theme file equals the `target` map (= the branch at `theme_commit`) byte for byte; verify with the
 manifest hashes. Catalogue statuses and the staging canonical scope come with the package.
 
-## Revision `tools-utilities-1/4` (2026-11-23): remaining functional items — current
+## Revision `tools-utilities-1/5` (2026-11-24): final round of Leak Inspector and ATLAS — current
+
+Base = the current staging theme with the Research UI: `snapshot/staging-theme-20261124` at `e781091` (merged into this
+branch with an ordinary merge). Theme 188 → 188 files: **0 added, 6 modified, 0 removed**, one item `leak_atlas` (the two
+engines, their version constants, the two page templates). The builder refuses any other file and checks that the files
+accepted by Codex on `d404fdb` (large inputs, masking of tools 2 and 3, Test Bench) are unchanged, that both shared blocks are
+still equal, the versions in engines and PHP, and that the ATLAS 2026.10 data is unchanged.
+
+| Tool | Version | Change |
+|---|---|---|
+| Leak Inspector | 1.0.2 / rules 2026-11-24.1 | an action prohibited or negated in its own clause (“never send …”, “Lösche niemals …”, “запрещено передавать …”, “… ist verboten”) is not a finding; a discount or price only with signs of concealment (also negated ones such as “there are no secret discounts” are not); published or agreed prices are not; indirect wording of external transfer, payments and deletions without a human, external content winning a conflict, protection skipped or suspended |
+| ATLAS mapper | 1.0.5 / mapping 2026-11-24.1 | no AML.T0053 for permitted tool use without signs of an attack; no AML.T0083 for a vault reference; no AML.T0085.000 next to RAG credentials; general tool poisoning → parent AML.T0110 (AML.T0110.000 only for a tool description with hidden instructions); refusals and “whether” deny; more wording of the ten classes; long words made only of letters stay evidence |
+
+Page meta: `editorial-r5.json` (Leak Inspector and ATLAS `documentation` and `faq`: the analysis is lexical, protective
+wording is recognized only in simple forms; Codex sets the two fields on each page). Page texts: COPY-REVIEW.md.
+
+Own held-out sets of round 12, written and committed (`e5f7ca6`) before any rule change and not edited after:
+`tests/fixtures/leak-inspector/heldout-r12.json` (sha256 `21d82888cf84817d…`) and
+`tests/fixtures/atlas-mapper/heldout-r12.json` (`4faac90d0629f827…`). Results NOT INDEPENDENT:
+
+| Set | d404fdb | Revision 5 |
+|---|---|---|
+| Leak Inspector held-out r12 (6 classes, 36 positive / 42 negative) | 14/36, 8 negatives flagged | 36/36, 0 flagged |
+| ATLAS held-out r12 (10 classes, 60 / 60) | 15/60, 8 negatives with a technique | 60/60, 0 |
+| Leak Inspector held-out r11 | 37/37, 0 FP | 37/37, 0 FP |
+| ATLAS held-out r11 | 61/61, 1 FP | 61/61, 1 FP (the same hard negative) |
+| Leak Inspector and ATLAS corpora and held-out (187 cases) | — | identical case by case |
+
+## Revision `tools-utilities-1/4` (2026-11-23): remaining functional items — accepted on `d404fdb`
 
 Revision 3 is installed (staging = `73d99a4`), so the base of revision 4 is `73d99a4`. Theme 188 → 188 files: **0 added,
 20 modified, 0 removed** (`manifest.json` → `items`; the builder refuses any other file and checks that both shared blocks

@@ -14,8 +14,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	const VERSION = '1.0.1';
-	const RULESET_VERSION = '2026-11-23.1';
+	const VERSION = '1.0.2';
+	const RULESET_VERSION = '2026-11-24.1';
 	const MAX_PROMPT_CHARS = 1024 * 1024;
 	const MAX_RESPONSE_CHARS = 5 * 1024 * 1024;
 	const WARN_CHARS = 1024 * 1024;
@@ -192,14 +192,14 @@
 		codename: ub(/\b(?:code ?name|codename|internal project name|kodename|кодов(?:ое|ым) назван\w*)\b|\bproject\s+[A-Z][A-Z0-9]{3,}\b/i),
 		percent: /\b\d{1,3}(?:[.,]\d{1,2})?\s?%/,
 		// Percentages written in words (EN, DE, RU): "forty percent", "dreißig Prozent", "сорок процентов".
-		percentWords: ub(/\b(?:(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|a hundred|hundred)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?\s+(?:percent|per cent)|(?:ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|fünfzehn|zwanzig|dreißig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig|hundert)\w{0,20}\s+prozent|(?:пять|десять|пятнадцать|двадцать|тридцать|сорок|пятьдесят|шестьдесят|семьдесят|восемьдесят|девяносто|сто|половин)\w{0,10}\s+(?:\w{1,15}\s+)?процент\w*)\b/i),
+		percentWords: ub(/\b(?:(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|a hundred|hundred)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?\s+(?:percent|per cent)|(?:ein|zwei|drei|vier|fünf|sechs|sechzehn|sieben|siebzehn|acht|neun|zehn|elf|zwölf|fünfzehn|zwanzig|dreißig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig|hundert)\w{0,20}\s+prozent|(?:один|одн|два|две|три|четыр|пят|шест|сем|восем|девят|десят|одиннадцат|двенадцат|двадцат|тридцат|сорок|девяносто|сто|половин)\w{0,10}\s+(?:\w{1,15}\s+)?процент\w*)\b/i),
 		// Concessions and limits that the prompt hides: hidden rebates, undisclosed ceilings or floors (business logic).
-		concession: ub(/\b(?:rebate\w*|markdown\w*|concession\w*|price cut\w*|nachlass\w*|preisnachlass\w*|abschl[aä]g\w*|zugeständnis\w*|entgegenkommen|уступк\w*)\b/i),
-		limitWord: ub(/\b(?:ceiling|cap|maximum|floor|minimum|lowest price|bottom line|walk-?away price|obergrenze|untergrenze|höchst\w*|mindest\w*|maximal\w*|grenze|потол\w*|предел\w*|максимальн\w*|минимальн\w*)\b/i),
-		conceal: ub(/\b(?:conceal\w*|hidden|hide\w*|secret\w*|unpublished|undisclosed|keep (?:it|this|that|these|those|the \w+) (?:to yourself|private|secret|quiet)|keep (?:it|this|that) to yourself|(?:never|do not|don't) (?:mention|reveal|disclose|tell|state)|geheim\w*|verborgen\w*|versteckt\w*|verrate\w* (?:\w+ ){0,3}nicht|nicht (?:verraten|nennen|erwähnen|mitteilen)|nur intern|скрыт\w*|секретн\w*|тайн\w*|не (?:сообщай|раскрывай|говори|называй|упоминай|разглашай))\b/i),
+		concession: ub(/\b(?:rebate\w*|markdown\w*|concession\w*|price cut\w*|nachlass\w*|preisnachlass\w*|abschl[aä]g\w*|zugeständnis\w*|entgegenkommen|уступк\w*|уступ(?:и|а)\w*)\b/i),
+		limitWord: ub(/\b(?:ceiling|cap|maximum|floor|minimum|lowest price|bottom line|walk-?away price|obergrenze|untergrenze|höchst\w*|mindest\w*|maximal\w*|grenze|потол\w*|предел\w*|максимальн\w*|минимальн\w*|границ\w*)\b/i),
+		conceal: ub(/\b(?:conceal\w*|hidden|hide\w*|secret\w*|unpublished|undisclosed|keep (?:it|this|that|these|those|the \w+) (?:to yourself|private|secret|quiet)|keep (?:it|this|that) to yourself|(?:never|do not|don't) (?:mention|reveal|disclose|tell|state)|geheim\w*|verborgen\w*|versteckt\w*|verrate\w* (?:\w+ ){0,3}nicht|nicht (?:verraten|nennen|erwähnen|mitteilen)|nenne (?:\w+ ){0,3}(?:niemals|nie|nicht)|bleib\w* (?:\w+ ){0,1}(?:intern|vertraulich)|nicht offen\w*|wird nicht (?:\w+ ){0,1}(?:genannt|mitgeteilt)|keep (?:\w+ ){0,3}(?:internal|confidential|to yourself)|nur intern|не озвучива\w*|скрыт\w*|секретн\w*|тайн\w*|не (?:сообщай|раскрывай|говори|называй|упоминай|разглашай))\b/i),
 		money: ub(/(?:[$€£]\s?\d[\d.,]{0,12}|\b\d[\d.,]{0,12}\s?(?:eur|euro|usd|dollars?|gbp|rub|руб\w*|€|\$)\b)/i),
 		threshold: ub(/\b(?:below|under|above|over|less than|more than|fewer than|at least|at most|up to|bis zu|unter|über|mindestens|höchstens|до|ниже|выше|не более|не менее)\b[^.\n]{0,20}?\d/i),
-		bizWord: ub(/\b(?:discount|rabatt|rebate\w*|markdown\w*|concession\w*|nachlass\w*|preisnachlass\w*|zugeständnis\w*|уступк\w*|скидк\w*|refund\w*|erstattung\w*|возврат\w*|price\w*|preis\w*|цен\w*|cost\w*|kosten|стоимост\w*|approve\w*|genehmig\w*|одобр\w*|limit\w*|grenze|лимит\w*|threshold|schwelle|порог\w*|score|reputation|rating|bonus|commission|provision|наценк\w*|закупочн\w*|purchase price|einkaufspreis)\b/i),
+		bizWord: ub(/\b(?:discount|rabatt|rebate\w*|markdown\w*|concession\w*|nachlass\w*|preisnachlass\w*|zugeständnis\w*|уступк\w*|скидк\w*|refund\w*|erstattung\w*|возврат\w*|price\w*|preis\w*|цен\w*|cost\w*|kosten|стоимост\w*|approve\w*|genehmig\w*|одобр\w*|limit\w*|grenze|лимит\w*|threshold|schwelle|порог\w*|score|reputation|rating|bonus|commission|provision|наценк\w*|закупочн\w*|purchase price|einkaufspreis|list price|below list|listenpreis\w*|прайс\w*|прейскурант\w*)\b/i),
 		bypass: ub(/\b(?:even if (?:the )?(?:spam )?(?:filter|system|check|moderation)?\s*(?:flags?|blocks?|rejects?)|shadow-?ban\w*|bypass\w*|whitelist\w*|allowlist\w*|skip (?:the )?(?:check|review|moderation)|silently (?:remove|delete|ban|block|approve)|ohne prüfung|trotz (?:sperre|markierung)|в обход|без проверки|даже если (?:фильтр|система))\b/i),
 		confidential: ub(/\b(?:confidential|internal only|internal use only|do not share with (?:customers|users)|vertraulich|nur intern|конфиденциальн\w*|только для внутреннего)\b/i),
 		secrecy: ub(/\b(?:never|do not|don't|under no circumstances|in no case)\b[^.\n]{0,40}?\b(?:reveal|disclose|share|repeat|show|output|tell)\b[^.\n]{0,30}?\b(?:these |this |the |your |my )?(?:instructions|system prompt|prompt|rules|guidelines|configuration)\b|\b(?:niemals|nie|keinesfalls)\b[^.\n]{0,40}?\b(?:anweisungen|systemprompt|system-prompt|regeln)\b[^.\n]{0,30}?\b(?:preis\w*|verrat\w*|offenleg\w*|weiter\w*)|(?:не\s+раскрыва\w*|не\s+показыва\w*|не\s+разглаша\w*|не\s+сообща\w*)[^.\n]{0,40}?(?:инструкци\w*|системн\w+ промпт\w*|промпт\w*|правил\w*)/i),
@@ -207,7 +207,7 @@
 		placeholder: /\{\{\s*[A-Za-z_][A-Za-z0-9_.-]{0,60}\s*\}\}|\{[A-Za-z_][A-Za-z0-9_]{0,60}\}|\$\{[A-Za-z_][A-Za-z0-9_.]{0,60}\}|<<\s*[A-Za-z_][A-Za-z0-9_]{0,60}\s*>>|\[\[\s*[A-Za-z_][A-Za-z0-9_]{0,60}\s*\]\]|%\([A-Za-z_][A-Za-z0-9_]{0,60}\)s/g,
 		dataStatement: ub(/\b(?:untrusted|treat (?:it |them |the [a-z ]{1,30})?(?:as|strictly as) (?:data|content)|(?:is|are) data,? not instructions|do not follow (?:any )?instructions|ignore (?:any )?instructions (?:that appear |inside|in )|cannot change (?:these|the) instructions|als daten|keine anweisungen|как данные|не являются инструкциями)\b/i),
 		toolBroad: ub(/\b(?:unrestricted|unlimited|full|complete|root|administrator|admin|any|all)\b[^.\n]{0,30}?\b(?:shell|command line|terminal|commands?|file ?system|files|network|internet|e-?mails?|mailbox(?:es)?|inbox(?:es)?|database|servers?)\b(?:[^.\n]{0,20}?\b(?:access|permissions?|rights)\b)?|\brun any command\b|\bsend (?:e-?mails? )?to any (?:address|recipient)\b|\bread all (?:mailboxes|files|e-?mails)\b|\b(?:vollen?|uneingeschränkten?)\b[^.\n]{0,40}?\b(?:zugriff|zugang)\b|\bgesamte[n]? dateisystem\b|полн\w+ доступ|любые команды|неограниченн\w+ доступ/i),
-		irreversible: ub(/\b(?:delet\w*|remov\w*|drop\w*|wip\w*|purg\w*|transfer\w*|wire|pay\w*|refund\w*|charg\w*|deploy\w*|publish\w*|block\w*|ban\w*|terminat\w*|cancel\w*|lösch\w*|überweis\w*|bereitstell\w*|sperr\w*|удал\w*|списыва\w*|списыв\w*|блокир\w*|перевод\w*|оплач\w*|erase\w*|destroy\w*|settle\w*|format\w* (?:the |all |every )?(?:\w+ )?(?:disks?|drives?|partitions?|volumes?)|bezahl\w*|zahle|zahlt|auszahl\w*|zahl\w* (?:\w+ ){0,3}aus|begleich\w*|abbuch\w*|entfern\w*|vernicht\w*|zerstör\w*|formatier\w*|оплат\w*|плати\w*|перечисл\w*|переводи\w*|стира\w*|стир\w*|сотр\w*|уничтож\w*|форматир\w*)/i),
+		irreversible: ub(/\b(?:delet\w*|remov\w*|drop\w*|wip\w*|purg\w*|transfer\w*|wire|pay\w*|refund\w*|charg\w*|deploy\w*|publish\w*|block\w*|ban\w*|terminat\w*|cancel\w*|lösch\w*|überweis\w*|bereitstell\w*|sperr\w*|удал\w*|списыва\w*|списыв\w*|блокир\w*|перевод\w*|оплач\w*|erase\w*|destroy\w*|settle\w*|format\w* (?:the |all |every )?(?:\w+ )?(?:disks?|drives?|partitions?|volumes?)|bezahl\w*|zahle|zahlt|auszahl\w*|zahl\w* (?:\w+ ){0,3}aus|begleich\w*|abbuch\w*|entfern\w*|vernicht\w*|zerstör\w*|formatier\w*|оплат\w*|плати\w*|возврат\w*|выплат\w*|плат[её]ж\w*|erstatt\w*|rückerstatt\w*|(?:очищ|очист)\w* (?:\w+ ){0,3}(?:резерв|архив|баз|данн|запис|журнал|бэкап|копи)\w*|перечисл\w*|переводи\w*|стира\w*|стир\w*|сотри\w*|сотрё\w*|сотре\w*|уничтож\w*|форматир\w*)/i),
 		noConfirm: ub(/\b(?:without (?:asking|any )?(?:for )?(?:confirmation|approval|asking|review|human)|do not (?:wait for|ask for) (?:human )?(?:approval|confirmation)|don't (?:wait for|ask for) (?:human )?(?:approval|confirmation)|no (?:human )?(?:approval|confirmation) (?:is )?(?:needed|required)|automatically|on your own|ohne (?:nachzufragen|bestätigung|rückfrage|freigabe)|automatisch|без подтверждения|не запрашивая подтверждени\w*|автоматически|самостоятельно)\b|ohne nachzufragen|не запрашивая подтверждения/i),
 		// Human confirmation explicitly not needed, in more word orders and forms (EN, DE, RU).
 		noConfirm2: ub(/\b(?:without (?:any |a |an |the |prior |explicit |first )?(?:\w+(?:'s)? )?(?:confirmation|approval|sign-?off|consent|permission)|without (?:waiting for|checking with)|(?:no|not) (?:\w+(?:'s)? ){0,2}(?:approval|confirmation|sign-?off|consent|permission) (?:is |are )?(?:needed|required|necessary)|(?:approval|confirmation|sign-?off|consent|permission) (?:is |are )?not (?:needed|required|necessary)|(?:you )?(?:do not|don't) need (?:\w+(?:'s)? ){0,2}(?:approval|confirmation|permission|consent|sign-?off)|ohne (?:\w+ ){0,3}(?:bestätigung|freigabe|rückfrage|zustimmung|genehmigung|einwilligung)\w*|ohne (?:\w+ ){0,3}(?:einzuholen|abzuwarten|zu fragen|nachzufragen|zu warten)|(?:bestätigung|freigabe|rückfrage|zustimmung|genehmigung)\w* (?:\w+ ){0,4}(?:ist|sind) nicht (?:nötig|notwendig|erforderlich)|selbstständig|selbständig|eigenständig|без (?:\w+ ){0,2}(?:подтвержд|согласи|одобрен|разрешени|согласован|санкци)\w*|не дожидаясь|не (?:спрашивая|согласовывая)|(?:подтвержд|согласи|одобрен|разрешени|согласован)\w* (?:\w+ ){0,2}не (?:нужн\w*|требуется|обязательн\w*))\b/i),
@@ -219,13 +219,50 @@
 		// External content ranked above the operator's rules (input): source ... priority ... operator rules, in this order.
 		extSource: ub(/\b(?:fetched|retrieved|downloaded|uploaded|scraped|crawled|incoming|attached|web ?pages?|websites?|e-?mails?|documents?|attachments?|files?|search results?|tool (?:outputs?|results?|responses?)|pdfs?|heruntergeladen\w*|abgerufen\w*|hochgeladen\w*|webseite\w*|website\w*|e-mail\w*|dokument\w*|anh[aä]ng\w*|datei\w*|suchergebnis\w*|internet\w*|скачанн\w*|загруженн\w*|извлечённ\w*|извлеченн\w*|найденн\w*|страниц\w*|сайт\w*|письм\w*|документ\w*|вложени\w*|файл\w*|интернет\w*)\b/i),
 		priority: ub(/\b(?:более важн\w*|(?:take|takes|have|has|get|gets|be given) (?:\w+ ){0,1}(?:precedence|priority) over|(?:more important|higher priority|more authoritative|weightier) than|override\w*|outrank\w*|supersede\w*|even (?:if|when) (?:they|it|this|these) (?:conflict|contradict|clash)\w*|(?:haben|hat|genießen|bekommen) (?:\w+ ){0,2}vorrang vor|wichtiger als|(?:stehen|steht) über|überschreib\w*|außer kraft|auch wenn (?:sie|es|diese) (?:\w+ ){0,3}widersprech\w*|важнее|приоритетн\w*|приоритет над|(?:ставь|ставить|считай|считать) (?:\w+ ){0,4}выше|главнее|отменя\w*|даже если (?:они|оно|это) противореч\w*)\b/i),
-		operatorRules: ub(/\b(?:operator\w*|admin\w*|system\w*|developer\w*|owner\w*|platform\w*|your (?:rules|instructions|guidelines|restrictions|policy)|(?:these|the|my|our) (?:rules|instructions|restrictions|guidelines)|betreiber\w*|administrator\w*|vorgaben|regeln|richtlinien|einschränkung\w*|anweisungen|оператор\w*|администратор\w*|админ\w*|систем\w*|правил\w*|ограничени\w*|инструкци\w*)\b/i),
+		operatorRules: ub(/\b(?:operator\w*|admin\w*|system\w*|developer\w*|owner\w*|platform\w*|your (?:rules|instructions|guidelines|restrictions|policy)|(?:these|the|my|our) (?:rules|instructions|restrictions|guidelines)|betreiber\w*|administrator\w*|vorgaben|regeln|richtlinien|einschränkung\w*|beschränkung\w*|vorschrift\w*|polic(?:y|ies)|anweisungen|политик\w*|оператор\w*|администратор\w*|админ\w*|систем\w*|правил\w*|ограничени\w*|инструкци\w*)\b/i),
 		// Safety checks switched off, refusals forbidden (protection).
 		safetyOff: ub(/\b(?:disabl\w*|turn\w* off|switch\w* off|shut\w* off|deactivat\w*|bypass\w*|skip\w*|suspend\w*|lift\w*|ignor\w*|deaktivier\w*|abschalt\w*|ausschalt\w*|schalt\w* (?:[\p{L}-]+ ){1,4}aus|umgeh\w*|übergeh\w*|ignorier\w*|außer kraft|отключ\w*|выключ\w*|обход\w*|обойд\w*|игнорир\w*)\b/i),
 		safetyTarget: ub(/\b(?:safety\w*|guardrails?|safeguards?|content (?:filters?|polic\w*)|moderation\w*|filters?|(?:security|safety) (?:checks?|rules|polic\w*|restrictions)|sicherheit\w*|schutz\w*|filter\w*|moderation\w*|inhaltsfilter\w*|moderationsfilter\w*|фильтр\w*|модераци\w*|безопасност\w*|защит\w*)\b/i),
 		noRefusal: ub(/\b(?:(?:never|do not|don't|must not|mustn't|should not|shall not) (?:ever )?(?:refuse|decline|reject|turn down|say no)|always (?:comply|obey)|(?:lehne|lehnt) (?:\w+ ){0,1}(?:keine|nie|niemals)\w* (?:\w+ ){0,3}ab|verweigere (?:nie|niemals|keine)\w*|(?:nie|niemals) (?:\w+ ){0,1}ablehnen|(?:никогда )?не отказыва\w*|не откажи\w*|всегда (?:выполняй|подчиняйся))\b/i),
 		unconditional: ub(/\b(?:whatever|regardless|no matter|even if|even when|under any circumstances|any requests?|every requests?|all requests|a request|for any reason|egal|unabhängig|selbst wenn|auch wenn|jede\w* anfrage|keine\w* anfrage|unter allen umständen|даже если|ни при каких|что бы ни|любо\w*|всех запрос\w*|никаки\w*)\b/i),
 		negBefore: ub(/\b(?:never|not|don't|do not|must not|no|nie|niemals|nicht|kein\w*|не|никогда|нельзя)\s+(?:[\p{L}-]+\s+){0,2}$/i),
+		// Prohibition or negation in the clause of an action (round 12): "never send", "do not delete", "Lösche niemals",
+		// "запрещено передавать", "… is forbidden". See prohibitedAt().
+		negWord: ub(/\b(?:never|not|cannot|can't|don't|doesn't|won't|mustn't|shouldn't|isn't|aren't|no|nobody|forbidden|prohibited|nie|niemals|nicht|kein\w*|keinesfalls|verboten|untersagt|не|ни|никогда|нельзя|запрещ\w*|недопустим\w*)\b/i),
+		// Words about asking, waiting, approval or consent: a negation that governs one of them ("не спрашивая", "no need
+		// to ask", "do not wait for approval") is the absence of a check, not a prohibition of the action.
+		confirmWord: ub(/\b(?:ask\w*|wait\w*|confirm\w*|approv\w*|consent\w*|permission\w*|inform\w*|tell\w*|notif\w*|check\w*|need\w*|requir\w*|sign\w*|matter|longer|later|only|frag\w*|wart\w*|bestätig\w*|zustimm\w*|freigab\w*|freigeb\w*|einwillig\w*|informier\w*|benachrichtig\w*|nötig|notwendig|erforderlich|nur|lediglich|спраш\w*|спрос\w*|дожида\w*|ожида\w*|жд\w*|подтвержд\w*|соглас\w*|уведом\w*|сообща\w*|предупрежд\w*|нужн\w*|требу\w*|запрашива\w*|только)\b/i),
+		prohibPred: ub(/\b(?:forbidden|prohibited|not (?:allowed|permitted)|verboten|untersagt|nicht (?:erlaubt|gestattet|zulässig)|unzulässig|запрещ\w*|не допуска\w*|недопустим\w*|не разреша\w*)\b/i),
+		negAfterDe: ub(/^(?:\s+[\p{L}-]+){0,2}?\s+(?:nie|niemals|nicht|keine?\w*)\b(?!\s+(?:nur|erst)\b)/i),
+		leadNeg: ub(/\b(?:never|do not|don't|must not|niemals|nie|keinesfalls|auf keinen fall|unter keinen umständen|under no circumstances|in no case|никогда|ни в коем случае|ни при каких \p{L}+)\s*,\s*(?:[^,;:]{0,40},\s*)?$/i),
+		// Concealment words that are adjectives can be negated: "there are no secret discounts", "keine geheimen Grenzen".
+		concealAdj: ub(/^[^\p{L}]?(?:conceal|hidden|hide|secret|unpublished|undisclosed|confidential|geheim|verborgen|versteckt|vertraulich|скрыт|секретн|тайн|конфиденциальн)/i),
+		noExistBefore: ub(/\b(?:no|without|keine?\w*|ohne|никаких|нет|без|ни)\s+(?:[\p{L}-]+\s+){0,2}$/i),
+		noExist: ub(/\b(?:there (?:are|is) no|we (?:have|use|offer|keep) no|gibt es nicht|es gibt keine\w*|у нас нет|нет|не существу\w*|отсутству\w*|don't exist|do not exist|existier\w* nicht)\b/i),
+		// Prices the customer is meant to know: published, listed, agreed, allowed to be told.
+		publicMark: ub(/\b(?:public\w*|published|listed|advertised|announced|official\w*|website|pricing page|price list|catalog\w*|catalogue|brochure|agreed|terms (?:and conditions|of service)|tell anyone|share (?:it |them )?(?:freely|with anyone)|öffentlich\w*|veröffentlicht\w*|preisliste\w*|katalog\w*|offiziell\w*|webseite\w*|vereinbart\w*|agb|geschäftsbedingungen|offen (?:kommuniziert|genannt)|публичн\w*|опубликован\w*|официальн\w*|на сайте|каталог\w*|согласованн\w*|можно (?:говорить|сообщать|называть))\b/i),
+		// Absence of a human check in more forms (round 12): no approval step, on its own, no human in the loop,
+		// "eine Freigabe ist nicht vorgesehen", "без участия человека".
+		noConfirm3: ub(/\b(?:(?:there is |there's )?no (?:human |manual |prior |separate )?(?:approval|confirmation|sign-?off|review|checkpoint)(?: step| stage| gate| check)?|(?:does not|doesn't|do not|don't|will not) (?:need to )?(?:require|need) (?:any |a |an |the )?(?:\w+(?:'s)? )?(?:approval|confirmation|sign-?off|consent|review)|on (?:its|their|his|her) own|by (?:itself|yourself|themselves)|autonomously|at (?:its|their) own discretion|(?:with )?no human in the loop|without (?:a |any )?human(?: in the loop| involvement| oversight| participation| review| intervention| input)?|without (?:a |any )?(?:person|anyone|someone|operator|staff|employee|manager|colleague)\w*(?: (?:reviewing|approving|checking|confirming|signing))?|without involving (?:a |any )?(?:human|person|operator|anyone)|(?:nobody|no one|no (?:\w+ )?(?:manager|human|person|employee|operator|admin\w*|colleague|supervisor|staff)) (?:needs|has|is required) to (?:approve|confirm|sign|review|check)|(?:approval|confirmation|sign-?off) (?:is |are )?optional|(?:freigabe|bestätigung|zustimmung|genehmigung|rückfrage|abstimmung|prüfung)\w* (?:[\p{L}-]+ ){0,5}(?:nicht|kein\w*) (?:[\p{L}-]+ )?(?:nötig|notwendig|erforderlich|vorgesehen|verlangt|gefordert)|(?:freigabe|bestätigung|zustimmung|genehmigung|rückfrage|abstimmung|prüfung|kontrolle)\w* (?:[\p{L}-]+ ){0,4}entf[aä]ll\w*|ohne (?:menschliche\w* |manuelle\w* )?(?:beteiligung|mitwirkung|kontrolle|aufsicht|zutun)|ohne dass (?:[\p{L}-]+ ){0,4}(?:zustimmt|prüft|freigibt|bestätigt|eingreift|genehmigt)|eigenmächtig|auf eigene faust|без участия|без (?:\w+ ){0,1}(?:контрол|проверк|вмешательств)\w* (?:человек|оператор|сотрудник|админ)\w*|по своему усмотрению|(?:согласов|подтвержд|одобр|разреш)\w* (?:\w+ ){0,3}не (?:нужн\w*|требуется|обязательн\w*|предусмотрен\w*))\b/i),
+		// Sending in indirect wording (round 12): archiving, copying, delivery; "Kopien gehen an …", "уходят на …".
+		sendVerb2: ub(/\b(?:archiv\w*|replicat\w*|cop(?:y|ies|ied)|deliver\w*|transfer\w*|weitergab\w*|weitergeb\w*|weiterzugeb\w*|ausleit\w*|ausgeleitet|kopier\w*|zustell\w*|(?:geht|gehen|go|goes) (?:\w+ ){0,3}(?:an|to)|архивир\w*|копир\w*|уход\w*|уйдут|направля\w*|доставля\w*|передач\w*)\b/i),
+		dataObjDe: /(?:dialog|gespräch|chatverl|chatprotokoll|unterhaltung|korrespondenz|kundendaten|nutzerdaten|nachrichten|бесед|содержим|расшифровк|correspondence)/i,
+		outside2: ub(/\b(?:außerhalb|beyond (?:the |our )?(?:trusted )?(?:perimeter|boundary|network)|contractor\w*|subcontractor\w*|supplier\w*|auftragnehmer\w*|dienstleister\w*|подрядчик\w*|поставщик\w*|за предел\w*|вне (?:\w+ ){0,2}(?:контур|периметр|сет)\w*)\b/i),
+		noConsent2: ub(/\b(?:(?:does not|doesn't|do not|don't|will not) (?:need to )?(?:require|need) (?:any |the )?(?:\w+(?:'s)? )?(?:approval|consent|permission|sign-?off|confirmation)|no need to (?:check|confirm|ask|tell|inform|notify|get|obtain)|(?:is|are) not (?:informed|told|notified|asked)|with no (?:\w+(?:'s)? )?(?:consent|approval|permission)|without checking (?:for )?(?:\w+(?:'s)? ){0,2}consent|(?:wird|werden) (?:\w+ ){0,2}nicht (?:informiert|benachrichtigt|gefragt)|(?:prüfung|einholung|abfrage) der (?:einwilligung|zustimmung)\w* entf[aä]ll\w*|(?:einwilligung|zustimmung|freigabe|erlaubnis)\w* (?:\w+ ){0,4}(?:entf[aä]ll\w*|nicht (?:nötig|notwendig|erforderlich|vorgesehen))|ohne (?:\w+ ){0,2}prüfung der (?:einwilligung|zustimmung)|без (?:\w+ ){0,2}согласова\w*|без проверки согласия|(?:согласов|соглас|уведомл|информир)\w* (?:\w+ ){0,3}не (?:нужн\w*|требуется|обязательн\w*)|не (?:уведомля\w*|информиру\w*|сообща\w*|ставим в известность)|(?:do not|don't|never) (?:bother|trouble|ask) (?:\w+ ){0,4}(?:consent|permission|approval)\w*|(?:no|skip\w*|without (?:a |any )?)(?: \w+){0,1} consent (?:prompt|dialog|step|check|request)\w*|ohne dass (?:\w+ ){0,4}(?:erfährt|weiß|zustimmt|einwilligt|bemerkt|merkt|gefragt wird|informiert wird)|without (?:the )?(?:\w+(?:'s)? ){0,2}(?:knowing|noticing|being (?:asked|told|informed))|чтобы (?:\w+ ){0,2}не (?:узнал\w*|знал\w*|заметил\w*))\b/i),
+		// The agent is permitted to send (round 12, "indirect permission wording"); a condition of consent cancels it.
+		permission: ub(/\b(?:you may|you can|you are (?:allowed|permitted|free) to|is (?:allowed|permitted) to|has (?:the )?(?:right|authority|permission) to|du darfst|darf|dürfen|ist berechtigt|ist erlaubt|разрешено|разрешается|вправе|можно|может)\b/i),
+		consentGiven: ub(/\b(?:with (?:the )?(?:\w+(?:'s)? )?(?:explicit |written |prior )?(?:consent|permission|approval)|(?:if|when|after|once) (?:the )?(?:user|customer|client)s? (?:\w+ ){0,1}(?:asks|agrees|requests|consents|confirms|approves|opts)|(?:on|at) (?:the )?(?:\w+(?:'s)? )?request|mit (?:\w+ ){0,2}(?:zustimmung|einwilligung|erlaubnis)|nach (?:\w+ ){0,2}(?:zustimmung|einwilligung)|auf wunsch|wenn (?:der|die) (?:nutzer|kunde|kundin)\w* (?:\w+ ){0,3}(?:zustimmt|einwilligt|wünscht|bittet)|с (?:\w+ ){0,1}согласия|по (?:\w+ ){0,1}просьбе|по запросу|если (?:пользователь|клиент) (?:\w+ ){0,2}(?:согласи|попрос|просит)\w*)\b/i),
+		// Conflict between external content and the rules resolved in favour of the content (input, round 12).
+		conflict: ub(/\b(?:conflict\w*|contradict\w*|clash\w*|disagree\w*|differ\w*|diverg\w*|inconsistent|widersprech\w*|widerspr\w*|abweich\w*|etwas anderes|anders als|im widerspruch|расход\w*|расхожд\w*|противореч\w*|отлича\w*|не совпада\w*|конфликт\w*|иначе)\b/i),
+		favour: ub(/\b(?:in favou?r of|side with|go with|follow|obey|defer to|prefer|zugunsten|richte dich nach|folge|befolge|halte dich an|bevorzuge|в пользу|следуй|руководствуйся|подчиняйся|придерживайся|отдавай предпочтение)\b/i),
+		subordinate: ub(/\b(?:(?:are|is) subordinate to|yield\w* to|give way to|defer\w* to|bow to|(?:sind|ist) (?:\w+ ){0,2}(?:untergeordnet|nachrangig)|weich\w* (?:\w+ ){0,3}(?:inhalten|dokumenten|quellen)|подчиня\w*|уступа\w*|подчинен\w*)\b/i),
+		extWins: ub(/\b(?:wins|prevails|takes over|gewinnt|setzt sich durch|побеждает|берёт верх|берет верх)\b/i),
+		claimVerb: ub(/\b(?:claims?|says|asks|tries|attempts|pretends|purports|insists|behauptet|vorgibt|versucht|verlangt|утвержда\w*|пыта\w*|заявля\w*|требу\w*|просит)\b(?:\s+(?:that|it|they|to|zu|dass|что))?\s+(?:[\p{L}-]+\s+){0,1}$/i),
+		extSource2: ub(/\b(?:external (?:content|data|sources?|documents?|text|material)|knowledge base|retrieval|rag|externe\w* (?:inhalt|quelle|daten|dokument|text)\w*|wissensdatenbank|внешн\w* (?:содержим|источник|данн|документ|текст|материал)\w*|база знаний|базы знаний|содержим\w*)\b/i),
+		// Protection suspended in more forms (round 12): skipped, waived, "gilt nicht", "entfallen", "не применяется".
+		safetyOff2: ub(/\b(?:waiv\w*|set aside|relax\w*|entf[aä]ll\w*|aussetz\w*|ausgesetzt|aufheb\w*|aufgehoben|пропуска\w*|пропуст\w*|отменя\w*|снима\w*|приостан\w*)\b/i),
+		suspended: ub(/\b(?:(?:does|do) not apply|(?:is|are) not (?:applied|active|enforced|in force)|no longer appl\w*|(?:gilt|gelten|greift|greifen) (?:[\p{L}-]+ ){0,3}nicht|не (?:применя\w*|действу\w*|работа\w*)|не нужн\w*)\b/i),
+		noRefusal2: ub(/\b(?:(?:отказывать|отклонять|отказ\w*) (?:\w+ ){0,2}нельзя|(?:refusing|declining|refusals?) (?:is |are )?not (?:allowed|permitted|an option)|(?:darfst|darf|dürfen) (?:\w+ ){0,3}nicht ablehnen|ablehnen (?:ist|darfst du) nicht)\b/i),
 		phone: /(?:\+\d{1,3}[\s.-]?)(?:\(?\d{1,4}\)?[\s.-]?){2,5}\d{2,4}\b/g,
 		address: ub(/\b(?:street|str\.|straße|strasse|avenue|ave\.|road|ул\.|улица|проспект|д\.\s?\d)\b/i),
 		customer: ub(/\b(?:customer|client|patient|kunde|kundin|клиент\w*|пациент\w*)\b/i),
@@ -247,6 +284,68 @@
 		let sum = 0;
 		for (let i = 0; i < d.length; i++) { let x = Number(d[d.length - 1 - i]); if (i % 2) { x *= 2; if (x > 9) { x -= 9; } } sum += x; }
 		return sum % 10 === 0;
+	}
+
+	// ------------------------------------------------------------------ clause modality (round 12)
+	// A clause ends at a comma (not inside a number), semicolon, colon, bracket or a dash between spaces. Windows are
+	// bounded (160 characters before, 120 after), so every check is linear in the length of the sentence.
+	const CLAUSE_BREAK = /,(?!\d)|[;:()[\]]|\s[—–-]\s/g;
+	function lastBreak(s) { CLAUSE_BREAK.lastIndex = 0; let i = -1, m; while ((m = CLAUSE_BREAK.exec(s))) { i = m.index + m[0].length - 1; } return i; }
+	function firstBreak(s) { CLAUSE_BREAK.lastIndex = 0; const m = CLAUSE_BREAK.exec(s); return m ? m.index : s.length; }
+	/**
+	 * Is the action word at [start, end) of the sentence prohibited or negated in its own clause? True for a negation
+	 * before it ("never send", "не удаляй", "Führe keine Überweisungen"), a German negation just after it ("Lösche
+	 * niemals"), a prohibition anywhere in the clause ("ist … verboten", "запрещено") or a leading "Never, …,". A negation
+	 * that governs a word about asking or approval ("не спрашивая", "no need to ask") does not count.
+	 */
+	function prohibitedAt(x, start, end, cue) {
+		const before = x.slice(Math.max(0, start - 160), start);
+		const br = lastBreak(before);
+		const c = before.slice(br + 1);
+		const re = new RegExp(RX.negWord.source, 'giu');
+		let last = null, m, n = 0;
+		while ((m = re.exec(c)) && n++ < 50) { last = m; if (!m[0].length) { re.lastIndex++; } }
+		if (last && !RX.confirmWord.test(c.slice(last.index + last[0].length))) { return true; }
+		if (!cue && end - start > 3 && RX.negWord.test(' ' + x.slice(start + 1, end))) { return true; }
+		const after = x.slice(end, end + 120);
+		const a = after.slice(0, firstBreak(after));
+		if (RX.prohibPred.test(c + ' ' + a) || RX.negAfterDe.test(a)) { return true; }
+		return br >= 0 && RX.leadNeg.test(before.slice(0, br + 1));
+	}
+	// First occurrence of re in x that is not prohibited (bounded number of occurrences).
+	function affirmed(x, re, cue) {
+		const g = new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g');
+		let m, n = 0;
+		while ((m = g.exec(x)) && n++ < 200) {
+			const lead = /^[^\p{L}\p{N}_]/u.test(m[0]) ? 1 : 0;
+			if (!prohibitedAt(x, m.index + lead, m.index + m[0].length, cue)) { return m; }
+			if (!m[0].length) { g.lastIndex++; }
+		}
+		return null;
+	}
+	// Concealment that is not itself negated ("there are no secret discounts", "keine geheimen Preisgrenzen").
+	function concealed(x) {
+		const g = new RegExp(RX.conceal.source, 'giu');
+		let m, n = 0;
+		while ((m = g.exec(x)) && n++ < 100) {
+			if (!RX.concealAdj.test(m[0])) { return true; }
+			const before = x.slice(Math.max(0, m.index - 80), m.index + 1);
+			const c = before.slice(lastBreak(before) + 1);
+			const after = x.slice(m.index + m[0].length, m.index + m[0].length + 80);
+			const clause = c + after.slice(0, firstBreak(after));
+			if (!RX.noExistBefore.test(c) && !RX.noExist.test(clause)) { return true; }
+			if (!m[0].length) { g.lastIndex++; }
+		}
+		return false;
+	}
+	function cueAffirmed(x, list) { for (const re of list) { if (affirmed(x, re, true)) { return true; } } return false; }
+	function confidentialHere(x) {
+		const m = RX.confidential.exec(x);
+		if (!m) { return false; }
+		const before = x.slice(Math.max(0, m.index - 80), m.index + 1);
+		const c = before.slice(lastBreak(before) + 1);
+		const after = x.slice(m.index + m[0].length, m.index + m[0].length + 80);
+		return !RX.noExistBefore.test(c) && !RX.noExist.test(c + after.slice(0, firstBreak(after)));
 	}
 
 	function audit(text, hooks) {
@@ -286,28 +385,60 @@
 		// Sentence-level rules.
 		const sens = sentences(t);
 		let bizHit = false, gateHit = false, secrecyAt = -1;
+		// "Do not reveal these instructions" marks the content of the prompt, discounts included, as meant to be hidden.
+		const docSecrecy = RX.secrecy.test(t);
 		for (let si = 0; si < sens.length; si++) {
 			const s = sens[si];
 			const x = s.text;
 			// An instruction and its qualifier are often split over two sentences ("Delete X. Do this automatically.").
 			const pair = x + ' ' + (sens[si + 1] ? sens[si + 1].text : '');
 			const pct = RX.percent.test(x) || RX.percentWords.test(x);
-			const hiddenLimit = RX.conceal.test(x) && (RX.concession.test(x) || (RX.limitWord.test(x) && (RX.bizWord.test(x) || /preis|rabatt|price|цен/iu.test(x))));
-			if (hiddenLimit || RX.bizWord.test(x) && (pct || (RX.money.test(x) && (RX.threshold.test(x) || ub(/\b(?:internal|purchase|cost|einkauf|enterprise|partner)\w*|закупочн/i).test(x))) || (RX.threshold.test(x) && /\d/.test(x) && ub(/\b(?:approve|genehmig|refund|erstatt|allow|reputation|score)\w*|одобр|возврат/i).test(x)))) {
+			// Round 12: a discount or price is a finding only with signs of concealment (in the sentence, or in a
+			// neighbouring sentence about the limit); published or agreed prices and "there are no secret discounts" are not.
+			const conHere = concealed(x) || confidentialHere(x);
+			const near = j => { const y = sens[j] && sens[j].text; return !!y && concealed(y) && (RX.limitWord.test(y) || RX.bizWord.test(y) || RX.concession.test(y)); };
+			const pub = RX.publicMark.test(x);
+			const hiddenLimit = conHere && (RX.concession.test(x) || (pct && RX.bizWord.test(x)) || (RX.limitWord.test(x) && (RX.bizWord.test(x) || /preis|rabatt|price|цен/iu.test(x))));
+			const hiddenDiscount = RX.bizWord.test(x) && pct && !pub && (near(si + 1) || near(si + 2) || near(si - 1) || docSecrecy);
+			const internalLogic = RX.bizWord.test(x) && !pub && ((RX.money.test(x) && (RX.threshold.test(x) || ub(/\b(?:internal|purchase|cost|einkauf|enterprise|partner)\w*|закупочн/i).test(x))) || (RX.threshold.test(x) && /\d/.test(x) && ub(/\b(?:approve|genehmig|refund|erstatt|allow|reputation|score)\w*|одобр|возврат/i).test(x)));
+			if (hiddenLimit || hiddenDiscount || internalLogic) {
 				add('LKI-BIZ-001', 'medium', s.index, cap(x.trim(), 160)); bizHit = true;
 			}
-			if (RX.bypass.test(x)) { add('LKI-BIZ-002', 'medium', s.index, cap(x.trim(), 160)); bizHit = true; }
+			if (affirmed(x, RX.bypass)) { add('LKI-BIZ-002', 'medium', s.index, cap(x.trim(), 160)); bizHit = true; }
 			if (RX.confidential.test(x)) { add('LKI-BIZ-003', 'low', s.index, cap(x.trim(), 160)); }
 			if (RX.gate.test(x)) { add('LKI-PRT-002', 'high', s.index, cap(x.trim(), 160)); gateHit = true; }
 			if (secrecyAt < 0 && RX.secrecy.test(x)) { secrecyAt = s.index; }
 			if (RX.toolBroad.test(x) && !ub(/\b(?:cannot|can not|can't|no access|without (?:network|internet)|kein\w*|nicht)\b|не может|нет доступа/i).test(x)) { add('LKI-TOOL-001', 'medium', s.index, cap(x.trim(), 160)); }
-			const verbAt = re => { const g = new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g'); let mm; while ((mm = g.exec(x))) { if (!RX.negBefore.test(x.slice(Math.max(0, mm.index - 60), mm.index + 1))) { return mm; } if (!mm[0].length) { g.lastIndex++; } } return null; };
-			if (RX.sendVerb.test(x) && RX.dataObj.test(x) && RX.outside.test(x) && RX.noConsent.test(x) && verbAt(RX.sendVerb)) { add('LKI-TOOL-002', 'medium', s.index, cap(x.trim(), 160)); }
+			// Round 12: actions are checked for prohibition or negation in their own clause (prohibitedAt).
+			const verbAt = re => affirmed(x, re);
+			const sendAny = RX.sendVerb.test(x) || RX.sendVerb2.test(x);
+			if (sendAny && (RX.dataObj.test(x) || RX.dataObjDe.test(x)) && (RX.outside.test(x) || RX.outside2.test(x))) {
+				const noConsent = cueAffirmed(x, [RX.noConsent, RX.noConsent2]);
+				const allowed = !noConsent && RX.permission.test(x) && !RX.consentGiven.test(x);
+				if ((noConsent || allowed) && (verbAt(RX.sendVerb) || verbAt(RX.sendVerb2))) { add('LKI-TOOL-002', 'medium', s.index, cap(x.trim(), 160)); }
+			}
 			const pr = RX.priority.exec(x);
-			if (pr && RX.extSource.test(x.slice(0, pr.index + 1)) && RX.operatorRules.test(x.slice(pr.index + pr[0].length)) && !RX.negBefore.test(x.slice(Math.max(0, pr.index - 60), pr.index + 1))) { add('LKI-INP-002', 'medium', s.index, cap(x.trim(), 160)); }
-			const off = verbAt(RX.safetyOff);
-			if ((off && RX.safetyTarget.test(x.slice(Math.max(0, off.index - 40), off.index + off[0].length + 60))) || (RX.noRefusal.test(x) && RX.unconditional.test(x))) { add('LKI-PRT-003', 'medium', s.index, cap(x.trim(), 160)); gateHit = true; }
-			if (RX.irreversible.test(x) && (RX.noConfirm.test(pair) || RX.noConfirm2.test(pair)) && !ub(/\b(?:ask (?:the user )?for (?:explicit )?confirmation|after (?:explicit )?confirmation|only after|nur nach|never (?:send|delete|deploy)|let the (?:human|engineer|user) (?:decide|run))\b|после подтверждения/i).test(pair)) { add('LKI-AUT-001', 'high', s.index, cap(pair.trim(), 160)); }
+			const protective = RX.dataStatement.test(x);
+			const rulesAfter = !!pr && (RX.operatorRules.test(x.slice(pr.index + pr[0].length)) || (/außer kraft/iu.test(pr[0]) && RX.operatorRules.test(x.slice(Math.max(0, pr.index - 80), pr.index + 1))));
+			let inp = !!pr && !protective && RX.extSource.test(x.slice(0, pr.index + 1)) && rulesAfter && !prohibitedAt(x, pr.index + (/^[^\p{L}\p{N}_]/u.test(pr[0]) ? 1 : 0), pr.index + pr[0].length) && !RX.claimVerb.test(x.slice(Math.max(0, pr.index - 40), pr.index + 1).replace(/[^\s]$/u, ' '));
+			if (!inp && !protective && RX.conflict.test(x) && RX.operatorRules.test(x) && (RX.extSource.test(x) || RX.extSource2.test(x))) {
+				// "resolve it in favour of the document", "richte dich nach der Webseite", "следуй тексту страницы", "the page wins".
+				const fv = affirmed(x, RX.favour);
+				const obj = fv ? x.slice(fv.index + fv[0].length, fv.index + fv[0].length + 60) : '';
+				const head = obj.split(/[,;:.]/)[0];
+				inp = (!!fv && (RX.extSource.test(head) || RX.extSource2.test(head)) && !RX.operatorRules.test(head.split(/\s+/).slice(0, 3).join(' '))) || (() => { const w = affirmed(x, RX.extWins); return !!w && (RX.extSource.test(x.slice(Math.max(0, w.index - 40), w.index + 1)) || RX.extSource2.test(x.slice(Math.max(0, w.index - 40), w.index + 1))); })();
+			}
+			if (!inp && !protective) {
+				// "the rules are subordinate to external content", "правила подчиняются содержимому внешних документов".
+				const sb = affirmed(x, RX.subordinate);
+				inp = !!sb && RX.operatorRules.test(x.slice(Math.max(0, sb.index - 80), sb.index + 1)) && (RX.extSource.test(x.slice(sb.index + 1, sb.index + 100)) || RX.extSource2.test(x.slice(sb.index + 1, sb.index + 100)));
+			}
+			if (inp) { add('LKI-INP-002', 'medium', s.index, cap(x.trim(), 160)); }
+			const nearSafety = mm => !!mm && RX.safetyTarget.test(x.slice(Math.max(0, mm.index - 60), mm.index + mm[0].length + 60));
+			const susp = RX.suspended.exec(x);
+			const suspendedHit = !!susp && RX.safetyTarget.test(x.slice(Math.max(0, susp.index - 60), susp.index + susp[0].length)) && !ub(/\b(?:even|auch|selbst|даже)\b/i).test(x.slice(Math.max(0, susp.index - 60), susp.index + 1)) && !RX.negWord.test(x.slice(Math.max(0, susp.index - 30), susp.index + 1));
+			if (nearSafety(verbAt(RX.safetyOff)) || nearSafety(verbAt(RX.safetyOff2)) || suspendedHit || (RX.noRefusal.test(x) && RX.unconditional.test(x)) || RX.noRefusal2.test(x)) { add('LKI-PRT-003', 'medium', s.index, cap(x.trim(), 160)); gateHit = true; }
+			if (verbAt(RX.irreversible) && cueAffirmed(pair, [RX.noConfirm, RX.noConfirm2, RX.noConfirm3]) && !ub(/\b(?:ask (?:the user )?for (?:explicit )?confirmation|after (?:explicit )?confirmation|only after|nur nach|never (?:send|delete|deploy)|let the (?:human|engineer|user) (?:decide|run))\b|после подтверждения/i).test(pair)) { add('LKI-AUT-001', 'high', s.index, cap(pair.trim(), 160)); }
 		}
 		// Untrusted input placeholders.
 		RX.placeholder.lastIndex = 0;
