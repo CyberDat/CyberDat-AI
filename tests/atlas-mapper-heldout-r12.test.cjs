@@ -38,7 +38,16 @@ console.log('  total: positives ' + sum('tp') + '/' + sum('pos') + ', false posi
 if (process.argv.includes('--details')) { for (const r of rows) { console.log('    ' + r); } }
 module.exports = { per };
 if (require.main === module && !process.argv.includes('--no-guard')) {
+	// linear at the input limit (100,000 characters): negations, long letter-only words, words inside compounds
+	for (const p of ['no agent tool attacker refused whether not ', 'не было атаки агент инструмент контекст ', 'Verbindungseinstellungen ', 'datenbank'.repeat(5000) + ' ']) {
+		const at = n => { const t = p.repeat(Math.ceil(n / p.length)).slice(0, n); const s = Date.now(); engine.mapFinding(t); return Date.now() - s; };
+		at(20000);
+		const half = at(50000), full = at(100000);
+		const lin = full < 3000 && full <= 3 * Math.max(half, 20);
+		console.log((lin ? 'PASS' : 'FAIL') + ': linear at the limit (' + p.trim().slice(0, 24) + ' …) 50K ' + half + ' ms, 100K ' + full + ' ms');
+		if (!lin) { process.exitCode = 1; }
+	}
 	const ok = !unknown && Object.values(per).every(p => p.tp / p.pos >= 0.8 && p.fp <= 1);
 	console.log(ok ? 'PASS: every class finds >= 80% of its positives with at most one false positive' : 'FAIL: a class below 80% or with more than one false positive');
-	process.exitCode = ok ? 0 : 1;
+	if (!ok) { process.exitCode = 1; }
 }
