@@ -9,14 +9,25 @@ defined('ABSPATH') || exit;
 
 const CDTM_STATUS_LABELS = ['ok' => 'Updated', 'stale' => 'Stale', 'unavailable' => 'Unavailable', 'not_configured' => 'Not configured'];
 
+/**
+ * Decorative flag (flag-icons 4x3 SVG from the theme): fixed size (no layout shift), lazy, empty alt because the
+ * country name is always written next to it. Without a file or a code: a neutral placeholder of the same size.
+ */
+function cyberdat_threat_map_flag(string $cc): string {
+	if (preg_match('/^[A-Z]{2}$/', $cc) && in_array($cc, CDTM_View::flag_codes(), true)) {
+		return '<img class="cdtm-flag" src="' . esc_url(get_theme_file_uri('/assets/flags/4x3/' . strtolower($cc) . '.svg')) . '" width="20" height="15" loading="lazy" decoding="async" alt="">';
+	}
+	return '<span class="cdtm-flag cdtm-flag--none" aria-hidden="true"></span>';
+}
+
 function cyberdat_threat_map_top_items(array $top): string {
 	$out = '';
-	$max = $top ? max(1, $top[0]['n']) : 1;
+	$max = $top ? max(0.0001, $top[0]['n']) : 1;
 	foreach ($top as $i => $row) {
 		$pct = max(3, (int) round($row['n'] / $max * 100));
 		$out .= '<li><button type="button" data-cdtm-cc="' . esc_attr($row['cc']) . '"><span class="cdtm-rank">' . ((int) $i + 1) . '</span>'
-			. '<span class="cdtm-top-name"><span>' . esc_html($row['name']) . '</span><span class="cdtm-bar"><span style="width:' . $pct . '%"></span></span></span>'
-			. '<span class="cdtm-top-n">' . esc_html(number_format_i18n($row['n'])) . '</span></button></li>';
+			. '<span class="cdtm-top-name"><span>' . cyberdat_threat_map_flag($row['cc']) . esc_html($row['name']) . '</span><span class="cdtm-bar"><span style="width:' . $pct . '%"></span></span></span>'
+			. '<span class="cdtm-top-n">' . esc_html($row['text']) . '</span></button></li>';
 	}
 	return $out;
 }
@@ -29,10 +40,10 @@ function cyberdat_threat_map_render(?array $snapshot, int $now): string {
 	$a = static fn($s) => esc_attr($s);
 	ob_start();
 	?>
-<section class="cdtm" id="global-threat-map" aria-labelledby="cdtm-title" data-threat-map="cdtm-1" data-geometry="<?php echo esc_url(get_theme_file_uri('/assets/maps/threat-map-countries.json')); ?>">
+<section class="cdtm" id="global-threat-map" aria-labelledby="cdtm-title" data-threat-map="cdtm-1" data-geometry="<?php echo esc_url(get_theme_file_uri('/assets/maps/threat-map-countries.json')); ?>" data-flags="<?php echo esc_url(get_theme_file_uri('/assets/flags/4x3/')); ?>">
 <noscript><style>.cdtm-tabs,.cdtm-controls,.cdtm-stage{display:none!important}.cdtm-panel[hidden]{display:block!important}</style></noscript>
 <div class="cdtm-head"><div><p class="eyebrow">GEOGRAPHIC OBSERVATIONS / AGGREGATED BY COUNTRY</p><h2 id="cdtm-title">Global Cyber Threat Map</h2>
-<p class="cdtm-intro">Where botnet command-and-control servers and reported ransomware victims are located, counted per country from public sources. The CyberDat server collects the data every hour; your browser never contacts the sources.</p></div>
+<p class="cdtm-intro">Where reported ransomware victims, the targets of HTTP DDoS attacks and botnet command-and-control servers are located, per country, from public sources. The CyberDat server collects the data every hour; your browser never contacts the sources.</p></div>
 <span class="cdtm-badge">COUNTRY TOTALS · CACHED ON CYBERDAT</span></div>
 <p class="cdtm-disclaimer"><strong>Location of a server or victim does not establish attacker origin.</strong> Country totals only; no attack paths are drawn.</p>
 <div class="cdtm-tabs" role="tablist" aria-label="Data layer" data-cdtm-tabs>
@@ -55,15 +66,16 @@ function cyberdat_threat_map_render(?array $snapshot, int $now): string {
 <?php if ($l['show']): ?>
 <noscript><div class="cdtm-table"><table><caption>Top 10 countries · <?php echo $h($pd['label']); ?> · <?php echo $h($l['unit']); ?></caption>
 <thead><tr><th scope="col">#</th><th scope="col">Country</th><th scope="col"><?php echo $h(ucfirst($l['unit'])); ?></th></tr></thead><tbody>
-<?php foreach ($pd['top'] as $i => $row): ?><tr><td><?php echo (int) $i + 1; ?></td><td><?php echo $h($row['name']); ?></td><td><?php echo $h(number_format_i18n($row['n'])); ?></td></tr>
+<?php foreach ($pd['top'] as $i => $row): ?><tr><td><?php echo (int) $i + 1; ?></td><td><?php echo $h($row['name']); ?></td><td><?php echo $h($row['text']); ?></td></tr>
 <?php endforeach; if (!$pd['top']): ?><tr><td colspan="3">No country totals in this period.</td></tr><?php endif; ?>
-</tbody></table><p class="cdtm-note">The interactive map, other periods and country details need JavaScript.</p></div></noscript>
+</tbody></table><?php if ($pd['low']): ?><p class="cdtm-note"><?php echo $h(CDTM_View::LOW_ACTIVITY_TEXT); ?></p><?php endif; ?><p class="cdtm-note">The interactive map, other periods and country details need JavaScript.</p></div></noscript>
 <?php endif; ?>
 <div class="cdtm-slot" data-cdtm-slot><?php if ($on): ?>
 <div class="cdtm-stage" data-cdtm-stage data-state="<?php echo $l['show'] ? 'data' : 'nodata'; ?>">
 <div class="cdtm-mapbox"><div class="cdtm-map" data-cdtm-map role="group" aria-label="World map shaded by country totals. For keyboard access use the top 10 list or the country search."></div>
 <div class="cdtm-tip" data-cdtm-tip aria-hidden="true" hidden></div>
 <div class="cdtm-legend" data-cdtm-legend></div>
+<p class="cdtm-note cdtm-low" data-cdtm-low<?php echo $pd['low'] ? '' : ' hidden'; ?>><?php echo $h(CDTM_View::LOW_ACTIVITY_TEXT); ?></p>
 <p class="cdtm-mapnote">Map: Natural Earth (public domain) via world-atlas 2.0.2 (ISC). Country shapes do not imply political boundaries.</p></div>
 <div class="cdtm-side">
 <div class="cdtm-country" data-cdtm-country aria-live="polite"><p class="cdtm-kicker">COUNTRY DETAILS</p><p>Select a country on the map, in the top 10 or in the search to see its total, the change against the previous period, a breakdown and a link to the source records.</p></div>
@@ -71,7 +83,7 @@ function cyberdat_threat_map_render(?array $snapshot, int $now): string {
 <div class="cdtm-search"><label for="cdtm-search-input">Find a country</label><input id="cdtm-search-input" type="search" autocomplete="off" data-cdtm-search><ul data-cdtm-results aria-label="Matching countries"></ul></div>
 </div></div>
 <?php endif; ?></div>
-<p class="cdtm-source">Source: <a href="<?php echo esc_url($l['source_url']); ?>" rel="noopener noreferrer"><?php echo $h($l['source']); ?></a> · <a href="<?php echo esc_url($l['terms_url']); ?>" rel="noopener noreferrer">terms of use</a>. <?php echo $h($l['terms']); ?></p>
+<p class="cdtm-source">Source: <a href="<?php echo esc_url($l['source_url']); ?>" rel="noopener noreferrer"><?php echo $h($l['source']); ?></a> · <a href="<?php echo esc_url($l['terms_url']); ?>" rel="noopener noreferrer"><?php echo $h($l['terms_label'] ?? 'terms of use'); ?></a>. <?php echo $h($l['terms']); ?></p>
 </div>
 <?php endforeach; ?>
 <script type="application/json" data-cdtm-data><?php echo wp_json_encode(CDTM_View::client_data($snapshot, $model), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES); ?></script>

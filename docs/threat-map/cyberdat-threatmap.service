@@ -1,6 +1,7 @@
 # Sample unit: Global Cyber Threat Map collector (staging). Installed by Codex; adjust the paths to the server.
 # Runs as the site user (never root). `wp cyberdat threatmap sync` runs only the layers that are due:
-# feodo in the :07 slot, ransomware in the :27 slot, the :47 run only catches up a missed slot.
+# feodo in the :07 slot, ransomware in the :27 slot, radar (Cloudflare Radar) in the :47 slot; a missed slot is
+# caught up by any later run two hours after the layer's previous attempt.
 # Each source's MIN_INTERVAL is enforced in the code. No WP-Cron.
 [Unit]
 Description=CyberDat staging Global Cyber Threat Map sync
@@ -15,8 +16,8 @@ Group=cyberdat-staging
 WorkingDirectory=/var/www/cyberdat-staging/public
 Environment=WP_CLI_CACHE_DIR=/tmp/wp-cli-cache
 ExecStart=/usr/local/bin/wp --path=/var/www/cyberdat-staging/public cyberdat threatmap sync
-# Two layers, at most three requests of 20 s each per layer, plus the database work.
-TimeoutStartSec=300
+# Normally one layer per run; at most three layers with three requests of 20 s each, plus the database work.
+TimeoutStartSec=600
 MemoryMax=256M
 CPUQuota=25%
 Nice=15

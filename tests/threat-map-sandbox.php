@@ -19,7 +19,7 @@ require $theme . '/inc/threat-map/render.php';
 $out = $argv[1] ?? '';
 if ($out === '' || !is_dir($out)) { fwrite(STDERR, "usage: php tests/threat-map-sandbox.php <existing-out-dir>\n"); exit(2); }
 $withKey = !in_array('--no-key', $argv, true);
-if ($withKey) define('CYBERDAT_RANSOMWARE_LIVE_API_KEY', 'sandbox-' . bin2hex(random_bytes(6)));
+if ($withKey) { define('CYBERDAT_RANSOMWARE_LIVE_API_KEY', 'sandbox-' . bin2hex(random_bytes(6))); define('CYBERDAT_CLOUDFLARE_RADAR_TOKEN', 'sandbox-' . bin2hex(random_bytes(6))); }
 
 $T = gmmktime(19, 27, 30, 11, 24, 2026);
 mt_srand(20261124);
@@ -35,22 +35,32 @@ $month = static function (int $m) use ($T, $weights, $sectors, $pick) {
 	return json_encode($rows);
 };
 $feodo = static function (int $k) {
-	$c = ['US', 'US', 'US', 'DE', 'NL', 'FR', 'RU', 'GB', 'JP', 'BR', 'SG', 'US', 'DE'];
-	$f = ['QakBot', 'Emotet', 'Pikabot', 'Dridex', 'TrickBot'];
+	// like the real dataset today: a handful of servers in three countries (→ "Low activity")
+	$c = ['US', 'US', 'GB', 'JP', 'US'];
+	$f = ['QakBot', 'Emotet'];
 	$rows = [];
-	for ($i = 0; $i < 9 + $k % 4; $i++) $rows[] = ['ip_address' => '192.0.2.' . ($i + 1), 'country' => $c[$i % count($c)], 'malware' => $f[($i + $k) % count($f)]];
+	for ($i = 0; $i < 4 + $k % 2; $i++) $rows[] = ['ip_address' => '192.0.2.' . ($i + 1), 'country' => $c[$i % count($c)], 'malware' => $f[($i + $k) % count($f)]];
 	return json_encode($rows);
 };
 
+// Cloudflare Radar: the fixture's format and countries, shares varied per period (still percentages)
+$radar = static function (string $url) {
+	$d = json_decode(file_get_contents(__DIR__ . '/fixtures/threat-map/radar-l7-target-7d.json'), true);
+	$k = str_contains($url, 'dateRange=1d') ? 1 : (str_contains($url, 'dateRange=30d') ? 3 : 2);
+	foreach (['top_0', 'top_1'] as $t) foreach ($d['result'][$t] as $i => &$r) $r['value'] = sprintf('%.6f', (float) $r['value'] * (1 + (($i * $k) % 7 - 3) / 20));
+	return json_encode($d);
+};
 $store = new CDTM_Memory_Store();
-$http = static function ($url) use ($month, $feodo, &$tick) {
+$http = static function ($url) use ($month, $feodo, $radar, &$tick) {
 	if (str_contains($url, 'feodotracker')) return ['code' => 200, 'headers' => [], 'body' => $feodo($tick)];
+	if (str_contains($url, 'api.cloudflare.com')) return ['code' => 200, 'headers' => [], 'body' => $radar($url)];
 	parse_str((string) parse_url($url, PHP_URL_QUERY), $q);
 	return ['code' => 200, 'headers' => [], 'body' => $month(gmmktime(0, 0, 0, (int) $q['month'], 1, (int) $q['year']))];
 };
 // Feodo: 9 days of hourly runs (history since then); Ransomware.live: one run backfills its 60 days.
 for ($tick = 0, $t = CDTM::floor_hour($T) - 9 * 86400 + 7 * 60; $t <= $T; $t += 3600, $tick++) CDTM::sync_layer($store, $http, 'feodo', $t, true);
 CDTM::sync_layer($store, $http, 'ransomware', $T, true);
+CDTM::sync_layer($store, $http, 'radar', $T, true);
 $snapshot = CDTM::snapshot($store);
 
 $css = ['tokens', 'main', 'threat-dashboard', 'threat-geo', 'threat-map'];

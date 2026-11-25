@@ -9,6 +9,7 @@ the server collects the data on a schedule (`wp cyberdat threatmap sync`) and ke
 | `feodo` — botnet C2 servers | abuse.ch Feodo Tracker | yes, `country` (ISO 3166-1 alpha-2) | no | yes |
 | `ransomware` — reported ransomware victims | Ransomware.live API PRO | yes, `country` (ISO 3166-1 alpha-2) | yes, free personal token | yes, when the key constant is set; otherwise "not configured" |
 | — malware URLs | abuse.ch URLhaus | no | yes, Auth-Key | **no** |
+| `radar` — DDoS targets (v1.1) | Cloudflare Radar API | yes, `targetCountryAlpha2`; values are percentages | yes, free API token | yes, when the token constant is set; otherwise "not configured" |
 
 ## abuse.ch Feodo Tracker
 
@@ -67,6 +68,43 @@ the server collects the data on a schedule (`wp cyberdat threatmap sync`) and ke
   and permalinks are never stored. The page shows counts only; there is no public API or feed of the data.
 - **Records link:** `https://www.ransomware.live/country/<CC>` (checked: a per-country page exists).
 
+## Cloudflare Radar (v1.1, layer `radar` "DDoS targets")
+
+Checked on 2026-11-25 against the official documentation.
+- **URL:** `GET https://api.cloudflare.com/client/v4/radar/attacks/layer7/top/locations/target`
+  ([API reference](https://developers.cloudflare.com/api/resources/radar/subresources/attacks/subresources/layer7/subresources/top/subresources/locations/methods/target/)).
+  Query: `dateRange=1d|7d|30d` plus the same value with `control` (`7dcontrol`) for the comparison window,
+  `mitigationProduct=DDOS` (HTTP DDoS mitigation only, not WAF or bot rules), `limit=200`, `format=json`.
+  One request per period: 3 requests per run.
+- **Why layer 7, not layer 3/4:** the Radar glossary says that for layer 3/4 attacks "selected location is the
+  location of the data center(s) where the attacks were mitigated", i.e. not the target. For layer 7 the target
+  location is "determined by the attacked zone's billing country, when available".
+- **Format:** `{"success": true, "result": {"meta": {"dateRange": [{startTime, endTime}, …], "lastUpdated",
+  "normalization": "PERCENTAGE", …}, "top_0": [{"rank", "targetCountryAlpha2", "targetCountryName", "value"}],
+  "top_1": [...]}}`. `value` is a string with a percentage "out of the total layer 7 attacks"; `top_1` is the control
+  window. The collector rejects any answer whose `normalization` is not `PERCENTAGE`, so shares are never shown as
+  counts. The page unit is "% of observed attacks"; the change is shown in percentage points.
+- **Comparison:** given by the API (`<range>control`). The documentation says the control window is shifted back by
+  the window's length rounded up to whole weeks, so for 24 h and 30 days it is not the immediately preceding period;
+  the page labels it "vs comparison window" with its dates. CyberDat keeps no own history for this layer.
+- **Key:** yes. A Custom API Token with "Account > Radar > Read"
+  ([first request](https://developers.cloudflare.com/radar/get-started/first-request/)), sent as
+  `Authorization: Bearer`. Read from the constant `CYBERDAT_CLOUDFLARE_RADAR_TOKEN` in `wp-config.php`; never stored.
+  Without a token the API answers `9106 Missing X-Auth-Key, X-Auth-Email or Authorization headers` (checked).
+- **Terms:** "Data available via Radar API endpoints is made available under the CC BY-NC 4.0 license"
+  ([Radar docs](https://developers.cloudflare.com/radar/), [license](https://creativecommons.org/licenses/by-nc/4.0/)).
+  CC BY-NC requires credit and a link to the license and forbids commercial use; the same owner decision as for
+  Ransomware.live applies before the token is set in production. No exact citation text is published for API data;
+  the page shows "Data: Cloudflare Radar (radar.cloudflare.com), licensed under CC BY-NC 4.0." with links to Radar
+  and to the license.
+- **Frequency:** the Cloudflare API limit is "1,200 requests per five minute period per user"
+  ([limits](https://developers.cloudflare.com/fundamentals/api/reference/limits/)); Radar publishes no update
+  interval for this dataset. We fetch once an hour in the :47 slot; `MIN_INTERVAL` = 1800 s.
+- **What we take:** per period the percentage per target country and the comparison percentage, the two windows and
+  `lastUpdated`. Country names from the answer are not used (ours come from the ISO table).
+- **Records link:** https://radar.cloudflare.com/ (a per-country page could not be verified: the site answers
+  automated requests with a challenge).
+
 ## abuse.ch URLhaus — not enabled
 
 - **URL:** https://urlhaus.abuse.ch/api/ (database dumps `/downloads/…`, bulk API `https://urlhaus-api.abuse.ch/`).
@@ -85,3 +123,16 @@ the server collects the data on a schedule (`wp cyberdat threatmap sync`) and ke
 world-atlas 2.0.2, `countries-110m.json` (ISC license, data from Natural Earth, public domain), converted by
 `tools/threat-map/build-geometry.cjs` into `wp-content/themes/cyberdat/assets/maps/threat-map-countries.json`
 (equirectangular, Antarctica removed). See `wp-content/themes/cyberdat/assets/maps/NOTICE.md`.
+
+## Flags (v1.1)
+
+flag-icons 7.6.0 (npm, MIT), `flags/4x3` SVG, only the codes of `assets/maps/iso3166-1.json` (250). Built and
+checked by `tools/threat-map/build-flags.cjs` with `tools/threat-map/svg-safety.cjs` (no scripts, event handlers,
+foreignObject, external references, embedded images or styles); served from the theme, loaded lazily, decorative
+(the country is always named in text). See `wp-content/themes/cyberdat/assets/flags/NOTICE.md`.
+
+## Default layer (v1.1)
+
+The tab order comes from the data: layers in status ok first, by the number of countries with data in 7 days, ties
+in the order Ransomware.live, Cloudflare Radar, Feodo Tracker; if no layer is ok, Ransomware.live opens first with its
+own status. A layer with fewer than 5 countries with data shows "Low activity in the source right now".

@@ -41,6 +41,16 @@ assert.equal(m.freshness(null, 1), 'unavailable');
 assert.equal(m.ago(30), 'less than a minute ago');
 assert.equal(m.ago(14 * 60), '14 min ago');
 pass('freshness and "Updated N min ago" in the browser match the server thresholds (3 h, 48 h)');
+assert.deepEqual(m.edgesShare(0), []);
+assert.deepEqual(m.edgesShare(19.81), [0.01, 0.2, 0.79, 2.97, 8.91]);
+assert.deepEqual(m.edgesShare(0.005), [0.005]);
+for (const max of [0.03, 0.5, 4.3, 37.2, 100]) { const e = m.edgesShare(max); assert.ok(e.every((v, i) => v <= max && (i === 0 || v > e[i - 1])), 'share edges ' + max); assert.equal(m.step(max, e), e.length); }
+assert.deepEqual(m.legendShare([0.01, 0.2, 0.79, 2.97, 8.91], 19.81).map(x => x.label), ['0.01–0.20%', '0.20–0.79%', '0.79–2.97%', '2.97–8.91%', '≥ 8.91% (max 19.81%)']);
+assert.deepEqual(m.deltaShare(4.3, 3.8), { text: '+0.50 pp', dir: 'up' });
+assert.deepEqual(m.deltaShare(1.2, 1.45), { text: '−0.25 pp', dir: 'down' });
+assert.deepEqual(m.deltaShare(2, 2), { text: '0.00 pp', dir: '' });
+assert.equal(m.deltaShare(2, undefined), null);
+pass('shares (Cloudflare Radar): steps and legend in percent; change in percentage points, never a count or a relative change');
 assert.equal(m.recordsUrl('https://www.ransomware.live/country/{CC}', 'FR'), 'https://www.ransomware.live/country/FR');
 assert.equal(m.recordsUrl('javascript:alert(1)', 'FR'), null);
 assert.equal(m.recordsUrl('http://x.example/{CC}', 'FR'), null);

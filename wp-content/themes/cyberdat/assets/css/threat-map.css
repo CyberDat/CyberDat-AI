@@ -91,3 +91,8 @@
  .cdtm-tabs [role=tab]{flex:1 1 100%;min-width:0}
 }
 @media (prefers-reduced-motion:reduce){.cdtm-c{transition:none}}
+/* v1.1: decorative flags (flag-icons 4x3), fixed size so nothing shifts while they load; placeholder of the same size */
+.cdtm-flag{display:inline-block;width:20px;height:15px;flex:none;margin-right:.45rem;vertical-align:-2px;border-radius:2px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+.cdtm-flag--none{background:#2a3d4c}
+.cdtm-country h4 .cdtm-flag{width:24px;height:18px;vertical-align:-1px}
+.cdtm-low{margin:.35rem .25rem 0;color:#f3dfb0}

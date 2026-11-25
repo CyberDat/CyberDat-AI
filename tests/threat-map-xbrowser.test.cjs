@@ -67,6 +67,26 @@ async function run(name) {
 			else { assert.equal(layout.map, 'none'); assert.equal(layout.search, 'block'); }
 			pass(`${vpName}: ${vpName === 'desktop' ? layout.paths + ' country shapes, no search box' : 'map replaced by the top 10 and a country search'}; no horizontal scroll (${layout.scroll}/${layout.inner})`);
 
+			// v1.1: default tab from the data, flags only for what is on the page, fixed size, empty alt
+			await page.evaluate(() => document.querySelector('[data-cdtm-top]').scrollIntoView({ block: 'center' }));
+			await sleep(600);
+			// loaded = decode() succeeds (Firefox reports naturalWidth 0 for SVGs that have only a viewBox)
+			const decoded = await page.evaluate(() => Promise.all([...document.querySelectorAll('[data-cdtm-top] img.cdtm-flag')].map(i => i.decode().then(() => true, () => false))));
+			assert.ok(decoded.length === 10 && decoded.every(Boolean), 'flags decoded: ' + decoded.join(','));
+			const fl = await page.evaluate(() => ({
+				tabs: [...document.querySelectorAll('[data-cdtm-tab]')].map(t => t.dataset.cdtmTab + (t.getAttribute('aria-selected') === 'true' ? '*' : '')),
+				imgs: [...document.querySelectorAll('[data-cdtm-top] img.cdtm-flag')].map(i => ({ w: i.getAttribute('width'), h: i.getAttribute('height'), alt: i.getAttribute('alt'), lazy: i.loading, ok: i.complete, box: Math.round(i.getBoundingClientRect().width) + 'x' + Math.round(i.getBoundingClientRect().height) })),
+				low: document.querySelector('[data-cdtm-low]').hidden,
+			}));
+			const flagRequests = requests.filter(u => u.includes('/assets/flags/4x3/'));
+			assert.deepEqual(fl.tabs, ['radar*', 'ransomware', 'feodo']);
+			assert.equal(fl.imgs.length, 10);
+			assert.ok(fl.imgs.every(i => i.w === '20' && i.h === '15' && i.alt === '' && i.lazy === 'lazy' && i.ok && i.box === '20x15'), JSON.stringify(fl.imgs[0]));
+			assert.ok(flagRequests.length >= 1 && flagRequests.length <= 10, 'flag requests ' + flagRequests.length);
+			assert.ok(flagRequests.every(u => new URL(u).origin === ORIGIN));
+			assert.equal(fl.low, true);
+			pass(`${vpName}: default tab from the data (${fl.tabs.join(', ')}); 10 flags 20x15, lazy, alt="" — ${flagRequests.length} flag files requested (not 250), all from the CyberDat origin`);
+
 			if (name === 'chromium') {
 				const cls = await page.evaluate(() => window.__cls);
 				assert.ok(cls < 0.02, 'CLS ' + cls);
@@ -84,12 +104,12 @@ async function run(name) {
 			await page.focus('.cdtm-disclaimer').catch(() => {});
 			await page.evaluate(() => { const d = document.querySelector('.cdtm-disclaimer'); d.tabIndex = -1; d.focus(); });
 			const order = [];
-			for (let i = 0; i < 9; i++) { await page.keyboard.press(TAB); order.push(await page.evaluate(() => { const a = document.activeElement; return a.dataset.cdtmTab || a.dataset.cdtmPeriod || (a.dataset.cdtmCc ? 'top:' + a.dataset.cdtmCc : a.tagName); })); }
-			assert.deepEqual(order.slice(0, 5), ['feodo', 'ransomware', '24h', '7d', '30d']);
-			assert.ok(order.slice(5).every(x => x.startsWith('top:')), order.join(','));
-			await page.focus('[data-cdtm-tab="feodo"]');
+			for (let i = 0; i < 10; i++) { await page.keyboard.press(TAB); order.push(await page.evaluate(() => { const a = document.activeElement; return a.dataset.cdtmTab || a.dataset.cdtmPeriod || (a.dataset.cdtmCc ? 'top:' + a.dataset.cdtmCc : a.tagName); })); }
+			assert.deepEqual(order.slice(0, 6), ['radar', 'ransomware', 'feodo', '24h', '7d', '30d']);
+			assert.ok(order.slice(6).every(x => x.startsWith('top:')), order.join(','));
+			await page.focus('[data-cdtm-tab="radar"]');
 			await page.keyboard.press('ArrowRight');
-			assert.equal(await page.evaluate(() => document.activeElement.dataset.cdtmTab + '|' + document.querySelector('[data-cdtm-tab=ransomware]').getAttribute('aria-selected') + '|' + document.querySelector('#cdtm-panel-feodo').hidden), 'ransomware|true|true');
+			assert.equal(await page.evaluate(() => document.activeElement.dataset.cdtmTab + '|' + document.querySelector('[data-cdtm-tab=ransomware]').getAttribute('aria-selected') + '|' + document.querySelector('#cdtm-panel-radar').hidden), 'ransomware|true|true');
 			await page.focus('[data-cdtm-period="30d"]');
 			await page.keyboard.press('Enter');
 			assert.equal(await page.getAttribute('[data-cdtm-period="30d"]', 'aria-pressed'), 'true');
@@ -116,6 +136,7 @@ async function run(name) {
 				await sleep(150);
 				const tip = await page.evaluate(() => { const t = document.querySelector('[data-cdtm-tip]'); return t.hidden ? '' : t.textContent; });
 				assert.match(tip, /United States\d[\d,]* reported victims/);
+				assert.equal(await page.evaluate(() => document.querySelectorAll('[data-cdtm-tip] img.cdtm-flag').length), 1);
 				await page.mouse.click(box.x + box.width * 0.55, box.y + box.height * 0.6);
 				assert.equal(await page.evaluate(() => document.querySelector('[data-cdtm-country] h4')?.textContent), 'United States');
 				assert.equal(await page.getAttribute('.cdtm-map path[data-cc="US"]', 'class'), 'cdtm-c s5 is-selected');
@@ -123,10 +144,30 @@ async function run(name) {
 				assert.match(legend, /^Reported victims:none1/);
 				pass(`desktop: hover tooltip "${tip}", click selects the country, legend "${legend.slice(0, 60)}…"`);
 				await page.locator('.cdtm').screenshot({ path: path.join(EVIDENCE, tag + '-ransomware-30d-US.png') });
-				await page.click('[data-cdtm-tab="feodo"]');
+				// Cloudflare Radar: percentages, change in percentage points against the source's comparison window
+				await page.click('[data-cdtm-tab="radar"]');
 				await page.click('[data-cdtm-period="7d"]');
+				await page.click('[data-cdtm-top] li:first-child button');
 				await sleep(150);
-				await page.locator('.cdtm').screenshot({ path: path.join(EVIDENCE, tag + '-feodo-7d.png') });
+				const rd = await page.evaluate(() => ({
+					legend: document.querySelector('[data-cdtm-legend]').textContent,
+					values: [...document.querySelectorAll('[data-cdtm-top] .cdtm-top-n')].map(x => x.textContent),
+					change: [...document.querySelectorAll('[data-cdtm-country] .cdtm-figures div:nth-child(2) > *')].map(x => x.textContent),
+					low: document.querySelector('[data-cdtm-low]').hidden,
+				}));
+				assert.match(rd.legend, /^% of observed attacks:none0\.01–/);
+				assert.ok(rd.values.length === 10 && rd.values.every(v => /^\d+\.\d{2}%$/.test(v)), rd.values.join(' '));
+				assert.equal(rd.change[0], 'vs comparison window');
+				assert.match(rd.change[1], /^[+−]?\d+\.\d{2} pp$/);
+				assert.match(rd.change[2], /^then: \d+\.\d{2}% \(2026-11-10 – 2026-11-17, as provided by the source\)$/);
+				assert.equal(rd.low, true);
+				pass(`desktop: Radar in percent (top ${rd.values[0]}, legend "${rd.legend.slice(0, 40)}…"), change ${rd.change[1]} vs the source's comparison window; no low-activity note`);
+				await page.locator('.cdtm').screenshot({ path: path.join(EVIDENCE, tag + '-radar-7d-US.png') });
+				await page.click('[data-cdtm-tab="feodo"]');
+				await sleep(150);
+				assert.equal(await page.evaluate(() => document.querySelector('[data-cdtm-low]').hidden), false);
+				pass('desktop: Feodo (3 countries) shows "Low activity in the source right now"');
+				await page.locator('.cdtm').screenshot({ path: path.join(EVIDENCE, tag + '-feodo-7d-low.png') });
 			} else {
 				await page.fill('[data-cdtm-search]', 'ger');
 				const hits = await page.$$eval('[data-cdtm-results] button', b => b.map(x => x.dataset.cdtmCc));
@@ -154,16 +195,16 @@ async function run(name) {
 			}));
 			if (name === 'chromium') await page.locator('.cdtm').screenshot({ path: path.join(EVIDENCE, `${name}-status-${s}.png`) });
 		}
-		assert.deepEqual(statuses.stale.chips, ['Stale', 'Stale']);
-		assert.match(statuses.stale.status[1], /^Stale: last successful update 4 h 0 min ago \(2026-11-24 19:27 UTC\)/);
+		assert.deepEqual(statuses.stale.chips, ['Stale', 'Stale', 'Stale']);
+		assert.match(statuses.stale.status[0], /^Stale: last successful update 4 h 0 min ago \(2026-11-24 19:27 UTC\)/);
 		assert.ok(statuses.stale.top > 0 && statuses.stale.stage === 'data');
-		assert.deepEqual(statuses.unavailable.chips, ['Unavailable', 'Unavailable']);
-		assert.match(statuses.unavailable.status[1], /^Data unavailable since 2026-11-24 19:27 UTC/);
+		assert.deepEqual(statuses.unavailable.chips, ['Unavailable', 'Unavailable', 'Unavailable']);
+		assert.match(statuses.unavailable.status[0], /^Data unavailable since 2026-11-24 19:27 UTC/);
 		assert.ok(statuses.unavailable.top === 0 && statuses.unavailable.stage === 'nodata');
 		assert.ok(statuses.empty.status.every(t => t.startsWith('Data unavailable: waiting for the first successful collection')) && statuses.empty.stage === 'nodata');
-		assert.deepEqual(statuses.notconfigured.chips, ['Updated', 'Not configured']);
+		assert.deepEqual(statuses.notconfigured.chips, ['Updated', 'Not configured', 'Not configured']);
 		assert.match(statuses.notconfigured.status[1], /^Not configured: this layer needs a source API key/);
-		pass('statuses: stale after 3 h (numbers with time), unavailable after 48 h (grey map, no numbers), empty store, "not configured" without the key');
+		pass('statuses: stale after 3 h (numbers with time), unavailable after 48 h (grey map, no numbers), empty store, "not configured" without keys (Feodo, the only ok layer, opens first)');
 		await ctx.close();
 
 		// without JavaScript: server top-10 tables for every layer, no controls that need the script
@@ -176,13 +217,13 @@ async function run(name) {
 			stage: getComputedStyle(document.querySelector('.cdtm-stage')).display,
 			panels: [...document.querySelectorAll('.cdtm-panel')].filter(p => p.offsetParent).length,
 		}));
-		assert.equal(nj.tables.length, 2);
+		assert.equal(nj.tables.length, 3);
 		assert.ok(nj.tables.every(t => /:([1-9]|10)$/.test(t)), nj.tables.join(' | '));
 		assert.equal(nj.tabs, 'none');
 		assert.equal(nj.stage, 'none');
-		assert.equal(nj.panels, 2);
+		assert.equal(nj.panels, 3);
 		if (name === 'chromium') await p2.locator('.cdtm').screenshot({ path: path.join(EVIDENCE, `${name}-no-javascript.png`) });
-		pass('no JavaScript: both layers with status and a server top-10 table; tabs and map hidden — ' + nj.tables.join(' | '));
+		pass('no JavaScript: all three layers with status and a server top-10 table; tabs and map hidden — ' + nj.tables.join(' | '));
 		await nojs.close();
 	} finally {
 		await browser.close();

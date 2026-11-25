@@ -1,0 +1,748 @@
+{
+ "success": true,
+ "errors": [],
+ "result": {
+  "meta": {
+   "dateRange": [
+    {
+     "startTime": "2026-11-17T19:00:00Z",
+     "endTime": "2026-11-24T19:00:00Z"
+    },
+    {
+     "startTime": "2026-11-10T19:00:00Z",
+     "endTime": "2026-11-17T19:00:00Z"
+    }
+   ],
+   "lastUpdated": "2026-11-24T19:15:00Z",
+   "normalization": "PERCENTAGE",
+   "confidenceInfo": {
+    "level": null,
+    "annotations": []
+   },
+   "units": [
+    {
+     "name": "*",
+     "value": "requests"
+    }
+   ]
+  },
+  "top_0": [
+   {
+    "rank": 1,
+    "targetCountryAlpha2": "US",
+    "targetCountryName": "Country US",
+    "value": "19.810430"
+   },
+   {
+    "rank": 2,
+    "targetCountryAlpha2": "DE",
+    "targetCountryName": "Country DE",
+    "value": "11.334765"
+   },
+   {
+    "rank": 3,
+    "targetCountryAlpha2": "GB",
+    "targetCountryName": "Country GB",
+    "value": "7.796219"
+   },
+   {
+    "rank": 4,
+    "targetCountryAlpha2": "FR",
+    "targetCountryName": "Country FR",
+    "value": "5.881125"
+   },
+   {
+    "rank": 5,
+    "targetCountryAlpha2": "BR",
+    "targetCountryName": "Country BR",
+    "value": "4.690462"
+   },
+   {
+    "rank": 6,
+    "targetCountryAlpha2": "IN",
+    "targetCountryName": "Country IN",
+    "value": "3.882901"
+   },
+   {
+    "rank": 7,
+    "targetCountryAlpha2": "JP",
+    "targetCountryName": "Country JP",
+    "value": "3.301386"
+   },
+   {
+    "rank": 8,
+    "targetCountryAlpha2": "CA",
+    "targetCountryName": "Country CA",
+    "value": "2.863905"
+   },
+   {
+    "rank": 9,
+    "targetCountryAlpha2": "NL",
+    "targetCountryName": "Country NL",
+    "value": "2.523597"
+   },
+   {
+    "rank": 10,
+    "targetCountryAlpha2": "SG",
+    "targetCountryName": "Country SG",
+    "value": "2.251802"
+   },
+   {
+    "rank": 11,
+    "targetCountryAlpha2": "AU",
+    "targetCountryName": "Country AU",
+    "value": "2.030043"
+   },
+   {
+    "rank": 12,
+    "targetCountryAlpha2": "KR",
+    "targetCountryName": "Country KR",
+    "value": "1.845890"
+   },
+   {
+    "rank": 13,
+    "targetCountryAlpha2": "IT",
+    "targetCountryName": "Country IT",
+    "value": "1.690683"
+   },
+   {
+    "rank": 14,
+    "targetCountryAlpha2": "ES",
+    "targetCountryName": "Country ES",
+    "value": "1.558210"
+   },
+   {
+    "rank": 15,
+    "targetCountryAlpha2": "PL",
+    "targetCountryName": "Country PL",
+    "value": "1.443905"
+   },
+   {
+    "rank": 16,
+    "targetCountryAlpha2": "ID",
+    "targetCountryName": "Country ID",
+    "value": "1.344335"
+   },
+   {
+    "rank": 17,
+    "targetCountryAlpha2": "TR",
+    "targetCountryName": "Country TR",
+    "value": "1.256876"
+   },
+   {
+    "rank": 18,
+    "targetCountryAlpha2": "MX",
+    "targetCountryName": "Country MX",
+    "value": "1.179484"
+   },
+   {
+    "rank": 19,
+    "targetCountryAlpha2": "SE",
+    "targetCountryName": "Country SE",
+    "value": "1.110548"
+   },
+   {
+    "rank": 20,
+    "targetCountryAlpha2": "CH",
+    "targetCountryName": "Country CH",
+    "value": "1.048780"
+   },
+   {
+    "rank": 21,
+    "targetCountryAlpha2": "HK",
+    "targetCountryName": "Country HK",
+    "value": "0.993139"
+   },
+   {
+    "rank": 22,
+    "targetCountryAlpha2": "ZA",
+    "targetCountryName": "Country ZA",
+    "value": "0.942773"
+   },
+   {
+    "rank": 23,
+    "targetCountryAlpha2": "AR",
+    "targetCountryName": "Country AR",
+    "value": "0.896981"
+   },
+   {
+    "rank": 24,
+    "targetCountryAlpha2": "BE",
+    "targetCountryName": "Country BE",
+    "value": "0.855178"
+   },
+   {
+    "rank": 25,
+    "targetCountryAlpha2": "AT",
+    "targetCountryName": "Country AT",
+    "value": "0.816876"
+   },
+   {
+    "rank": 26,
+    "targetCountryAlpha2": "UA",
+    "targetCountryName": "Country UA",
+    "value": "0.781660"
+   },
+   {
+    "rank": 27,
+    "targetCountryAlpha2": "IL",
+    "targetCountryName": "Country IL",
+    "value": "0.749180"
+   },
+   {
+    "rank": 28,
+    "targetCountryAlpha2": "VN",
+    "targetCountryName": "Country VN",
+    "value": "0.719136"
+   },
+   {
+    "rank": 29,
+    "targetCountryAlpha2": "TH",
+    "targetCountryName": "Country TH",
+    "value": "0.691268"
+   },
+   {
+    "rank": 30,
+    "targetCountryAlpha2": "PH",
+    "targetCountryName": "Country PH",
+    "value": "0.665353"
+   },
+   {
+    "rank": 31,
+    "targetCountryAlpha2": "MY",
+    "targetCountryName": "Country MY",
+    "value": "0.641197"
+   },
+   {
+    "rank": 32,
+    "targetCountryAlpha2": "CL",
+    "targetCountryName": "Country CL",
+    "value": "0.618631"
+   },
+   {
+    "rank": 33,
+    "targetCountryAlpha2": "CO",
+    "targetCountryName": "Country CO",
+    "value": "0.597505"
+   },
+   {
+    "rank": 34,
+    "targetCountryAlpha2": "NO",
+    "targetCountryName": "Country NO",
+    "value": "0.577689"
+   },
+   {
+    "rank": 35,
+    "targetCountryAlpha2": "DK",
+    "targetCountryName": "Country DK",
+    "value": "0.559068"
+   },
+   {
+    "rank": 36,
+    "targetCountryAlpha2": "FI",
+    "targetCountryName": "Country FI",
+    "value": "0.541538"
+   },
+   {
+    "rank": 37,
+    "targetCountryAlpha2": "IE",
+    "targetCountryName": "Country IE",
+    "value": "0.525008"
+   },
+   {
+    "rank": 38,
+    "targetCountryAlpha2": "PT",
+    "targetCountryName": "Country PT",
+    "value": "0.509397"
+   },
+   {
+    "rank": 39,
+    "targetCountryAlpha2": "CZ",
+    "targetCountryName": "Country CZ",
+    "value": "0.494632"
+   },
+   {
+    "rank": 40,
+    "targetCountryAlpha2": "RO",
+    "targetCountryName": "Country RO",
+    "value": "0.480648"
+   },
+   {
+    "rank": 41,
+    "targetCountryAlpha2": "HU",
+    "targetCountryName": "Country HU",
+    "value": "0.467385"
+   },
+   {
+    "rank": 42,
+    "targetCountryAlpha2": "GR",
+    "targetCountryName": "Country GR",
+    "value": "0.454790"
+   },
+   {
+    "rank": 43,
+    "targetCountryAlpha2": "NZ",
+    "targetCountryName": "Country NZ",
+    "value": "0.442815"
+   },
+   {
+    "rank": 44,
+    "targetCountryAlpha2": "EG",
+    "targetCountryName": "Country EG",
+    "value": "0.431417"
+   },
+   {
+    "rank": 45,
+    "targetCountryAlpha2": "NG",
+    "targetCountryName": "Country NG",
+    "value": "0.420555"
+   },
+   {
+    "rank": 46,
+    "targetCountryAlpha2": "KE",
+    "targetCountryName": "Country KE",
+    "value": "0.410193"
+   },
+   {
+    "rank": 47,
+    "targetCountryAlpha2": "SA",
+    "targetCountryName": "Country SA",
+    "value": "0.400298"
+   },
+   {
+    "rank": 48,
+    "targetCountryAlpha2": "AE",
+    "targetCountryName": "Country AE",
+    "value": "0.390841"
+   },
+   {
+    "rank": 49,
+    "targetCountryAlpha2": "PK",
+    "targetCountryName": "Country PK",
+    "value": "0.381793"
+   },
+   {
+    "rank": 50,
+    "targetCountryAlpha2": "BD",
+    "targetCountryName": "Country BD",
+    "value": "0.373129"
+   },
+   {
+    "rank": 51,
+    "targetCountryAlpha2": "RU",
+    "targetCountryName": "Country RU",
+    "value": "0.364825"
+   },
+   {
+    "rank": 52,
+    "targetCountryAlpha2": "KZ",
+    "targetCountryName": "Country KZ",
+    "value": "0.356860"
+   },
+   {
+    "rank": 53,
+    "targetCountryAlpha2": "PE",
+    "targetCountryName": "Country PE",
+    "value": "0.349215"
+   },
+   {
+    "rank": 54,
+    "targetCountryAlpha2": "MA",
+    "targetCountryName": "Country MA",
+    "value": "0.341869"
+   },
+   {
+    "rank": 55,
+    "targetCountryAlpha2": "LT",
+    "targetCountryName": "Country LT",
+    "value": "0.334808"
+   },
+   {
+    "rank": 56,
+    "targetCountryAlpha2": "LV",
+    "targetCountryName": "Country LV",
+    "value": "0.328014"
+   },
+   {
+    "rank": 57,
+    "targetCountryAlpha2": "EE",
+    "targetCountryName": "Country EE",
+    "value": "0.321474"
+   },
+   {
+    "rank": 58,
+    "targetCountryAlpha2": "SK",
+    "targetCountryName": "Country SK",
+    "value": "0.315173"
+   },
+   {
+    "rank": 59,
+    "targetCountryAlpha2": "BG",
+    "targetCountryName": "Country BG",
+    "value": "0.309100"
+   },
+   {
+    "rank": 60,
+    "targetCountryAlpha2": "RS",
+    "targetCountryName": "Country RS",
+    "value": "0.303241"
+   }
+  ],
+  "top_1": [
+   {
+    "rank": 1,
+    "targetCountryAlpha2": "US",
+    "targetCountryName": "Country US",
+    "value": "22.781995"
+   },
+   {
+    "rank": 2,
+    "targetCountryAlpha2": "DE",
+    "targetCountryName": "Country DE",
+    "value": "10.201289"
+   },
+   {
+    "rank": 3,
+    "targetCountryAlpha2": "GB",
+    "targetCountryName": "Country GB",
+    "value": "7.796219"
+   },
+   {
+    "rank": 4,
+    "targetCountryAlpha2": "FR",
+    "targetCountryName": "Country FR",
+    "value": "6.763293"
+   },
+   {
+    "rank": 5,
+    "targetCountryAlpha2": "BR",
+    "targetCountryName": "Country BR",
+    "value": "4.221416"
+   },
+   {
+    "rank": 6,
+    "targetCountryAlpha2": "IN",
+    "targetCountryName": "Country IN",
+    "value": "3.882901"
+   },
+   {
+    "rank": 7,
+    "targetCountryAlpha2": "JP",
+    "targetCountryName": "Country JP",
+    "value": "3.796593"
+   },
+   {
+    "rank": 8,
+    "targetCountryAlpha2": "CA",
+    "targetCountryName": "Country CA",
+    "value": "2.577515"
+   },
+   {
+    "rank": 9,
+    "targetCountryAlpha2": "NL",
+    "targetCountryName": "Country NL",
+    "value": "2.523597"
+   },
+   {
+    "rank": 10,
+    "targetCountryAlpha2": "SG",
+    "targetCountryName": "Country SG",
+    "value": "2.589572"
+   },
+   {
+    "rank": 11,
+    "targetCountryAlpha2": "AU",
+    "targetCountryName": "Country AU",
+    "value": "1.827039"
+   },
+   {
+    "rank": 12,
+    "targetCountryAlpha2": "KR",
+    "targetCountryName": "Country KR",
+    "value": "1.845890"
+   },
+   {
+    "rank": 13,
+    "targetCountryAlpha2": "IT",
+    "targetCountryName": "Country IT",
+    "value": "1.944285"
+   },
+   {
+    "rank": 14,
+    "targetCountryAlpha2": "ES",
+    "targetCountryName": "Country ES",
+    "value": "1.402389"
+   },
+   {
+    "rank": 15,
+    "targetCountryAlpha2": "PL",
+    "targetCountryName": "Country PL",
+    "value": "1.443905"
+   },
+   {
+    "rank": 16,
+    "targetCountryAlpha2": "ID",
+    "targetCountryName": "Country ID",
+    "value": "1.545986"
+   },
+   {
+    "rank": 17,
+    "targetCountryAlpha2": "TR",
+    "targetCountryName": "Country TR",
+    "value": "1.131188"
+   },
+   {
+    "rank": 18,
+    "targetCountryAlpha2": "MX",
+    "targetCountryName": "Country MX",
+    "value": "1.179484"
+   },
+   {
+    "rank": 19,
+    "targetCountryAlpha2": "SE",
+    "targetCountryName": "Country SE",
+    "value": "1.277130"
+   },
+   {
+    "rank": 20,
+    "targetCountryAlpha2": "CH",
+    "targetCountryName": "Country CH",
+    "value": "0.943902"
+   },
+   {
+    "rank": 21,
+    "targetCountryAlpha2": "HK",
+    "targetCountryName": "Country HK",
+    "value": "0.993139"
+   },
+   {
+    "rank": 22,
+    "targetCountryAlpha2": "ZA",
+    "targetCountryName": "Country ZA",
+    "value": "1.084189"
+   },
+   {
+    "rank": 23,
+    "targetCountryAlpha2": "AR",
+    "targetCountryName": "Country AR",
+    "value": "0.807283"
+   },
+   {
+    "rank": 24,
+    "targetCountryAlpha2": "BE",
+    "targetCountryName": "Country BE",
+    "value": "0.855178"
+   },
+   {
+    "rank": 25,
+    "targetCountryAlpha2": "AT",
+    "targetCountryName": "Country AT",
+    "value": "0.939407"
+   },
+   {
+    "rank": 26,
+    "targetCountryAlpha2": "UA",
+    "targetCountryName": "Country UA",
+    "value": "0.703494"
+   },
+   {
+    "rank": 27,
+    "targetCountryAlpha2": "IL",
+    "targetCountryName": "Country IL",
+    "value": "0.749180"
+   },
+   {
+    "rank": 28,
+    "targetCountryAlpha2": "VN",
+    "targetCountryName": "Country VN",
+    "value": "0.827006"
+   },
+   {
+    "rank": 29,
+    "targetCountryAlpha2": "TH",
+    "targetCountryName": "Country TH",
+    "value": "0.622141"
+   },
+   {
+    "rank": 30,
+    "targetCountryAlpha2": "PH",
+    "targetCountryName": "Country PH",
+    "value": "0.665353"
+   },
+   {
+    "rank": 31,
+    "targetCountryAlpha2": "MY",
+    "targetCountryName": "Country MY",
+    "value": "0.737377"
+   },
+   {
+    "rank": 32,
+    "targetCountryAlpha2": "CL",
+    "targetCountryName": "Country CL",
+    "value": "0.556768"
+   },
+   {
+    "rank": 33,
+    "targetCountryAlpha2": "CO",
+    "targetCountryName": "Country CO",
+    "value": "0.597505"
+   },
+   {
+    "rank": 34,
+    "targetCountryAlpha2": "NO",
+    "targetCountryName": "Country NO",
+    "value": "0.664343"
+   },
+   {
+    "rank": 35,
+    "targetCountryAlpha2": "DK",
+    "targetCountryName": "Country DK",
+    "value": "0.503161"
+   },
+   {
+    "rank": 36,
+    "targetCountryAlpha2": "FI",
+    "targetCountryName": "Country FI",
+    "value": "0.541538"
+   },
+   {
+    "rank": 37,
+    "targetCountryAlpha2": "IE",
+    "targetCountryName": "Country IE",
+    "value": "0.603759"
+   },
+   {
+    "rank": 38,
+    "targetCountryAlpha2": "PT",
+    "targetCountryName": "Country PT",
+    "value": "0.458457"
+   },
+   {
+    "rank": 39,
+    "targetCountryAlpha2": "CZ",
+    "targetCountryName": "Country CZ",
+    "value": "0.494632"
+   },
+   {
+    "rank": 40,
+    "targetCountryAlpha2": "RO",
+    "targetCountryName": "Country RO",
+    "value": "0.552745"
+   },
+   {
+    "rank": 41,
+    "targetCountryAlpha2": "HU",
+    "targetCountryName": "Country HU",
+    "value": "0.420646"
+   },
+   {
+    "rank": 42,
+    "targetCountryAlpha2": "GR",
+    "targetCountryName": "Country GR",
+    "value": "0.454790"
+   },
+   {
+    "rank": 43,
+    "targetCountryAlpha2": "NZ",
+    "targetCountryName": "Country NZ",
+    "value": "0.509237"
+   },
+   {
+    "rank": 44,
+    "targetCountryAlpha2": "EG",
+    "targetCountryName": "Country EG",
+    "value": "0.388275"
+   },
+   {
+    "rank": 45,
+    "targetCountryAlpha2": "NG",
+    "targetCountryName": "Country NG",
+    "value": "0.420555"
+   },
+   {
+    "rank": 46,
+    "targetCountryAlpha2": "KE",
+    "targetCountryName": "Country KE",
+    "value": "0.471722"
+   },
+   {
+    "rank": 47,
+    "targetCountryAlpha2": "SA",
+    "targetCountryName": "Country SA",
+    "value": "0.360269"
+   },
+   {
+    "rank": 48,
+    "targetCountryAlpha2": "AE",
+    "targetCountryName": "Country AE",
+    "value": "0.390841"
+   },
+   {
+    "rank": 49,
+    "targetCountryAlpha2": "PK",
+    "targetCountryName": "Country PK",
+    "value": "0.439062"
+   },
+   {
+    "rank": 50,
+    "targetCountryAlpha2": "BD",
+    "targetCountryName": "Country BD",
+    "value": "0.335816"
+   },
+   {
+    "rank": 51,
+    "targetCountryAlpha2": "RU",
+    "targetCountryName": "Country RU",
+    "value": "0.364825"
+   },
+   {
+    "rank": 52,
+    "targetCountryAlpha2": "KZ",
+    "targetCountryName": "Country KZ",
+    "value": "0.410389"
+   },
+   {
+    "rank": 53,
+    "targetCountryAlpha2": "PE",
+    "targetCountryName": "Country PE",
+    "value": "0.314293"
+   },
+   {
+    "rank": 54,
+    "targetCountryAlpha2": "MA",
+    "targetCountryName": "Country MA",
+    "value": "0.341869"
+   },
+   {
+    "rank": 55,
+    "targetCountryAlpha2": "LT",
+    "targetCountryName": "Country LT",
+    "value": "0.385029"
+   },
+   {
+    "rank": 56,
+    "targetCountryAlpha2": "LV",
+    "targetCountryName": "Country LV",
+    "value": "0.295213"
+   },
+   {
+    "rank": 57,
+    "targetCountryAlpha2": "EE",
+    "targetCountryName": "Country EE",
+    "value": "0.321474"
+   },
+   {
+    "rank": 58,
+    "targetCountryAlpha2": "SK",
+    "targetCountryName": "Country SK",
+    "value": "0.362449"
+   },
+   {
+    "rank": 59,
+    "targetCountryAlpha2": "BG",
+    "targetCountryName": "Country BG",
+    "value": "0.278190"
+   }
+  ]
+ }
+}

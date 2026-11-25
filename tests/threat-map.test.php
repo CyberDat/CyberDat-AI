@@ -18,6 +18,8 @@ require $theme . '/inc/threat-map/render.php';
 
 $passed = 0;
 function check($ok, $message) { global $passed; if (!$ok) { fwrite(STDERR, "FAIL: $message\n"); exit(1); } $passed++; echo "PASS: $message\n"; }
+/** A layer of the page model by id (the tab order depends on the data). */
+function L(array $model, string $id): array { foreach ($model['layers'] as $l) { if ($l['id'] === $id) return $l; } throw new RuntimeException('no layer ' . $id); }
 function throws(callable $f, string $needle): bool { try { $f(); } catch (CDTM_Error $e) { return str_contains($e->getMessage(), $needle); } return false; }
 
 $FEODO = file_get_contents(__DIR__ . '/fixtures/threat-map/feodo-ipblocklist.json');
@@ -72,7 +74,7 @@ $snap = CDTM::snapshot($store);
 check($snap['layers']['feodo']['periods']['24h']['countries']['US']['n'] === 3 && $snap['names']['US'] === 'United States', 'snapshot: rebuilt after the sync with country names');
 check($snap['layers']['feodo']['periods']['7d']['comparable'] === false && !isset($snap['layers']['feodo']['periods']['7d']['countries']['US']['prev']), 'history: no comparison with an empty previous period');
 $model = CDTM_View::model($snap, $T0 + 60);
-check(str_contains($model['layers'][0]['periods']['30d']['collecting'], 'Collecting data since 2026-11-24'), 'history: "Collecting data since <date>" while history is short');
+check(str_contains(L($model, 'feodo')['periods']['30d']['collecting'], 'Collecting data since 2026-11-24'), 'history: "Collecting data since <date>" while history is short');
 
 // 304: no download, the hourly snapshot is recorded from the last good list
 $http->add('feodotracker.abuse.ch', ['code' => 304, 'headers' => [], 'body' => '']);
@@ -159,15 +161,15 @@ $st = new CDTM_Memory_Store(); $h = new FakeHttp(); $h->add('feodotracker.abuse.
 CDTM::sync_layer($st, $h, 'feodo', $T0);
 $m1 = CDTM_View::model(CDTM::snapshot($st), $T0 + 4 * 3600);
 $m2 = CDTM_View::model(CDTM::snapshot($st), $T0 + 49 * 3600);
-check($m1['layers'][0]['status'] === 'stale' && $m1['layers'][0]['show'] && str_starts_with($m1['layers'][0]['status_text'], 'Stale: last successful update 4 h'), 'status: stale after 3 h, numbers still shown with the time');
-check($m2['layers'][0]['status'] === 'unavailable' && !$m2['layers'][0]['show'] && $m2['layers'][0]['periods']['7d']['top'] === [] && str_contains($m2['layers'][0]['status_text'], 'Data unavailable since 2026-11-24 19:07 UTC'), 'status: unavailable after 48 h, no numbers shown as current');
+check(L($m1, 'feodo')['status'] === 'stale' && L($m1, 'feodo')['show'] && str_starts_with(L($m1, 'feodo')['status_text'], 'Stale: last successful update 4 h'), 'status: stale after 3 h, numbers still shown with the time');
+check(L($m2, 'feodo')['status'] === 'unavailable' && !L($m2, 'feodo')['show'] && L($m2, 'feodo')['periods']['7d']['top'] === [] && str_contains(L($m2, 'feodo')['status_text'], 'Data unavailable since 2026-11-24 19:07 UTC'), 'status: unavailable after 48 h, no numbers shown as current');
 CDTM::sync_layer($st, $h, 'feodo', $T0 + 49 * 3600, true);
-check(CDTM_View::model(CDTM::snapshot($st), $T0 + 49 * 3600 + 60)['layers'][0]['status'] === 'ok', 'status: back to ok after a successful run');
+check(L(CDTM_View::model(CDTM::snapshot($st), $T0 + 49 * 3600 + 60), 'feodo')['status'] === 'ok', 'status: back to ok after a successful run');
 
 /* ---------- ransomware: key, months, events ---------- */
 $rs = new CDTM_Memory_Store(); $h = new FakeHttp();
 check(CDTM::sync_layer($rs, $h, 'ransomware', $T0 + 20 * 60)['result'] === 'not_configured' && !$h->calls && CDTM::snapshot($rs)['layers']['ransomware']['configured'] === false, 'key: without the wp-config constant the layer is not configured and makes no request');
-check(CDTM_View::model(CDTM::snapshot($rs), $T0)['layers'][1]['status'] === 'not_configured', 'key: page status "not configured"');
+check(L(CDTM_View::model(CDTM::snapshot($rs), $T0), 'ransomware')['status'] === 'not_configured', 'key: page status "not configured"');
 $key = 'rl-test-' . bin2hex(random_bytes(12));
 define('CYBERDAT_RANSOMWARE_LIVE_API_KEY', $key);
 $plan = CDTM_Source_Ransomware::plan([], $T0);
@@ -193,7 +195,7 @@ check($n7 === $expect && $n7 > 0, "7 days: event sum per country from the source
 check($rsnap['layers']['ransomware']['periods']['30d']['comparable'] === true && $rsnap['layers']['ransomware']['history_since'] === gmmktime(0, 0, 0, 9, 1, 2026), 'events: backfilled history makes 30 days comparable at once');
 $b = $rsnap['layers']['ransomware']['periods']['30d']['countries']['US']['b'];
 check(in_array('Healthcare', array_column($b, 0), true) && !in_array('acme-hospital.example', array_column($b, 0), true), 'events: breakdown per sector; a domain in the sector field becomes Other');
-check(CDTM_View::model($rsnap, $T0 + 25 * 60)['layers'][1]['status'] === 'ok', 'events: layer ok after sync');
+check(L(CDTM_View::model($rsnap, $T0 + 25 * 60), 'ransomware')['status'] === 'ok', 'events: layer ok after sync');
 $h->add('api-pro.ransomware.live', ['error' => 'Unauthorized key ' . $key]);
 CDTM::sync_layer($rs, $h, 'ransomware', $T0 + 2 * 3600 + 20 * 60);
 check(!str_contains(json_encode($rs->meta), $key) && str_contains(CDTM::state($rs, 'ransomware')['last_error']['message'], '[redacted]'), 'key: redacted from error texts');
@@ -212,7 +214,7 @@ foreach (['feodo' => $store, 'ransomware' => $rs] as $label => $s) {
 /* ---------- server HTML ---------- */
 $html = cyberdat_threat_map_render(CDTM::snapshot($rs), $T0 + 30 * 60);
 check(str_contains($html, 'id="global-threat-map"') && str_contains($html, 'data-threat-map="cdtm-1"') && str_contains($html, 'Location of a server or victim does not establish attacker origin.'), 'HTML: anchor kept, attacker-origin notice');
-check(str_contains($html, 'role="tablist"') && substr_count($html, 'role="tab"') === 2 && substr_count($html, 'data-cdtm-period=') === 3 && str_contains($html, 'aria-pressed="true" data-cdtm-period="7d"'), 'HTML: layer tabs and 24 h / 7 days / 30 days');
+check(str_contains($html, 'role="tablist"') && substr_count($html, 'role="tab"') === 3 && substr_count($html, 'data-cdtm-period=') === 3 && str_contains($html, 'aria-pressed="true" data-cdtm-period="7d"'), 'HTML: layer tabs and 24 h / 7 days / 30 days');
 check(str_contains($html, 'Source: <a href="https://feodotracker.abuse.ch/"') && str_contains($html, 'Source: <a href="https://www.ransomware.live/"') && str_contains($html, 'https://www.ransomware.live/t&amp;c'), 'HTML: source and terms under each layer');
 check(str_contains($html, 'Data unavailable: waiting for the first successful collection.') && str_contains($html, 'Updated 10 min ago (2026-11-24 19:27 UTC).'), 'HTML: per-layer status in server HTML');
 check(substr_count($html, '<noscript><div class="cdtm-table">') === 1 && str_contains($html, '<caption>Top 10 countries · 7 days · reported victims</caption>'), 'HTML: server top-10 table for every layer with data (no JavaScript)');

@@ -193,6 +193,67 @@ final class CDTM_Source_Ransomware {
 	}
 }
 
+/**
+ * Cloudflare Radar API: share of HTTP (layer 7) DDoS attack requests mitigated by Cloudflare per target country
+ * (the attacked zone's billing country). The API returns percentages for 1/7/30 days and, in the same request, a
+ * comparison window ("<n>dcontrol"); CyberDat stores the latest answer only, no own history. Data: CC BY-NC 4.0.
+ */
+final class CDTM_Source_Radar {
+	/** The source publishes no update interval; the Cloudflare API allows 1,200 requests / 5 min. One run = 3 requests, hourly. */
+	public const MIN_INTERVAL = 1800;
+	public const MAX_BYTES = 2097152;
+	public const LIMIT = 200;
+	public const BASE = 'https://api.cloudflare.com/client/v4/radar/attacks/layer7/top/locations/target';
+	public const KEY_CONSTANT = 'CYBERDAT_CLOUDFLARE_RADAR_TOKEN';
+	public const RANGES = ['24h' => '1d', '7d' => '7d', '30d' => '30d'];
+
+	public static function plan(array $state, int $now): array {
+		$out = [];
+		foreach (self::RANGES as $period => $range) {
+			// dateRange twice: the period and its comparison window (http_build_query cannot repeat a key)
+			$q = 'dateRange=' . $range . '&dateRange=' . $range . 'control&' . http_build_query(['mitigationProduct' => 'DDOS', 'limit' => self::LIMIT, 'format' => 'json']);
+			$out[] = ['id' => $period, 'url' => self::BASE . '?' . $q, 'headers' => [], 'period' => $period];
+		}
+		return $out;
+	}
+
+	/** @return array{countries: array<string, array{v: float, prev: ?float}>, window: ?array, control: ?array, last_updated: ?string} */
+	public static function parse(string $body): array {
+		$data = json_decode($body, true, 16);
+		if (!is_array($data) || ($data['success'] ?? null) !== true || !is_array($data['result'] ?? null)) throw new CDTM_Error('format: not a successful Radar response');
+		$r = $data['result'];
+		if (($r['meta']['normalization'] ?? '') !== 'PERCENTAGE') throw new CDTM_Error('format: values are not percentages');
+		if (!isset($r['top_0']) || !is_array($r['top_0']) || !array_is_list($r['top_0'])) throw new CDTM_Error('format: no top_0 list');
+		$read = static function (array $rows): array {
+			$out = [];
+			foreach ($rows as $row) {
+				if (!is_array($row) || !isset($row['value']) || !is_numeric($row['value'])) throw new CDTM_Error('format: entry without a numeric value');
+				$v = (float) $row['value'];
+				if ($v < 0 || $v > 100) throw new CDTM_Error('format: percentage out of range');
+				$cc = CDTM::country($row['targetCountryAlpha2'] ?? null);
+				$out[$cc] = round(($out[$cc] ?? 0) + $v, 4);
+			}
+			return $out;
+		};
+		$cur = $read($r['top_0']);
+		$ctl = isset($r['top_1']) && is_array($r['top_1']) ? $read($r['top_1']) : null;
+		$countries = [];
+		foreach ($cur as $cc => $v) $countries[$cc] = ['v' => $v, 'prev' => $ctl === null ? null : ($ctl[$cc] ?? 0.0)];
+		$range = static function ($x): ?array {
+			$s = is_array($x) ? CDTM::parse_iso($x['startTime'] ?? null) : null;
+			$e = is_array($x) ? CDTM::parse_iso($x['endTime'] ?? null) : null;
+			return $s !== null && $e !== null ? [$s, $e] : null;
+		};
+		$ranges = $r['meta']['dateRange'] ?? [];
+		return [
+			'countries' => $countries,
+			'window' => $range($ranges[0] ?? null),
+			'control' => $ctl === null ? null : $range($ranges[1] ?? null),
+			'last_updated' => is_string($r['meta']['lastUpdated'] ?? null) ? substr($r['meta']['lastUpdated'], 0, 40) : null,
+		];
+	}
+}
+
 final class CDTM {
 	public const SCHEMA = 1;
 	public const TIMEOUT = 20;
@@ -208,22 +269,11 @@ final class CDTM {
 	public const UNKNOWN = 'ZZ';
 	public const PERIODS = ['24h' => ['h', 24, 3600], '7d' => ['d', 7, 86400], '30d' => ['d', 30, 86400]];
 
+	/** Definition order = priority when layers tie for the default tab (Ransomware.live first). */
 	public static function layers(): array {
 		return [
-			'feodo' => [
-				'id' => 'feodo', 'source_class' => CDTM_Source_Feodo::class, 'kind' => 'gauge', 'slot' => 7,
-				'min_interval' => CDTM_Source_Feodo::MIN_INTERVAL, 'max_bytes' => CDTM_Source_Feodo::MAX_BYTES, 'key_constant' => null,
-				'hosts' => ['feodotracker.abuse.ch'],
-				'name' => 'Botnet C2 servers', 'source' => 'abuse.ch Feodo Tracker', 'short' => 'Feodo Tracker',
-				'unit' => 'C2 servers listed', 'breakdown' => 'Malware families',
-				'metric' => 'Peak number of listed botnet command-and-control servers per country in the period. The source publishes only its current list, so CyberDat keeps its own hourly history.',
-				'note' => 'Country where the command-and-control server is hosted, as reported by the source.',
-				'source_url' => 'https://feodotracker.abuse.ch/', 'terms_url' => 'https://abuse.ch/terms-of-use/',
-				'terms' => 'License: CC0; provided as is on a best-effort basis.',
-				'records_url' => 'https://feodotracker.abuse.ch/browse/', 'records_label' => 'Browse Feodo Tracker records (the source has no country filter)',
-			],
 			'ransomware' => [
-				'id' => 'ransomware', 'source_class' => CDTM_Source_Ransomware::class, 'kind' => 'event', 'slot' => 27,
+				'id' => 'ransomware', 'source_class' => CDTM_Source_Ransomware::class, 'kind' => 'event', 'slot' => 27, 'auth' => 'x-api-key',
 				'min_interval' => CDTM_Source_Ransomware::MIN_INTERVAL, 'max_bytes' => CDTM_Source_Ransomware::MAX_BYTES, 'key_constant' => CDTM_Source_Ransomware::KEY_CONSTANT,
 				'hosts' => ['api-pro.ransomware.live'],
 				'name' => 'Ransomware victims', 'source' => 'Ransomware.live', 'short' => 'Ransomware.live',
@@ -233,6 +283,30 @@ final class CDTM {
 				'source_url' => 'https://www.ransomware.live/', 'terms_url' => 'https://www.ransomware.live/t&c',
 				'terms' => 'Used under its terms with attribution; inclusion does not confirm that a claimed attack occurred.',
 				'records_url' => 'https://www.ransomware.live/country/{CC}', 'records_label' => 'Open the country page on Ransomware.live',
+			],
+			'radar' => [
+				'id' => 'radar', 'source_class' => CDTM_Source_Radar::class, 'kind' => 'share', 'slot' => 47, 'auth' => 'bearer',
+				'min_interval' => CDTM_Source_Radar::MIN_INTERVAL, 'max_bytes' => CDTM_Source_Radar::MAX_BYTES, 'key_constant' => CDTM_Source_Radar::KEY_CONSTANT,
+				'hosts' => ['api.cloudflare.com'],
+				'name' => 'DDoS targets', 'source' => 'Cloudflare Radar', 'short' => 'Cloudflare Radar',
+				'unit' => '% of observed attacks', 'breakdown' => '',
+				'metric' => 'Share of HTTP (layer 7) DDoS attack requests mitigated by Cloudflare, by target country, as published by Cloudflare Radar. Percentages from the source, not attack counts; the comparison is the window Cloudflare Radar provides.',
+				'note' => 'Target country = the billing country of the attacked website, when known. Covers traffic seen by Cloudflare only.',
+				'source_url' => 'https://radar.cloudflare.com/', 'terms_url' => 'https://creativecommons.org/licenses/by-nc/4.0/', 'terms_label' => 'license (CC BY-NC 4.0)',
+				'terms' => 'Data: Cloudflare Radar (radar.cloudflare.com), licensed under CC BY-NC 4.0.',
+				'records_url' => 'https://radar.cloudflare.com/', 'records_label' => 'Open Cloudflare Radar (no verified per-country link)',
+			],
+			'feodo' => [
+				'id' => 'feodo', 'source_class' => CDTM_Source_Feodo::class, 'kind' => 'gauge', 'slot' => 7, 'auth' => null,
+				'min_interval' => CDTM_Source_Feodo::MIN_INTERVAL, 'max_bytes' => CDTM_Source_Feodo::MAX_BYTES, 'key_constant' => null,
+				'hosts' => ['feodotracker.abuse.ch'],
+				'name' => 'Botnet C2 servers', 'source' => 'abuse.ch Feodo Tracker', 'short' => 'Feodo Tracker',
+				'unit' => 'C2 servers listed', 'breakdown' => 'Malware families',
+				'metric' => 'Peak number of listed botnet command-and-control servers per country in the period. The source publishes only its current list, so CyberDat keeps its own hourly history.',
+				'note' => 'Country where the command-and-control server is hosted, as reported by the source.',
+				'source_url' => 'https://feodotracker.abuse.ch/', 'terms_url' => 'https://abuse.ch/terms-of-use/',
+				'terms' => 'License: CC0; provided as is on a best-effort basis.',
+				'records_url' => 'https://feodotracker.abuse.ch/browse/', 'records_label' => 'Browse Feodo Tracker records (the source has no country filter)',
 			],
 		];
 	}
@@ -268,6 +342,12 @@ final class CDTM {
 		$has_time = isset($m[4]) && $m[4] !== '';
 		$t = gmmktime($has_time ? (int) $m[4] : 0, $has_time ? (int) $m[5] : 0, $has_time && isset($m[6]) && $m[6] !== '' ? (int) $m[6] : 0, (int) $m[2], (int) $m[3], (int) $m[1]);
 		return [$t, $has_time];
+	}
+
+	/** An ISO 8601 UTC time with a time part ("2026-11-24T19:00:00Z") → timestamp, else null. */
+	public static function parse_iso($value): ?int {
+		$t = self::parse_time($value);
+		return $t !== null && $t[1] ? $t[0] : null;
 	}
 
 	/** countries [CC => [n, b => [label => n]]] → rows [[bucket, CC, '', n], [bucket, CC, label, n], ...] */
@@ -340,7 +420,9 @@ final class CDTM {
 		$parts = parse_url($request['url']);
 		if (($parts['scheme'] ?? '') !== 'https' || !in_array($parts['host'] ?? '', $layer['hosts'], true)) throw new CDTM_Error('blocked: not an allowed HTTPS source');
 		$headers = $request['headers'] + ['Accept' => 'application/json'];
-		if ($key !== null) $headers['X-API-KEY'] = $key;
+		if ($key !== null) {
+			if ($layer['auth'] === 'bearer') $headers['Authorization'] = 'Bearer ' . $key; else $headers['X-API-KEY'] = $key;
+		}
 		if (!empty($validators['etag'])) $headers['If-None-Match'] = $validators['etag'];
 		if (!empty($validators['last_modified'])) $headers['If-Modified-Since'] = $validators['last_modified'];
 		$response = $http($request['url'], $headers, $layer['max_bytes'], self::TIMEOUT);
@@ -406,6 +488,9 @@ final class CDTM {
 				$state['last_counts'] = $list['countries'];
 				$state['last_items'] = $list['items'];
 				$state['history_since'] = $state['history_since'] ?? $now;
+			} elseif ($id === 'radar') {
+				// The API gives the periods and the comparison itself: keep only the latest answer per period.
+				foreach ($parsed as $period => $p) $state['radar'][$period] = $p + ['fetched_at' => $now];
 			} else {
 				CDTM_Source_Ransomware::apply($store, $parsed, $now);
 				$fetched = array_keys($parsed);
@@ -493,6 +578,31 @@ final class CDTM {
 		];
 	}
 
+	/**
+	 * A share layer (Cloudflare Radar): the percentages exactly as the API gave them for this period, the comparison
+	 * window's percentages as "prev" (percentage points, never turned into counts), and both windows' dates.
+	 */
+	public static function period_share(array $state, string $period): ?array {
+		$p = $state['radar'][$period] ?? null;
+		if (!is_array($p)) return null;
+		$countries = [];
+		foreach ($p['countries'] as $cc => $c) {
+			if ($cc === self::UNKNOWN) continue;
+			$row = ['n' => (float) $c['v'], 'b' => []];
+			if ($c['prev'] !== null) $row['prev'] = (float) $c['prev'];
+			$countries[$cc] = $row;
+		}
+		uksort($countries, static fn($a, $b) => [$countries[$b]['n'], $a] <=> [$countries[$a]['n'], $b]);
+		return [
+			'from' => $p['window'][0] ?? null, 'to' => $p['window'][1] ?? null,
+			'complete' => true, 'comparable' => $p['control'] !== null,
+			'control' => $p['control'], 'source_updated' => $p['last_updated'],
+			'unknown' => (float) ($p['countries'][self::UNKNOWN]['v'] ?? 0),
+			'total' => round(array_sum(array_column($countries, 'n')), 4),
+			'countries' => $countries,
+		];
+	}
+
 	public static function rebuild_snapshot(CDTM_Store $store, int $now): array {
 		$names = self::country_names();
 		$out = ['schema' => self::SCHEMA, 'generated_at' => $now, 'layers' => [], 'names' => []];
@@ -510,7 +620,8 @@ final class CDTM {
 			];
 			if (is_int($public['last_success'])) {
 				foreach (array_keys(self::PERIODS) as $p) {
-					$public['periods'][$p] = self::period($store, $layer, $state, $p, $now);
+					$public['periods'][$p] = $layer['kind'] === 'share' ? self::period_share($state, $p) : self::period($store, $layer, $state, $p, $now);
+					if ($public['periods'][$p] === null) { unset($public['periods'][$p]); continue; }
 					foreach (array_keys($public['periods'][$p]['countries']) as $cc) $out['names'][$cc] = $names[$cc] ?? $cc;
 				}
 			}
@@ -542,7 +653,8 @@ final class CDTM {
 				'last_attempt' => $fmt($s['last_attempt'] ?? null),
 				'successful_runs' => (string) ($s['runs'] ?? 0),
 				'error' => $s['last_error']['message'] ?? '-',
-				'history' => $store->count_rows($id, 'h') . ' hourly rows / ' . $store->count_rows($id, 'd') . ' daily rows',
+				'history' => $layer['kind'] === 'share' ? 'no own history (periods from the API): ' . count($s['radar'] ?? []) . ' of 3 periods stored'
+					: $store->count_rows($id, 'h') . ' hourly rows / ' . $store->count_rows($id, 'd') . ' daily rows',
 				'history_since' => $fmt($s['history_since'] ?? null),
 				'min_interval' => $layer['min_interval'] . ' s',
 			];
