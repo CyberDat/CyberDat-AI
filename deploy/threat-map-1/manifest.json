@@ -1,0 +1,2115 @@
+{
+  "schema": "cyberdat-theme-release/1",
+  "revision": "threat-map-1/1",
+  "base_commit": "5c12bef3222ee2b34dc92ecaf8fce555fbc1d2b0",
+  "base_ref": "integration/tools-utilities-1@5c12bef (staging: revision tools-utilities-1/5 over e781091)",
+  "base_note": "Base = the theme on staging (integration/tools-utilities-1 at 5c12bef, revision tools-utilities-1/5 installed over e781091). base_sha256 of every modified file is that version.",
+  "theme_commit": "19124d58103e915338b927a8311a2d08f3780a0f",
+  "install_rule": "The installer copies the delta files as they are and changes no other theme file. Before installing, every theme file on staging equals the base map; after installing, every theme file equals the target map. The database tables are created only by `wp cyberdat threatmap migrate`; the Research plugin, its tables and its six timers are not touched.",
+  "note": "Global Cyber Threat Map v1: Feodo Tracker (botnet C2) and Ransomware.live (reported victims, needs the wp-config constant CYBERDAT_RANSOMWARE_LIVE_API_KEY) collected hourly by WP-CLI from a systemd timer; counters only (48 h hourly, 60 days daily); the page block replaces the empty map. URLhaus is not enabled (no source-provided country). Sources and terms: docs/THREAT-MAP-SOURCES.md.",
+  "counts": {
+    "base": 188,
+    "target": 198,
+    "added": 10,
+    "modified": 4,
+    "removed": 0
+  },
+  "delta": {
+    "added": [
+      "assets/css/threat-map.css",
+      "assets/js/threat-map.js",
+      "assets/maps/iso3166-1.json",
+      "assets/maps/threat-map-countries.json",
+      "inc/threat-map.php",
+      "inc/threat-map/cli.php",
+      "inc/threat-map/core.php",
+      "inc/threat-map/render.php",
+      "inc/threat-map/store-wpdb.php",
+      "inc/threat-map/view.php"
+    ],
+    "modified": [
+      "assets/maps/NOTICE.md",
+      "functions.php",
+      "inc/assets.php",
+      "template-parts/threat-map.php"
+    ],
+    "removed": []
+  },
+  "delta_files": {
+    "assets/css/threat-map.css": {
+      "status": "added",
+      "bytes": 8774,
+      "sha256": "e702c4f38b6429e5ba0cfcfa712f5f74e061b7687416bfa0f7113a96dfa3816e",
+      "base_sha256": null
+    },
+    "assets/js/threat-map.js": {
+      "status": "added",
+      "bytes": 14964,
+      "sha256": "5263959cb09a46c9c3b2db2da0ac70e70b01e98f312c34d7b811bcbe55a126ec",
+      "base_sha256": null
+    },
+    "assets/maps/NOTICE.md": {
+      "status": "modified",
+      "bytes": 1050,
+      "sha256": "3156159f8b997ecc5102bf2731fa78b53dcbe970bf406d3340c9142d341190ca",
+      "base_sha256": "6c3fe7493026090438ffb172e707fbc9b63f4db1672efb17e0975f4039d9d4f6"
+    },
+    "assets/maps/iso3166-1.json": {
+      "status": "added",
+      "bytes": 6815,
+      "sha256": "495e5c6543f6c8e499b68b97c3fed0504c9563bc4960f5d630f1dc0e13ec905c",
+      "base_sha256": null
+    },
+    "assets/maps/threat-map-countries.json": {
+      "status": "added",
+      "bytes": 125522,
+      "sha256": "020e3cce7f5ac6577f7044cbdbf6b398906722e59796a1459143db41d8183de8",
+      "base_sha256": null
+    },
+    "functions.php": {
+      "status": "modified",
+      "bytes": 1379,
+      "sha256": "05f3a6058ef768bade237b1ffdb53b8d2e2d1a25798f501d650c835ab24e91a5",
+      "base_sha256": "32b6ebda388a3529f481b7a1e4ab554b7e754943bbed1bff59df79b79667fae6"
+    },
+    "inc/assets.php": {
+      "status": "modified",
+      "bytes": 4651,
+      "sha256": "393d33564b0eedd0ad5402a0e8b1c358164660009f1f324b45444d7c73d9e635",
+      "base_sha256": "7ee1a18993bf69b41504fd689ee4b42f6c099fe4256e30f36b924b3209250d07"
+    },
+    "inc/threat-map.php": {
+      "status": "added",
+      "bytes": 800,
+      "sha256": "d4cb16035e709b00b23fc8067c545b79546fcec0b442e30f9926387091b09c62",
+      "base_sha256": null
+    },
+    "inc/threat-map/cli.php": {
+      "status": "added",
+      "bytes": 2899,
+      "sha256": "ca8a6f6e9c93231b40299b7a4ac013a6f2168afbe81f476c7d8510a1e051602c",
+      "base_sha256": null
+    },
+    "inc/threat-map/core.php": {
+      "status": "added",
+      "bytes": 28528,
+      "sha256": "32d9decde6d9f7f7a5d2c746c5987877a81dfaa4ee093e246100d4195e435dfc",
+      "base_sha256": null
+    },
+    "inc/threat-map/render.php": {
+      "status": "added",
+      "bytes": 7572,
+      "sha256": "910e47a5bfabcaea4efe215a0d3b79b0d4bd9eba496535f1eaedb240a0aee2b5",
+      "base_sha256": null
+    },
+    "inc/threat-map/store-wpdb.php": {
+      "status": "added",
+      "bytes": 6926,
+      "sha256": "eb6b93dba2b41766ea7db8dbe0aeca165cccaaeeac9711d53c7742ad8944a139",
+      "base_sha256": null
+    },
+    "inc/threat-map/view.php": {
+      "status": "added",
+      "bytes": 4037,
+      "sha256": "63ca1c26dd03a9f13f0f4089524f36371322b869211b2f139a3c323869ba43f7",
+      "base_sha256": null
+    },
+    "template-parts/threat-map.php": {
+      "status": "modified",
+      "bytes": 273,
+      "sha256": "f98ce358136bc81988262199bb74835570001c296141658e9ef40e55eb3d41f3",
+      "base_sha256": "d816a50820bb26b03fa6b82c526e8b7960ce0c883d51821061e27106c05591a6"
+    }
+  },
+  "items": {
+    "collector": [
+      "functions.php",
+      "inc/threat-map.php",
+      "inc/threat-map/cli.php",
+      "inc/threat-map/core.php",
+      "inc/threat-map/store-wpdb.php",
+      "inc/threat-map/view.php"
+    ],
+    "page": [
+      "assets/css/threat-map.css",
+      "assets/js/threat-map.js",
+      "inc/assets.php",
+      "inc/threat-map/render.php",
+      "template-parts/threat-map.php"
+    ],
+    "geometry": [
+      "assets/maps/NOTICE.md",
+      "assets/maps/iso3166-1.json",
+      "assets/maps/threat-map-countries.json"
+    ]
+  },
+  "server_files": {
+    "cyberdat-threatmap.service": {
+      "source": "docs/threat-map/cyberdat-threatmap.service",
+      "install_to": "/etc/systemd/system/cyberdat-threatmap.service",
+      "bytes": 1266,
+      "sha256": "534ae431ed080cd7e75ed21554b660b299008b4f4cd34e6d0b558c95c6143119"
+    },
+    "cyberdat-threatmap.timer": {
+      "source": "docs/threat-map/cyberdat-threatmap.timer",
+      "install_to": "/etc/systemd/system/cyberdat-threatmap.timer",
+      "bytes": 462,
+      "sha256": "768b6991955e870a2fa9ef6ff5593b27d5296c0c4186dcfbbf40f207fceab963"
+    }
+  },
+  "database": {
+    "tables": [
+      "{prefix}cdtm_counts",
+      "{prefix}cdtm_meta"
+    ],
+    "create": "wp cyberdat threatmap migrate",
+    "drop": "wp cyberdat threatmap uninstall --yes"
+  },
+  "wp_config": {
+    "constant": "CYBERDAT_RANSOMWARE_LIVE_API_KEY",
+    "required_for": "ransomware layer only; without it the layer shows \"not configured\"",
+    "stored_in_repository": false
+  },
+  "geometry": {
+    "source": "world-atlas 2.0.2, countries-110m.json (npm)",
+    "license": "world-atlas: ISC license (Mike Bostock). Data: Natural Earth, public domain.",
+    "input_integrity": "sha512-IXfV0qwlKXpckz1FhwXVwKRjiIhOnWttOskm5CtxMsjgE/MXAYRHWJqgXOpM8IkcPBoXnyTU5lFHcYa5ChG0LQ==",
+    "input_sha256": "2516c915867c7baf18ddec727aec46c315541a07cfb3d79a6559b05d5e94eee8",
+    "areas": 176,
+    "build": "node tools/threat-map/build-geometry.cjs world-atlas-2.0.2.tgz"
+  },
+  "base": {
+    "404.php": {
+      "bytes": 572,
+      "mode": "0644",
+      "sha256": "8b46dc205ac7085218914e8e72e47d8877926822707ddfdddfbb0047ba0b736d"
+    },
+    "README.md": {
+      "bytes": 4077,
+      "mode": "0644",
+      "sha256": "038765ec31171b73025d4d39334acf81595baf270c8cc5fe5bd79af52ae00d6e"
+    },
+    "assets/branding/3b/README.md": {
+      "bytes": 1677,
+      "mode": "0644",
+      "sha256": "92ed6d0492eb0290228c7e3997f99a6c5e6c00902d69cef743b8d25763352085"
+    },
+    "assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg": {
+      "bytes": 7544,
+      "mode": "0644",
+      "sha256": "1dbe117e9acf68ef28d435d02d99540684771c407a9c73f243d7fb0d3ecb4b0a"
+    },
+    "assets/branding/3b/favicon-16.png": {
+      "bytes": 844,
+      "mode": "0644",
+      "sha256": "f6b0cbdf42a8c7bf6fb12f26544120c6982264811dbebaa1a82cb8c815034388"
+    },
+    "assets/branding/3b/favicon-32.png": {
+      "bytes": 2025,
+      "mode": "0644",
+      "sha256": "a20afb3189a0a1992f2167242a41c5d66cec4d29d01e7cabaef0afbca1371af8"
+    },
+    "assets/branding/3b/favicon-48.png": {
+      "bytes": 3608,
+      "mode": "0644",
+      "sha256": "299ddc54c76d6785f9d59863dad66528ebfefbd8d4f41957015e43d5dee49d7b"
+    },
+    "assets/branding/3b/favicon.ico": {
+      "bytes": 6531,
+      "mode": "0644",
+      "sha256": "eed3dcf5c24afdb5c22e89372a66811748983b44b444de6fcdcc52667edde509"
+    },
+    "assets/branding/3b/favicon.svg": {
+      "bytes": 2763,
+      "mode": "0644",
+      "sha256": "e696c2e61d878730b0682fc4db28beacc5bb8980c7aba84fa37dda07970af474"
+    },
+    "assets/branding/3b/security-report.json": {
+      "bytes": 1113,
+      "mode": "0644",
+      "sha256": "8930ea8b8d98bd9ed0995e4647f6409cd416d31fd32a14f4249e58a88482d87c"
+    },
+    "assets/css/ai-model-bom.css": {
+      "bytes": 4964,
+      "mode": "0644",
+      "sha256": "ef20c62856d9498f6e7ef29509dd51c029a41ba4b8af17b9cde3433cc4caebe3"
+    },
+    "assets/css/atlas-mapper.css": {
+      "bytes": 4145,
+      "mode": "0644",
+      "sha256": "ecd102c2893775ab83bd2fc73cc28bac7e24eb536059185e9033fe6e1c39c5e1"
+    },
+    "assets/css/container-hardening-audit.css": {
+      "bytes": 3029,
+      "mode": "0644",
+      "sha256": "e1bd1b7d5aadd6a92b9e66a8c94b642875f0229429cf0382d149882a8f4cd0fe"
+    },
+    "assets/css/editor.css": {
+      "bytes": 946,
+      "mode": "0644",
+      "sha256": "7280197c3f1d13e1d4120a08f15e780bbbb21b7ac0b86e94e00f8994227f6b57"
+    },
+    "assets/css/email-header-analyzer.css": {
+      "bytes": 3924,
+      "mode": "0644",
+      "sha256": "88344e6afe96e610bdc21194372df2dddb627ffb1cee3e6a2b4bfa4c2237fe9d"
+    },
+    "assets/css/home-prototype.css": {
+      "bytes": 14599,
+      "mode": "0644",
+      "sha256": "468713d36d1397ad2d4eba127973f754fe83200e61bb21bd97f94eaeab7cd525"
+    },
+    "assets/css/leak-inspector.css": {
+      "bytes": 3928,
+      "mode": "0644",
+      "sha256": "32b2d7ad527da2e80423b7dff31de41484cae2dfa930271fb6da16586831ea99"
+    },
+    "assets/css/log-anonymizer.css": {
+      "bytes": 2529,
+      "mode": "0644",
+      "sha256": "73f94b0c2f20ea972023e17e5da1c60925e105fba87bfbc439d11cc27e97cdb7"
+    },
+    "assets/css/lotl-analyzer.css": {
+      "bytes": 4728,
+      "mode": "0644",
+      "sha256": "3afd4afa66200da6628c318a59e76c2b8eb5b52b77685ab3a52836cd26ff512c"
+    },
+    "assets/css/main.css": {
+      "bytes": 8708,
+      "mode": "0644",
+      "sha256": "b48da12fcbfb5dab4612118ebfbdd839fccc2b3ca8c0db353a1fa40495205871"
+    },
+    "assets/css/mcp-checker.css": {
+      "bytes": 4477,
+      "mode": "0644",
+      "sha256": "5ab92a1dc5159b16029c7aa2327c164b7d2c019d146ad14499acb320c5172e6d"
+    },
+    "assets/css/prompt-injection-detector.css": {
+      "bytes": 4160,
+      "mode": "0644",
+      "sha256": "ef1c4fe80ea06f71d6c9eed5d32d25e3f64c41318328c847a4bd727a2de40e71"
+    },
+    "assets/css/prompt-injection-test-bench.css": {
+      "bytes": 2368,
+      "mode": "0644",
+      "sha256": "80cb8ac5040230a322e870997ebe617e82aad6c5f4cac4f30f2e23d40c87257b"
+    },
+    "assets/css/threat-analytics.css": {
+      "bytes": 2623,
+      "mode": "0644",
+      "sha256": "bfbb412668b2201bc8a1fea0e98d4ec3085c833eba32974126c8b4c3a6344cdc"
+    },
+    "assets/css/threat-dashboard.css": {
+      "bytes": 9158,
+      "mode": "0644",
+      "sha256": "8f8d9c1abc56a7d4cd56e5c14490ec9f1cbca01a150a69aeb58d950851c51673"
+    },
+    "assets/css/threat-geo.css": {
+      "bytes": 3021,
+      "mode": "0644",
+      "sha256": "7e6ed48561cf96ef121e8c712444aae156bbb463b827e45e17027a80d245e505"
+    },
+    "assets/css/threat-pulse.css": {
+      "bytes": 5682,
+      "mode": "0644",
+      "sha256": "9da47c5cb04207cc9057dc0020b688b5ffa2248413f9714adc33e477aee3ce95"
+    },
+    "assets/css/tokens.css": {
+      "bytes": 1167,
+      "mode": "0644",
+      "sha256": "712340b9462ad70f23536f2775b590b2b0572b1f4e53028d3cc2350cab2cbd64"
+    },
+    "assets/css/tools-common.css": {
+      "bytes": 6714,
+      "mode": "0644",
+      "sha256": "19e9c962f0fa9847a830b7d2e81edb0b982f14fb085f313bf770fb941cf17581"
+    },
+    "assets/css/tools-hub.css": {
+      "bytes": 10032,
+      "mode": "0644",
+      "sha256": "fadda9a0a7ac80041d9afae2924b4f8ee091d54a4ccdb9b71c702e0e2004216e"
+    },
+    "assets/css/tools.css": {
+      "bytes": 4993,
+      "mode": "0644",
+      "sha256": "58c25bb0da7dd0e3ff74059173281da3d0cee6ce7928c43e3573196545cd4010"
+    },
+    "assets/css/yara-sigma-validator.css": {
+      "bytes": 3467,
+      "mode": "0644",
+      "sha256": "68107250b8a08c9e3ca0b292e5d3a53b849681827607338fa497cb5ad40062db"
+    },
+    "assets/images/agent-network.svg": {
+      "bytes": 2565,
+      "mode": "0644",
+      "sha256": "9212382cc77216c80a7f263c881c58ad6f70aaca88a588b7823aee28470859f4"
+    },
+    "assets/images/editorial-fallback.svg": {
+      "bytes": 472,
+      "mode": "0644",
+      "sha256": "6849a583e1c3da69ab1373f57c74cfacf53e15edaf8ed007f3d964d9a8383b72"
+    },
+    "assets/images/premium/boundary-192.webp": {
+      "bytes": 4356,
+      "mode": "0644",
+      "sha256": "b8df0a34239fc37b1e49a12442ca1b226a9dcf6c98f8ab13f2e9c2d7989f5134"
+    },
+    "assets/images/premium/boundary-320.webp": {
+      "bytes": 11406,
+      "mode": "0644",
+      "sha256": "029d581249ef0004f947e0cbf229c16466de0cb57fd8a2e2555f87da0ee278f0"
+    },
+    "assets/images/premium/boundary-640.webp": {
+      "bytes": 34950,
+      "mode": "0644",
+      "sha256": "49c358d2ada7bea120301dcde33ef2d3fa13acc15b554f0b04e0b022cfbf6044"
+    },
+    "assets/images/premium/detection-192.webp": {
+      "bytes": 5134,
+      "mode": "0644",
+      "sha256": "bd6ddbb3ed246482bbffca0f53d46edc5265e56bb85964f95dd48a7efca83ef7"
+    },
+    "assets/images/premium/detection-320.webp": {
+      "bytes": 14730,
+      "mode": "0644",
+      "sha256": "8f85704f15baf3c612d1d043091568b7ba481f32e5b7f6cd7c75d04adbfd7d89"
+    },
+    "assets/images/premium/detection-640.webp": {
+      "bytes": 42462,
+      "mode": "0644",
+      "sha256": "12231253a3cc87517cc19270c6cf465bd70379eb2786a6223251bba8ea0a323f"
+    },
+    "assets/images/premium/foundations-192.webp": {
+      "bytes": 3906,
+      "mode": "0644",
+      "sha256": "51776cf0337f4abf903f8f4a6f207bd5064f798fc15ec7425351381e4a46daf4"
+    },
+    "assets/images/premium/foundations-320.webp": {
+      "bytes": 9894,
+      "mode": "0644",
+      "sha256": "79900c9974da652de1e4c59d19e08228c8b7fc7c0d3665ee6d580c03cc46c94a"
+    },
+    "assets/images/premium/foundations-640.webp": {
+      "bytes": 27958,
+      "mode": "0644",
+      "sha256": "44bfb3d091adffcd2861d938d210da13c92344549ec7be207aac3d9d2a679a87"
+    },
+    "assets/images/premium/hero-1280.webp": {
+      "bytes": 137042,
+      "mode": "0644",
+      "sha256": "31921711b921b888afff7411b7009152d5e878e62825821473ce33190856b772"
+    },
+    "assets/images/premium/hero-192.webp": {
+      "bytes": 5770,
+      "mode": "0644",
+      "sha256": "06726b0e3f0c79cfaf45c668518b0c3a76a8eb46ce6be45e81291bbdd7719831"
+    },
+    "assets/images/premium/hero-320.webp": {
+      "bytes": 15966,
+      "mode": "0644",
+      "sha256": "27510dad2452262133094e81a8736f71e71ead4e0fdfdbe4f891211cf656ef72"
+    },
+    "assets/images/premium/hero-640.webp": {
+      "bytes": 48550,
+      "mode": "0644",
+      "sha256": "b68c7c9ef4dd30a5ebea4b891f71402e22f6484752a28d2b4b28a7114eb5cde1"
+    },
+    "assets/images/premium/identity-192.webp": {
+      "bytes": 3978,
+      "mode": "0644",
+      "sha256": "ac28762f6f294acb28158f640acdb404088e5221262ec72742a5cf9d34c7de21"
+    },
+    "assets/images/premium/identity-320.webp": {
+      "bytes": 10490,
+      "mode": "0644",
+      "sha256": "750c2e97fc05976c8d66ca6b4738b5024acab17d154795e8c48a56036256892c"
+    },
+    "assets/images/premium/identity-640.webp": {
+      "bytes": 29908,
+      "mode": "0644",
+      "sha256": "4c9ff0d01261a4e086f6f276d6a69bdd8e05128890fa9c1c0e16c240604fc5a2"
+    },
+    "assets/images/premium/intelligence-192.webp": {
+      "bytes": 5336,
+      "mode": "0644",
+      "sha256": "8599b67b7e8ce52158cab76fb1bd1b4730e50cf25f1cbf7d80a3e8d96d71c43a"
+    },
+    "assets/images/premium/intelligence-320.webp": {
+      "bytes": 15166,
+      "mode": "0644",
+      "sha256": "beb66c18b70215c9faa8266b7e5b3c07ca6969fefc914bd6bc19df679ef87215"
+    },
+    "assets/images/premium/intelligence-640.webp": {
+      "bytes": 44758,
+      "mode": "0644",
+      "sha256": "3e6335d1e502037b0c63eb64dd4cca9ca1d7dc828c8be41f32e90e8a8ce66292"
+    },
+    "assets/images/premium/learning-192.webp": {
+      "bytes": 5160,
+      "mode": "0644",
+      "sha256": "f188d30edcaaadf6aed22f5ae75fcbb80f19b9c9e5aed1bef85fff0808a2db0e"
+    },
+    "assets/images/premium/learning-320.webp": {
+      "bytes": 14092,
+      "mode": "0644",
+      "sha256": "86f330017ad4823b48a8e2576d93c2250bdd12dc3a3b1b46430b0fbac0c870f9"
+    },
+    "assets/images/premium/learning-640.webp": {
+      "bytes": 42948,
+      "mode": "0644",
+      "sha256": "9ccbd056d07e3ea4dd012c1cd86b17d4df16dcdc46acc6b952b90c13b9456854"
+    },
+    "assets/images/premium/model-192.webp": {
+      "bytes": 4288,
+      "mode": "0644",
+      "sha256": "34d9ce4630e0a646461703e8f2b271ed66740ee94e5fed0287a7d51d10918243"
+    },
+    "assets/images/premium/model-320.webp": {
+      "bytes": 11396,
+      "mode": "0644",
+      "sha256": "fd4a8f8cdf887140fbc1eee488261a08ea514c7d1136ace9853ab661feef5cc9"
+    },
+    "assets/images/premium/model-640.webp": {
+      "bytes": 35518,
+      "mode": "0644",
+      "sha256": "5ddc03eac36df67b5eb8e4d198236064a35a2d2f88a1672f870c04569084aa61"
+    },
+    "assets/images/premium/network-192.webp": {
+      "bytes": 6188,
+      "mode": "0644",
+      "sha256": "9ec395d621f4877b13564ea4b0c85fbea3d693bd5823154dce0496db3005bb6e"
+    },
+    "assets/images/premium/network-320.webp": {
+      "bytes": 17912,
+      "mode": "0644",
+      "sha256": "6018760db3393df372ffdc05dce3e51a0f91b488a63dc8a2c808edafbe18df30"
+    },
+    "assets/images/premium/network-640.webp": {
+      "bytes": 57358,
+      "mode": "0644",
+      "sha256": "888e28f2ebdeb42ba3dbd8e8d44d994049695147ab4c8a6bf6308466f6f699a7"
+    },
+    "assets/images/premium/redteam-192.webp": {
+      "bytes": 5482,
+      "mode": "0644",
+      "sha256": "d1a14b35d64d3f5ecae1fb48dc6abaa8bfe1f98c4a00594c1aaeb4ffc2b5a1da"
+    },
+    "assets/images/premium/redteam-320.webp": {
+      "bytes": 14396,
+      "mode": "0644",
+      "sha256": "c99099c4cda5ae549c64ebebd79111a60c5db8192cf9c86e6ef5e872d40da74d"
+    },
+    "assets/images/premium/redteam-640.webp": {
+      "bytes": 40794,
+      "mode": "0644",
+      "sha256": "56f80fa72c8f7225e26b7e48f1d6ad3943e33431f5fdb4a801533367cc89a053"
+    },
+    "assets/images/tools-hub/README.md": {
+      "bytes": 1326,
+      "mode": "0644",
+      "sha256": "9a5bdde35596f47745278ebd3b60978bdf6fcfdcc449d4ecec8c9a1347f3d318"
+    },
+    "assets/images/tools-hub/agent-leak-inspector.svg": {
+      "bytes": 2403,
+      "mode": "0644",
+      "sha256": "6e34f3f005af63233439d3e87778fb119465e217db0bdc7f0a283d2eb8993c62"
+    },
+    "assets/images/tools-hub/ai-model-bom.svg": {
+      "bytes": 2286,
+      "mode": "0644",
+      "sha256": "b8602597cb092eda574090b91efc88342dcc987d53bbcb8611fd752e5e557a10"
+    },
+    "assets/images/tools-hub/container-hardening-audit.svg": {
+      "bytes": 2461,
+      "mode": "0644",
+      "sha256": "0d8dfb0c5e9387962f5adcb585a9148e823e62666b526d0462599636398de41b"
+    },
+    "assets/images/tools-hub/email-header-analyzer.svg": {
+      "bytes": 2539,
+      "mode": "0644",
+      "sha256": "8dcfa692a549f70c35813ae034894f05c47b1ebbe222dc882639fd1775d35e34"
+    },
+    "assets/images/tools-hub/hero.svg": {
+      "bytes": 2047,
+      "mode": "0644",
+      "sha256": "0c69e2aacbb7e9ab7bcbd190f8aa578a3a21762e5584b808a024d6ce79d85f9b"
+    },
+    "assets/images/tools-hub/log-anonymizer.svg": {
+      "bytes": 2345,
+      "mode": "0644",
+      "sha256": "7932ecfd6ee6160f5173eade6ebce91b07091d658c1b60959085dd87439a94ca"
+    },
+    "assets/images/tools-hub/lotl-command-analyzer.svg": {
+      "bytes": 2152,
+      "mode": "0644",
+      "sha256": "63ce24ed11f8274e2ee9a42ba4cc734f73bc38bd1d52d1c11154ba5f5addfca1"
+    },
+    "assets/images/tools-hub/mcp-security-checker.svg": {
+      "bytes": 1781,
+      "mode": "0644",
+      "sha256": "1d5b203bf682482620e7031ce0dd38bb0e2f2e106ae8c0421da972fc2978c2b1"
+    },
+    "assets/images/tools-hub/mitre-atlas-mapper.svg": {
+      "bytes": 2561,
+      "mode": "0644",
+      "sha256": "3a4d3ff34b2fc0ea36a4579bfa714e2d9e3218b5b4008600b33c0f32a8d8ebb9"
+    },
+    "assets/images/tools-hub/prompt-injection-detector.svg": {
+      "bytes": 2942,
+      "mode": "0644",
+      "sha256": "35bc6a9628bdf7a7253c8afc76637a4ebc484f07fc5e224ed6b737e36fd68fac"
+    },
+    "assets/images/tools-hub/prompt-injection-test-bench.svg": {
+      "bytes": 2447,
+      "mode": "0644",
+      "sha256": "487226439aa2d6b73014bc843ca88d9e14f461458f19b8e52e114b7170727fda"
+    },
+    "assets/images/tools-hub/yara-sigma-validator.svg": {
+      "bytes": 2382,
+      "mode": "0644",
+      "sha256": "a93ae8a1fb35e6fad82909fefd525ab43460af475e7a9091a929c2e93d9713ea"
+    },
+    "assets/js/ai-model-bom/app.js": {
+      "bytes": 26171,
+      "mode": "0644",
+      "sha256": "58c6d5ad114bfbfb37ceb4315e256852eb8052bb8c42d771529a2a8c21bd98b2"
+    },
+    "assets/js/ai-model-bom/engine.js": {
+      "bytes": 77078,
+      "mode": "0644",
+      "sha256": "dc0a585154bcd843085866af5a247e3d924f034793450f3286a9c8031cbe650b"
+    },
+    "assets/js/ai-model-bom/worker.js": {
+      "bytes": 3429,
+      "mode": "0644",
+      "sha256": "368df674714d8948f163d66a8a4be98afb19aefab5b12aac3af96f9fa82af04b"
+    },
+    "assets/js/atlas-mapper/LICENSE-APACHE-2.0.txt": {
+      "bytes": 11358,
+      "mode": "0644",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "assets/js/atlas-mapper/LICENSE-ATLAS.txt": {
+      "bytes": 551,
+      "mode": "0644",
+      "sha256": "fa6c92ab3dc75d41413884e8b38cc54cd4e72f4c8f68fc7e77824e48e3047d40"
+    },
+    "assets/js/atlas-mapper/app.js": {
+      "bytes": 20432,
+      "mode": "0644",
+      "sha256": "a7dae439b5decfe577141f90e8f24be727fea7af3b1c1056e25abbdfb9c81ca4"
+    },
+    "assets/js/atlas-mapper/atlas-data.js": {
+      "bytes": 375820,
+      "mode": "0644",
+      "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
+    },
+    "assets/js/atlas-mapper/engine.js": {
+      "bytes": 54527,
+      "mode": "0644",
+      "sha256": "298fcab70e25a66e11e8775c6489e206ece52be16496761a227d089b3f40459f"
+    },
+    "assets/js/atlas-mapper/worker.js": {
+      "bytes": 2524,
+      "mode": "0644",
+      "sha256": "e2080a4bd728b51174de5b9298b42507179ac6b60529974fac28afe90d7ad9bd"
+    },
+    "assets/js/container-hardening-audit/app.js": {
+      "bytes": 18370,
+      "mode": "0644",
+      "sha256": "4927ba44555aa5e6ce3a28b7ad27168992078c8ab6fef36df6acbe6536f841e2"
+    },
+    "assets/js/container-hardening-audit/engine.js": {
+      "bytes": 64784,
+      "mode": "0644",
+      "sha256": "c7f69b3767e164902e9ce8227aa09a65ec452529e8e3951aca2ac77b174b7e02"
+    },
+    "assets/js/container-hardening-audit/worker.js": {
+      "bytes": 1971,
+      "mode": "0644",
+      "sha256": "9fde45c2e1ccb2edee7a1ee36e5bd30d3a7c6389d3cf5afbb96275d7123e58b6"
+    },
+    "assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt": {
+      "bytes": 16726,
+      "mode": "0644",
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+    },
+    "assets/js/email-header-analyzer/app.js": {
+      "bytes": 21693,
+      "mode": "0644",
+      "sha256": "48ee2ac8cf631713c3e33d5310236f7da200e903f459d97f552bee0c9d1bfad7"
+    },
+    "assets/js/email-header-analyzer/engine.js": {
+      "bytes": 68214,
+      "mode": "0644",
+      "sha256": "8881e0cc534c010b0280361e8fb6e763847a598c768fa260f0a507b8ad67ae75"
+    },
+    "assets/js/email-header-analyzer/psl-data.js": {
+      "bytes": 360305,
+      "mode": "0644",
+      "sha256": "0542f3de69be401ba7b97d7d3895cd3286d6d853e3a38afcedd2c3465616c97e"
+    },
+    "assets/js/email-header-analyzer/public_suffix_list.dat": {
+      "bytes": 342473,
+      "mode": "0644",
+      "sha256": "809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71"
+    },
+    "assets/js/email-header-analyzer/worker.js": {
+      "bytes": 2277,
+      "mode": "0644",
+      "sha256": "8513ad816179733083ace93931d02f3e21865e6a4aad1719fca775a256cb0d3b"
+    },
+    "assets/js/intelligence-charts.js": {
+      "bytes": 4480,
+      "mode": "0644",
+      "sha256": "5687cfeec4d13b62e378b1becff4081ad0481da2dfbb4cdcb290ddd370a0b9aa"
+    },
+    "assets/js/intelligence-live.js": {
+      "bytes": 9845,
+      "mode": "0644",
+      "sha256": "046c6e0eb20269a465b01076b878bd77b4b2b1f6f6c7f0a78b2e094bbeab13d3"
+    },
+    "assets/js/leak-inspector/app.js": {
+      "bytes": 21508,
+      "mode": "0644",
+      "sha256": "1c6c9f3f571236f8ceea863c507b0d20a639cbca4b9811dcb46d801caecf29c8"
+    },
+    "assets/js/leak-inspector/engine.js": {
+      "bytes": 73412,
+      "mode": "0644",
+      "sha256": "eaf8f7e43549e674a11ace8d23408c47f40a695c2116c3a6611ea5586b2876ff"
+    },
+    "assets/js/leak-inspector/worker.js": {
+      "bytes": 3071,
+      "mode": "0644",
+      "sha256": "7c012b77cf40981768b16cc5b12153e7a0ebc2744e54b5729ca3dd4d421cf81e"
+    },
+    "assets/js/log-anonymizer/app.js": {
+      "bytes": 28354,
+      "mode": "0644",
+      "sha256": "b658427c4ff67666123d216e6096e8e087490fac3b43a1db4469be730f350d72"
+    },
+    "assets/js/log-anonymizer/engine.js": {
+      "bytes": 60157,
+      "mode": "0644",
+      "sha256": "477933cb92ab6dd1f7d8b24758e979df856baa68e5eedb90cae52d3ed1378346"
+    },
+    "assets/js/log-anonymizer/worker.js": {
+      "bytes": 4733,
+      "mode": "0644",
+      "sha256": "15ce16aeb39d137076cc26675e61e219dd2f413ce6d5c5aff8bb25ce537805e1"
+    },
+    "assets/js/lotl-analyzer/LICENSE-LOLBAS.txt": {
+      "bytes": 35149,
+      "mode": "0644",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "assets/js/lotl-analyzer/NOTICE-LOLBAS.md": {
+      "bytes": 9172,
+      "mode": "0644",
+      "sha256": "17c221edfe2093dbcd3c444af0b9eb83d8923047d4a134a778d647d94a85bdbc"
+    },
+    "assets/js/lotl-analyzer/SOURCE.md": {
+      "bytes": 3389,
+      "mode": "0644",
+      "sha256": "6319061e03c4397527062bbe89f00c6f72bfb7fa86a05b375a0fe92bb7365637"
+    },
+    "assets/js/lotl-analyzer/app.js": {
+      "bytes": 22092,
+      "mode": "0644",
+      "sha256": "30f0f9819b6828bd787723680f6b863a7113862569fe40f5807317b8a598100b"
+    },
+    "assets/js/lotl-analyzer/engine.js": {
+      "bytes": 45410,
+      "mode": "0644",
+      "sha256": "e7154c565ca3b1fd7811f1cb8f2fc5bbea6fe08e8f78ba54523a56e21efd60dc"
+    },
+    "assets/js/lotl-analyzer/lolbas-data.js": {
+      "bytes": 387900,
+      "mode": "0644",
+      "sha256": "830db013054b2b9f4764daa8dcd49ae16704b3772f6a1b83e678f637f583261a"
+    },
+    "assets/js/lotl-analyzer/worker.js": {
+      "bytes": 3759,
+      "mode": "0644",
+      "sha256": "e491a746e48000548a78dd11a137d140a5835971207e8123bdea6e7f19339d40"
+    },
+    "assets/js/mcp-checker/app.js": {
+      "bytes": 25862,
+      "mode": "0644",
+      "sha256": "e3210202ff446f55f56b71f5e77c3590c2909f739b70832c8dcfc72b5b00851e"
+    },
+    "assets/js/mcp-checker/engine.js": {
+      "bytes": 109902,
+      "mode": "0644",
+      "sha256": "17d0aa9170c039fb9f13d1d241d5843e842f93f26bbaeaa279c2b0222b9c24a4"
+    },
+    "assets/js/mcp-checker/worker.js": {
+      "bytes": 3302,
+      "mode": "0644",
+      "sha256": "581b5d64662cf35655fe031265d68c64e99ffc46a575ed05adb64304caa04598"
+    },
+    "assets/js/navigation.js": {
+      "bytes": 1735,
+      "mode": "0644",
+      "sha256": "7b12ff855922fe81e2c502608795755dbee64a194c64c89c302fd38a725bae66"
+    },
+    "assets/js/prompt-injection-detector/app.js": {
+      "bytes": 31009,
+      "mode": "0644",
+      "sha256": "7e7d84c3c7bdf3b3d2f3c59b773d6a29d290f517f50fcca58f8bf4a65df5a5ca"
+    },
+    "assets/js/prompt-injection-detector/engine.js": {
+      "bytes": 106984,
+      "mode": "0644",
+      "sha256": "05794e544b7a1185858afbae4d9d3945968c983f8dbaaafce16039f9fa226c8a"
+    },
+    "assets/js/prompt-injection-detector/worker.js": {
+      "bytes": 3774,
+      "mode": "0644",
+      "sha256": "3d343086969da32d627c49501c6af4693648cd629c985ade9939633c9fe6a74f"
+    },
+    "assets/js/prompt-injection-test-bench/app.js": {
+      "bytes": 19360,
+      "mode": "0644",
+      "sha256": "0f9909d0afa58f41752499f7de56b36d581c24085362ac86f0d44cd51f99ad5e"
+    },
+    "assets/js/prompt-injection-test-bench/engine.js": {
+      "bytes": 43244,
+      "mode": "0644",
+      "sha256": "361542735484f2347b96c8658e1639b0d9b5f61c0e693e515f12529fea57d362"
+    },
+    "assets/js/prompt-injection-test-bench/worker.js": {
+      "bytes": 2432,
+      "mode": "0644",
+      "sha256": "e166376c9f88a08afe124ff7b4503ba9d3b19d0db3f592c5b3d3659ba925dc4f"
+    },
+    "assets/js/threat-analytics.js": {
+      "bytes": 9534,
+      "mode": "0644",
+      "sha256": "cff984516cad272356cc4d0750efb9b53be897b8a1c6c39946df2b1e2862919e"
+    },
+    "assets/js/threat-geo.js": {
+      "bytes": 8441,
+      "mode": "0644",
+      "sha256": "710386a014e4a098b02249dfa877ef351d3b6cb026e38c78f5364abbca8cd4d3"
+    },
+    "assets/js/threat-pulse.js": {
+      "bytes": 7111,
+      "mode": "0644",
+      "sha256": "8460a44132774d2b7400b16ef0ebdded18eeafd34526dc356bac342406c2cbf6"
+    },
+    "assets/js/tools-filter.js": {
+      "bytes": 1388,
+      "mode": "0644",
+      "sha256": "fe3becdb242977f3d2cb9bf14709c20572f478f452fdd7315223105b667ddd6d"
+    },
+    "assets/js/yara-sigma-validator/app.js": {
+      "bytes": 13173,
+      "mode": "0644",
+      "sha256": "817af42975b72719bfc8587e2cabeac3a4f6f75c74b2b7e27e96602c191e0054"
+    },
+    "assets/js/yara-sigma-validator/engine.js": {
+      "bytes": 67875,
+      "mode": "0644",
+      "sha256": "643b096c051c04718aed0b37c20cddb07f2e3bee0f3208fceea153e5b043f49b"
+    },
+    "assets/js/yara-sigma-validator/worker.js": {
+      "bytes": 2826,
+      "mode": "0644",
+      "sha256": "a4c2d0e6e152f3a6056f2e1b40c7c2b04c3120f1fd562615887836784011e629"
+    },
+    "assets/maps/NOTICE.md": {
+      "bytes": 451,
+      "mode": "0644",
+      "sha256": "6c3fe7493026090438ffb172e707fbc9b63f4db1672efb17e0975f4039d9d4f6"
+    },
+    "assets/maps/world-land.svg": {
+      "bytes": 72149,
+      "mode": "0644",
+      "sha256": "b6c15a8c69f5bcd801f29123abb067c3149bd503a4d7edb3fd0c1b0424ef4379"
+    },
+    "footer.php": {
+      "bytes": 1116,
+      "mode": "0644",
+      "sha256": "36433d07cb494a1a97859440472b2d3b99dfa2f933fe54b8dd8dc2badbfa19cb"
+    },
+    "front-page.php": {
+      "bytes": 1746,
+      "mode": "0644",
+      "sha256": "84fec57a3dc1219dee24d7328ae52250a4540c49a71df1368d8c132657e91e84"
+    },
+    "functions.php": {
+      "bytes": 1333,
+      "mode": "0644",
+      "sha256": "32b6ebda388a3529f481b7a1e4ab554b7e754943bbed1bff59df79b79667fae6"
+    },
+    "header.php": {
+      "bytes": 1570,
+      "mode": "0644",
+      "sha256": "667d2768617f84e04fb6b31a4c4584dc80ace61466896e1dd63dc9704341e098"
+    },
+    "inc/assets.php": {
+      "bytes": 4272,
+      "mode": "0644",
+      "sha256": "7ee1a18993bf69b41504fd689ee4b42f6c099fe4256e30f36b924b3209250d07"
+    },
+    "inc/editorial-lead.php": {
+      "bytes": 5144,
+      "mode": "0644",
+      "sha256": "271e389c86bbdc9eab9b1b279093d5027f45a355fb4fc39e9f676beac64e0b13"
+    },
+    "inc/home-prototype.php": {
+      "bytes": 2744,
+      "mode": "0644",
+      "sha256": "b1f15ab6d2a58af1d0c19b4edcedf40f5959dc4d216492918ece7230c89c45ff"
+    },
+    "inc/intelligence-charts.php": {
+      "bytes": 5348,
+      "mode": "0644",
+      "sha256": "2a542946ed48099c933e8c59571f0d864ad1d7221e99a5d967a829c1d48ae6af"
+    },
+    "inc/kev-data.php": {
+      "bytes": 10241,
+      "mode": "0644",
+      "sha256": "e1c85f9da2528fcc62f03584676ac1e4fd3aad07fcc0540a6256759c03a597a5"
+    },
+    "inc/navigation.php": {
+      "bytes": 2585,
+      "mode": "0644",
+      "sha256": "5c7dc32584591938c23b163eb8a26e551b9051f260ca80c19f37d75634e8a22c"
+    },
+    "inc/nvd-data.php": {
+      "bytes": 13154,
+      "mode": "0644",
+      "sha256": "12c2ecb4f68a2f0a00ae359298893487fe363d941f034fc098d11993c3d18f3a"
+    },
+    "inc/preview-guard.php": {
+      "bytes": 1415,
+      "mode": "0644",
+      "sha256": "9be5f99fb8b0047802b05f12560335b6a175e22d9d7fdc4f2df7e2bacaa34a48"
+    },
+    "inc/setup.php": {
+      "bytes": 1114,
+      "mode": "0644",
+      "sha256": "0c2a8a9f0c8d3a8cb9bc4e67b93ddfd20a0269fb089a09af2ff7114b138b8141"
+    },
+    "inc/threat-intelligence.php": {
+      "bytes": 1097,
+      "mode": "0644",
+      "sha256": "158a232be5e1a9b59f48b45b45d56d8c5627552cb3589409f26a766f0043d17a"
+    },
+    "inc/threat-pulse.php": {
+      "bytes": 3959,
+      "mode": "0644",
+      "sha256": "8f66ced88715769522f03e4bac25f6086b4df5fd2bb9cf9551408bfb3abda882"
+    },
+    "inc/tool-ai-model-bom.php": {
+      "bytes": 2706,
+      "mode": "0644",
+      "sha256": "e1c254a67de224b12e6899de42ddfdfbb42aa39ed64657f7d8f619d1f8a29029"
+    },
+    "inc/tool-atlas-mapper.php": {
+      "bytes": 3977,
+      "mode": "0644",
+      "sha256": "0860f139e489e43a5053875c1d44c61c186568e2a77064cf5f6af53fa7be3cb6"
+    },
+    "inc/tool-container-hardening-audit.php": {
+      "bytes": 2775,
+      "mode": "0644",
+      "sha256": "d7bb1929e5ab7b3ece2b8365f848c197e89822094c3378e42d6f33e57bb5719c"
+    },
+    "inc/tool-email-header-analyzer.php": {
+      "bytes": 3052,
+      "mode": "0644",
+      "sha256": "d4382a9dba3ecd036d6a94c134d0e2a5b33d1b0ddab03c9b1bad0e8e582d2514"
+    },
+    "inc/tool-leak-inspector.php": {
+      "bytes": 2674,
+      "mode": "0644",
+      "sha256": "37cf76a798dc4050258dba8e5cde287ddbc34a9d995b73ab8e46888d4c2170cc"
+    },
+    "inc/tool-log-anonymizer.php": {
+      "bytes": 5430,
+      "mode": "0644",
+      "sha256": "39270d772161b5f943950dc50d3ad4152159da6cf4a86301c75c8549cb2b2231"
+    },
+    "inc/tool-lotl-analyzer.php": {
+      "bytes": 4148,
+      "mode": "0644",
+      "sha256": "433e2e2d7fa366e1558f66ae4dfa9d72b69c72f7dadec9f92653d3e9e41ad517"
+    },
+    "inc/tool-mcp-checker.php": {
+      "bytes": 2616,
+      "mode": "0644",
+      "sha256": "c3ba3a4eb51cbc1c74ca233a1140364872b0118ebc92f7f4b13cf588e0e11244"
+    },
+    "inc/tool-prompt-injection-detector.php": {
+      "bytes": 4456,
+      "mode": "0644",
+      "sha256": "d18c18f98c927f6519c44fbbf12128a68768d9b61e1e1aa670221414681f1bb8"
+    },
+    "inc/tool-prompt-injection-test-bench.php": {
+      "bytes": 3219,
+      "mode": "0644",
+      "sha256": "b4f178ca4395352d9b8cd7b07dca198748058a060efba7e8f4b86846e2b1b97a"
+    },
+    "inc/tool-security.php": {
+      "bytes": 3102,
+      "mode": "0644",
+      "sha256": "c32a57b3db014260f316067411bbd6493df874b367f65da70c87f3a6d31b10c5"
+    },
+    "inc/tool-yara-sigma-validator.php": {
+      "bytes": 2705,
+      "mode": "0644",
+      "sha256": "b2d6acb8376fc418edc53dd07bd2927706f5da2663c9107eee410e965da91e05"
+    },
+    "inc/tools-catalog.json": {
+      "bytes": 5967,
+      "mode": "0644",
+      "sha256": "5476a660200d8d92ec956d50144a9d797de4bc027393f7363dcc9d848753cdf6"
+    },
+    "inc/tools.php": {
+      "bytes": 12770,
+      "mode": "0644",
+      "sha256": "021c1351a1c90fa28d856108324ffd5ad46a48a3df3e2154d98572c32a8039c9"
+    },
+    "index.php": {
+      "bytes": 1612,
+      "mode": "0644",
+      "sha256": "8ee95c1fe642e3e021e78b0e503663b4e477f0edf353afb6ebdb122a118f0bfc"
+    },
+    "page-templates/threat-intelligence.php": {
+      "bytes": 901,
+      "mode": "0644",
+      "sha256": "73688b4ced5343054d31bbbc92a7ba815126d4a7cb50878de908724f00c90e84"
+    },
+    "page-templates/tool.php": {
+      "bytes": 2088,
+      "mode": "0644",
+      "sha256": "b843e071ee2b6ebdcab283440989943c49c7f91013342deb7fadaecde9f490b1"
+    },
+    "page-templates/tools.php": {
+      "bytes": 7460,
+      "mode": "0644",
+      "sha256": "f837d6024faaed185df1e03e10d5bed8d4a7a86e034c27fe5af199a86d140f56"
+    },
+    "searchform.php": {
+      "bytes": 682,
+      "mode": "0644",
+      "sha256": "f07bca3c7ad19eecd41ccc2c6d88967a3174599fb7bcbfc469ad7ecae313c3d0"
+    },
+    "style.css": {
+      "bytes": 454,
+      "mode": "0644",
+      "sha256": "1665b796b96528955050a8176477b6a18978045de5fa2e362dd8c69a7cde2bd5"
+    },
+    "template-parts/content-singular.php": {
+      "bytes": 638,
+      "mode": "0644",
+      "sha256": "fbc2254060a29e102bb3956bff2d11b345a0636be4e5e1b9fd9f327e177a4e58"
+    },
+    "template-parts/content.php": {
+      "bytes": 536,
+      "mode": "0644",
+      "sha256": "b68551ad236c66b69cf5b8171ebbddf0e647f3432b4f6ae6b1bd388a9c630bfa"
+    },
+    "template-parts/home/editorial-card.php": {
+      "bytes": 1410,
+      "mode": "0644",
+      "sha256": "eb4a005a71119f4e06a6edf3c1365613681be8152c6ae8c95c1736a17ec5d018"
+    },
+    "template-parts/home/intelligence-charts.php": {
+      "bytes": 8753,
+      "mode": "0644",
+      "sha256": "777cd3025961bbb46e784bd31523c1ff9131a6a7110ac909fad1e50506c8937b"
+    },
+    "template-parts/home/intelligence.php": {
+      "bytes": 7169,
+      "mode": "0644",
+      "sha256": "55b0ef771a3c7f09887967eddac9a69ef7de9425aa58ad8c627a3c0d6bf21274"
+    },
+    "template-parts/home/lead.php": {
+      "bytes": 3498,
+      "mode": "0644",
+      "sha256": "e28ccd330fbb1de8dd3c8b5ff1c6d6b3fac5af4207f6ca6fe5c4ab4c1e71b1a3"
+    },
+    "template-parts/home/nvd-cell.php": {
+      "bytes": 1510,
+      "mode": "0644",
+      "sha256": "9fadca2fc2ae6ba0bef860f903477c965438e758813784785a1a04d2c07da510"
+    },
+    "template-parts/home/nvd-severity.php": {
+      "bytes": 2795,
+      "mode": "0644",
+      "sha256": "791f1c32affdb7ac0336114867e8e88f13535dbcd6b4693b479b836dd248efce"
+    },
+    "template-parts/home/threat-dashboard.php": {
+      "bytes": 14055,
+      "mode": "0644",
+      "sha256": "e7f9418268111afcfcbe27ab0ecd196d9ca8f9969da6ea04154e2937fa924062"
+    },
+    "template-parts/home/threat-pulse.php": {
+      "bytes": 8033,
+      "mode": "0644",
+      "sha256": "3827dd1615f605e7e4ffc3e7cafd4e0d39fe1003875e16023ce84ba9583fb0c4"
+    },
+    "template-parts/threat-map.php": {
+      "bytes": 4289,
+      "mode": "0644",
+      "sha256": "d816a50820bb26b03fa6b82c526e8b7960ce0c883d51821061e27106c05591a6"
+    },
+    "template-parts/tools/agent-leak-inspector.php": {
+      "bytes": 15682,
+      "mode": "0644",
+      "sha256": "1d0e425f930d9e46589f3f66f4f82d070ba78465832e45ca9ae74e3853eba51f"
+    },
+    "template-parts/tools/ai-model-bom.php": {
+      "bytes": 26071,
+      "mode": "0644",
+      "sha256": "9584007ad09b3468643cec43ae505733050a49242c509820ccb15bab19d87a72"
+    },
+    "template-parts/tools/container-hardening-audit.php": {
+      "bytes": 12340,
+      "mode": "0644",
+      "sha256": "7536dcf1a815403bec6f01dd7460136ef2fd35e21c3a5f8d8bb6d99fbc349600"
+    },
+    "template-parts/tools/email-header-analyzer.php": {
+      "bytes": 14320,
+      "mode": "0644",
+      "sha256": "6012b355fe55e81364f26875c354442e02b453982cfa31f61f2e821472162b0f"
+    },
+    "template-parts/tools/log-anonymizer.php": {
+      "bytes": 16308,
+      "mode": "0644",
+      "sha256": "18153cd08bcaa5c3013af9d72062f3d34bd659b8c74d699bd07220d23a0d758c"
+    },
+    "template-parts/tools/lotl-command-analyzer.php": {
+      "bytes": 14027,
+      "mode": "0644",
+      "sha256": "0f3199c58047eea416260ea0ff8174f26033abdc6ef5751d9ccc40ef9719f991"
+    },
+    "template-parts/tools/mcp-security-checker.php": {
+      "bytes": 17605,
+      "mode": "0644",
+      "sha256": "40fcb78942abdcbfe2c5a08c20328ddaba8bbcefe73ce7d86feb90bb0a634c11"
+    },
+    "template-parts/tools/mitre-atlas-mapper.php": {
+      "bytes": 15455,
+      "mode": "0644",
+      "sha256": "eebeb3d7df456430618e62c26f2165e4658078932d90e0352e0083be115f25b1"
+    },
+    "template-parts/tools/prompt-injection-detector.php": {
+      "bytes": 18735,
+      "mode": "0644",
+      "sha256": "f671b102f84458e22f30da51dad477d268eb2f6b9c872b1759b8ff03bf9ca1a5"
+    },
+    "template-parts/tools/prompt-injection-test-bench.php": {
+      "bytes": 14378,
+      "mode": "0644",
+      "sha256": "30e4977648d5e42e6c1d1283bb52f18fc1db4133386ee76ecb9dd4d6c13cd64b"
+    },
+    "template-parts/tools/yara-sigma-validator.php": {
+      "bytes": 14382,
+      "mode": "0644",
+      "sha256": "dfcd2b81a542644786c9c826511b5dc9708ed2b21d2b4863582e69622bcf3880"
+    },
+    "theme.json": {
+      "bytes": 4899,
+      "mode": "0644",
+      "sha256": "038ef0d4979e9068d961d6c7f318f50fc0b0696d448fc4419e7b4432948eb956"
+    }
+  },
+  "target": {
+    "404.php": {
+      "bytes": 572,
+      "mode": "0644",
+      "sha256": "8b46dc205ac7085218914e8e72e47d8877926822707ddfdddfbb0047ba0b736d"
+    },
+    "README.md": {
+      "bytes": 4077,
+      "mode": "0644",
+      "sha256": "038765ec31171b73025d4d39334acf81595baf270c8cc5fe5bd79af52ae00d6e"
+    },
+    "assets/branding/3b/README.md": {
+      "bytes": 1677,
+      "mode": "0644",
+      "sha256": "92ed6d0492eb0290228c7e3997f99a6c5e6c00902d69cef743b8d25763352085"
+    },
+    "assets/branding/3b/cyberdat-3b-horizontal-dark-bg.svg": {
+      "bytes": 7544,
+      "mode": "0644",
+      "sha256": "1dbe117e9acf68ef28d435d02d99540684771c407a9c73f243d7fb0d3ecb4b0a"
+    },
+    "assets/branding/3b/favicon-16.png": {
+      "bytes": 844,
+      "mode": "0644",
+      "sha256": "f6b0cbdf42a8c7bf6fb12f26544120c6982264811dbebaa1a82cb8c815034388"
+    },
+    "assets/branding/3b/favicon-32.png": {
+      "bytes": 2025,
+      "mode": "0644",
+      "sha256": "a20afb3189a0a1992f2167242a41c5d66cec4d29d01e7cabaef0afbca1371af8"
+    },
+    "assets/branding/3b/favicon-48.png": {
+      "bytes": 3608,
+      "mode": "0644",
+      "sha256": "299ddc54c76d6785f9d59863dad66528ebfefbd8d4f41957015e43d5dee49d7b"
+    },
+    "assets/branding/3b/favicon.ico": {
+      "bytes": 6531,
+      "mode": "0644",
+      "sha256": "eed3dcf5c24afdb5c22e89372a66811748983b44b444de6fcdcc52667edde509"
+    },
+    "assets/branding/3b/favicon.svg": {
+      "bytes": 2763,
+      "mode": "0644",
+      "sha256": "e696c2e61d878730b0682fc4db28beacc5bb8980c7aba84fa37dda07970af474"
+    },
+    "assets/branding/3b/security-report.json": {
+      "bytes": 1113,
+      "mode": "0644",
+      "sha256": "8930ea8b8d98bd9ed0995e4647f6409cd416d31fd32a14f4249e58a88482d87c"
+    },
+    "assets/css/ai-model-bom.css": {
+      "bytes": 4964,
+      "mode": "0644",
+      "sha256": "ef20c62856d9498f6e7ef29509dd51c029a41ba4b8af17b9cde3433cc4caebe3"
+    },
+    "assets/css/atlas-mapper.css": {
+      "bytes": 4145,
+      "mode": "0644",
+      "sha256": "ecd102c2893775ab83bd2fc73cc28bac7e24eb536059185e9033fe6e1c39c5e1"
+    },
+    "assets/css/container-hardening-audit.css": {
+      "bytes": 3029,
+      "mode": "0644",
+      "sha256": "e1bd1b7d5aadd6a92b9e66a8c94b642875f0229429cf0382d149882a8f4cd0fe"
+    },
+    "assets/css/editor.css": {
+      "bytes": 946,
+      "mode": "0644",
+      "sha256": "7280197c3f1d13e1d4120a08f15e780bbbb21b7ac0b86e94e00f8994227f6b57"
+    },
+    "assets/css/email-header-analyzer.css": {
+      "bytes": 3924,
+      "mode": "0644",
+      "sha256": "88344e6afe96e610bdc21194372df2dddb627ffb1cee3e6a2b4bfa4c2237fe9d"
+    },
+    "assets/css/home-prototype.css": {
+      "bytes": 14599,
+      "mode": "0644",
+      "sha256": "468713d36d1397ad2d4eba127973f754fe83200e61bb21bd97f94eaeab7cd525"
+    },
+    "assets/css/leak-inspector.css": {
+      "bytes": 3928,
+      "mode": "0644",
+      "sha256": "32b2d7ad527da2e80423b7dff31de41484cae2dfa930271fb6da16586831ea99"
+    },
+    "assets/css/log-anonymizer.css": {
+      "bytes": 2529,
+      "mode": "0644",
+      "sha256": "73f94b0c2f20ea972023e17e5da1c60925e105fba87bfbc439d11cc27e97cdb7"
+    },
+    "assets/css/lotl-analyzer.css": {
+      "bytes": 4728,
+      "mode": "0644",
+      "sha256": "3afd4afa66200da6628c318a59e76c2b8eb5b52b77685ab3a52836cd26ff512c"
+    },
+    "assets/css/main.css": {
+      "bytes": 8708,
+      "mode": "0644",
+      "sha256": "b48da12fcbfb5dab4612118ebfbdd839fccc2b3ca8c0db353a1fa40495205871"
+    },
+    "assets/css/mcp-checker.css": {
+      "bytes": 4477,
+      "mode": "0644",
+      "sha256": "5ab92a1dc5159b16029c7aa2327c164b7d2c019d146ad14499acb320c5172e6d"
+    },
+    "assets/css/prompt-injection-detector.css": {
+      "bytes": 4160,
+      "mode": "0644",
+      "sha256": "ef1c4fe80ea06f71d6c9eed5d32d25e3f64c41318328c847a4bd727a2de40e71"
+    },
+    "assets/css/prompt-injection-test-bench.css": {
+      "bytes": 2368,
+      "mode": "0644",
+      "sha256": "80cb8ac5040230a322e870997ebe617e82aad6c5f4cac4f30f2e23d40c87257b"
+    },
+    "assets/css/threat-analytics.css": {
+      "bytes": 2623,
+      "mode": "0644",
+      "sha256": "bfbb412668b2201bc8a1fea0e98d4ec3085c833eba32974126c8b4c3a6344cdc"
+    },
+    "assets/css/threat-dashboard.css": {
+      "bytes": 9158,
+      "mode": "0644",
+      "sha256": "8f8d9c1abc56a7d4cd56e5c14490ec9f1cbca01a150a69aeb58d950851c51673"
+    },
+    "assets/css/threat-geo.css": {
+      "bytes": 3021,
+      "mode": "0644",
+      "sha256": "7e6ed48561cf96ef121e8c712444aae156bbb463b827e45e17027a80d245e505"
+    },
+    "assets/css/threat-map.css": {
+      "bytes": 8774,
+      "mode": "0644",
+      "sha256": "e702c4f38b6429e5ba0cfcfa712f5f74e061b7687416bfa0f7113a96dfa3816e"
+    },
+    "assets/css/threat-pulse.css": {
+      "bytes": 5682,
+      "mode": "0644",
+      "sha256": "9da47c5cb04207cc9057dc0020b688b5ffa2248413f9714adc33e477aee3ce95"
+    },
+    "assets/css/tokens.css": {
+      "bytes": 1167,
+      "mode": "0644",
+      "sha256": "712340b9462ad70f23536f2775b590b2b0572b1f4e53028d3cc2350cab2cbd64"
+    },
+    "assets/css/tools-common.css": {
+      "bytes": 6714,
+      "mode": "0644",
+      "sha256": "19e9c962f0fa9847a830b7d2e81edb0b982f14fb085f313bf770fb941cf17581"
+    },
+    "assets/css/tools-hub.css": {
+      "bytes": 10032,
+      "mode": "0644",
+      "sha256": "fadda9a0a7ac80041d9afae2924b4f8ee091d54a4ccdb9b71c702e0e2004216e"
+    },
+    "assets/css/tools.css": {
+      "bytes": 4993,
+      "mode": "0644",
+      "sha256": "58c25bb0da7dd0e3ff74059173281da3d0cee6ce7928c43e3573196545cd4010"
+    },
+    "assets/css/yara-sigma-validator.css": {
+      "bytes": 3467,
+      "mode": "0644",
+      "sha256": "68107250b8a08c9e3ca0b292e5d3a53b849681827607338fa497cb5ad40062db"
+    },
+    "assets/images/agent-network.svg": {
+      "bytes": 2565,
+      "mode": "0644",
+      "sha256": "9212382cc77216c80a7f263c881c58ad6f70aaca88a588b7823aee28470859f4"
+    },
+    "assets/images/editorial-fallback.svg": {
+      "bytes": 472,
+      "mode": "0644",
+      "sha256": "6849a583e1c3da69ab1373f57c74cfacf53e15edaf8ed007f3d964d9a8383b72"
+    },
+    "assets/images/premium/boundary-192.webp": {
+      "bytes": 4356,
+      "mode": "0644",
+      "sha256": "b8df0a34239fc37b1e49a12442ca1b226a9dcf6c98f8ab13f2e9c2d7989f5134"
+    },
+    "assets/images/premium/boundary-320.webp": {
+      "bytes": 11406,
+      "mode": "0644",
+      "sha256": "029d581249ef0004f947e0cbf229c16466de0cb57fd8a2e2555f87da0ee278f0"
+    },
+    "assets/images/premium/boundary-640.webp": {
+      "bytes": 34950,
+      "mode": "0644",
+      "sha256": "49c358d2ada7bea120301dcde33ef2d3fa13acc15b554f0b04e0b022cfbf6044"
+    },
+    "assets/images/premium/detection-192.webp": {
+      "bytes": 5134,
+      "mode": "0644",
+      "sha256": "bd6ddbb3ed246482bbffca0f53d46edc5265e56bb85964f95dd48a7efca83ef7"
+    },
+    "assets/images/premium/detection-320.webp": {
+      "bytes": 14730,
+      "mode": "0644",
+      "sha256": "8f85704f15baf3c612d1d043091568b7ba481f32e5b7f6cd7c75d04adbfd7d89"
+    },
+    "assets/images/premium/detection-640.webp": {
+      "bytes": 42462,
+      "mode": "0644",
+      "sha256": "12231253a3cc87517cc19270c6cf465bd70379eb2786a6223251bba8ea0a323f"
+    },
+    "assets/images/premium/foundations-192.webp": {
+      "bytes": 3906,
+      "mode": "0644",
+      "sha256": "51776cf0337f4abf903f8f4a6f207bd5064f798fc15ec7425351381e4a46daf4"
+    },
+    "assets/images/premium/foundations-320.webp": {
+      "bytes": 9894,
+      "mode": "0644",
+      "sha256": "79900c9974da652de1e4c59d19e08228c8b7fc7c0d3665ee6d580c03cc46c94a"
+    },
+    "assets/images/premium/foundations-640.webp": {
+      "bytes": 27958,
+      "mode": "0644",
+      "sha256": "44bfb3d091adffcd2861d938d210da13c92344549ec7be207aac3d9d2a679a87"
+    },
+    "assets/images/premium/hero-1280.webp": {
+      "bytes": 137042,
+      "mode": "0644",
+      "sha256": "31921711b921b888afff7411b7009152d5e878e62825821473ce33190856b772"
+    },
+    "assets/images/premium/hero-192.webp": {
+      "bytes": 5770,
+      "mode": "0644",
+      "sha256": "06726b0e3f0c79cfaf45c668518b0c3a76a8eb46ce6be45e81291bbdd7719831"
+    },
+    "assets/images/premium/hero-320.webp": {
+      "bytes": 15966,
+      "mode": "0644",
+      "sha256": "27510dad2452262133094e81a8736f71e71ead4e0fdfdbe4f891211cf656ef72"
+    },
+    "assets/images/premium/hero-640.webp": {
+      "bytes": 48550,
+      "mode": "0644",
+      "sha256": "b68c7c9ef4dd30a5ebea4b891f71402e22f6484752a28d2b4b28a7114eb5cde1"
+    },
+    "assets/images/premium/identity-192.webp": {
+      "bytes": 3978,
+      "mode": "0644",
+      "sha256": "ac28762f6f294acb28158f640acdb404088e5221262ec72742a5cf9d34c7de21"
+    },
+    "assets/images/premium/identity-320.webp": {
+      "bytes": 10490,
+      "mode": "0644",
+      "sha256": "750c2e97fc05976c8d66ca6b4738b5024acab17d154795e8c48a56036256892c"
+    },
+    "assets/images/premium/identity-640.webp": {
+      "bytes": 29908,
+      "mode": "0644",
+      "sha256": "4c9ff0d01261a4e086f6f276d6a69bdd8e05128890fa9c1c0e16c240604fc5a2"
+    },
+    "assets/images/premium/intelligence-192.webp": {
+      "bytes": 5336,
+      "mode": "0644",
+      "sha256": "8599b67b7e8ce52158cab76fb1bd1b4730e50cf25f1cbf7d80a3e8d96d71c43a"
+    },
+    "assets/images/premium/intelligence-320.webp": {
+      "bytes": 15166,
+      "mode": "0644",
+      "sha256": "beb66c18b70215c9faa8266b7e5b3c07ca6969fefc914bd6bc19df679ef87215"
+    },
+    "assets/images/premium/intelligence-640.webp": {
+      "bytes": 44758,
+      "mode": "0644",
+      "sha256": "3e6335d1e502037b0c63eb64dd4cca9ca1d7dc828c8be41f32e90e8a8ce66292"
+    },
+    "assets/images/premium/learning-192.webp": {
+      "bytes": 5160,
+      "mode": "0644",
+      "sha256": "f188d30edcaaadf6aed22f5ae75fcbb80f19b9c9e5aed1bef85fff0808a2db0e"
+    },
+    "assets/images/premium/learning-320.webp": {
+      "bytes": 14092,
+      "mode": "0644",
+      "sha256": "86f330017ad4823b48a8e2576d93c2250bdd12dc3a3b1b46430b0fbac0c870f9"
+    },
+    "assets/images/premium/learning-640.webp": {
+      "bytes": 42948,
+      "mode": "0644",
+      "sha256": "9ccbd056d07e3ea4dd012c1cd86b17d4df16dcdc46acc6b952b90c13b9456854"
+    },
+    "assets/images/premium/model-192.webp": {
+      "bytes": 4288,
+      "mode": "0644",
+      "sha256": "34d9ce4630e0a646461703e8f2b271ed66740ee94e5fed0287a7d51d10918243"
+    },
+    "assets/images/premium/model-320.webp": {
+      "bytes": 11396,
+      "mode": "0644",
+      "sha256": "fd4a8f8cdf887140fbc1eee488261a08ea514c7d1136ace9853ab661feef5cc9"
+    },
+    "assets/images/premium/model-640.webp": {
+      "bytes": 35518,
+      "mode": "0644",
+      "sha256": "5ddc03eac36df67b5eb8e4d198236064a35a2d2f88a1672f870c04569084aa61"
+    },
+    "assets/images/premium/network-192.webp": {
+      "bytes": 6188,
+      "mode": "0644",
+      "sha256": "9ec395d621f4877b13564ea4b0c85fbea3d693bd5823154dce0496db3005bb6e"
+    },
+    "assets/images/premium/network-320.webp": {
+      "bytes": 17912,
+      "mode": "0644",
+      "sha256": "6018760db3393df372ffdc05dce3e51a0f91b488a63dc8a2c808edafbe18df30"
+    },
+    "assets/images/premium/network-640.webp": {
+      "bytes": 57358,
+      "mode": "0644",
+      "sha256": "888e28f2ebdeb42ba3dbd8e8d44d994049695147ab4c8a6bf6308466f6f699a7"
+    },
+    "assets/images/premium/redteam-192.webp": {
+      "bytes": 5482,
+      "mode": "0644",
+      "sha256": "d1a14b35d64d3f5ecae1fb48dc6abaa8bfe1f98c4a00594c1aaeb4ffc2b5a1da"
+    },
+    "assets/images/premium/redteam-320.webp": {
+      "bytes": 14396,
+      "mode": "0644",
+      "sha256": "c99099c4cda5ae549c64ebebd79111a60c5db8192cf9c86e6ef5e872d40da74d"
+    },
+    "assets/images/premium/redteam-640.webp": {
+      "bytes": 40794,
+      "mode": "0644",
+      "sha256": "56f80fa72c8f7225e26b7e48f1d6ad3943e33431f5fdb4a801533367cc89a053"
+    },
+    "assets/images/tools-hub/README.md": {
+      "bytes": 1326,
+      "mode": "0644",
+      "sha256": "9a5bdde35596f47745278ebd3b60978bdf6fcfdcc449d4ecec8c9a1347f3d318"
+    },
+    "assets/images/tools-hub/agent-leak-inspector.svg": {
+      "bytes": 2403,
+      "mode": "0644",
+      "sha256": "6e34f3f005af63233439d3e87778fb119465e217db0bdc7f0a283d2eb8993c62"
+    },
+    "assets/images/tools-hub/ai-model-bom.svg": {
+      "bytes": 2286,
+      "mode": "0644",
+      "sha256": "b8602597cb092eda574090b91efc88342dcc987d53bbcb8611fd752e5e557a10"
+    },
+    "assets/images/tools-hub/container-hardening-audit.svg": {
+      "bytes": 2461,
+      "mode": "0644",
+      "sha256": "0d8dfb0c5e9387962f5adcb585a9148e823e62666b526d0462599636398de41b"
+    },
+    "assets/images/tools-hub/email-header-analyzer.svg": {
+      "bytes": 2539,
+      "mode": "0644",
+      "sha256": "8dcfa692a549f70c35813ae034894f05c47b1ebbe222dc882639fd1775d35e34"
+    },
+    "assets/images/tools-hub/hero.svg": {
+      "bytes": 2047,
+      "mode": "0644",
+      "sha256": "0c69e2aacbb7e9ab7bcbd190f8aa578a3a21762e5584b808a024d6ce79d85f9b"
+    },
+    "assets/images/tools-hub/log-anonymizer.svg": {
+      "bytes": 2345,
+      "mode": "0644",
+      "sha256": "7932ecfd6ee6160f5173eade6ebce91b07091d658c1b60959085dd87439a94ca"
+    },
+    "assets/images/tools-hub/lotl-command-analyzer.svg": {
+      "bytes": 2152,
+      "mode": "0644",
+      "sha256": "63ce24ed11f8274e2ee9a42ba4cc734f73bc38bd1d52d1c11154ba5f5addfca1"
+    },
+    "assets/images/tools-hub/mcp-security-checker.svg": {
+      "bytes": 1781,
+      "mode": "0644",
+      "sha256": "1d5b203bf682482620e7031ce0dd38bb0e2f2e106ae8c0421da972fc2978c2b1"
+    },
+    "assets/images/tools-hub/mitre-atlas-mapper.svg": {
+      "bytes": 2561,
+      "mode": "0644",
+      "sha256": "3a4d3ff34b2fc0ea36a4579bfa714e2d9e3218b5b4008600b33c0f32a8d8ebb9"
+    },
+    "assets/images/tools-hub/prompt-injection-detector.svg": {
+      "bytes": 2942,
+      "mode": "0644",
+      "sha256": "35bc6a9628bdf7a7253c8afc76637a4ebc484f07fc5e224ed6b737e36fd68fac"
+    },
+    "assets/images/tools-hub/prompt-injection-test-bench.svg": {
+      "bytes": 2447,
+      "mode": "0644",
+      "sha256": "487226439aa2d6b73014bc843ca88d9e14f461458f19b8e52e114b7170727fda"
+    },
+    "assets/images/tools-hub/yara-sigma-validator.svg": {
+      "bytes": 2382,
+      "mode": "0644",
+      "sha256": "a93ae8a1fb35e6fad82909fefd525ab43460af475e7a9091a929c2e93d9713ea"
+    },
+    "assets/js/ai-model-bom/app.js": {
+      "bytes": 26171,
+      "mode": "0644",
+      "sha256": "58c6d5ad114bfbfb37ceb4315e256852eb8052bb8c42d771529a2a8c21bd98b2"
+    },
+    "assets/js/ai-model-bom/engine.js": {
+      "bytes": 77078,
+      "mode": "0644",
+      "sha256": "dc0a585154bcd843085866af5a247e3d924f034793450f3286a9c8031cbe650b"
+    },
+    "assets/js/ai-model-bom/worker.js": {
+      "bytes": 3429,
+      "mode": "0644",
+      "sha256": "368df674714d8948f163d66a8a4be98afb19aefab5b12aac3af96f9fa82af04b"
+    },
+    "assets/js/atlas-mapper/LICENSE-APACHE-2.0.txt": {
+      "bytes": 11358,
+      "mode": "0644",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "assets/js/atlas-mapper/LICENSE-ATLAS.txt": {
+      "bytes": 551,
+      "mode": "0644",
+      "sha256": "fa6c92ab3dc75d41413884e8b38cc54cd4e72f4c8f68fc7e77824e48e3047d40"
+    },
+    "assets/js/atlas-mapper/app.js": {
+      "bytes": 20432,
+      "mode": "0644",
+      "sha256": "a7dae439b5decfe577141f90e8f24be727fea7af3b1c1056e25abbdfb9c81ca4"
+    },
+    "assets/js/atlas-mapper/atlas-data.js": {
+      "bytes": 375820,
+      "mode": "0644",
+      "sha256": "e700988504e09972d3cb8f8ce16de97d0b930106e513df0b0f55f440fb77b207"
+    },
+    "assets/js/atlas-mapper/engine.js": {
+      "bytes": 54527,
+      "mode": "0644",
+      "sha256": "298fcab70e25a66e11e8775c6489e206ece52be16496761a227d089b3f40459f"
+    },
+    "assets/js/atlas-mapper/worker.js": {
+      "bytes": 2524,
+      "mode": "0644",
+      "sha256": "e2080a4bd728b51174de5b9298b42507179ac6b60529974fac28afe90d7ad9bd"
+    },
+    "assets/js/container-hardening-audit/app.js": {
+      "bytes": 18370,
+      "mode": "0644",
+      "sha256": "4927ba44555aa5e6ce3a28b7ad27168992078c8ab6fef36df6acbe6536f841e2"
+    },
+    "assets/js/container-hardening-audit/engine.js": {
+      "bytes": 64784,
+      "mode": "0644",
+      "sha256": "c7f69b3767e164902e9ce8227aa09a65ec452529e8e3951aca2ac77b174b7e02"
+    },
+    "assets/js/container-hardening-audit/worker.js": {
+      "bytes": 1971,
+      "mode": "0644",
+      "sha256": "9fde45c2e1ccb2edee7a1ee36e5bd30d3a7c6389d3cf5afbb96275d7123e58b6"
+    },
+    "assets/js/email-header-analyzer/LICENSE-MPL-2.0.txt": {
+      "bytes": 16726,
+      "mode": "0644",
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+    },
+    "assets/js/email-header-analyzer/app.js": {
+      "bytes": 21693,
+      "mode": "0644",
+      "sha256": "48ee2ac8cf631713c3e33d5310236f7da200e903f459d97f552bee0c9d1bfad7"
+    },
+    "assets/js/email-header-analyzer/engine.js": {
+      "bytes": 68214,
+      "mode": "0644",
+      "sha256": "8881e0cc534c010b0280361e8fb6e763847a598c768fa260f0a507b8ad67ae75"
+    },
+    "assets/js/email-header-analyzer/psl-data.js": {
+      "bytes": 360305,
+      "mode": "0644",
+      "sha256": "0542f3de69be401ba7b97d7d3895cd3286d6d853e3a38afcedd2c3465616c97e"
+    },
+    "assets/js/email-header-analyzer/public_suffix_list.dat": {
+      "bytes": 342473,
+      "mode": "0644",
+      "sha256": "809adae1a2cb1621b70165c11e0d14412d3f104f40a4ebed9a99e23c54f78d71"
+    },
+    "assets/js/email-header-analyzer/worker.js": {
+      "bytes": 2277,
+      "mode": "0644",
+      "sha256": "8513ad816179733083ace93931d02f3e21865e6a4aad1719fca775a256cb0d3b"
+    },
+    "assets/js/intelligence-charts.js": {
+      "bytes": 4480,
+      "mode": "0644",
+      "sha256": "5687cfeec4d13b62e378b1becff4081ad0481da2dfbb4cdcb290ddd370a0b9aa"
+    },
+    "assets/js/intelligence-live.js": {
+      "bytes": 9845,
+      "mode": "0644",
+      "sha256": "046c6e0eb20269a465b01076b878bd77b4b2b1f6f6c7f0a78b2e094bbeab13d3"
+    },
+    "assets/js/leak-inspector/app.js": {
+      "bytes": 21508,
+      "mode": "0644",
+      "sha256": "1c6c9f3f571236f8ceea863c507b0d20a639cbca4b9811dcb46d801caecf29c8"
+    },
+    "assets/js/leak-inspector/engine.js": {
+      "bytes": 73412,
+      "mode": "0644",
+      "sha256": "eaf8f7e43549e674a11ace8d23408c47f40a695c2116c3a6611ea5586b2876ff"
+    },
+    "assets/js/leak-inspector/worker.js": {
+      "bytes": 3071,
+      "mode": "0644",
+      "sha256": "7c012b77cf40981768b16cc5b12153e7a0ebc2744e54b5729ca3dd4d421cf81e"
+    },
+    "assets/js/log-anonymizer/app.js": {
+      "bytes": 28354,
+      "mode": "0644",
+      "sha256": "b658427c4ff67666123d216e6096e8e087490fac3b43a1db4469be730f350d72"
+    },
+    "assets/js/log-anonymizer/engine.js": {
+      "bytes": 60157,
+      "mode": "0644",
+      "sha256": "477933cb92ab6dd1f7d8b24758e979df856baa68e5eedb90cae52d3ed1378346"
+    },
+    "assets/js/log-anonymizer/worker.js": {
+      "bytes": 4733,
+      "mode": "0644",
+      "sha256": "15ce16aeb39d137076cc26675e61e219dd2f413ce6d5c5aff8bb25ce537805e1"
+    },
+    "assets/js/lotl-analyzer/LICENSE-LOLBAS.txt": {
+      "bytes": 35149,
+      "mode": "0644",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "assets/js/lotl-analyzer/NOTICE-LOLBAS.md": {
+      "bytes": 9172,
+      "mode": "0644",
+      "sha256": "17c221edfe2093dbcd3c444af0b9eb83d8923047d4a134a778d647d94a85bdbc"
+    },
+    "assets/js/lotl-analyzer/SOURCE.md": {
+      "bytes": 3389,
+      "mode": "0644",
+      "sha256": "6319061e03c4397527062bbe89f00c6f72bfb7fa86a05b375a0fe92bb7365637"
+    },
+    "assets/js/lotl-analyzer/app.js": {
+      "bytes": 22092,
+      "mode": "0644",
+      "sha256": "30f0f9819b6828bd787723680f6b863a7113862569fe40f5807317b8a598100b"
+    },
+    "assets/js/lotl-analyzer/engine.js": {
+      "bytes": 45410,
+      "mode": "0644",
+      "sha256": "e7154c565ca3b1fd7811f1cb8f2fc5bbea6fe08e8f78ba54523a56e21efd60dc"
+    },
+    "assets/js/lotl-analyzer/lolbas-data.js": {
+      "bytes": 387900,
+      "mode": "0644",
+      "sha256": "830db013054b2b9f4764daa8dcd49ae16704b3772f6a1b83e678f637f583261a"
+    },
+    "assets/js/lotl-analyzer/worker.js": {
+      "bytes": 3759,
+      "mode": "0644",
+      "sha256": "e491a746e48000548a78dd11a137d140a5835971207e8123bdea6e7f19339d40"
+    },
+    "assets/js/mcp-checker/app.js": {
+      "bytes": 25862,
+      "mode": "0644",
+      "sha256": "e3210202ff446f55f56b71f5e77c3590c2909f739b70832c8dcfc72b5b00851e"
+    },
+    "assets/js/mcp-checker/engine.js": {
+      "bytes": 109902,
+      "mode": "0644",
+      "sha256": "17d0aa9170c039fb9f13d1d241d5843e842f93f26bbaeaa279c2b0222b9c24a4"
+    },
+    "assets/js/mcp-checker/worker.js": {
+      "bytes": 3302,
+      "mode": "0644",
+      "sha256": "581b5d64662cf35655fe031265d68c64e99ffc46a575ed05adb64304caa04598"
+    },
+    "assets/js/navigation.js": {
+      "bytes": 1735,
+      "mode": "0644",
+      "sha256": "7b12ff855922fe81e2c502608795755dbee64a194c64c89c302fd38a725bae66"
+    },
+    "assets/js/prompt-injection-detector/app.js": {
+      "bytes": 31009,
+      "mode": "0644",
+      "sha256": "7e7d84c3c7bdf3b3d2f3c59b773d6a29d290f517f50fcca58f8bf4a65df5a5ca"
+    },
+    "assets/js/prompt-injection-detector/engine.js": {
+      "bytes": 106984,
+      "mode": "0644",
+      "sha256": "05794e544b7a1185858afbae4d9d3945968c983f8dbaaafce16039f9fa226c8a"
+    },
+    "assets/js/prompt-injection-detector/worker.js": {
+      "bytes": 3774,
+      "mode": "0644",
+      "sha256": "3d343086969da32d627c49501c6af4693648cd629c985ade9939633c9fe6a74f"
+    },
+    "assets/js/prompt-injection-test-bench/app.js": {
+      "bytes": 19360,
+      "mode": "0644",
+      "sha256": "0f9909d0afa58f41752499f7de56b36d581c24085362ac86f0d44cd51f99ad5e"
+    },
+    "assets/js/prompt-injection-test-bench/engine.js": {
+      "bytes": 43244,
+      "mode": "0644",
+      "sha256": "361542735484f2347b96c8658e1639b0d9b5f61c0e693e515f12529fea57d362"
+    },
+    "assets/js/prompt-injection-test-bench/worker.js": {
+      "bytes": 2432,
+      "mode": "0644",
+      "sha256": "e166376c9f88a08afe124ff7b4503ba9d3b19d0db3f592c5b3d3659ba925dc4f"
+    },
+    "assets/js/threat-analytics.js": {
+      "bytes": 9534,
+      "mode": "0644",
+      "sha256": "cff984516cad272356cc4d0750efb9b53be897b8a1c6c39946df2b1e2862919e"
+    },
+    "assets/js/threat-geo.js": {
+      "bytes": 8441,
+      "mode": "0644",
+      "sha256": "710386a014e4a098b02249dfa877ef351d3b6cb026e38c78f5364abbca8cd4d3"
+    },
+    "assets/js/threat-map.js": {
+      "bytes": 14964,
+      "mode": "0644",
+      "sha256": "5263959cb09a46c9c3b2db2da0ac70e70b01e98f312c34d7b811bcbe55a126ec"
+    },
+    "assets/js/threat-pulse.js": {
+      "bytes": 7111,
+      "mode": "0644",
+      "sha256": "8460a44132774d2b7400b16ef0ebdded18eeafd34526dc356bac342406c2cbf6"
+    },
+    "assets/js/tools-filter.js": {
+      "bytes": 1388,
+      "mode": "0644",
+      "sha256": "fe3becdb242977f3d2cb9bf14709c20572f478f452fdd7315223105b667ddd6d"
+    },
+    "assets/js/yara-sigma-validator/app.js": {
+      "bytes": 13173,
+      "mode": "0644",
+      "sha256": "817af42975b72719bfc8587e2cabeac3a4f6f75c74b2b7e27e96602c191e0054"
+    },
+    "assets/js/yara-sigma-validator/engine.js": {
+      "bytes": 67875,
+      "mode": "0644",
+      "sha256": "643b096c051c04718aed0b37c20cddb07f2e3bee0f3208fceea153e5b043f49b"
+    },
+    "assets/js/yara-sigma-validator/worker.js": {
+      "bytes": 2826,
+      "mode": "0644",
+      "sha256": "a4c2d0e6e152f3a6056f2e1b40c7c2b04c3120f1fd562615887836784011e629"
+    },
+    "assets/maps/NOTICE.md": {
+      "bytes": 1050,
+      "mode": "0644",
+      "sha256": "3156159f8b997ecc5102bf2731fa78b53dcbe970bf406d3340c9142d341190ca"
+    },
+    "assets/maps/iso3166-1.json": {
+      "bytes": 6815,
+      "mode": "0644",
+      "sha256": "495e5c6543f6c8e499b68b97c3fed0504c9563bc4960f5d630f1dc0e13ec905c"
+    },
+    "assets/maps/threat-map-countries.json": {
+      "bytes": 125522,
+      "mode": "0644",
+      "sha256": "020e3cce7f5ac6577f7044cbdbf6b398906722e59796a1459143db41d8183de8"
+    },
+    "assets/maps/world-land.svg": {
+      "bytes": 72149,
+      "mode": "0644",
+      "sha256": "b6c15a8c69f5bcd801f29123abb067c3149bd503a4d7edb3fd0c1b0424ef4379"
+    },
+    "footer.php": {
+      "bytes": 1116,
+      "mode": "0644",
+      "sha256": "36433d07cb494a1a97859440472b2d3b99dfa2f933fe54b8dd8dc2badbfa19cb"
+    },
+    "front-page.php": {
+      "bytes": 1746,
+      "mode": "0644",
+      "sha256": "84fec57a3dc1219dee24d7328ae52250a4540c49a71df1368d8c132657e91e84"
+    },
+    "functions.php": {
+      "bytes": 1379,
+      "mode": "0644",
+      "sha256": "05f3a6058ef768bade237b1ffdb53b8d2e2d1a25798f501d650c835ab24e91a5"
+    },
+    "header.php": {
+      "bytes": 1570,
+      "mode": "0644",
+      "sha256": "667d2768617f84e04fb6b31a4c4584dc80ace61466896e1dd63dc9704341e098"
+    },
+    "inc/assets.php": {
+      "bytes": 4651,
+      "mode": "0644",
+      "sha256": "393d33564b0eedd0ad5402a0e8b1c358164660009f1f324b45444d7c73d9e635"
+    },
+    "inc/editorial-lead.php": {
+      "bytes": 5144,
+      "mode": "0644",
+      "sha256": "271e389c86bbdc9eab9b1b279093d5027f45a355fb4fc39e9f676beac64e0b13"
+    },
+    "inc/home-prototype.php": {
+      "bytes": 2744,
+      "mode": "0644",
+      "sha256": "b1f15ab6d2a58af1d0c19b4edcedf40f5959dc4d216492918ece7230c89c45ff"
+    },
+    "inc/intelligence-charts.php": {
+      "bytes": 5348,
+      "mode": "0644",
+      "sha256": "2a542946ed48099c933e8c59571f0d864ad1d7221e99a5d967a829c1d48ae6af"
+    },
+    "inc/kev-data.php": {
+      "bytes": 10241,
+      "mode": "0644",
+      "sha256": "e1c85f9da2528fcc62f03584676ac1e4fd3aad07fcc0540a6256759c03a597a5"
+    },
+    "inc/navigation.php": {
+      "bytes": 2585,
+      "mode": "0644",
+      "sha256": "5c7dc32584591938c23b163eb8a26e551b9051f260ca80c19f37d75634e8a22c"
+    },
+    "inc/nvd-data.php": {
+      "bytes": 13154,
+      "mode": "0644",
+      "sha256": "12c2ecb4f68a2f0a00ae359298893487fe363d941f034fc098d11993c3d18f3a"
+    },
+    "inc/preview-guard.php": {
+      "bytes": 1415,
+      "mode": "0644",
+      "sha256": "9be5f99fb8b0047802b05f12560335b6a175e22d9d7fdc4f2df7e2bacaa34a48"
+    },
+    "inc/setup.php": {
+      "bytes": 1114,
+      "mode": "0644",
+      "sha256": "0c2a8a9f0c8d3a8cb9bc4e67b93ddfd20a0269fb089a09af2ff7114b138b8141"
+    },
+    "inc/threat-intelligence.php": {
+      "bytes": 1097,
+      "mode": "0644",
+      "sha256": "158a232be5e1a9b59f48b45b45d56d8c5627552cb3589409f26a766f0043d17a"
+    },
+    "inc/threat-map.php": {
+      "bytes": 800,
+      "mode": "0644",
+      "sha256": "d4cb16035e709b00b23fc8067c545b79546fcec0b442e30f9926387091b09c62"
+    },
+    "inc/threat-map/cli.php": {
+      "bytes": 2899,
+      "mode": "0644",
+      "sha256": "ca8a6f6e9c93231b40299b7a4ac013a6f2168afbe81f476c7d8510a1e051602c"
+    },
+    "inc/threat-map/core.php": {
+      "bytes": 28528,
+      "mode": "0644",
+      "sha256": "32d9decde6d9f7f7a5d2c746c5987877a81dfaa4ee093e246100d4195e435dfc"
+    },
+    "inc/threat-map/render.php": {
+      "bytes": 7572,
+      "mode": "0644",
+      "sha256": "910e47a5bfabcaea4efe215a0d3b79b0d4bd9eba496535f1eaedb240a0aee2b5"
+    },
+    "inc/threat-map/store-wpdb.php": {
+      "bytes": 6926,
+      "mode": "0644",
+      "sha256": "eb6b93dba2b41766ea7db8dbe0aeca165cccaaeeac9711d53c7742ad8944a139"
+    },
+    "inc/threat-map/view.php": {
+      "bytes": 4037,
+      "mode": "0644",
+      "sha256": "63ca1c26dd03a9f13f0f4089524f36371322b869211b2f139a3c323869ba43f7"
+    },
+    "inc/threat-pulse.php": {
+      "bytes": 3959,
+      "mode": "0644",
+      "sha256": "8f66ced88715769522f03e4bac25f6086b4df5fd2bb9cf9551408bfb3abda882"
+    },
+    "inc/tool-ai-model-bom.php": {
+      "bytes": 2706,
+      "mode": "0644",
+      "sha256": "e1c254a67de224b12e6899de42ddfdfbb42aa39ed64657f7d8f619d1f8a29029"
+    },
+    "inc/tool-atlas-mapper.php": {
+      "bytes": 3977,
+      "mode": "0644",
+      "sha256": "0860f139e489e43a5053875c1d44c61c186568e2a77064cf5f6af53fa7be3cb6"
+    },
+    "inc/tool-container-hardening-audit.php": {
+      "bytes": 2775,
+      "mode": "0644",
+      "sha256": "d7bb1929e5ab7b3ece2b8365f848c197e89822094c3378e42d6f33e57bb5719c"
+    },
+    "inc/tool-email-header-analyzer.php": {
+      "bytes": 3052,
+      "mode": "0644",
+      "sha256": "d4382a9dba3ecd036d6a94c134d0e2a5b33d1b0ddab03c9b1bad0e8e582d2514"
+    },
+    "inc/tool-leak-inspector.php": {
+      "bytes": 2674,
+      "mode": "0644",
+      "sha256": "37cf76a798dc4050258dba8e5cde287ddbc34a9d995b73ab8e46888d4c2170cc"
+    },
+    "inc/tool-log-anonymizer.php": {
+      "bytes": 5430,
+      "mode": "0644",
+      "sha256": "39270d772161b5f943950dc50d3ad4152159da6cf4a86301c75c8549cb2b2231"
+    },
+    "inc/tool-lotl-analyzer.php": {
+      "bytes": 4148,
+      "mode": "0644",
+      "sha256": "433e2e2d7fa366e1558f66ae4dfa9d72b69c72f7dadec9f92653d3e9e41ad517"
+    },
+    "inc/tool-mcp-checker.php": {
+      "bytes": 2616,
+      "mode": "0644",
+      "sha256": "c3ba3a4eb51cbc1c74ca233a1140364872b0118ebc92f7f4b13cf588e0e11244"
+    },
+    "inc/tool-prompt-injection-detector.php": {
+      "bytes": 4456,
+      "mode": "0644",
+      "sha256": "d18c18f98c927f6519c44fbbf12128a68768d9b61e1e1aa670221414681f1bb8"
+    },
+    "inc/tool-prompt-injection-test-bench.php": {
+      "bytes": 3219,
+      "mode": "0644",
+      "sha256": "b4f178ca4395352d9b8cd7b07dca198748058a060efba7e8f4b86846e2b1b97a"
+    },
+    "inc/tool-security.php": {
+      "bytes": 3102,
+      "mode": "0644",
+      "sha256": "c32a57b3db014260f316067411bbd6493df874b367f65da70c87f3a6d31b10c5"
+    },
+    "inc/tool-yara-sigma-validator.php": {
+      "bytes": 2705,
+      "mode": "0644",
+      "sha256": "b2d6acb8376fc418edc53dd07bd2927706f5da2663c9107eee410e965da91e05"
+    },
+    "inc/tools-catalog.json": {
+      "bytes": 5967,
+      "mode": "0644",
+      "sha256": "5476a660200d8d92ec956d50144a9d797de4bc027393f7363dcc9d848753cdf6"
+    },
+    "inc/tools.php": {
+      "bytes": 12770,
+      "mode": "0644",
+      "sha256": "021c1351a1c90fa28d856108324ffd5ad46a48a3df3e2154d98572c32a8039c9"
+    },
+    "index.php": {
+      "bytes": 1612,
+      "mode": "0644",
+      "sha256": "8ee95c1fe642e3e021e78b0e503663b4e477f0edf353afb6ebdb122a118f0bfc"
+    },
+    "page-templates/threat-intelligence.php": {
+      "bytes": 901,
+      "mode": "0644",
+      "sha256": "73688b4ced5343054d31bbbc92a7ba815126d4a7cb50878de908724f00c90e84"
+    },
+    "page-templates/tool.php": {
+      "bytes": 2088,
+      "mode": "0644",
+      "sha256": "b843e071ee2b6ebdcab283440989943c49c7f91013342deb7fadaecde9f490b1"
+    },
+    "page-templates/tools.php": {
+      "bytes": 7460,
+      "mode": "0644",
+      "sha256": "f837d6024faaed185df1e03e10d5bed8d4a7a86e034c27fe5af199a86d140f56"
+    },
+    "searchform.php": {
+      "bytes": 682,
+      "mode": "0644",
+      "sha256": "f07bca3c7ad19eecd41ccc2c6d88967a3174599fb7bcbfc469ad7ecae313c3d0"
+    },
+    "style.css": {
+      "bytes": 454,
+      "mode": "0644",
+      "sha256": "1665b796b96528955050a8176477b6a18978045de5fa2e362dd8c69a7cde2bd5"
+    },
+    "template-parts/content-singular.php": {
+      "bytes": 638,
+      "mode": "0644",
+      "sha256": "fbc2254060a29e102bb3956bff2d11b345a0636be4e5e1b9fd9f327e177a4e58"
+    },
+    "template-parts/content.php": {
+      "bytes": 536,
+      "mode": "0644",
+      "sha256": "b68551ad236c66b69cf5b8171ebbddf0e647f3432b4f6ae6b1bd388a9c630bfa"
+    },
+    "template-parts/home/editorial-card.php": {
+      "bytes": 1410,
+      "mode": "0644",
+      "sha256": "eb4a005a71119f4e06a6edf3c1365613681be8152c6ae8c95c1736a17ec5d018"
+    },
+    "template-parts/home/intelligence-charts.php": {
+      "bytes": 8753,
+      "mode": "0644",
+      "sha256": "777cd3025961bbb46e784bd31523c1ff9131a6a7110ac909fad1e50506c8937b"
+    },
+    "template-parts/home/intelligence.php": {
+      "bytes": 7169,
+      "mode": "0644",
+      "sha256": "55b0ef771a3c7f09887967eddac9a69ef7de9425aa58ad8c627a3c0d6bf21274"
+    },
+    "template-parts/home/lead.php": {
+      "bytes": 3498,
+      "mode": "0644",
+      "sha256": "e28ccd330fbb1de8dd3c8b5ff1c6d6b3fac5af4207f6ca6fe5c4ab4c1e71b1a3"
+    },
+    "template-parts/home/nvd-cell.php": {
+      "bytes": 1510,
+      "mode": "0644",
+      "sha256": "9fadca2fc2ae6ba0bef860f903477c965438e758813784785a1a04d2c07da510"
+    },
+    "template-parts/home/nvd-severity.php": {
+      "bytes": 2795,
+      "mode": "0644",
+      "sha256": "791f1c32affdb7ac0336114867e8e88f13535dbcd6b4693b479b836dd248efce"
+    },
+    "template-parts/home/threat-dashboard.php": {
+      "bytes": 14055,
+      "mode": "0644",
+      "sha256": "e7f9418268111afcfcbe27ab0ecd196d9ca8f9969da6ea04154e2937fa924062"
+    },
+    "template-parts/home/threat-pulse.php": {
+      "bytes": 8033,
+      "mode": "0644",
+      "sha256": "3827dd1615f605e7e4ffc3e7cafd4e0d39fe1003875e16023ce84ba9583fb0c4"
+    },
+    "template-parts/threat-map.php": {
+      "bytes": 273,
+      "mode": "0644",
+      "sha256": "f98ce358136bc81988262199bb74835570001c296141658e9ef40e55eb3d41f3"
+    },
+    "template-parts/tools/agent-leak-inspector.php": {
+      "bytes": 15682,
+      "mode": "0644",
+      "sha256": "1d0e425f930d9e46589f3f66f4f82d070ba78465832e45ca9ae74e3853eba51f"
+    },
+    "template-parts/tools/ai-model-bom.php": {
+      "bytes": 26071,
+      "mode": "0644",
+      "sha256": "9584007ad09b3468643cec43ae505733050a49242c509820ccb15bab19d87a72"
+    },
+    "template-parts/tools/container-hardening-audit.php": {
+      "bytes": 12340,
+      "mode": "0644",
+      "sha256": "7536dcf1a815403bec6f01dd7460136ef2fd35e21c3a5f8d8bb6d99fbc349600"
+    },
+    "template-parts/tools/email-header-analyzer.php": {
+      "bytes": 14320,
+      "mode": "0644",
+      "sha256": "6012b355fe55e81364f26875c354442e02b453982cfa31f61f2e821472162b0f"
+    },
+    "template-parts/tools/log-anonymizer.php": {
+      "bytes": 16308,
+      "mode": "0644",
+      "sha256": "18153cd08bcaa5c3013af9d72062f3d34bd659b8c74d699bd07220d23a0d758c"
+    },
+    "template-parts/tools/lotl-command-analyzer.php": {
+      "bytes": 14027,
+      "mode": "0644",
+      "sha256": "0f3199c58047eea416260ea0ff8174f26033abdc6ef5751d9ccc40ef9719f991"
+    },
+    "template-parts/tools/mcp-security-checker.php": {
+      "bytes": 17605,
+      "mode": "0644",
+      "sha256": "40fcb78942abdcbfe2c5a08c20328ddaba8bbcefe73ce7d86feb90bb0a634c11"
+    },
+    "template-parts/tools/mitre-atlas-mapper.php": {
+      "bytes": 15455,
+      "mode": "0644",
+      "sha256": "eebeb3d7df456430618e62c26f2165e4658078932d90e0352e0083be115f25b1"
+    },
+    "template-parts/tools/prompt-injection-detector.php": {
+      "bytes": 18735,
+      "mode": "0644",
+      "sha256": "f671b102f84458e22f30da51dad477d268eb2f6b9c872b1759b8ff03bf9ca1a5"
+    },
+    "template-parts/tools/prompt-injection-test-bench.php": {
+      "bytes": 14378,
+      "mode": "0644",
+      "sha256": "30e4977648d5e42e6c1d1283bb52f18fc1db4133386ee76ecb9dd4d6c13cd64b"
+    },
+    "template-parts/tools/yara-sigma-validator.php": {
+      "bytes": 14382,
+      "mode": "0644",
+      "sha256": "dfcd2b81a542644786c9c826511b5dc9708ed2b21d2b4863582e69622bcf3880"
+    },
+    "theme.json": {
+      "bytes": 4899,
+      "mode": "0644",
+      "sha256": "038ef0d4979e9068d961d6c7f318f50fc0b0696d448fc4419e7b4432948eb956"
+    }
+  }
+}
