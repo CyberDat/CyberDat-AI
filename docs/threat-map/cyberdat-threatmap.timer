@@ -1,0 +1,14 @@
+# Sample timer for cyberdat-threatmap.service: three runs an hour, one slot per layer
+# (:07 Feodo Tracker, :27 Ransomware.live, :47 catch-up only). Each layer is collected once an hour.
+# The Research timers run at other minutes and are not touched.
+[Unit]
+Description=CyberDat staging Global Cyber Threat Map schedule
+
+[Timer]
+OnCalendar=*-*-* *:07,27,47:00 UTC
+AccuracySec=30s
+Persistent=true
+Unit=cyberdat-threatmap.service
+
+[Install]
+WantedBy=timers.target

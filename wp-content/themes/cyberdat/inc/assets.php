@@ -22,7 +22,10 @@ function cyberdat_theme_enqueue_assets() {
  }
  if($intelligence) {
   wp_enqueue_script('cyberdat-intelligence-charts',get_theme_file_uri('/assets/js/intelligence-charts.js'),array(),cyberdat_theme_asset_version('/assets/js/intelligence-charts.js'),array('strategy'=>'defer','in_footer'=>true));
-  wp_enqueue_script('cyberdat-threat-geo',get_theme_file_uri('/assets/js/threat-geo.js'),array(),cyberdat_theme_asset_version('/assets/js/threat-geo.js'),array('strategy'=>'defer','in_footer'=>true));
+  // Global Cyber Threat Map (inc/threat-map.php): script and styles on this page only; the geometry JSON is
+  // fetched by the script from the theme only when the map is shown (wider than 640 px).
+  wp_enqueue_style('cyberdat-threat-map',get_theme_file_uri('/assets/css/threat-map.css'),array('cyberdat-threat-geo'),cyberdat_theme_asset_version('/assets/css/threat-map.css'));
+  wp_enqueue_script('cyberdat-threat-map',get_theme_file_uri('/assets/js/threat-map.js'),array(),cyberdat_theme_asset_version('/assets/js/threat-map.js'),array('strategy'=>'defer','in_footer'=>true));
  }
  if ($intelligence && function_exists('cdta_staging') && cdta_staging()) {
   wp_enqueue_style('cyberdat-analytics',get_theme_file_uri('/assets/css/threat-analytics.css'),array('cyberdat-threat-dashboard'),cyberdat_theme_asset_version('/assets/css/threat-analytics.css'));

@@ -28,5 +28,6 @@ require_once __DIR__ . '/inc/tool-email-header-analyzer.php';
 require_once __DIR__ . '/inc/intelligence-charts.php';
 
 require_once __DIR__ . '/inc/threat-intelligence.php';
+require_once __DIR__ . '/inc/threat-map.php';
 
 require_once __DIR__ . '/inc/threat-pulse.php';
