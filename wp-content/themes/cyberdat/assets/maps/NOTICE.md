@@ -9,4 +9,6 @@ ISC license, Copyright 2013-2019 Michael Bostock; geometry from Natural Earth 1:
 Source: https://registry.npmjs.org/world-atlas/-/world-atlas-2.0.2.tgz (integrity checked by the build script).
 Derived by tools/threat-map/build-geometry.cjs: one numeric SVG path per country, equirectangular, latitude 84..-60,
 Antarctica removed, rings across the antimeridian unwrapped. ISO 3166-1 codes and names from iso3166-1.json.
-Not a claim about political boundaries.
+Borders follow UN-recognised boundaries: Crimea is shown as part of Ukraine. Derived from Natural Earth 1:110m.
+(Natural Earth draws de facto control; the build script moves the Crimea polygon from Russia to Ukraine, joins
+N. Cyprus to Cyprus and Somaliland to Somalia, and keeps Kosovo separate.)

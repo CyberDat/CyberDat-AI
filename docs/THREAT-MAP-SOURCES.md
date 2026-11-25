@@ -124,6 +124,13 @@ world-atlas 2.0.2, `countries-110m.json` (ISC license, data from Natural Earth, 
 `tools/threat-map/build-geometry.cjs` into `wp-content/themes/cyberdat/assets/maps/threat-map-countries.json`
 (equirectangular, Antarctica removed). See `wp-content/themes/cyberdat/assets/maps/NOTICE.md`.
 
+Borders follow UN-recognised boundaries: Crimea is shown as part of Ukraine. Derived from Natural Earth 1:110m (v1.2).
+Natural Earth draws de facto control, so the build script moves the Crimea polygon (found by its bounding box) from
+Russia to Ukraine and merges it along the shared border, joins N. Cyprus to Cyprus and Somaliland to Somalia, and
+keeps Kosovo separate (XK). Data are not re-attributed: if a source gives RU for something located in Crimea, the map
+counts it for RU, because the source does not let us tell; the page says "Country attribution is taken from each
+source as published."
+
 ## Flags (v1.1)
 
 flag-icons 7.6.0 (npm, MIT), `flags/4x3` SVG, only the codes of `assets/maps/iso3166-1.json` (250). Built and

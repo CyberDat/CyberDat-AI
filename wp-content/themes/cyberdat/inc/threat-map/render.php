@@ -76,7 +76,7 @@ function cyberdat_threat_map_render(?array $snapshot, int $now): string {
 <div class="cdtm-tip" data-cdtm-tip aria-hidden="true" hidden></div>
 <div class="cdtm-legend" data-cdtm-legend></div>
 <p class="cdtm-note cdtm-low" data-cdtm-low<?php echo $pd['low'] ? '' : ' hidden'; ?>><?php echo $h(CDTM_View::LOW_ACTIVITY_TEXT); ?></p>
-<p class="cdtm-mapnote">Map: Natural Earth (public domain) via world-atlas 2.0.2 (ISC). Country shapes do not imply political boundaries.</p></div>
+<p class="cdtm-mapnote">Map: Natural Earth (public domain) via world-atlas 2.0.2 (ISC); borders follow UN-recognised boundaries. Country attribution is taken from each source as published.</p></div>
 <div class="cdtm-side">
 <div class="cdtm-country" data-cdtm-country aria-live="polite"><p class="cdtm-kicker">COUNTRY DETAILS</p><p>Select a country on the map, in the top 10 or in the search to see its total, the change against the previous period, a breakdown and a link to the source records.</p></div>
 <div class="cdtm-top"><h4 data-cdtm-top-title>Top 10 countries · <?php echo $h($pd['label']); ?></h4><ol data-cdtm-top><?php echo cyberdat_threat_map_top_items($l['show'] ? $pd['top'] : []); ?></ol><p class="cdtm-note" data-cdtm-top-empty<?php echo $l['show'] && $pd['top'] ? ' hidden' : ''; ?>><?php echo $h($l['show'] ? 'No country totals in this period.' : 'No data to show for this layer.'); ?></p></div>

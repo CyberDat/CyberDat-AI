@@ -126,6 +126,13 @@ async function run(name) {
 			pass(`${vpName}: keyboard — ${TAB} order tabs → periods → top 10; arrows switch layers; Enter opens the country panel (total, ${panel.strong[1]} vs previous, sectors, source link, related-articles slot); Escape closes`);
 
 			if (vpName === 'desktop') {
+				// v1.2: borders checked by the browser's own geometry (Simferopol, Kyrenia, Hargeisa)
+				const borders = await page.evaluate(() => {
+					const at = (cc, lon, lat) => { const p = document.querySelector('.cdtm-map path[data-cc="' + cc + '"]'); const pt = p.ownerSVGElement.createSVGPoint(); pt.x = (lon + 180) * 1000 / 360; pt.y = (84 - lat) * 1000 / 360; return p.isPointInFill(pt); };
+					return [at('UA', 34.1, 44.95), at('RU', 34.1, 44.95), at('CY', 33.32, 35.3), at('SO', 44.06, 9.56), document.querySelectorAll('.cdtm-map path.cdtm-x').length];
+				});
+				assert.deepEqual(borders, [true, false, true, true, 0]);
+				pass('desktop: in the browser Simferopol is inside Ukraine, not Russia; north Cyprus in CY, Somaliland in SO; no unnamed areas');
 				await page.evaluate(() => document.querySelector('.cdtm-mapbox').scrollIntoView({ block: 'center' }));
 				await sleep(100);
 				const usa = await page.$('.cdtm-map path[data-cc="US"]');
