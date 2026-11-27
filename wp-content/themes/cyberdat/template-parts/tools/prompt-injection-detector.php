@@ -138,7 +138,9 @@ $cyberdat_pi = cyberdat_prompt_detector_config();
 				<li><?php esc_html_e( 'Every finding has a rule id, a severity, its line and column and an explanation. Phrases that are quoted or given as examples ("phrases like …") are still reported, with low severity.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'The sanitized copy is secondary: it removes invisible characters, applies NFKC and replaces flagged passages with a visible marker, and every change is listed so you can check it. After that, values that look like secrets are masked unless you switch masking off.', 'cyberdat' ); ?></li>
 			</ol>
-			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s', 'cyberdat' ), esc_html( $cyberdat_pi['engine_version'] ), esc_html( $cyberdat_pi['ruleset'] ) ); ?></p>
+			<?php require_once dirname( __DIR__, 2 ) . '/inc/tools-owasp-2026.php'; ?>
+			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s · rules updated %3$s', 'cyberdat' ), esc_html( $cyberdat_pi['engine_version'] ), esc_html( $cyberdat_pi['ruleset'] ), esc_html( cyberdat_rules_updated( $cyberdat_pi['ruleset'] ) ) ); ?></p>
+			<?php echo cyberdat_tools_owasp_line( 'prompt-injection-detector' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper ?>
 		</section>
 		<section aria-labelledby="cd-pi-privacy">
 			<h2 id="cd-pi-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>

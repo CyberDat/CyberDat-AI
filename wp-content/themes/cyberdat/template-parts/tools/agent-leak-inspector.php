@@ -101,7 +101,9 @@ $cyberdat_lki = cyberdat_lki_config();
 				<li><?php esc_html_e( 'An overlap measure shows how many three-word phrases of the prompt also appear in the response, with the matching phrases. It helps you spot close paraphrases; it is a number, not a verdict.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Every finding has a rule id, a severity, its line, an explanation and a suggested change. Nothing is sent to an AI model: all comparisons are simple text operations with size and time limits.', 'cyberdat' ); ?></li>
 			</ol>
-			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s', 'cyberdat' ), esc_html( $cyberdat_lki['engine_version'] ), esc_html( $cyberdat_lki['ruleset'] ) ); ?></p>
+			<?php require_once dirname( __DIR__, 2 ) . '/inc/tools-owasp-2026.php'; ?>
+			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s · rules updated %3$s', 'cyberdat' ), esc_html( $cyberdat_lki['engine_version'] ), esc_html( $cyberdat_lki['ruleset'] ), esc_html( cyberdat_rules_updated( $cyberdat_lki['ruleset'] ) ) ); ?></p>
+			<?php echo cyberdat_tools_owasp_line( 'agent-leak-inspector' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper ?>
 		</section>
 		<section aria-labelledby="cd-lki-privacy">
 			<h2 id="cd-lki-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
@@ -129,7 +131,7 @@ $cyberdat_lki = cyberdat_lki_config();
 			<h2 id="cd-lki-sources"><?php esc_html_e( 'Sources', 'cyberdat' ); ?></h2>
 			<ul>
 				<li><?php esc_html_e( 'All rules, explanations and examples are written by CyberDat. No external rule set, prompt catalogue or dataset is bundled, and the tool does not generate extraction prompts.', 'cyberdat' ); ?></li>
-				<li><?php esc_html_e( 'Background reading: the OWASP Top 10 for Large Language Model Applications (2025), entry “System Prompt Leakage”, by the OWASP GenAI Security Project. It is referenced here by name only; no text is copied.', 'cyberdat' ); ?></li>
+				<li><?php esc_html_e( 'Background reading: the OWASP Top 10 for Large Language Model Applications (2026), entry LLM08:2026 “Hidden Context Exposure”, by the OWASP GenAI Security Project. It is referenced here by name only; no text is copied.', 'cyberdat' ); ?></li>
 			</ul>
 		</section>
 	</div>

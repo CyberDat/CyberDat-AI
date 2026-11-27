@@ -114,7 +114,9 @@ $cyberdat_mcp = cyberdat_mcp_config();
 				<li><?php esc_html_e( 'Policy check: your JSON policy is validated first, with clear messages for unknown settings and wrong types, then every server is compared with it.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Each finding shows the server, the location in the configuration with its line, the severity, an explanation and a suggested fix. No corrected configuration is generated: you decide what to change.', 'cyberdat' ); ?></li>
 			</ol>
-			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s', 'cyberdat' ), esc_html( $cyberdat_mcp['engine_version'] ), esc_html( $cyberdat_mcp['ruleset'] ) ); ?></p>
+			<?php require_once dirname( __DIR__, 2 ) . '/inc/tools-owasp-2026.php'; ?>
+			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s · rules updated %3$s', 'cyberdat' ), esc_html( $cyberdat_mcp['engine_version'] ), esc_html( $cyberdat_mcp['ruleset'] ), esc_html( cyberdat_rules_updated( $cyberdat_mcp['ruleset'] ) ) ); ?></p>
+			<?php echo cyberdat_tools_owasp_line( 'mcp-security-checker' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper ?>
 		</section>
 		<section aria-labelledby="cd-mcp-privacy">
 			<h2 id="cd-mcp-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>

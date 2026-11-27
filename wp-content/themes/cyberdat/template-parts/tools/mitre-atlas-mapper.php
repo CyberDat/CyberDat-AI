@@ -95,7 +95,9 @@ $cyberdat_atl_ta = 'class="cd-la-input notranslate" translate="no" spellcheck="f
 				<li><?php esc_html_e( 'Browse: search the bundled ATLAS data by id or name and open tactics, techniques, sub-techniques and mitigations.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Add techniques to your selection, write notes and download the selection as Markdown or JSON.', 'cyberdat' ); ?></li>
 			</ol>
-			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · CyberDat mapping %2$s · MITRE ATLAS %3$s', 'cyberdat' ), esc_html( $cyberdat_atl['engine_version'] ), esc_html( $cyberdat_atl['ruleset'] ), esc_html( $cyberdat_atl['data_release'] ) ); ?></p>
+			<?php require_once dirname( __DIR__, 2 ) . '/inc/tools-owasp-2026.php'; ?>
+			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · CyberDat mapping %2$s · MITRE ATLAS %3$s · mapping updated %4$s', 'cyberdat' ), esc_html( $cyberdat_atl['engine_version'] ), esc_html( $cyberdat_atl['ruleset'] ), esc_html( $cyberdat_atl['data_release'] ), esc_html( cyberdat_rules_updated( $cyberdat_atl['ruleset'] ) ) ); ?></p>
+			<?php echo cyberdat_tools_owasp_line( 'mitre-atlas-mapper' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper ?>
 		</section>
 		<section aria-labelledby="cd-atl-privacy">
 			<h2 id="cd-atl-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>

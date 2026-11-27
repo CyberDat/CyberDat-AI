@@ -260,7 +260,9 @@ $cyberdat_bom_groups = array(
 				<li><?php esc_html_e( 'Each finding shows where it was found, its severity, why it matters and a suggested change. Secrets are shown only as their type and a masked fragment.', 'cyberdat' ); ?></li>
 				<li><?php esc_html_e( 'Fields that CycloneDX has no place for (model type, personal-data status, dataset use, deployment, safety evaluation) are stored as properties named cyberdat:aibom:…, so a document exported here can be reviewed here again with the same content.', 'cyberdat' ); ?></li>
 			</ol>
-			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s · CycloneDX %3$s', 'cyberdat' ), esc_html( $cyberdat_bom['engine_version'] ), esc_html( $cyberdat_bom['ruleset'] ), esc_html( $cyberdat_bom['spec_version'] ) ); ?></p>
+			<?php require_once dirname( __DIR__, 2 ) . '/inc/tools-owasp-2026.php'; ?>
+			<p class="cd-la-meta"><?php printf( esc_html__( 'Engine %1$s · rules %2$s · CycloneDX %3$s · rules updated %4$s', 'cyberdat' ), esc_html( $cyberdat_bom['engine_version'] ), esc_html( $cyberdat_bom['ruleset'] ), esc_html( $cyberdat_bom['spec_version'] ), esc_html( cyberdat_rules_updated( $cyberdat_bom['ruleset'] ) ) ); ?></p>
+			<?php echo cyberdat_tools_owasp_line( 'ai-model-bom' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper ?>
 		</section>
 		<section aria-labelledby="cd-bom-privacy">
 			<h2 id="cd-bom-privacy"><?php esc_html_e( 'Privacy', 'cyberdat' ); ?></h2>
